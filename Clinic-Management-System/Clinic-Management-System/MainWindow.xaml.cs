@@ -28,9 +28,6 @@ namespace Clinic_Management_System
 			this.InitializeComponent();
 		}
 
-		private void myButton_Click(object sender, RoutedEventArgs e)
-		{
-			myButton.Content = "Clicked";
-		}
+		
 	}
 }
