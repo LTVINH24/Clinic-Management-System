@@ -5,9 +5,36 @@
     <None Update="App.xaml">
       <SubType>Designer</SubType>
     </None>
-    <None Update="MainWindow.xaml">
+    <Page Update="SettingsPage.xaml">
       <SubType>Designer</SubType>
-    </None>
+    </Page>
+    <Page Update="SamplePage6.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="SamplePage5.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="SamplePage4.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="SamplePage3.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="SamplePage2.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="SamplePage1.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="DashboardWindow.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="ShellWindow.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="MainPage.xaml">
+      <SubType>Designer</SubType>
+    </Page>
     <None Update="Package.appxmanifest">
       <SubType>Designer</SubType>
     </None>
