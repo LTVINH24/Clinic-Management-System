@@ -1,0 +1,10 @@
+{
+  "profiles": {
+    "Clinic-Management-System (Package)": {
+      "commandName": "MsixPackage"
+    },
+    "Clinic-Management-System (Unpackaged)": {
+      "commandName": "Project"
+    }
+  }
+}
