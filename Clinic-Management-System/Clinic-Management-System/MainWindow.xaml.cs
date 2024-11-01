@@ -1,3 +1,4 @@
+using Clinic_Management_System.ViewModel;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Controls.Primitives;
@@ -12,6 +13,7 @@ using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
+using Windows.Networking.Vpn;
 
 // To learn more about WinUI, the WinUI project structure,
 // and more about our project templates, see: http://aka.ms/winui-project-info.
@@ -26,8 +28,38 @@ namespace Clinic_Management_System
 		public MainWindow()
 		{
 			this.InitializeComponent();
-		}
+			viewModel.LoginCompleted += OnLoginCompleted;
 
-		
-	}
+        }
+		public MainViewModel viewModel { get;set; }=new MainViewModel();
+        public void Login_Click(object sender, RoutedEventArgs e)
+		{
+			viewModel.Authentication(viewModel.UserLogin);
+        }
+		private void OnLoginCompleted(bool isSuccess)
+		{
+			if (isSuccess)
+			{
+				var screen = new Dashboard();
+				screen.Activate();
+				viewModel.LoginCompleted -= OnLoginCompleted;
+				this.Close();
+			}
+			else
+			{
+				LoginFailed();
+
+            }
+		}
+		private async void LoginFailed()
+		{
+			await new ContentDialog()
+			{
+				XamlRoot =this.Content.XamlRoot,
+				Title= "Login failed",
+				Content = "Incorrect username or password",
+				CloseButtonText="OK"
+            }.ShowAsync();
+		}
+    }
 }

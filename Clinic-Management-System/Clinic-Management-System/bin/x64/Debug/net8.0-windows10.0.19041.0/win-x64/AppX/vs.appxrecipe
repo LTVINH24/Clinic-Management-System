@@ -29,25 +29,25 @@
     <AppXManifest Include="D:\2024-2025\Windows\Clinic-Management-System\Clinic-Management-System\Clinic-Management-System\bin\x64\Debug\net8.0-windows10.0.19041.0\win-x64\AppxManifest.xml">
       <PackagePath>AppxManifest.xml</PackagePath>
       <ReRegisterAppIfChanged>true</ReRegisterAppIfChanged>
-      <Modified>2024-11-01T12:57:47.764</Modified>
+      <Modified>2024-11-01T18:26:40.705</Modified>
     </AppXManifest>
   </ItemGroup>
   <ItemGroup>
     <AppxPackagedFile Include="D:\2024-2025\Windows\Clinic-Management-System\Clinic-Management-System\Clinic-Management-System\bin\x64\Debug\net8.0-windows10.0.19041.0\win-x64\resources.pri">
       <PackagePath>resources.pri</PackagePath>
-      <Modified>2024-11-01T12:57:47.530</Modified>
+      <Modified>2024-11-01T18:18:34.711</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="D:\2024-2025\Windows\Clinic-Management-System\Clinic-Management-System\Clinic-Management-System\bin\x64\Debug\net8.0-windows10.0.19041.0\win-x64\Clinic-Management-System.runtimeconfig.json">
       <PackagePath>Clinic-Management-System.runtimeconfig.json</PackagePath>
-      <Modified>2024-11-01T12:57:47.311</Modified>
+      <Modified>2024-11-01T17:32:01.499</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="D:\2024-2025\Windows\Clinic-Management-System\Clinic-Management-System\Clinic-Management-System\bin\x64\Debug\net8.0-windows10.0.19041.0\win-x64\Clinic-Management-System.dll">
       <PackagePath>Clinic-Management-System.dll</PackagePath>
-      <Modified>2024-11-01T12:57:46.683</Modified>
+      <Modified>2024-11-01T18:26:40.455</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="D:\2024-2025\Windows\Clinic-Management-System\Clinic-Management-System\Clinic-Management-System\obj\x64\Debug\net8.0-windows10.0.19041.0\win-x64\apphost.exe">
       <PackagePath>Clinic-Management-System.exe</PackagePath>
-      <Modified>2024-11-01T12:57:46.699</Modified>
+      <Modified>2024-11-01T18:26:40.470</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\LE THANH VINH\.nuget\packages\microsoft.web.webview2\1.0.2651.64\runtimes\win-x64\native\WebView2Loader.dll">
       <PackagePath>runtimes\win-x64\native\WebView2Loader.dll</PackagePath>
@@ -789,6 +789,58 @@
       <PackagePath>WinRT.Runtime.dll</PackagePath>
       <Modified>2024-08-08T01:44:52.000</Modified>
     </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\LE THANH VINH\.nuget\packages\azure.core\1.38.0\lib\net6.0\Azure.Core.dll">
+      <PackagePath>Azure.Core.dll</PackagePath>
+      <Modified>2024-02-26T15:24:40.000</Modified>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\LE THANH VINH\.nuget\packages\azure.identity\1.11.4\lib\netstandard2.0\Azure.Identity.dll">
+      <PackagePath>Azure.Identity.dll</PackagePath>
+      <Modified>2024-06-10T16:43:48.000</Modified>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\LE THANH VINH\.nuget\packages\microsoft.bcl.asyncinterfaces\1.1.1\lib\netstandard2.1\Microsoft.Bcl.AsyncInterfaces.dll">
+      <PackagePath>Microsoft.Bcl.AsyncInterfaces.dll</PackagePath>
+      <Modified>2020-04-14T22:39:12.000</Modified>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\LE THANH VINH\.nuget\packages\microsoft.data.sqlclient\5.2.2\runtimes\win\lib\net8.0\Microsoft.Data.SqlClient.dll">
+      <PackagePath>Microsoft.Data.SqlClient.dll</PackagePath>
+      <Modified>2024-08-27T18:46:52.000</Modified>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\LE THANH VINH\.nuget\packages\microsoft.identity.client\4.61.3\lib\net6.0\Microsoft.Identity.Client.dll">
+      <PackagePath>Microsoft.Identity.Client.dll</PackagePath>
+      <Modified>2024-06-06T22:09:28.000</Modified>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\LE THANH VINH\.nuget\packages\microsoft.identity.client.extensions.msal\4.61.3\lib\net6.0\Microsoft.Identity.Client.Extensions.Msal.dll">
+      <PackagePath>Microsoft.Identity.Client.Extensions.Msal.dll</PackagePath>
+      <Modified>2024-06-06T22:14:52.000</Modified>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\LE THANH VINH\.nuget\packages\microsoft.identitymodel.abstractions\6.35.0\lib\net6.0\Microsoft.IdentityModel.Abstractions.dll">
+      <PackagePath>Microsoft.IdentityModel.Abstractions.dll</PackagePath>
+      <Modified>2023-12-01T04:56:56.000</Modified>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\LE THANH VINH\.nuget\packages\microsoft.identitymodel.jsonwebtokens\6.35.0\lib\net6.0\Microsoft.IdentityModel.JsonWebTokens.dll">
+      <PackagePath>Microsoft.IdentityModel.JsonWebTokens.dll</PackagePath>
+      <Modified>2023-12-01T04:34:00.000</Modified>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\LE THANH VINH\.nuget\packages\microsoft.identitymodel.logging\6.35.0\lib\net6.0\Microsoft.IdentityModel.Logging.dll">
+      <PackagePath>Microsoft.IdentityModel.Logging.dll</PackagePath>
+      <Modified>2023-12-01T04:35:22.000</Modified>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\LE THANH VINH\.nuget\packages\microsoft.identitymodel.protocols\6.35.0\lib\net6.0\Microsoft.IdentityModel.Protocols.dll">
+      <PackagePath>Microsoft.IdentityModel.Protocols.dll</PackagePath>
+      <Modified>2023-12-01T04:37:28.000</Modified>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\LE THANH VINH\.nuget\packages\microsoft.identitymodel.protocols.openidconnect\6.35.0\lib\net6.0\Microsoft.IdentityModel.Protocols.OpenIdConnect.dll">
+      <PackagePath>Microsoft.IdentityModel.Protocols.OpenIdConnect.dll</PackagePath>
+      <Modified>2023-12-01T04:48:08.000</Modified>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\LE THANH VINH\.nuget\packages\microsoft.identitymodel.tokens\6.35.0\lib\net6.0\Microsoft.IdentityModel.Tokens.dll">
+      <PackagePath>Microsoft.IdentityModel.Tokens.dll</PackagePath>
+      <Modified>2023-12-01T04:41:50.000</Modified>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\LE THANH VINH\.nuget\packages\microsoft.sqlserver.server\1.0.0\lib\netstandard2.0\Microsoft.SqlServer.Server.dll">
+      <PackagePath>Microsoft.SqlServer.Server.dll</PackagePath>
+      <Modified>2022-01-27T17:19:08.000</Modified>
+    </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\LE THANH VINH\.nuget\packages\microsoft.windowsappsdk\1.6.240923002\lib\net6.0-windows10.0.18362.0\Microsoft.InteractiveExperiences.Projection.dll">
       <PackagePath>Microsoft.InteractiveExperiences.Projection.dll</PackagePath>
       <Modified>2024-09-17T04:17:08.000</Modified>
@@ -853,6 +905,86 @@
       <PackagePath>Microsoft.WindowsAppRuntime.Bootstrap.Net.dll</PackagePath>
       <Modified>2024-09-21T17:55:54.000</Modified>
     </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\LE THANH VINH\.nuget\packages\propertychanged.fody\4.1.0\lib\netstandard2.1\PropertyChanged.dll">
+      <PackagePath>PropertyChanged.dll</PackagePath>
+      <Modified>2022-11-06T16:42:22.000</Modified>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\LE THANH VINH\.nuget\packages\system.clientmodel\1.0.0\lib\net6.0\System.ClientModel.dll">
+      <PackagePath>System.ClientModel.dll</PackagePath>
+      <Modified>2024-01-03T17:43:00.000</Modified>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\LE THANH VINH\.nuget\packages\system.configuration.configurationmanager\8.0.0\lib\net8.0\System.Configuration.ConfigurationManager.dll">
+      <PackagePath>System.Configuration.ConfigurationManager.dll</PackagePath>
+      <Modified>2023-10-31T14:59:08.000</Modified>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\LE THANH VINH\.nuget\packages\system.diagnostics.eventlog\8.0.0\runtimes\win\lib\net8.0\System.Diagnostics.EventLog.Messages.dll">
+      <PackagePath>System.Diagnostics.EventLog.Messages.dll</PackagePath>
+      <Modified>2023-10-31T14:59:52.000</Modified>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\LE THANH VINH\.nuget\packages\system.diagnostics.eventlog\8.0.0\runtimes\win\lib\net8.0\System.Diagnostics.EventLog.dll">
+      <PackagePath>System.Diagnostics.EventLog.dll</PackagePath>
+      <Modified>2023-10-31T14:59:54.000</Modified>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\LE THANH VINH\.nuget\packages\system.identitymodel.tokens.jwt\6.35.0\lib\net6.0\System.IdentityModel.Tokens.Jwt.dll">
+      <PackagePath>System.IdentityModel.Tokens.Jwt.dll</PackagePath>
+      <Modified>2023-12-01T04:31:48.000</Modified>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\LE THANH VINH\.nuget\packages\system.memory.data\1.0.2\lib\netstandard2.0\System.Memory.Data.dll">
+      <PackagePath>System.Memory.Data.dll</PackagePath>
+      <Modified>2021-04-08T16:45:54.000</Modified>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\LE THANH VINH\.nuget\packages\system.runtime.caching\8.0.0\runtimes\win\lib\net8.0\System.Runtime.Caching.dll">
+      <PackagePath>System.Runtime.Caching.dll</PackagePath>
+      <Modified>2023-10-31T15:00:12.000</Modified>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\LE THANH VINH\.nuget\packages\system.security.cryptography.protecteddata\8.0.0\lib\net8.0\System.Security.Cryptography.ProtectedData.dll">
+      <PackagePath>System.Security.Cryptography.ProtectedData.dll</PackagePath>
+      <Modified>2023-10-31T14:59:04.000</Modified>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\LE THANH VINH\.nuget\packages\microsoft.data.sqlclient\5.2.2\lib\net8.0\de\Microsoft.Data.SqlClient.resources.dll">
+      <PackagePath>de\Microsoft.Data.SqlClient.resources.dll</PackagePath>
+      <Modified>2024-08-27T18:46:52.000</Modified>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\LE THANH VINH\.nuget\packages\microsoft.data.sqlclient\5.2.2\lib\net8.0\es\Microsoft.Data.SqlClient.resources.dll">
+      <PackagePath>es\Microsoft.Data.SqlClient.resources.dll</PackagePath>
+      <Modified>2024-08-27T18:46:52.000</Modified>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\LE THANH VINH\.nuget\packages\microsoft.data.sqlclient\5.2.2\lib\net8.0\fr\Microsoft.Data.SqlClient.resources.dll">
+      <PackagePath>fr\Microsoft.Data.SqlClient.resources.dll</PackagePath>
+      <Modified>2024-08-27T18:46:50.000</Modified>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\LE THANH VINH\.nuget\packages\microsoft.data.sqlclient\5.2.2\lib\net8.0\it\Microsoft.Data.SqlClient.resources.dll">
+      <PackagePath>it\Microsoft.Data.SqlClient.resources.dll</PackagePath>
+      <Modified>2024-08-27T18:47:06.000</Modified>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\LE THANH VINH\.nuget\packages\microsoft.data.sqlclient\5.2.2\lib\net8.0\ja\Microsoft.Data.SqlClient.resources.dll">
+      <PackagePath>ja\Microsoft.Data.SqlClient.resources.dll</PackagePath>
+      <Modified>2024-08-27T18:47:06.000</Modified>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\LE THANH VINH\.nuget\packages\microsoft.data.sqlclient\5.2.2\lib\net8.0\ko\Microsoft.Data.SqlClient.resources.dll">
+      <PackagePath>ko\Microsoft.Data.SqlClient.resources.dll</PackagePath>
+      <Modified>2024-08-27T18:47:06.000</Modified>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\LE THANH VINH\.nuget\packages\microsoft.data.sqlclient\5.2.2\lib\net8.0\pt-BR\Microsoft.Data.SqlClient.resources.dll">
+      <PackagePath>pt-BR\Microsoft.Data.SqlClient.resources.dll</PackagePath>
+      <Modified>2024-08-27T18:46:52.000</Modified>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\LE THANH VINH\.nuget\packages\microsoft.data.sqlclient\5.2.2\lib\net8.0\ru\Microsoft.Data.SqlClient.resources.dll">
+      <PackagePath>ru\Microsoft.Data.SqlClient.resources.dll</PackagePath>
+      <Modified>2024-08-27T18:46:52.000</Modified>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\LE THANH VINH\.nuget\packages\microsoft.data.sqlclient\5.2.2\lib\net8.0\zh-Hans\Microsoft.Data.SqlClient.resources.dll">
+      <PackagePath>zh-Hans\Microsoft.Data.SqlClient.resources.dll</PackagePath>
+      <Modified>2024-08-27T18:46:52.000</Modified>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\LE THANH VINH\.nuget\packages\microsoft.data.sqlclient\5.2.2\lib\net8.0\zh-Hant\Microsoft.Data.SqlClient.resources.dll">
+      <PackagePath>zh-Hant\Microsoft.Data.SqlClient.resources.dll</PackagePath>
+      <Modified>2024-08-27T18:46:52.000</Modified>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\LE THANH VINH\.nuget\packages\microsoft.data.sqlclient.sni.runtime\5.2.0\runtimes\win-x64\native\Microsoft.Data.SqlClient.SNI.dll">
+      <PackagePath>Microsoft.Data.SqlClient.SNI.dll</PackagePath>
+      <Modified>2024-02-20T22:30:22.000</Modified>
+    </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\LE THANH VINH\.nuget\packages\microsoft.web.webview2\1.0.2651.64\runtimes\win-x64\native\WebView2Loader.dll">
       <PackagePath>WebView2Loader.dll</PackagePath>
       <Modified>2024-07-20T08:33:54.000</Modified>
@@ -871,11 +1003,23 @@
     </AppxPackagedFile>
     <AppxPackagedFile Include="D:\2024-2025\Windows\Clinic-Management-System\Clinic-Management-System\Clinic-Management-System\bin\x64\Debug\net8.0-windows10.0.19041.0\win-x64\Clinic-Management-System.deps.json">
       <PackagePath>Clinic-Management-System.deps.json</PackagePath>
-      <Modified>2024-11-01T12:57:47.186</Modified>
+      <Modified>2024-11-01T17:32:01.368</Modified>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="D:\2024-2025\Windows\Clinic-Management-System\Clinic-Management-System\Clinic-Management-System\Assets\doctor.png">
+      <PackagePath>Assets\doctor.png</PackagePath>
+      <Modified>2024-11-01T13:34:37.018</Modified>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="D:\2024-2025\Windows\Clinic-Management-System\Clinic-Management-System\Clinic-Management-System\Assets\hopital.png">
+      <PackagePath>Assets\hopital.png</PackagePath>
+      <Modified>2024-11-01T13:17:41.991</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="D:\2024-2025\Windows\Clinic-Management-System\Clinic-Management-System\Clinic-Management-System\Assets\LockScreenLogo.scale-200.png">
       <PackagePath>Assets\LockScreenLogo.scale-200.png</PackagePath>
       <Modified>2024-11-01T12:55:55.319</Modified>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="D:\2024-2025\Windows\Clinic-Management-System\Clinic-Management-System\Clinic-Management-System\Assets\logo.png">
+      <PackagePath>Assets\logo.png</PackagePath>
+      <Modified>2024-11-01T13:16:59.728</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="D:\2024-2025\Windows\Clinic-Management-System\Clinic-Management-System\Clinic-Management-System\Assets\SplashScreen.scale-200.png">
       <PackagePath>Assets\SplashScreen.scale-200.png</PackagePath>

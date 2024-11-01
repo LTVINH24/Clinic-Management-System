@@ -1,7 +1,52 @@
 {
   "Version": 1,
   "WorkspaceRootPath": "D:\\2024-2025\\Windows\\Clinic-Management-System\\Clinic-Management-System\\",
-  "Documents": [],
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{220207D3-696A-4AE7-862B-FB9FBDC1B79F}|Clinic-Management-System\\Clinic-Management-System.csproj|d:\\2024-2025\\windows\\clinic-management-system\\clinic-management-system\\clinic-management-system\\service\\dataaccess\\sqlserverdao.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{220207D3-696A-4AE7-862B-FB9FBDC1B79F}|Clinic-Management-System\\Clinic-Management-System.csproj|solutionrelative:clinic-management-system\\service\\dataaccess\\sqlserverdao.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{220207D3-696A-4AE7-862B-FB9FBDC1B79F}|Clinic-Management-System\\Clinic-Management-System.csproj|d:\\2024-2025\\windows\\clinic-management-system\\clinic-management-system\\clinic-management-system\\mainwindow.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{220207D3-696A-4AE7-862B-FB9FBDC1B79F}|Clinic-Management-System\\Clinic-Management-System.csproj|solutionrelative:clinic-management-system\\mainwindow.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{220207D3-696A-4AE7-862B-FB9FBDC1B79F}|Clinic-Management-System\\Clinic-Management-System.csproj|d:\\2024-2025\\windows\\clinic-management-system\\clinic-management-system\\clinic-management-system\\viewmodel\\mainviewmodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{220207D3-696A-4AE7-862B-FB9FBDC1B79F}|Clinic-Management-System\\Clinic-Management-System.csproj|solutionrelative:clinic-management-system\\viewmodel\\mainviewmodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{220207D3-696A-4AE7-862B-FB9FBDC1B79F}|Clinic-Management-System\\Clinic-Management-System.csproj|d:\\2024-2025\\windows\\clinic-management-system\\clinic-management-system\\clinic-management-system\\mainwindow.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}",
+      "RelativeMoniker": "D:0:0:{220207D3-696A-4AE7-862B-FB9FBDC1B79F}|Clinic-Management-System\\Clinic-Management-System.csproj|solutionrelative:clinic-management-system\\mainwindow.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{220207D3-696A-4AE7-862B-FB9FBDC1B79F}|Clinic-Management-System\\Clinic-Management-System.csproj|d:\\2024-2025\\windows\\clinic-management-system\\clinic-management-system\\clinic-management-system\\model\\userlogin.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{220207D3-696A-4AE7-862B-FB9FBDC1B79F}|Clinic-Management-System\\Clinic-Management-System.csproj|solutionrelative:clinic-management-system\\model\\userlogin.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{220207D3-696A-4AE7-862B-FB9FBDC1B79F}|Clinic-Management-System\\Clinic-Management-System.csproj|d:\\2024-2025\\windows\\clinic-management-system\\clinic-management-system\\clinic-management-system\\dashboard.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{220207D3-696A-4AE7-862B-FB9FBDC1B79F}|Clinic-Management-System\\Clinic-Management-System.csproj|solutionrelative:clinic-management-system\\dashboard.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{220207D3-696A-4AE7-862B-FB9FBDC1B79F}|Clinic-Management-System\\Clinic-Management-System.csproj|d:\\2024-2025\\windows\\clinic-management-system\\clinic-management-system\\clinic-management-system\\service\\servicefactory.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{220207D3-696A-4AE7-862B-FB9FBDC1B79F}|Clinic-Management-System\\Clinic-Management-System.csproj|solutionrelative:clinic-management-system\\service\\servicefactory.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{220207D3-696A-4AE7-862B-FB9FBDC1B79F}|Clinic-Management-System\\Clinic-Management-System.csproj|d:\\2024-2025\\windows\\clinic-management-system\\clinic-management-system\\clinic-management-system\\app.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{220207D3-696A-4AE7-862B-FB9FBDC1B79F}|Clinic-Management-System\\Clinic-Management-System.csproj|solutionrelative:clinic-management-system\\app.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{220207D3-696A-4AE7-862B-FB9FBDC1B79F}|Clinic-Management-System\\Clinic-Management-System.csproj|d:\\2024-2025\\windows\\clinic-management-system\\clinic-management-system\\clinic-management-system\\app.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}",
+      "RelativeMoniker": "D:0:0:{220207D3-696A-4AE7-862B-FB9FBDC1B79F}|Clinic-Management-System\\Clinic-Management-System.csproj|solutionrelative:clinic-management-system\\app.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{220207D3-696A-4AE7-862B-FB9FBDC1B79F}|Clinic-Management-System\\Clinic-Management-System.csproj|d:\\2024-2025\\windows\\clinic-management-system\\clinic-management-system\\clinic-management-system\\service\\dataaccess\\idao.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{220207D3-696A-4AE7-862B-FB9FBDC1B79F}|Clinic-Management-System\\Clinic-Management-System.csproj|solutionrelative:clinic-management-system\\service\\dataaccess\\idao.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{220207D3-696A-4AE7-862B-FB9FBDC1B79F}|Clinic-Management-System\\Clinic-Management-System.csproj|d:\\2024-2025\\windows\\clinic-management-system\\clinic-management-system\\clinic-management-system\\dashboard.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}",
+      "RelativeMoniker": "D:0:0:{220207D3-696A-4AE7-862B-FB9FBDC1B79F}|Clinic-Management-System\\Clinic-Management-System.csproj|solutionrelative:clinic-management-system\\dashboard.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}"
+    }
+  ],
   "DocumentGroupContainers": [
     {
       "Orientation": 0,
@@ -9,7 +54,7 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": -1,
+          "SelectedChildIndex": 8,
           "Children": [
             {
               "$type": "Bookmark",
@@ -18,6 +63,149 @@
             {
               "$type": "Bookmark",
               "Name": "ST:0:0:{d78612c7-9962-4b83-95d9-268046dad23a}"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "MainViewModel.cs",
+              "DocumentMoniker": "D:\\2024-2025\\Windows\\Clinic-Management-System\\Clinic-Management-System\\Clinic-Management-System\\ViewModel\\MainViewModel.cs",
+              "RelativeDocumentMoniker": "Clinic-Management-System\\ViewModel\\MainViewModel.cs",
+              "ToolTip": "D:\\2024-2025\\Windows\\Clinic-Management-System\\Clinic-Management-System\\Clinic-Management-System\\ViewModel\\MainViewModel.cs",
+              "RelativeToolTip": "Clinic-Management-System\\ViewModel\\MainViewModel.cs",
+              "ViewState": "AgIAAA8AAAAAAAAAAAAAABkAAAAQAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-11-01T16:17:06.249Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 7,
+              "Title": "App.xaml.cs",
+              "DocumentMoniker": "D:\\2024-2025\\Windows\\Clinic-Management-System\\Clinic-Management-System\\Clinic-Management-System\\App.xaml.cs",
+              "RelativeDocumentMoniker": "Clinic-Management-System\\App.xaml.cs",
+              "ToolTip": "D:\\2024-2025\\Windows\\Clinic-Management-System\\Clinic-Management-System\\Clinic-Management-System\\App.xaml.cs",
+              "RelativeToolTip": "Clinic-Management-System\\App.xaml.cs",
+              "ViewState": "AgIAACMAAAAAAAAAAAAAADIAAAAaAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-11-01T16:14:12.427Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 8,
+              "Title": "App.xaml",
+              "DocumentMoniker": "D:\\2024-2025\\Windows\\Clinic-Management-System\\Clinic-Management-System\\Clinic-Management-System\\App.xaml",
+              "RelativeDocumentMoniker": "Clinic-Management-System\\App.xaml",
+              "ToolTip": "D:\\2024-2025\\Windows\\Clinic-Management-System\\Clinic-Management-System\\Clinic-Management-System\\App.xaml",
+              "RelativeToolTip": "Clinic-Management-System\\App.xaml",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003549|",
+              "WhenOpened": "2024-11-01T16:14:10.848Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 5,
+              "Title": "Dashboard.xaml.cs",
+              "DocumentMoniker": "D:\\2024-2025\\Windows\\Clinic-Management-System\\Clinic-Management-System\\Clinic-Management-System\\Dashboard.xaml.cs",
+              "RelativeDocumentMoniker": "Clinic-Management-System\\Dashboard.xaml.cs",
+              "ToolTip": "D:\\2024-2025\\Windows\\Clinic-Management-System\\Clinic-Management-System\\Clinic-Management-System\\Dashboard.xaml.cs",
+              "RelativeToolTip": "Clinic-Management-System\\Dashboard.xaml.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-11-01T15:54:36.882Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 6,
+              "Title": "ServiceFactory.cs",
+              "DocumentMoniker": "D:\\2024-2025\\Windows\\Clinic-Management-System\\Clinic-Management-System\\Clinic-Management-System\\Service\\ServiceFactory.cs",
+              "RelativeDocumentMoniker": "Clinic-Management-System\\Service\\ServiceFactory.cs",
+              "ToolTip": "D:\\2024-2025\\Windows\\Clinic-Management-System\\Clinic-Management-System\\Clinic-Management-System\\Service\\ServiceFactory.cs",
+              "RelativeToolTip": "Clinic-Management-System\\Service\\ServiceFactory.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABcAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-11-01T14:50:30.087Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "UserLogin.cs",
+              "DocumentMoniker": "D:\\2024-2025\\Windows\\Clinic-Management-System\\Clinic-Management-System\\Clinic-Management-System\\Model\\UserLogin.cs",
+              "RelativeDocumentMoniker": "Clinic-Management-System\\Model\\UserLogin.cs",
+              "ToolTip": "D:\\2024-2025\\Windows\\Clinic-Management-System\\Clinic-Management-System\\Clinic-Management-System\\Model\\UserLogin.cs",
+              "RelativeToolTip": "Clinic-Management-System\\Model\\UserLogin.cs",
+              "ViewState": "AgIAAAMAAAAAAAAAAAAAAA0AAABBAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-11-01T14:42:29.062Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "SqlServerDao.cs",
+              "DocumentMoniker": "D:\\2024-2025\\Windows\\Clinic-Management-System\\Clinic-Management-System\\Clinic-Management-System\\Service\\DataAccess\\SqlServerDao.cs",
+              "RelativeDocumentMoniker": "Clinic-Management-System\\Service\\DataAccess\\SqlServerDao.cs",
+              "ToolTip": "D:\\2024-2025\\Windows\\Clinic-Management-System\\Clinic-Management-System\\Clinic-Management-System\\Service\\DataAccess\\SqlServerDao.cs",
+              "RelativeToolTip": "Clinic-Management-System\\Service\\DataAccess\\SqlServerDao.cs",
+              "ViewState": "AgIAABsAAAAAAAAAAAAAACoAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-11-01T14:40:37.948Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 9,
+              "Title": "IDao.cs",
+              "DocumentMoniker": "D:\\2024-2025\\Windows\\Clinic-Management-System\\Clinic-Management-System\\Clinic-Management-System\\Service\\DataAccess\\IDao.cs",
+              "RelativeDocumentMoniker": "Clinic-Management-System\\Service\\DataAccess\\IDao.cs",
+              "ToolTip": "D:\\2024-2025\\Windows\\Clinic-Management-System\\Clinic-Management-System\\Clinic-Management-System\\Service\\DataAccess\\IDao.cs",
+              "RelativeToolTip": "Clinic-Management-System\\Service\\DataAccess\\IDao.cs",
+              "ViewState": "AgIAAAUAAAAAAAAAAAAhwBsAAABBAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-11-01T14:40:15.076Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 10,
+              "Title": "Dashboard.xaml",
+              "DocumentMoniker": "D:\\2024-2025\\Windows\\Clinic-Management-System\\Clinic-Management-System\\Clinic-Management-System\\Dashboard.xaml",
+              "RelativeDocumentMoniker": "Clinic-Management-System\\Dashboard.xaml",
+              "ToolTip": "D:\\2024-2025\\Windows\\Clinic-Management-System\\Clinic-Management-System\\Clinic-Management-System\\Dashboard.xaml",
+              "RelativeToolTip": "Clinic-Management-System\\Dashboard.xaml",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003549|",
+              "WhenOpened": "2024-11-01T14:39:06.397Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "MainWindow.xaml.cs",
+              "DocumentMoniker": "D:\\2024-2025\\Windows\\Clinic-Management-System\\Clinic-Management-System\\Clinic-Management-System\\MainWindow.xaml.cs",
+              "RelativeDocumentMoniker": "Clinic-Management-System\\MainWindow.xaml.cs",
+              "ToolTip": "D:\\2024-2025\\Windows\\Clinic-Management-System\\Clinic-Management-System\\Clinic-Management-System\\MainWindow.xaml.cs",
+              "RelativeToolTip": "Clinic-Management-System\\MainWindow.xaml.cs",
+              "ViewState": "AgIAAB0AAAAAAAAAAAAQwCgAAAARAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-11-01T13:03:18.665Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "MainWindow.xaml",
+              "DocumentMoniker": "D:\\2024-2025\\Windows\\Clinic-Management-System\\Clinic-Management-System\\Clinic-Management-System\\MainWindow.xaml",
+              "RelativeDocumentMoniker": "Clinic-Management-System\\MainWindow.xaml",
+              "ToolTip": "D:\\2024-2025\\Windows\\Clinic-Management-System\\Clinic-Management-System\\Clinic-Management-System\\MainWindow.xaml",
+              "RelativeToolTip": "Clinic-Management-System\\MainWindow.xaml",
+              "ViewState": "AgIAAAoAAAAAAAAAAAAAwBwAAAA2AAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003549|",
+              "WhenOpened": "2024-11-01T13:03:03.321Z",
+              "EditorCaption": ""
             }
           ]
         }

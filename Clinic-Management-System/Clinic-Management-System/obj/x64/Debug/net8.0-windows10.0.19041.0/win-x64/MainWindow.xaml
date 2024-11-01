@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Window
+<Window x:ConnectionId='1'
     x:Class="Clinic_Management_System.MainWindow"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
@@ -8,8 +8,33 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d">
 
-    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
-        <Button x:ConnectionId='2' x:Name="myButton"                       >Click Me</Button>
-    </StackPanel>
+    <Border  CornerRadius="10" BorderThickness="1.5" BorderBrush="#43f196" Background="#FFFFFFFF" HorizontalAlignment="Center" VerticalAlignment="Center" >
+        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
+            <Border BorderThickness="1" BorderBrush="#FF00008B" Background="#e9ecf1" Padding="80,60,80,60">
+            <StackPanel >
+                <Image VerticalAlignment="Top" Source="Assets/logo.png" Width="100" Height="100"></Image>
+                 <Image  Margin="0,30,0,20" Source="Assets/doctor.png" Width="200" Height="200"></Image>
+                <TextBlock FontSize="20" FontStyle="Italic" TextAlignment="Center">Welcome to My Clinic</TextBlock>
+            </StackPanel>
+            </Border>
+            <StackPanel VerticalAlignment="Center" Margin="50,0,50,0" >
+                <Image VerticalAlignment="Top" Source="Assets/hopital.png"></Image>
+                <TextBox x:ConnectionId='2' Margin="0,60,0,30" Header="Enter your Username:" PlaceholderText="Username"                                                          />
+                <PasswordBox x:ConnectionId='3' Margin="0,0,0,30" Width="300" Header="Password" PlaceholderText="Enter your password" PasswordChar="*"                                                              />
+                <Grid Padding="20,0,20,0">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+                    <CheckBox Grid.Column="0">Remember me</CheckBox>
+                    <Button x:ConnectionId='4'                     FontWeight="Bold" Background="#a7a7eb" Width="80" HorizontalAlignment="Right" Grid.Column="1">Login</Button>
+                </Grid>
+            </StackPanel>
+        </StackPanel>
+    </Border>
+    
 </Window>
 

@@ -8,7 +8,32 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d">
 
-    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
-        
-    </StackPanel>
+    <Border  CornerRadius="10" BorderThickness="1.5" BorderBrush="#43f196" Background="#FFFFFFFF" HorizontalAlignment="Center" VerticalAlignment="Center" >
+        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
+            <Border BorderThickness="1" BorderBrush="#FF00008B" Background="#e9ecf1" Padding="80,60,80,60">
+            <StackPanel >
+                <Image VerticalAlignment="Top" Source="Assets/logo.png" Width="100" Height="100"></Image>
+                 <Image  Margin="0,30,0,20" Source="Assets/doctor.png" Width="200" Height="200"></Image>
+                <TextBlock FontSize="20" FontStyle="Italic" TextAlignment="Center">Welcome to My Clinic</TextBlock>
+            </StackPanel>
+            </Border>
+            <StackPanel VerticalAlignment="Center" Margin="50,0,50,0" >
+                <Image VerticalAlignment="Top" Source="Assets/hopital.png"></Image>
+                <TextBox Margin="0,60,0,30" Header="Enter your Username:" PlaceholderText="Username" Text="{x:Bind viewModel.UserLogin.Username, Mode=TwoWay}"/>
+                <PasswordBox Margin="0,0,0,30" Width="300" Header="Password" PlaceholderText="Enter your password" PasswordChar="*" Password="{x:Bind viewModel.UserLogin.Password, Mode=TwoWay}"/>
+                <Grid Padding="20,0,20,0">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+                    <CheckBox Grid.Column="0">Remember me</CheckBox>
+                    <Button Click="Login_Click" FontWeight="Bold" Background="#a7a7eb" Width="80" HorizontalAlignment="Right" Grid.Column="1">Login</Button>
+                </Grid>
+            </StackPanel>
+        </StackPanel>
+    </Border>
+    
 </Window>

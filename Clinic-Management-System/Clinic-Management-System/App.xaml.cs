@@ -1,4 +1,6 @@
-﻿using Microsoft.UI.Xaml;
+﻿using Clinic_Management_System.Service;
+using Clinic_Management_System.Service.DataAccess;
+using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Controls.Primitives;
 using Microsoft.UI.Xaml.Data;
@@ -41,7 +43,8 @@ namespace Clinic_Management_System
 		/// <param name="args">Details about the launch request and process.</param>
 		protected override void OnLaunched(Microsoft.UI.Xaml.LaunchActivatedEventArgs args)
 		{
-			m_window = new MainWindow();
+            ServiceFactory.Register(typeof(IDao), typeof(SqlServerDao));
+            m_window = new MainWindow();
 			m_window.Activate();
 		}
 
