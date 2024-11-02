@@ -26,5 +26,7 @@ namespace Clinic_Management_System.Service.DataAccess
 
         //bool UpdateEmployee(User info);
         string Authentication (string username, string password);
-    }
+		bool AddPatient(Patient patient);
+		bool AddMedicalExaminationForm(Patient patient, MedicalExaminationForm medicalExaminationForm);
+	}
 }
