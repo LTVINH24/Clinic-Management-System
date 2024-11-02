@@ -32,9 +32,6 @@
     <Page Update="ShellWindow.xaml">
       <SubType>Designer</SubType>
     </Page>
-    <Page Update="MainPage.xaml">
-      <SubType>Designer</SubType>
-    </Page>
     <None Update="Package.appxmanifest">
       <SubType>Designer</SubType>
     </None>

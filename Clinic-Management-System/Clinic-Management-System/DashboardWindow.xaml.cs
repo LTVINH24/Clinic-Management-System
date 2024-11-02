@@ -1,4 +1,4 @@
-using Microsoft.UI.Xaml;
+﻿using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Controls.Primitives;
 using Microsoft.UI.Xaml.Data;
@@ -26,16 +26,62 @@ namespace Clinic_Management_System
 		public DashboardWindow()
 		{
 			this.InitializeComponent();
+
+			nvSample8.Loaded += (s, e) =>
+			{
+				nvSample8.IsPaneOpen = false;
+			};
+
 		}
 
-		private void pageButton_Click(object sender, RoutedEventArgs e)
+		//private void pageButton_Click(object sender, RoutedEventArgs e)
+		//{
+		//	var button = sender as Button;
+		//	var pageName = button.Tag as string;
+		//	var screen = new ShellWindow(pageName);
+		//	screen.Activate();
+
+		//	this.Close();
+		//}
+
+		private void NavigationView_SelectionChanged8(NavigationView sender, NavigationViewSelectionChangedEventArgs args)
 		{
-			var button = sender as Button;
-			var pageName = button.Tag as string;
-			var screen = new ShellWindow(pageName);
-			screen.Activate();
+			
+			if (args.IsSettingsSelected == false && args.SelectedItemContainer is NavigationViewItem selectedItem)
+			{
+				
+				string selectedTag = selectedItem.Tag.ToString();
 
-			this.Close();
+				
+				switch (selectedTag)
+				{
+					case "SamplePage1":
+						contentFrame8.Navigate(typeof(SamplePage1));
+						break;
+					case "SamplePage2":
+						contentFrame8.Navigate(typeof(SamplePage2));
+						break;
+					case "SamplePage3":
+						contentFrame8.Navigate(typeof(SamplePage3));
+						break;
+					case "SamplePage4":
+						contentFrame8.Navigate(typeof(SamplePage4));
+						break;
+					case "SamplePage5":
+						contentFrame8.Navigate(typeof(SamplePage5));
+						break;
+					case "SamplePage6":
+						contentFrame8.Navigate(typeof(SamplePage6));
+						break;
+					default:
+						break;
+				}
+			}
+			else
+			{
+				contentFrame8.Navigate(typeof(SettingsPage));
+			}
 		}
+
 	}
 }
