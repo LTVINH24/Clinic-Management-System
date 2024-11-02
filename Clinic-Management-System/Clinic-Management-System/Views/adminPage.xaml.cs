@@ -1,3 +1,4 @@
+using Clinic_Management_System.Views.AdminView;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Controls.Primitives;
@@ -43,23 +44,11 @@ namespace Clinic_Management_System.Views
 
 				switch (selectedTag)
 				{
-					case "SamplePage1":
-						contentFrame.Navigate(typeof(SamplePage1));
+					case "addAccount":
+						contentFrame.Navigate(typeof(addAccount));
 						break;
-					case "SamplePage2":
-						contentFrame.Navigate(typeof(SamplePage2));
-						break;
-					case "SamplePage3":
-						contentFrame.Navigate(typeof(SamplePage3));
-						break;
-					case "SamplePage4":
-						contentFrame.Navigate(typeof(SamplePage4));
-						break;
-					case "SamplePage5":
-						contentFrame.Navigate(typeof(SamplePage5));
-						break;
-					case "SamplePage6":
-						contentFrame.Navigate(typeof(SamplePage6));
+					case "homeAdmin":
+						contentFrame.Navigate(typeof(homeAdmin));
 						break;
 					default:
 						break;
@@ -67,7 +56,7 @@ namespace Clinic_Management_System.Views
 			}
 			else
 			{
-				contentFrame.Navigate(typeof(SettingsPage));
+				contentFrame.Navigate(typeof(settingAdmin));
 			}
 		}
 	}

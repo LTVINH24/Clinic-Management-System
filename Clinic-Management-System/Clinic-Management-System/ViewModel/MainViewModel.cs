@@ -20,6 +20,11 @@ namespace Clinic_Management_System.ViewModel
         public event Action<string> LoginCompleted;
         public void Authentication (UserLogin userLogin)
         {
+            if (userLogin.Password == null || userLogin.Username == null)
+            {
+                LoginCompleted?.Invoke("Password or username is empty");
+                return;
+            }
             string role = _dao.Authentication(userLogin.Username, userLogin.Password);
             if (role != "")
             {

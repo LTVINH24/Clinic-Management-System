@@ -16,14 +16,10 @@
   <ItemGroup>
     <None Remove="Dashboard.xaml" />
     <None Remove="Views\adminPage.xaml" />
+    <None Remove="Views\AdminView\addAccount.xaml" />
+    <None Remove="Views\AdminView\homeAdmin.xaml" />
+    <None Remove="Views\AdminView\settingAdmin.xaml" />
     <None Remove="Views\doctorPage.xaml" />
-    <None Remove="Views\SamplePage1.xaml" />
-    <None Remove="Views\SamplePage2.xaml" />
-    <None Remove="Views\SamplePage3.xaml" />
-    <None Remove="Views\SamplePage4.xaml" />
-    <None Remove="Views\SamplePage5.xaml" />
-    <None Remove="Views\SamplePage6.xaml" />
-    <None Remove="Views\SettingsPage.xaml" />
     <None Remove="Views\staffPage.xaml" />
     
   </ItemGroup>
@@ -58,6 +54,21 @@
     <Folder Include="Helper\" />
   </ItemGroup>
   <ItemGroup>
+    <Page Update="Views\AdminView\settingAdmin.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+  </ItemGroup>
+  <ItemGroup>
+    <Page Update="Views\AdminView\homeAdmin.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+  </ItemGroup>
+  <ItemGroup>
+    <Page Update="Views\AdminView\addAccount.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+  </ItemGroup>
+  <ItemGroup>
     <Page Update="Views\staffPage.xaml">
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -69,42 +80,6 @@
   </ItemGroup>
   <ItemGroup>
     <Page Update="Views\adminPage.xaml">
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-  </ItemGroup>
-  
-  <ItemGroup>
-    <Page Update="Views\SettingsPage.xaml">
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-  </ItemGroup>
-  <ItemGroup>
-    <Page Update="Views\SamplePage6.xaml">
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-  </ItemGroup>
-  <ItemGroup>
-    <Page Update="Views\SamplePage5.xaml">
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-  </ItemGroup>
-  <ItemGroup>
-    <Page Update="Views\SamplePage4.xaml">
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-  </ItemGroup>
-  <ItemGroup>
-    <Page Update="Views\SamplePage3.xaml">
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-  </ItemGroup>
-  <ItemGroup>
-    <Page Update="Views\SamplePage2.xaml">
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-  </ItemGroup>
-  <ItemGroup>
-    <Page Update="Views\SamplePage1.xaml">
       <Generator>MSBuild:Compile</Generator>
     </Page>
   </ItemGroup>

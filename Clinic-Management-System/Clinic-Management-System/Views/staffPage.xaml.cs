@@ -41,34 +41,34 @@ namespace Clinic_Management_System.Views
 				string selectedTag = selectedItem.Tag.ToString();
 
 
-				switch (selectedTag)
-				{
-					case "SamplePage1":
-						contentFrame.Navigate(typeof(SamplePage1));
-						break;
-					case "SamplePage2":
-						contentFrame.Navigate(typeof(SamplePage2));
-						break;
-					case "SamplePage3":
-						contentFrame.Navigate(typeof(SamplePage3));
-						break;
-					case "SamplePage4":
-						contentFrame.Navigate(typeof(SamplePage4));
-						break;
-					case "SamplePage5":
-						contentFrame.Navigate(typeof(SamplePage5));
-						break;
-					case "SamplePage6":
-						contentFrame.Navigate(typeof(SamplePage6));
-						break;
-					default:
-						break;
-				}
+				//switch (selectedTag)
+				//{
+				//	case "SamplePage1":
+				//		contentFrame.Navigate(typeof(SamplePage1));
+				//		break;
+				//	case "SamplePage2":
+				//		contentFrame.Navigate(typeof(SamplePage2));
+				//		break;
+				//	case "SamplePage3":
+				//		contentFrame.Navigate(typeof(SamplePage3));
+				//		break;
+				//	case "SamplePage4":
+				//		contentFrame.Navigate(typeof(SamplePage4));
+				//		break;
+				//	case "SamplePage5":
+				//		contentFrame.Navigate(typeof(SamplePage5));
+				//		break;
+				//	case "SamplePage6":
+				//		contentFrame.Navigate(typeof(SamplePage6));
+				//		break;
+				//	default:
+				//		break;
+				//}
 			}
-			else
-			{
-				contentFrame.Navigate(typeof(SettingsPage));
-			}
+			//else
+			//{
+			//	contentFrame.Navigate(typeof(SettingsPage));
+			//}
 		}
 	}
 }
