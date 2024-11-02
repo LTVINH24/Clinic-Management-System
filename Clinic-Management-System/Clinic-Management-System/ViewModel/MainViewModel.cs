@@ -17,17 +17,17 @@ namespace Clinic_Management_System.ViewModel
             _dao = ServiceFactory.GetChildOf(typeof(IDao)) as IDao;
         }
         public UserLogin UserLogin { get; set; } =new UserLogin();
-        public event Action<bool> LoginCompleted;
+        public event Action<string> LoginCompleted;
         public void Authentication (UserLogin userLogin)
         {
             string role = _dao.Authentication(userLogin.Username, userLogin.Password);
             if (role != "")
             {
-                LoginCompleted?.Invoke(true);
+                LoginCompleted?.Invoke(role);
             }
             else
             {
-                LoginCompleted?.Invoke(false);
+                LoginCompleted?.Invoke("");
             }
         }
         

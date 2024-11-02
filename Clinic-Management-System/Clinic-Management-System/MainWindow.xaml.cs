@@ -1,4 +1,5 @@
 using Clinic_Management_System.ViewModel;
+using Clinic_Management_System.Views;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Controls.Primitives;
@@ -36,12 +37,20 @@ namespace Clinic_Management_System
 		{
 			viewModel.Authentication(viewModel.UserLogin);
         }
-		private void OnLoginCompleted(bool isSuccess)
+		private void OnLoginCompleted(string isSuccess)
 		{
-			if (isSuccess)
+			Console.Write(isSuccess);
+			if (isSuccess != "")
 			{
-				var screen = new Dashboard();
+				string namePage = $"{isSuccess}Page";
+				namePage = namePage.Replace(" ", "");
+
+
+				var screen = new ShellWindow(namePage);
 				screen.Activate();
+
+
+
 				viewModel.LoginCompleted -= OnLoginCompleted;
 				this.Close();
 			}
