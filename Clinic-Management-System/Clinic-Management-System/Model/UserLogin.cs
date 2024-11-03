@@ -9,7 +9,7 @@ namespace Clinic_Management_System.Model
 {
     public class UserLogin:INotifyPropertyChanged
     {
-        public string Username { get; set; }
+		public string Username { get; set; }
         public string Password { get; set; }
         public event PropertyChangedEventHandler PropertyChanged;
     }

@@ -49,17 +49,17 @@ namespace Clinic_Management_System.Views.StaffView
 
 		}
 
-		private void Set_Gender(object sender, RoutedEventArgs e)
-		{
-			if(sender is MenuFlyoutItem menuItem)
-			{
-				GenderDropdown.Content=menuItem.Text;
-			}
-		}
+		//private void Set_Gender(object sender, RoutedEventArgs e)
+		//{
+		//	if(sender is MenuFlyoutItem menuItem)
+		//	{
+		//		GenderDropdown.Content=menuItem.Text;
+		//	}
+		//}
 
-		private void OnFilterChanged(object sender, TextChangedEventArgs e)
-		{
+		//private void OnFilterChanged(object sender, TextChangedEventArgs e)
+		//{
 
-		}
+		//}
 	}
 }

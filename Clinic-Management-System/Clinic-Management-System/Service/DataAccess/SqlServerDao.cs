@@ -12,22 +12,37 @@ namespace Clinic_Management_System.Service.DataAccess
 {
     public class SqlServerDao : IDao
     {
-		public string Authentication(string username, string password)
+		public (int, string) Authentication(string username, string password)
 		{
 			if (username == null || password == null)
 			{
-				return "";
+				return (0, "");
 			}
+
 			var connectionString = GetConnectionString();
-			SqlConnection connection = new SqlConnection(connectionString);
-			connection.Open();
-			string query = $"SELECT role FROM EndUser WHERE username = @Username AND password = @Password";
-			var command = new SqlCommand(query, connection);
-			command.Parameters.AddWithValue("@Username", username);
-			command.Parameters.AddWithValue("@Password", password);
-			var role = command.ExecuteScalar();
-			connection.Close();
-			return role != null ? role.ToString() : "";
+			using (SqlConnection connection = new SqlConnection(connectionString))
+			{
+				connection.Open();
+				string query = $"SELECT id, role FROM EndUser WHERE username = @Username AND password = @Password";
+				var command = new SqlCommand(query, connection);
+				command.Parameters.AddWithValue("@Username", username);
+				command.Parameters.AddWithValue("@Password", password);
+
+				var reader = command.ExecuteReader();
+				int id = 0;
+				string role = "";
+
+				if(reader.Read())
+				{
+					id = (int) reader["id"];
+					role = reader["role"].ToString();
+					return (id, role);
+				}
+
+
+			}
+
+			return (0, "");
 		}
 		private static string GetConnectionString()
         {
@@ -52,15 +67,17 @@ namespace Clinic_Management_System.Service.DataAccess
 		}
 
 
-		public bool AddPatient(Patient patient)
+		public (bool, int) AddPatient(Patient patient)
         {
             var connectionString = GetConnectionString();
             SqlConnection connection = new SqlConnection(connectionString);
             connection.Open();
 
+			
 
-
-            var command = new SqlCommand("INSERT INTO Patient (Name , Email , ResidentId, Address , Birthday , Gender) VALUES (@Name , @Email , @ResidentId , @Address , @DoB , @Gender)", connection);
+            var command = new SqlCommand("INSERT INTO Patient (Name , Email , ResidentId, Address , Birthday , Gender) " +
+				"VALUES (@Name , @Email , @ResidentId , @Address , @DoB , @Gender)" +
+				"SELECT CAST(SCOPE_IDENTITY() AS int);", connection);
             AddParameters(command,
                 ("@Name", patient.Name),
                 ("@Email", patient.Email),
@@ -69,12 +86,14 @@ namespace Clinic_Management_System.Service.DataAccess
                 ("@DoB", patient.DoB),
                 ("@Gender", patient.Gender));
 
-			int result = command.ExecuteNonQuery();
-            return result > 0;
+			var result = command.ExecuteScalar();
+			int id = result != null ? Convert.ToInt32(result) : 0;
 
+			connection.Close();
+			return (id > 0, id);
         }
 
-        public bool AddMedicalExaminationForm(Patient patient ,MedicalExaminationForm medicalExaminationForm)
+        public bool AddMedicalExaminationForm(int patientId ,MedicalExaminationForm medicalExaminationForm)
 		{
 			var connectionString = GetConnectionString();
 			SqlConnection connection = new SqlConnection(connectionString);
@@ -82,17 +101,61 @@ namespace Clinic_Management_System.Service.DataAccess
 
 			DateTime currentDate = DateTime.Now;
             string formatDate = currentDate.ToString("yyyy-MM-dd");
+			int id = UserSessionService.Instance.LoggedInUserId;
+
+			var command = new SqlCommand("INSERT INTO MedicalExaminationForm (PatientId, StaffId, DoctorId, Time, Symptom) VALUES (@PatientId, @StaffId, @DoctorId, @Time, @Symptom)", connection);
 
 
-            var command = new SqlCommand("INSERT INTO MedicalExaminationForm (DoctorId, Time, Symptom) VALUES ( @DoctorId, @Time, @Symptom)", connection);
-
-            AddParameters(command,
-                ("@DoctorId", medicalExaminationForm.DoctorId),
+			AddParameters(command,
+				("@PatientId", patientId),
+				("@StaffId", id),
+				("@DoctorId", medicalExaminationForm.DoctorId),
                 ("@Time", formatDate),
                 ("@Symptom", medicalExaminationForm.Symptoms));
 			
 			int result = command.ExecuteNonQuery();
+
+			connection.Close();
 			return result > 0;
+		}
+
+		public Tuple<List<Doctor>, int> GetInforDoctor()
+		{
+			var connectionString = GetConnectionString();
+			SqlConnection connection = new SqlConnection(connectionString);
+			connection.Open();
+
+			string query1 = $"SELECT id, role FROM EndUser WHERE username = @Username AND password = @Password";
+			var command1 = new SqlCommand(query1, connection);
+
+			var query = $"""
+							SELECT e.id, e.name, s.id, s.name, d.room 
+							FROM EndUser e JOIN Doctor d ON e.id = d.userId
+								JOIN Specialty s ON d.spec	ialtyId = s.is
+							WHERE e.role = @Role;  
+						""";
+			var command = new SqlCommand(query, connection);
+			command.Parameters.AddWithValue("@Role", "doctor");
+
+			var reader = command.ExecuteReader();
+			var result = new List<Doctor>();
+
+			while (reader.Read())
+			{
+				var doctor = new Doctor
+				{
+					Id = (int)reader["id"],
+					name = reader["name"].ToString(),
+					SpecialtyId = (int)reader["id"],
+					SpecialtyName = reader["name"].ToString(),
+					Room = reader["room"].ToString()
+				};
+				result.Add(doctor);
+			}
+			int count = result.Count;
+
+			connection.Close();
+			return new Tuple<List<Doctor>, int>(result, count);
 		}
 	}
 }
