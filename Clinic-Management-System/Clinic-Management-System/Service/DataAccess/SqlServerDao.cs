@@ -12,21 +12,23 @@ namespace Clinic_Management_System.Service.DataAccess
 {
     public class SqlServerDao : IDao
     {
-        public string Authentication(string username , string password )
+        public (int,string) Authentication(string username , string password )
         {
 
             var connectionString = GetConnectionString();
             SqlConnection connection = new SqlConnection(connectionString);
             connection.Open();
-            string query = $"SELECT role,password,entropy FROM EndUser WHERE username = @Username";
+            string query = $"SELECT id, role,password,entropy FROM EndUser WHERE username = @Username";
             var command = new SqlCommand(query, connection);
             command.Parameters.AddWithValue("@Username", username);
             var reader = command.ExecuteReader();
             string encryptedPasswordInBase64 = "";
             string entropyInBase64 = "";
             string role = "";
+            int id= 0;
             if (reader.Read())
             {
+                id =(int) reader["id"];
                 encryptedPasswordInBase64 = reader["password"].ToString();
                 entropyInBase64 = reader["entropy"].ToString();
                 role = reader["role"].ToString();
@@ -37,14 +39,14 @@ namespace Clinic_Management_System.Service.DataAccess
                 var passwordGetFromDatabase = Encoding.UTF8.GetString(passwordInBytes);
                 if (password == passwordGetFromDatabase)
                 {
-                    return role;
+                    return (id,role);
                 }
-                return "";
+                return (0,"");
             }
             else
             {
                 connection.Close();
-                return "";
+                return(0,"");
             }
         
         }

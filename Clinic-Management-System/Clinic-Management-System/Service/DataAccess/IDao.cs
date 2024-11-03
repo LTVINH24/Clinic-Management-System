@@ -25,7 +25,7 @@ namespace Clinic_Management_System.Service.DataAccess
         //bool AddEmployee(User info);
 
         //bool UpdateEmployee(User info);
-        string Authentication (string username, string password);
+        (int, string) Authentication (string username, string password);
         bool CreateUser( User user, string password, string entropy);
         bool CheckUserExists(string username);
 

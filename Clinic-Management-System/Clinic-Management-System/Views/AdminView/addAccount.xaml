@@ -37,7 +37,6 @@
                 <TextBox Grid.Row="2" Header="New phone" PlaceholderText="Phone" Text="{x:Bind viewModel.user.phone, Mode=TwoWay}"/>
                 <TextBox Grid.Row="4" Header="New address" PlaceholderText="Adress" Text="{x:Bind viewModel.user.address, Mode=TwoWay}"/>
                 <TextBox Grid.Row="6" Header="New username" PlaceholderText="Username" Text="{x:Bind viewModel.user.username, Mode=TwoWay}"/>
-                <PasswordBox Grid.Row="8"  Header="New password" PlaceholderText="Password" PasswordChar="*" Password="{x:Bind viewModel.user.password, Mode=TwoWay}"/>
             </Grid>
             <Grid Grid.Column="1"  Grid.Row="0"  Padding="40,0,40,0">
                 <Grid.RowDefinitions>
@@ -80,7 +79,8 @@
                 </DropDownButton>
                 </StackPanel>
                 <CalendarDatePicker Grid.Row ="4" PlaceholderText="Pick a date" Header="Birthday" Date="{x:Bind viewModel.user.birthday,Mode=TwoWay}" />
-                <PasswordBox Grid.Row="8"  Header="Confirm password" PlaceholderText="Password" PasswordChar="*" />
+                <PasswordBox Grid.Row="6"  Header="New password" PlaceholderText="Password" PasswordChar="*" Password="{x:Bind viewModel.user.password, Mode=TwoWay}"/>
+
             </Grid>
             <Button Click="Create_Click" Background="#b5b5e8" FontSize="18" CornerRadius="15" Width="200" HorizontalAlignment="Center" Grid.ColumnSpan="2" Grid.Row="1" VerticalAlignment="Bottom" >Create Account</Button>
         </Grid>

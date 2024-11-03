@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Reflection;
 using System.Security.Cryptography;
+using Windows.Storage;
 
 namespace Clinic_Management_System.ViewModel
 {
@@ -40,7 +41,8 @@ namespace Clinic_Management_System.ViewModel
                 
             }
         }
-        private (string,string) EncryptPassword(string password) 
+       
+        public (string,string) EncryptPassword(string password) 
         {
             var passwordInBytes = Encoding.UTF8.GetBytes(password);
             var entropyInBytes = new Byte[20];
