@@ -9,20 +9,22 @@
     mc:Ignorable="d"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
-
+    <!--<Page.Resources>
+        <DataTemplate x:Key="ContactListViewTemplate"></DataTemplate>
+    </Page.Resources>-->
 
    
     <ScrollView VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto">
         <Grid Padding="20">
             <Grid.RowDefinitions>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
 
             <Grid.ColumnDefinitions>
@@ -31,20 +33,60 @@
             </Grid.ColumnDefinitions>
 
 
-            <TextBlock Text="Thêm Phiếu Khám Bệnh" FontSize="24" FontWeight="Bold" Margin="0,0,0,20" Grid.Row="0"/>
+            <TextBlock Text="Add Medical Examination Form" FontSize="24" FontWeight="Bold" Margin="0,0,0,20" Grid.Row="0"/>
 
             <TextBox Header="Name" Grid.Row="1" Grid.Column="0" Text="{x:Bind viewModel.Patient.Name, Mode=TwoWay}"  Margin="10"/>
             <TextBox Header="Email" Grid.Row="1" Grid.Column="1" Text="{x:Bind viewModel.Patient.Email, Mode=TwoWay}" Margin="10"/>
             <TextBox Header="Resident ID" Grid.Row="2" Grid.Column="0" Text="{x:Bind viewModel.Patient.ResidentId, Mode=TwoWay}" Margin="10"/>
-            <TextBox Header="Date of Birth" Grid.Row="2" Grid.Column="1" Text="{x:Bind viewModel.Patient.DoB, Mode=TwoWay}" Margin="10"/>
-            <TextBox Header="Address" Grid.Row="3" Grid.Column="0" Text="{x:Bind viewModel.Patient.Address, Mode=TwoWay}" Margin="10"/>
-            <TextBox Header="Gender" Grid.Row="3" Grid.Column="1" Text="{x:Bind viewModel.Patient.Gender, Mode=TwoWay}" Margin="10"/>
-            <TextBox Header="Staff ID" Grid.Row="4" Grid.Column="0" Text="{x:Bind viewModel.MedicalExaminationForm.StaffId, Mode=TwoWay}" Margin="10"/>
-            <TextBox Header="Doctor ID" Grid.Row="4" Grid.Column="1" Text="{x:Bind viewModel.MedicalExaminationForm.DoctorId, Mode=TwoWay}" Margin="10"/>
-            <TextBox Header="Symptoms" AcceptsReturn="True" Height="100" Grid.Row="6" Grid.ColumnSpan="2" Text="{x:Bind viewModel.MedicalExaminationForm.Symptoms, Mode=TwoWay}" Margin="10"/>
+            <TextBox Header="Address" Grid.Row="2" Grid.Column="1" Text="{x:Bind viewModel.Patient.Address, Mode=TwoWay}" Margin="10"/>
+            <!--<TextBox Header="Date of Birth" Grid.Row="3" Grid.Column="0" Text="{x:Bind viewModel.Patient.DoB, Mode=TwoWay}" Margin="10"/>-->
+            <CalendarDatePicker Margin="10" Grid.Row="3" Grid.Column="0" PlaceholderText="Pick a date" Header="Date of Birth" Date="{x:Bind viewModel.Patient.DoB, Mode=TwoWay}"/>
+            
+            <!--<TextBox Header="Gender" Grid.Row="3" Grid.Column="1" Text="{x:Bind viewModel.Patient.Gender, Mode=TwoWay}" Margin="10"/>-->
+            <StackPanel Grid.Row="3" Grid.Column="1" >
+                <TextBlock Text="Gender" Margin="10" />
+                <DropDownButton Width="100" Height="30" Margin="10, 0 , 0 ,0" Name="GenderDropdown" Content="{x:Bind viewModel.Patient.Gender, Mode=TwoWay }">
+                    <DropDownButton.Flyout>
+                        <MenuFlyout Placement="Bottom">
+                            <MenuFlyoutItem Text="Male" Click="Set_Gender"/>
+                            <MenuFlyoutItem Text="Female" Click="Set_Gender"/>
+                            <MenuFlyoutItem Text="Other" Click="Set_Gender"/>
+                        </MenuFlyout>
+                    </DropDownButton.Flyout>
+                </DropDownButton>
+            </StackPanel>
+            <!--<TextBox Header="Staff ID" Grid.Row="4" Grid.Column="0" Text="{x:Bind viewModel.MedicalExaminationForm.StaffId, Mode=TwoWay}" Margin="10"/>-->
+            <TextBox Header="Symptoms" AcceptsReturn="True" Height="100" Grid.Row="4" Grid.ColumnSpan="2" Text="{x:Bind viewModel.MedicalExaminationForm.Symptoms, Mode=TwoWay}" Margin="10"/>
+            <TextBox Header="Doctor ID" Grid.Row="5" Grid.Column="0" Text="{x:Bind viewModel.MedicalExaminationForm.DoctorId, Mode=TwoWay}" Margin="10"/>
 
+            <!--<StackPanel Grid.Row="5" Grid.Column="0" Grid.ColumnSpan="2" Margin="10">
+                <TextBlock Text="DoctorId" Margin="0,0,0,10"/>
+                <StackPanel Orientation="Horizontal">
+                    <ListView
+                
+                        x:Name="FilteredListView"
+                        ItemTemplate="{StaticResource ContactListViewTemplate}"
+                        SelectionMode="Single"
+                        ShowsScrollingPlaceholders="True"
+                        Margin="0,0,10,0"
+                        Height="200"
+                        Width="400"
+                        BorderThickness="1"
+                        BorderBrush="{ThemeResource SystemControlForegroundBaseMediumLowBrush}"/>
 
-            <StackPanel Grid.Row="8" Grid.ColumnSpan="2" Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Center">
+                    --><!-- The textboxes used for filtering are shown below: --><!--
+                    <StackPanel Width="200">
+                        <TextBlock Margin="8,8,8,4" Style="{ThemeResource BaseTextBlockStyle}">Filter by...</TextBlock>
+                        <TextBox x:Name="FilterByFirstName" Width="150" Header="First name" Margin="8"
+	                        HorizontalAlignment="Left" TextChanged="OnFilterChanged"/>
+                        <TextBox x:Name="FilterByLastName" Width="150" Header="Last name" Margin="8"
+	                        HorizontalAlignment="Left" TextChanged="OnFilterChanged"/>
+
+                    </StackPanel>
+                </StackPanel>    
+            </StackPanel>-->
+
+            <StackPanel Grid.Row="6" Grid.ColumnSpan="2" Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Center">
                 <Button 
                     Content="Add" 
                     Margin="10" 
