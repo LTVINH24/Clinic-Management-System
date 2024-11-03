@@ -50,7 +50,10 @@ namespace Clinic_Management_System.Views
 					case "homeAdmin":
 						contentFrame.Navigate(typeof(homeAdmin));
 						break;
-					default:
+                    case "listAccount":
+                        contentFrame.Navigate(typeof(listAccount));
+                        break;
+                    default:
 						break;
 				}
 			}

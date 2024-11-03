@@ -11,6 +11,9 @@
     <None Update="Package.appxmanifest">
       <SubType>Designer</SubType>
     </None>
+    <Page Update="Views\AdminView\listAccount.xaml">
+      <SubType>Designer</SubType>
+    </Page>
     <Page Update="Views\AdminView\settingAdmin.xaml">
       <SubType>Designer</SubType>
     </Page>

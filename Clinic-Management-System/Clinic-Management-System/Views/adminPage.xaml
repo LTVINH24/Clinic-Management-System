@@ -28,6 +28,8 @@
             <NavigationView.MenuItems>
                 <NavigationViewItem Content="Home" Icon="Home" ToolTipService.ToolTip="Home" Tag="homeAdmin"/>
                 <NavigationViewItem Content="Add Account" Icon="Add" ToolTipService.ToolTip="Add Account" Tag="addAccount"/>
+                <NavigationViewItem Content="List Account" Icon="People" ToolTipService.ToolTip="List Account" Tag="listAccount"/>
+
 
                 <!--<NavigationViewItem Content="Account" Icon="Contact" ToolTipService.ToolTip="Account" Tag="addAccount">
                     --><!--<NavigationViewItem.MenuItems>

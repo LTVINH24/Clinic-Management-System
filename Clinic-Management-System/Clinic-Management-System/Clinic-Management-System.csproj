@@ -18,6 +18,7 @@
     <None Remove="Views\adminPage.xaml" />
     <None Remove="Views\AdminView\addAccount.xaml" />
     <None Remove="Views\AdminView\homeAdmin.xaml" />
+    <None Remove="Views\AdminView\listAccount.xaml" />
     <None Remove="Views\AdminView\settingAdmin.xaml" />
     <None Remove="Views\doctorPage.xaml" />
     <None Remove="Views\staffPage.xaml" />
@@ -51,7 +52,9 @@
     <ProjectCapability Include="Msix" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Helper\" />
+    <Page Update="Views\AdminView\listAccount.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
   </ItemGroup>
   <ItemGroup>
     <Page Update="Views\AdminView\settingAdmin.xaml">
@@ -87,6 +90,9 @@
     <Page Update="Dashboard.xaml">
       <Generator>MSBuild:Compile</Generator>
     </Page>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Helper\" />
   </ItemGroup>
 
   <!--
