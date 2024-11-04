@@ -93,10 +93,12 @@
                     <StackPanel Width="200" Margin="20, 10, 10, 10">
                         <TextBlock Margin="8,8,8,4" Style="{ThemeResource BaseTextBlockStyle}">Filter by...</TextBlock>
                         <TextBox x:Name="FilterByName" Width="200" Header="Filter by Doctor Name" Margin="8"
-                                HorizontalAlignment="Left" TextChanged="OnFilterChanged"/>
-                        <TextBox x:Name="FilterBySpacialty" Width="200" Header="Filter by Specialty Name" Margin="8"
-                                HorizontalAlignment="Left" TextChanged="OnFilterChanged"/>
-
+                                HorizontalAlignment="Left"
+                                Text="{x:Bind viewModel.DoctorNameFilter, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                        <TextBox x:Name="FilterBySpecialty" Width="200" Header="Filter by Specialty Name" Margin="8"
+                                HorizontalAlignment="Left"
+                                Text="{x:Bind viewModel.SpecialtyFilter, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                        
                     </StackPanel>
                 </StackPanel>
                 

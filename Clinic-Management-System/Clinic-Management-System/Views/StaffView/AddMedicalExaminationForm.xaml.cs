@@ -14,6 +14,7 @@ using Microsoft.UI.Xaml.Media;
 using Microsoft.UI.Xaml.Navigation;
 using Clinic_Management_System.ViewModel;
 using System.Collections;
+using Microsoft.IdentityModel.Protocols;
 
 // To learn more about WinUI, the WinUI project structure,
 // and more about our project templates, see: http://aka.ms/winui-project-info.
@@ -59,9 +60,16 @@ namespace Clinic_Management_System.Views.StaffView
 			}
 		}
 
-		private void OnFilterChanged(object sender, TextChangedEventArgs e)
-		{
-			
-		}
+
+		//private void Submit_Filter(object sender, RoutedEventArgs e)
+		//{
+		//	string doctorName = FilterByName.Text;
+		//	string specialty = FilterBySpecialty.Text;
+
+		//	viewModel.LoadDoctors(doctorName, specialty);
+
+
+
+		//}
 	}
 }

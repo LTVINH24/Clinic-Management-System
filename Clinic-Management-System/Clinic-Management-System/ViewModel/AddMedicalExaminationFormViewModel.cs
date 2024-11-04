@@ -12,25 +12,36 @@ using System.Threading.Tasks;
 
 namespace Clinic_Management_System.ViewModel
 {
-    public class AddMedicalExaminationFormViewModel
+    public class AddMedicalExaminationFormViewModel : INotifyPropertyChanged
     {
         IDao _dao;
 
 
 		public ObservableCollection<Doctor> Doctors { get; set; } = new ObservableCollection<Doctor>();
-		// Filter
-		//public ObservableCollection<Doctor> FilteredDoctors { get; set; } = new ObservableCollection<Doctor>();
 
-		//private string _doctorNameFilter;
-		//public string DoctorNameFilter
-		//{
-		//	get { return _doctorNameFilter; }
-		//	set
-		//	{
-		//		_doctorNameFilter = value;
-				
-		//	}
-		//}
+		private string _doctorNameFilter;
+		private string _specialtyFilter;
+		public string DoctorNameFilter
+		{
+			get { return _doctorNameFilter; }
+			set
+			{
+				_doctorNameFilter = value;
+				LoadDoctors(_doctorNameFilter, _specialtyFilter);
+
+			}
+		}
+
+		public string SpecialtyFilter
+		{
+			get { return _specialtyFilter; }
+			set
+			{
+				_specialtyFilter = value;
+				OnPropertyChanged(nameof(SpecialtyFilter));
+				LoadDoctors(_doctorNameFilter, _specialtyFilter);
+			}
+		}
 
 
 		private Doctor _selectedDoctor;
@@ -40,7 +51,11 @@ namespace Clinic_Management_System.ViewModel
 			set
 			{
 				_selectedDoctor = value;
-				MedicalExaminationForm.DoctorId = value.Id;
+				OnPropertyChanged(nameof(SelectedDoctor));
+				if(_selectedDoctor != null)
+				{
+					MedicalExaminationForm.DoctorId = _selectedDoctor.Id;
+				}
 			}
 		}
 
@@ -58,6 +73,11 @@ namespace Clinic_Management_System.ViewModel
 
 
 		public event Action<string> AddCompleted;
+		public event PropertyChangedEventHandler PropertyChanged;
+		public void OnPropertyChanged(string propertyName)
+		{
+			PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+		}
 
 		public void AddMedicalExaminationForm()
 		{
@@ -77,49 +97,28 @@ namespace Clinic_Management_System.ViewModel
 			}
 		}
 
-		private void LoadDoctors()
+		public void LoadDoctors(string doctorNameFilter = null, string specialtyFilter = null)
 		{
-			var doctors = _dao.GetInforDoctor();
-			Doctors.Clear();
+
+			var doctors = _dao.GetInforDoctor(); 
+			Doctors.Clear(); 
+
+
 			foreach (var doctor in doctors)
 			{
-				Doctors.Add(doctor);
-			}
-		}
+				bool matchesName = string.IsNullOrEmpty(doctorNameFilter) ||
+								   doctor.name.Contains(doctorNameFilter, StringComparison.OrdinalIgnoreCase);
+				bool matchesSpecialty = string.IsNullOrEmpty(specialtyFilter) ||
+										doctor.SpecialtyName.Contains(specialtyFilter, StringComparison.OrdinalIgnoreCase);
 
-		//private List<Doctor> FilterDoctor(string doctorName, string specialtyName)
-		//{
-		//	var doctors = _dao.GetInforDoctor();
-		//	Doctors.Clear();
-		//	foreach (var doctor in doctors)
-		//	{
-		//		if (doctorName != null && specialtyName != null)
-		//		{
-		//			if (doctor.name.Contains(doctorName) && doctor.SpecialtyName.Contains(specialtyName))
-		//			{
-		//				Doctors.Add(doctor);
-		//			}
-		//		}
-		//		else if (doctorName != null)
-		//		{
-		//			if (doctor.name.Contains(doctorName))
-		//			{
-		//				Doctors.Add(doctor);
-		//			}
-		//		}
-		//		else if (specialtyName != null)
-		//		{
-		//			if (doctor.SpecialtyName.Contains(specialtyName))
-		//			{
-		//				Doctors.Add(doctor);
-		//			}
-		//		}
-		//		else
-		//		{
-		//			Doctors.Add(doctor);
-		//		}
-		//	}
-		//	return Doctors.ToList();
-		//}
+				if (matchesName && matchesSpecialty)
+				{
+					Doctors.Add(doctor); 
+				}
+			}
+
+			OnPropertyChanged(nameof(Doctors));
+
+		}
 	}
 }
