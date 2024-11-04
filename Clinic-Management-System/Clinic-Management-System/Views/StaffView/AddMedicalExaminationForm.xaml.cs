@@ -32,13 +32,15 @@ namespace Clinic_Management_System.Views.StaffView
 
 	public sealed partial class AddMedicalExaminationForm : Page
     {
-        public AddMedicalExaminationForm()
+		public AddMedicalExaminationFormViewModel viewModel { get; set; } = new AddMedicalExaminationFormViewModel();
+		public AddMedicalExaminationForm()
         {
             this.InitializeComponent();
+			this.DataContext = viewModel;
         }
 
 		
-        public AddMedicalExaminationFormViewModel viewModel { get; set; } = new AddMedicalExaminationFormViewModel();
+        
 		private void Add_Button(object sender, RoutedEventArgs e)
 		{
             viewModel.AddMedicalExaminationForm();
@@ -49,17 +51,17 @@ namespace Clinic_Management_System.Views.StaffView
 
 		}
 
-		//private void Set_Gender(object sender, RoutedEventArgs e)
-		//{
-		//	if(sender is MenuFlyoutItem menuItem)
-		//	{
-		//		GenderDropdown.Content=menuItem.Text;
-		//	}
-		//}
+		private void Set_Gender(object sender, RoutedEventArgs e)
+		{
+			if (sender is MenuFlyoutItem menuItem)
+			{
+				GenderDropdown.Content = menuItem.Text;
+			}
+		}
 
-		//private void OnFilterChanged(object sender, TextChangedEventArgs e)
-		//{
-
-		//}
+		private void OnFilterChanged(object sender, TextChangedEventArgs e)
+		{
+			
+		}
 	}
 }

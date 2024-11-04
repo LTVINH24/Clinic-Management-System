@@ -28,6 +28,6 @@ namespace Clinic_Management_System.Service.DataAccess
 		(int, string) Authentication(string username, string password);
 		(bool, int) AddPatient(Patient patient);
 		bool AddMedicalExaminationForm(int patientId, MedicalExaminationForm medicalExaminationForm);
-		public Tuple<List<Doctor>, int> GetInforDoctor();
+		public List<Doctor> GetInforDoctor();
 	}
 }

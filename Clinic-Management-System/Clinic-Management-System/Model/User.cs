@@ -19,5 +19,10 @@ namespace Clinic_Management_System.Model
 		public string address { get; set; }
 		public string phone { get; set; }
 		public event PropertyChangedEventHandler PropertyChanged;
+
+		//protected void OnPropertyChanged(string propertyName)
+		//{
+		//	PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+		//}
 	}
 }

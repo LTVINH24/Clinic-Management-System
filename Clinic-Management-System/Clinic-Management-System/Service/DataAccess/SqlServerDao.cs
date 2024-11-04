@@ -106,6 +106,7 @@ namespace Clinic_Management_System.Service.DataAccess
 			var command = new SqlCommand("INSERT INTO MedicalExaminationForm (PatientId, StaffId, DoctorId, Time, Symptom) VALUES (@PatientId, @StaffId, @DoctorId, @Time, @Symptom)", connection);
 
 
+		
 			AddParameters(command,
 				("@PatientId", patientId),
 				("@StaffId", id),
@@ -119,7 +120,7 @@ namespace Clinic_Management_System.Service.DataAccess
 			return result > 0;
 		}
 
-		public Tuple<List<Doctor>, int> GetInforDoctor()
+		public List<Doctor> GetInforDoctor()
 		{
 			var connectionString = GetConnectionString();
 			SqlConnection connection = new SqlConnection(connectionString);
@@ -129,13 +130,14 @@ namespace Clinic_Management_System.Service.DataAccess
 			var command1 = new SqlCommand(query1, connection);
 
 			var query = $"""
-							SELECT e.id, e.name, s.id, s.name, d.room 
+							SELECT e.id, e.name as doctorName, s.id as specialtyId, s.name as specialtyName, d.room 
 							FROM EndUser e JOIN Doctor d ON e.id = d.userId
-								JOIN Specialty s ON d.spec	ialtyId = s.is
+								JOIN Specialty s ON d.specialtyId = s.id
 							WHERE e.role = @Role;  
 						""";
 			var command = new SqlCommand(query, connection);
-			command.Parameters.AddWithValue("@Role", "doctor");
+			AddParameters(command,
+				("@Role", "doctor"));
 
 			var reader = command.ExecuteReader();
 			var result = new List<Doctor>();
@@ -145,9 +147,9 @@ namespace Clinic_Management_System.Service.DataAccess
 				var doctor = new Doctor
 				{
 					Id = (int)reader["id"],
-					name = reader["name"].ToString(),
-					SpecialtyId = (int)reader["id"],
-					SpecialtyName = reader["name"].ToString(),
+					name = reader["doctorName"].ToString(),
+					SpecialtyId = (int)reader["specialtyId"],
+					SpecialtyName = reader["specialtyName"].ToString(),
 					Room = reader["room"].ToString()
 				};
 				result.Add(doctor);
@@ -155,7 +157,7 @@ namespace Clinic_Management_System.Service.DataAccess
 			int count = result.Count;
 
 			connection.Close();
-			return new Tuple<List<Doctor>, int>(result, count);
+			return result;
 		}
 	}
 }

@@ -3,6 +3,7 @@ using Clinic_Management_System.Service;
 using Clinic_Management_System.Service.DataAccess;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
 using System.Runtime.CompilerServices;
@@ -16,6 +17,34 @@ namespace Clinic_Management_System.ViewModel
         IDao _dao;
 
 
+		public ObservableCollection<Doctor> Doctors { get; set; } = new ObservableCollection<Doctor>();
+		// Filter
+		//public ObservableCollection<Doctor> FilteredDoctors { get; set; } = new ObservableCollection<Doctor>();
+
+		//private string _doctorNameFilter;
+		//public string DoctorNameFilter
+		//{
+		//	get { return _doctorNameFilter; }
+		//	set
+		//	{
+		//		_doctorNameFilter = value;
+				
+		//	}
+		//}
+
+
+		private Doctor _selectedDoctor;
+		public Doctor SelectedDoctor
+		{
+			get { return _selectedDoctor; }
+			set
+			{
+				_selectedDoctor = value;
+				MedicalExaminationForm.DoctorId = value.Id;
+			}
+		}
+
+
 		public AddMedicalExaminationFormViewModel()
         {
 			_dao = ServiceFactory.GetChildOf(typeof(IDao)) as IDao;
@@ -25,8 +54,8 @@ namespace Clinic_Management_System.ViewModel
         public Patient Patient { get; set; } = new Patient();
 		public MedicalExaminationForm MedicalExaminationForm { get; set; } = new MedicalExaminationForm();
 
-		public List<Doctor> Doctors { get; set; } = new List<Doctor>();
-		public Doctor SelectedDoctor { get; set; }
+		
+
 
 		public event Action<string> AddCompleted;
 
@@ -35,7 +64,7 @@ namespace Clinic_Management_System.ViewModel
 			var (patientSaved, patientId) = _dao.AddPatient(Patient);
 			if (patientSaved && patientId != 0)
 			{
-				MedicalExaminationForm.DoctorId = SelectedDoctor.Id;
+				
 				bool examinationSaved = _dao.AddMedicalExaminationForm(patientId, MedicalExaminationForm);
 				if (examinationSaved)
 				{
@@ -50,10 +79,47 @@ namespace Clinic_Management_System.ViewModel
 
 		private void LoadDoctors()
 		{
-			var (doctors, _) = _dao.GetInforDoctor();
-			Doctors = doctors;
+			var doctors = _dao.GetInforDoctor();
+			Doctors.Clear();
+			foreach (var doctor in doctors)
+			{
+				Doctors.Add(doctor);
+			}
 		}
 
-		
+		//private List<Doctor> FilterDoctor(string doctorName, string specialtyName)
+		//{
+		//	var doctors = _dao.GetInforDoctor();
+		//	Doctors.Clear();
+		//	foreach (var doctor in doctors)
+		//	{
+		//		if (doctorName != null && specialtyName != null)
+		//		{
+		//			if (doctor.name.Contains(doctorName) && doctor.SpecialtyName.Contains(specialtyName))
+		//			{
+		//				Doctors.Add(doctor);
+		//			}
+		//		}
+		//		else if (doctorName != null)
+		//		{
+		//			if (doctor.name.Contains(doctorName))
+		//			{
+		//				Doctors.Add(doctor);
+		//			}
+		//		}
+		//		else if (specialtyName != null)
+		//		{
+		//			if (doctor.SpecialtyName.Contains(specialtyName))
+		//			{
+		//				Doctors.Add(doctor);
+		//			}
+		//		}
+		//		else
+		//		{
+		//			Doctors.Add(doctor);
+		//		}
+		//	}
+		//	return Doctors.ToList();
+		//}
 	}
 }
