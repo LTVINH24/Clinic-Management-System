@@ -16,7 +16,7 @@ namespace Clinic_Management_System.ViewModel
     {
         IDao _dao;
 
-
+		
 		public ObservableCollection<Doctor> Doctors { get; set; } = new ObservableCollection<Doctor>();
 
 		private string _doctorNameFilter;
@@ -72,30 +72,78 @@ namespace Clinic_Management_System.ViewModel
 		
 
 
-		public event Action<string> AddCompleted;
+		public event Action<string, int> AddCompleted;
 		public event PropertyChangedEventHandler PropertyChanged;
 		public void OnPropertyChanged(string propertyName)
 		{
 			PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
 		}
 
+		public bool isValidData()
+		{
+			return !string.IsNullOrWhiteSpace(Patient.Name)
+				&& !string.IsNullOrWhiteSpace(Patient.Email)
+				&& !string.IsNullOrWhiteSpace(Patient.ResidentId)
+				&& !string.IsNullOrWhiteSpace(Patient.Address)
+				&& Patient.DoB != null
+				&& !string.IsNullOrWhiteSpace(Patient.Gender)
+				&& !string.IsNullOrWhiteSpace(MedicalExaminationForm.Symptoms);
+		}
+
+
+		// Success, 200: Thêm thành công bệnh nhân và phiếu khám bệnh
+		// Success, 201: Thêm thành công phiếu khám bệnh, bệnh nhân đã tồn tại
+		// Failed, 300: Thiếu thông tin
+		// Failed, 400: Thêm thất bại
 		public void AddMedicalExaminationForm()
 		{
-			var (patientSaved, patientId) = _dao.AddPatient(Patient);
-			if (patientSaved && patientId != 0)
+			if(!isValidData() || SelectedDoctor == null)
 			{
-				
-				bool examinationSaved = _dao.AddMedicalExaminationForm(patientId, MedicalExaminationForm);
-				if (examinationSaved)
+				AddCompleted?.Invoke("Please fill in all information!", 300);
+				return;
+			}
+			else
+			{
+				var (isExist, patientId) = _dao.checkPatientExists(Patient.ResidentId);
+
+				if(isExist)
 				{
-					AddCompleted?.Invoke("Success");
+					bool examinationSaved = _dao.AddMedicalExaminationForm(patientId, MedicalExaminationForm);
+					if (examinationSaved)
+					{
+						AddCompleted?.Invoke("Success", 201);
+					}
+					else
+					{
+						AddCompleted?.Invoke("Failed", 400);
+					}
 				}
 				else
 				{
-					AddCompleted?.Invoke("Failed");
+					var (isAdded, newPatientId) = _dao.AddPatient(Patient);
+					if (isAdded && newPatientId != 0)
+					{
+
+						bool examinationSaved = _dao.AddMedicalExaminationForm(newPatientId, MedicalExaminationForm);
+						if (examinationSaved)
+						{
+							AddCompleted?.Invoke("Success", 200);
+						}
+						else
+						{
+							AddCompleted?.Invoke("Failed", 400);
+						}
+					}
+					else
+					{
+						AddCompleted?.Invoke("Failed.", 400);
+					}
 				}
+				
 			}
 		}
+
+
 
 		public void LoadDoctors(string doctorNameFilter = null, string specialtyFilter = null)
 		{
@@ -119,6 +167,16 @@ namespace Clinic_Management_System.ViewModel
 
 			OnPropertyChanged(nameof(Doctors));
 
+		}
+
+		public void Reset()
+		{
+			Patient = new Patient();
+			MedicalExaminationForm = new MedicalExaminationForm();
+			SelectedDoctor = null;
+			DoctorNameFilter = null;
+			SpecialtyFilter = null;
+			LoadDoctors();
 		}
 	}
 }

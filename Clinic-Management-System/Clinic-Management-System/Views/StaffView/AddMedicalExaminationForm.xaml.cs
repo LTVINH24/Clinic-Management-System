@@ -23,12 +23,9 @@ namespace Clinic_Management_System.Views.StaffView
 {
     
 
-    // chưa xử lí patientID: làm sao liên kết vs patientID ở trên
-	// chưa xử lí doctorID: hiển thị list
-	// id thằng Staff là id thằng đăng nhập
-	// Cancel thì làm gì???
-	// 
-	// trường hợp người dùng cố tình nhập sai
+	// Dữ liệu trống (x)
+	// Dữ liệu không đúng định dạng
+	// Dữ liệu nằm ngoài miền giá trị
 
 
 	public sealed partial class AddMedicalExaminationForm : Page
@@ -38,9 +35,10 @@ namespace Clinic_Management_System.Views.StaffView
         {
             this.InitializeComponent();
 			this.DataContext = viewModel;
-        }
 
-		
+			viewModel.AddCompleted += ViewModel_AddCompleted;
+		}
+
         
 		private void Add_Button(object sender, RoutedEventArgs e)
 		{
@@ -49,7 +47,7 @@ namespace Clinic_Management_System.Views.StaffView
 
 		private void Cancel_Button(object sender, RoutedEventArgs e)
 		{
-
+			viewModel.Reset();
 		}
 
 		private void Set_Gender(object sender, RoutedEventArgs e)
@@ -61,15 +59,42 @@ namespace Clinic_Management_System.Views.StaffView
 		}
 
 
-		//private void Submit_Filter(object sender, RoutedEventArgs e)
-		//{
-		//	string doctorName = FilterByName.Text;
-		//	string specialty = FilterBySpecialty.Text;
+		private async void ViewModel_AddCompleted(string result, int statusCode)
+		{
+			string message;
 
-		//	viewModel.LoadDoctors(doctorName, specialty);
+			switch (statusCode)
+			{
+				case 200:
+					message = "Successfully added medical examination form!";
+					break;
+				case 201:
+					message = "Successfully added medical examination form, patient already exists!";
+					break;
+				case 300:
+					message = $"Failed to added medical examination form. {result}";
+					break;
+				default:
+					message = "Failed to added medical examination form.";
+					break;
+			}
 
+			
 
+			ContentDialog dialog = new ContentDialog
+			{
+				Title = "Notification",
+				Content = message,
+				CloseButtonText = "OK",
+				XamlRoot = this.XamlRoot
 
-		//}
+			};
+			if(statusCode == 200 || statusCode == 201)
+			{
+				viewModel.Reset();
+			}
+
+			await dialog.ShowAsync();
+		}
 	}
 }

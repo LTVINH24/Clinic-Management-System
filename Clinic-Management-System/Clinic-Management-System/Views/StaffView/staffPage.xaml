@@ -17,14 +17,15 @@
 
 
 
-        <NavigationView x:Name="nvSample" Grid.Row="1" 
+        <NavigationView x:Name="nvSample" Grid.Row="1"  
+            Background="#b5b5e8"
             IsPaneOpen="False"
             PaneDisplayMode="Left"
             IsTabStop="False"
             SelectionChanged="NavigationView_SelectionChanged">
             <NavigationView.MenuItems>
-                <NavigationViewItem Content="Home" Icon="Home" ToolTipService.ToolTip="Home" Tag="HomePage"/>
-                <NavigationViewItem Content="Patient" Icon="People" ToolTipService.ToolTip="Patient" Tag="HomePatient">
+                <NavigationViewItem Content="Home" Icon="Home" ToolTipService.ToolTip="Home" Tag="homeStaff"/>
+                <NavigationViewItem Content="Patient" Icon="People" ToolTipService.ToolTip="Patient" Tag="homeStaff">
                     <NavigationViewItem.MenuItems>
                         <NavigationViewItem Content="Add" Icon="Add" ToolTipService.ToolTip="Add" Tag="AddMedicalExaminationForm"/>
                         <NavigationViewItem Content="Delete" Icon="Delete" ToolTipService.ToolTip="Delete" Tag="DeleteMedicalExaminationForm"/>
@@ -34,7 +35,7 @@
                 </NavigationViewItem>
                 
             </NavigationView.MenuItems>
-            <Frame x:Name="contentFrame" />
+            <Frame x:Name="contentFrame" Content="Staff Page"/>
         </NavigationView>
     </Grid>
 </Page>

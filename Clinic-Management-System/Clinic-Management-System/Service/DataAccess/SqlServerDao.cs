@@ -1,5 +1,6 @@
 ﻿using Clinic_Management_System.Model;
 using Microsoft.Data.SqlClient;
+using Microsoft.UI.Xaml;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -56,8 +57,6 @@ namespace Clinic_Management_System.Service.DataAccess
             return connectionString;
         }
 
-
-
 		private void AddParameters(SqlCommand command, params (string ParameterName, object Value)[] parameters)
 		{
 			foreach (var (parameterName, value) in parameters)
@@ -93,7 +92,33 @@ namespace Clinic_Management_System.Service.DataAccess
 			return (id > 0, id);
         }
 
-        public bool AddMedicalExaminationForm(int patientId ,MedicalExaminationForm medicalExaminationForm)
+		public (bool, int) checkPatientExists(string residentId)
+		{
+			var connectionString = GetConnectionString();
+			SqlConnection connection = new SqlConnection(connectionString);
+			connection.Open();
+
+			string query = "SELECT id FROM Patient WHERE ResidentId = @ResidentId";
+			var command = new SqlCommand(query, connection);
+			AddParameters(command, 
+				("@ResidentId", residentId));
+
+			
+			var reader = command.ExecuteReader();
+			if(reader.Read())
+			{
+				int id = (int)reader["id"];
+				connection.Close();
+				return (true, id);
+			}
+
+			connection.Close();
+			return (false, 0);
+
+		}
+
+
+		public bool AddMedicalExaminationForm(int patientId ,MedicalExaminationForm medicalExaminationForm)
 		{
 			var connectionString = GetConnectionString();
 			SqlConnection connection = new SqlConnection(connectionString);
@@ -105,7 +130,7 @@ namespace Clinic_Management_System.Service.DataAccess
 
 			var command = new SqlCommand("INSERT INTO MedicalExaminationForm (PatientId, StaffId, DoctorId, Time, Symptom) VALUES (@PatientId, @StaffId, @DoctorId, @Time, @Symptom)", connection);
 
-
+			
 		
 			AddParameters(command,
 				("@PatientId", patientId),

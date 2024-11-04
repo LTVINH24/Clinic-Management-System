@@ -6,9 +6,12 @@
     xmlns:local="using:Clinic_Management_System"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    mc:Ignorable="d">
+    mc:Ignorable="d"
+    
+    >
+    
 
-    <Border  CornerRadius="10" BorderThickness="1.5" BorderBrush="#43f196" Background="#FFFFFFFF" HorizontalAlignment="Center" VerticalAlignment="Center" >
+    <Border  CornerRadius="10" BorderThickness="1.5" BorderBrush="#43f196" Background="{ThemeResource ApplicationPageBackgroundThemeBrush}" HorizontalAlignment="Center" VerticalAlignment="Center" >
         <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
             <Border BorderThickness="1" BorderBrush="#FF00008B" Background="#e9ecf1" Padding="80,60,80,60">
             <StackPanel >

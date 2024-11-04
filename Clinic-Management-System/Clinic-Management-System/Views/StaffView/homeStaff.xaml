@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Page
-    x:Class="Clinic_Management_System.Views.StaffView.DeleteMedicalExaminationForm"
+    x:Class="Clinic_Management_System.Views.StaffView.homeStaff"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:local="using:Clinic_Management_System.Views.StaffView"
@@ -10,6 +10,6 @@
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
     <Grid>
-        <Frame Content="Delete Page"/>
+        <Frame Content="Home Page"/>
     </Grid>
 </Page>

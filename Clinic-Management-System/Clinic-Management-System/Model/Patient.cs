@@ -14,7 +14,7 @@ namespace Clinic_Management_System.Model
 		public string Email { get; set; }
 		public string ResidentId { get; set; }
 		public string Address { get; set; }
-		public DateTimeOffset? DoB { get; set;  }
+		public DateTimeOffset? DoB { get; set; } = null;
 		public string Gender { get; set; }
 
 		//public ICollection<MedicalExaminationForm> MedicalExaminationForms { get; set; }

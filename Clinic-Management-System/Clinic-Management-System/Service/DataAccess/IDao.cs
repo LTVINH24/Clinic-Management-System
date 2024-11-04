@@ -29,5 +29,6 @@ namespace Clinic_Management_System.Service.DataAccess
 		(bool, int) AddPatient(Patient patient);
 		bool AddMedicalExaminationForm(int patientId, MedicalExaminationForm medicalExaminationForm);
 		public List<Doctor> GetInforDoctor();
+		(bool, int) checkPatientExists(string residentId);
 	}
 }
