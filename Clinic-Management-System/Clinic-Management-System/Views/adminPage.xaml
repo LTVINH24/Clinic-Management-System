@@ -16,10 +16,6 @@
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
-
-
-
-
         <NavigationView Background="#b5b5e8" x:Name="nvSample" Grid.Row="1" 
             IsPaneOpen="False"
             PaneDisplayMode="Left"

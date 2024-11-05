@@ -14,20 +14,15 @@ namespace Clinic_Management_System.Service.DataAccess
             Ascending,
             Descending
         }
-        //Example
-        //Tuple<List<User>, int> GetEmployees(
-        //    int page, int rowsPerPage,
-        //    string keyword,
-        //    Dictionary<string, SortType> sortOptions
-        //); 
 
-        //bool DeleteEmployee(int id);
-        //bool AddEmployee(User info);
-
-        //bool UpdateEmployee(User info);
-        (int, string) Authentication (string username, string password);
+        Tuple<List<User>, int> GetUsers(
+            int page, int rowsPerPage,
+            string keyword,
+            Dictionary<string, SortType> sortOptions
+        );
+        (int, string, string, string, string, string) Authentication (string username, string password);
         bool CreateUser( User user, string password, string entropy);
         bool CheckUserExists(string username);
-
+        bool UpdateUser(User info,string entropyUserEdit);
     }
 }

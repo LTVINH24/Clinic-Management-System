@@ -1,3 +1,5 @@
+using Clinic_Management_System.Model;
+using Clinic_Management_System.ViewModel;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Controls.Primitives;
@@ -23,9 +25,87 @@ namespace Clinic_Management_System.Views.AdminView
     /// </summary>
     public sealed partial class listAccount : Page
     {
+        public AccountViewModel ViewModel { get; set; }
         public listAccount()
         {
+            ViewModel =new AccountViewModel();
+            this.DataContext = ViewModel;
             this.InitializeComponent();
+        }
+
+        private void nextButton_Click(object sender, RoutedEventArgs e)
+        {
+            ViewModel.GoToNextPage();
+        }
+        private void previousButton_Click(object sender, RoutedEventArgs e)
+         {
+            ViewModel.GoToPreviousPage();
+         }
+        bool init = false;
+        private void pagesComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (init == false)
+            {
+                init = true;
+                return;
+            }
+            if (pagesComboBox.SelectedIndex >= 0)
+            {
+                var item = pagesComboBox.SelectedItem as PageInfo;
+                ViewModel.GoToPage(item.Page);
+            }
+        }
+
+        private void searchButton_Click(object sender, RoutedEventArgs e)
+        {
+            ViewModel.Search();
+        }
+
+        private void searchTextbox_Click(object sender, TextChangedEventArgs e)
+        {
+            ViewModel.Search();
+        }
+
+        private void userList_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            var useredit = itemsComboBox.SelectedItem as User;
+            ViewModel.Edit(useredit);
+        }
+
+        private void update_editUser(object sender, RoutedEventArgs e)
+        {
+            var success=ViewModel.Update();
+            ViewModel.LoadData();
+            string notify="";
+            if (success)
+            {
+                notify = "Updated successfully";
+            }
+            else
+            {
+                notify = "Update failed";
+            }
+            Notify(notify);
+        }
+
+        private void delete_editUser(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void cancel_editUser(object sender, RoutedEventArgs e)
+        {
+            ViewModel.Cancel();
+        }
+        private async void Notify(string notify)
+        {
+            await new ContentDialog()
+            {
+                XamlRoot = this.Content.XamlRoot,
+                Title = "Notify",
+                Content = $"{notify}",
+                CloseButtonText = "OK"
+            }.ShowAsync();
         }
     }
 }

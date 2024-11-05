@@ -29,7 +29,7 @@ namespace Clinic_Management_System.ViewModel
                 LoginCompleted?.Invoke("Password or username is empty");
                 return false;
             }
-            var(id,role) = _dao.Authentication(userLogin.Username, userLogin.Password);
+            var(id, name, role, phone, gender, address) = _dao.Authentication(userLogin.Username, userLogin.Password);
             if (role != "")
             {
                 LoginCompleted?.Invoke(role);
