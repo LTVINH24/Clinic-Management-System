@@ -51,9 +51,6 @@
     <ProjectCapability Include="Msix" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Helper\" />
-  </ItemGroup>
-  <ItemGroup>
     <Page Update="Views\StaffView\homeStaff.xaml">
       <Generator>MSBuild:Compile</Generator>
     </Page>

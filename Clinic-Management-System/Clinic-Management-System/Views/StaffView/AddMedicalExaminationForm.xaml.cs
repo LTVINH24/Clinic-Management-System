@@ -24,8 +24,8 @@ namespace Clinic_Management_System.Views.StaffView
     
 
 	// Dữ liệu trống (x)
-	// Dữ liệu không đúng định dạng
-	// Dữ liệu nằm ngoài miền giá trị
+	// Dữ liệu không đúng định dạng (x)
+	// Dữ liệu nằm ngoài miền giá trị lưu vào database
 
 
 	public sealed partial class AddMedicalExaminationForm : Page
@@ -59,27 +59,22 @@ namespace Clinic_Management_System.Views.StaffView
 		}
 
 
-		private async void ViewModel_AddCompleted(string result, int statusCode)
+		private async void ViewModel_AddCompleted(bool isSuccess, int statusCode, string message)
 		{
-			string message;
+			string displayMessage;
 
-			switch (statusCode)
+			if (statusCode == 200 || statusCode == 201)
 			{
-				case 200:
-					message = "Successfully added medical examination form!";
-					break;
-				case 201:
-					message = "Successfully added medical examination form, patient already exists!";
-					break;
-				case 300:
-					message = $"Failed to added medical examination form. {result}";
-					break;
-				default:
-					message = "Failed to added medical examination form.";
-					break;
+				displayMessage = message;
 			}
-
-			
+			else if (statusCode >= 301 && statusCode <= 308)
+			{
+				displayMessage = $"Failed to add medical examination form. {message}";
+			}
+			else
+			{
+				displayMessage = message;
+			}
 
 			ContentDialog dialog = new ContentDialog
 			{
@@ -87,9 +82,9 @@ namespace Clinic_Management_System.Views.StaffView
 				Content = message,
 				CloseButtonText = "OK",
 				XamlRoot = this.XamlRoot
-
 			};
-			if(statusCode == 200 || statusCode == 201)
+
+			if(isSuccess)
 			{
 				viewModel.Reset();
 			}
