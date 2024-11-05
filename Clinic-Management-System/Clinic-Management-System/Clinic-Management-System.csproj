@@ -15,16 +15,13 @@
   </PropertyGroup>
   <ItemGroup>
     <None Remove="Dashboard.xaml" />
-    <None Remove="Views\adminPage.xaml" />
-    <None Remove="Views\doctorPage.xaml" />
-    <None Remove="Views\SamplePage1.xaml" />
-    <None Remove="Views\SamplePage2.xaml" />
-    <None Remove="Views\SamplePage3.xaml" />
-    <None Remove="Views\SamplePage4.xaml" />
-    <None Remove="Views\SamplePage5.xaml" />
-    <None Remove="Views\SamplePage6.xaml" />
     <None Remove="Views\SettingsPage.xaml" />
     <None Remove="Views\staffPage.xaml" />
+    <None Remove="Views\StaffView\AddMedicalExaminationForm.xaml" />
+    <None Remove="Views\StaffView\DeleteMedicalExaminationForm.xaml" />
+    <None Remove="Views\StaffView\homeStaff.xaml" />
+    <None Remove="Views\StaffView\listMedicalExaminationForm.xaml" />
+    <None Remove="Views\StaffView\UpdateMedicalExaminationForm.xaml" />
     
   </ItemGroup>
 
@@ -55,56 +52,38 @@
     <ProjectCapability Include="Msix" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Helper\" />
+    <Page Update="Views\StaffView\listMedicalExaminationForm.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+  </ItemGroup>
+  <ItemGroup>
+    <Page Update="Views\StaffView\homeStaff.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+  </ItemGroup>
+  <ItemGroup>
+    <Page Update="Views\StaffView\UpdateMedicalExaminationForm.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+  </ItemGroup>
+  <ItemGroup>
+    <Page Update="Views\StaffView\DeleteMedicalExaminationForm.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+  </ItemGroup>
+  <ItemGroup>
+    <Page Update="Views\StaffView\AddMedicalExaminationForm.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
   </ItemGroup>
   <ItemGroup>
     <Page Update="Views\staffPage.xaml">
       <Generator>MSBuild:Compile</Generator>
     </Page>
   </ItemGroup>
-  <ItemGroup>
-    <Page Update="Views\doctorPage.xaml">
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-  </ItemGroup>
-  <ItemGroup>
-    <Page Update="Views\adminPage.xaml">
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-  </ItemGroup>
   
   <ItemGroup>
     <Page Update="Views\SettingsPage.xaml">
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-  </ItemGroup>
-  <ItemGroup>
-    <Page Update="Views\SamplePage6.xaml">
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-  </ItemGroup>
-  <ItemGroup>
-    <Page Update="Views\SamplePage5.xaml">
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-  </ItemGroup>
-  <ItemGroup>
-    <Page Update="Views\SamplePage4.xaml">
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-  </ItemGroup>
-  <ItemGroup>
-    <Page Update="Views\SamplePage3.xaml">
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-  </ItemGroup>
-  <ItemGroup>
-    <Page Update="Views\SamplePage2.xaml">
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-  </ItemGroup>
-  <ItemGroup>
-    <Page Update="Views\SamplePage1.xaml">
       <Generator>MSBuild:Compile</Generator>
     </Page>
   </ItemGroup>

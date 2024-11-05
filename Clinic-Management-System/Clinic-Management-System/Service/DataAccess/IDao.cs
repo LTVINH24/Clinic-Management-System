@@ -14,17 +14,26 @@ namespace Clinic_Management_System.Service.DataAccess
             Ascending,
             Descending
         }
-        //Example
-        //Tuple<List<User>, int> GetEmployees(
-        //    int page, int rowsPerPage,
-        //    string keyword,
-        //    Dictionary<string, SortType> sortOptions
-        //); 
+		//Example
+		//Tuple<List<User>, int> GetEmployees(
+		//    int page, int rowsPerPage,
+		//    string keyword,
+		//    Dictionary<string, SortType> sortOptions
+		//); 
 
-        //bool DeleteEmployee(int id);
-        //bool AddEmployee(User info);
+		//bool DeleteEmployee(int id);
+		//bool AddEmployee(User info);
 
-        //bool UpdateEmployee(User info);
-        string Authentication (string username, string password);
-    }
+		//bool UpdateEmployee(User info);
+		(int, string) Authentication(string username, string password);
+		(bool, int) AddPatient(Patient patient);
+		bool AddMedicalExaminationForm(int patientId, MedicalExaminationForm medicalExaminationForm);
+		public List<Doctor> GetInforDoctor();
+		(bool, int) checkPatientExists(string residentId);
+		public Tuple<List<MedicalExaminationForm>, int> GetMedicalExaminationForm(
+			int page,
+			int rowsPerPage,
+			string keyword,
+			Dictionary<string, SortType> sortOptions);
+	}
 }

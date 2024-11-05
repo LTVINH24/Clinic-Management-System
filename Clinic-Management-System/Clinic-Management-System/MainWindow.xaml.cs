@@ -39,7 +39,6 @@ namespace Clinic_Management_System
         }
 		private void OnLoginCompleted(string isSuccess)
 		{
-			Console.Write(isSuccess);
 			if (isSuccess != "")
 			{
 				string namePage = $"{isSuccess}Page";

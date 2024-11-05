@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Page
+    x:Class="Clinic_Management_System.Views.staffPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:Clinic_Management_System.Views"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+
+
+        <NavigationView x:Name="nvSample" Grid.Row="1"  
+            Background="#b5b5e8"
+            IsPaneOpen="False"
+            PaneDisplayMode="Left"
+            IsTabStop="False"
+            SelectionChanged="NavigationView_SelectionChanged">
+            <NavigationView.MenuItems>
+                <NavigationViewItem Content="Home" Icon="Home" ToolTipService.ToolTip="Home" Tag="homeStaff"/>
+                <NavigationViewItem Content="Patient" Icon="People" ToolTipService.ToolTip="Patient" Tag="homeStaff">
+                    <NavigationViewItem.MenuItems>
+                        <NavigationViewItem Content="Add" Icon="Add" ToolTipService.ToolTip="Add" Tag="AddMedicalExaminationForm"/>
+                        <NavigationViewItem Content="Delete" Icon="Delete" ToolTipService.ToolTip="Delete" Tag="DeleteMedicalExaminationForm"/>
+                        <NavigationViewItem Content="Update" Icon="Refresh" ToolTipService.ToolTip="Update" Tag="UpdateMedicalExaminationForm"/>
+                    </NavigationViewItem.MenuItems>
+                   
+                </NavigationViewItem>
+                
+            </NavigationView.MenuItems>
+            <Frame x:Name="contentFrame" Content="Staff Page"/>
+        </NavigationView>
+    </Grid>
+</Page>

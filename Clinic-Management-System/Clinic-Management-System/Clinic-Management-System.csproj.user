@@ -11,37 +11,25 @@
     <None Update="Package.appxmanifest">
       <SubType>Designer</SubType>
     </None>
-    <Page Update="Views\staffPage.xaml">
+    <Page Update="Views\StaffView\listMedicalExaminationForm.xaml">
       <SubType>Designer</SubType>
     </Page>
-    <Page Update="Views\doctorPage.xaml">
+    <Page Update="Views\StaffView\homeStaff.xaml">
       <SubType>Designer</SubType>
     </Page>
-    <Page Update="Views\adminPage.xaml">
+    <Page Update="Views\StaffView\UpdateMedicalExaminationForm.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Views\StaffView\DeleteMedicalExaminationForm.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Views\StaffView\AddMedicalExaminationForm.xaml">
       <SubType>Designer</SubType>
     </Page>
     <Page Update="Views\ShellWindow.xaml">
       <SubType>Designer</SubType>
     </Page>
     <Page Update="Views\SettingsPage.xaml">
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Update="Views\SamplePage6.xaml">
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Update="Views\SamplePage5.xaml">
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Update="Views\SamplePage4.xaml">
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Update="Views\SamplePage3.xaml">
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Update="Views\SamplePage2.xaml">
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Update="Views\SamplePage1.xaml">
       <SubType>Designer</SubType>
     </Page>
   </ItemGroup>
