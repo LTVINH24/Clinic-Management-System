@@ -1,0 +1,38 @@
+<Page
+    x:Class="Clinic_Management_System.Views.MedicalExaminationPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:Clinic_Management_System.Views"
+    xmlns:vm="using:Clinic_Management_System.ViewModel"
+    xmlns:model="using:Clinic_Management_System.Model.DoctorModel"
+    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <!-- ListView hiển thị các phiếu khám -->
+        <ListView ItemsSource="{Binding ExaminationForms}" SelectionChanged="ListView_SelectionChanged" Grid.Row="0">
+            <ListView.ItemTemplate>
+                <DataTemplate x:DataType="model:MedicalExaminationForm">
+                    <StackPanel>
+                        <TextBlock Text="ID:" FontWeight="Bold" />
+                        <TextBlock Text="{x:Bind Id}" />
+                        <TextBlock Text="Time:" FontWeight="Bold" />
+                        <TextBlock Text="{x:Bind Time}" />
+                        <TextBlock Text="Symptom:" FontWeight="Bold" />
+                        <TextBlock Text="{x:Bind Symptom}" />
+                    </StackPanel>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>
+
+        <!-- Các nút điều hướng -->
+        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="10" Grid.Row="1">
+            <Button Content="Previous" Command="{Binding PreviousPageCommand}" Margin="5"/>
+            <Button Content="Next" Command="{Binding NextPageCommand}" Margin="5"/>
+        </StackPanel>
+    </Grid>
+</Page>

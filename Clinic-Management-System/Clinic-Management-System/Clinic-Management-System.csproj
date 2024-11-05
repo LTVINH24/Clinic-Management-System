@@ -12,11 +12,14 @@
     <PublishProfile>win-$(Platform).pubxml</PublishProfile>
     <UseWinUI>true</UseWinUI>
     <EnableMsixTooling>true</EnableMsixTooling>
+	<AllowUnsafeBlocks>True</AllowUnsafeBlocks>
   </PropertyGroup>
   <ItemGroup>
     <None Remove="Dashboard.xaml" />
     <None Remove="Views\adminPage.xaml" />
     <None Remove="Views\doctorPage.xaml" />
+    <None Remove="Views\DoctorView\MedicalExaminationPage.xaml" />
+    <None Remove="Views\DoctorView\MedicineSelectionPage.xaml" />
     <None Remove="Views\SamplePage1.xaml" />
     <None Remove="Views\SamplePage2.xaml" />
     <None Remove="Views\SamplePage3.xaml" />
@@ -56,6 +59,16 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Helper\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Page Update="Views\DoctorView\MedicalExaminationPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+  </ItemGroup>
+  <ItemGroup>
+    <Page Update="Views\DoctorView\MedicineSelectionPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
   </ItemGroup>
   <ItemGroup>
     <Page Update="Views\staffPage.xaml">

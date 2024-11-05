@@ -41,7 +41,7 @@ namespace Clinic_Management_System.Views
 				string selectedTag = selectedItem.Tag.ToString();
 
 
-				switch (selectedTag)
+				/*switch (selectedTag)
 				{
 					case "SamplePage1":
 						contentFrame.Navigate(typeof(SamplePage1));
@@ -63,11 +63,11 @@ namespace Clinic_Management_System.Views
 						break;
 					default:
 						break;
-				}
+				}*/
 			}
 			else
 			{
-				contentFrame.Navigate(typeof(SettingsPage));
+				/*contentFrame.Navigate(typeof(SettingsPage));*/
 			}
 		}
 	}

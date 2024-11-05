@@ -23,7 +23,9 @@
             IsTabStop="False"
             SelectionChanged="NavigationView_SelectionChanged">
             <NavigationView.MenuItems>
-                <NavigationViewItem Content="Home" Icon="Home" ToolTipService.ToolTip="Home" Tag="SamplePage1"/>
+                <NavigationViewItem Content="Medical Examinations" Icon="Document" ToolTipService.ToolTip="Medical Examinations" Tag="MedicalExaminationPage"/>
+                <NavigationViewItem Content="Home" Icon="Home" ToolTipService.ToolTip="Home" Tag="DiagnosisPage"/>
+                <NavigationViewItem Content="Home" Icon="Home" ToolTipService.ToolTip="Home" Tag="MedicineSelectionPage"/>
                 <NavigationViewItem Content="Account" Icon="Contact" ToolTipService.ToolTip="Account" Tag="SamplePage2">
                     <NavigationViewItem.MenuItems>
                         <NavigationViewItem Content="Mail" Icon="Mail" ToolTipService.ToolTip="Mail" Tag="SamplePage3"/>

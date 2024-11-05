@@ -39,13 +39,13 @@ namespace Clinic_Management_System
 
 		private void NavigationView_SelectionChanged(NavigationView sender, NavigationViewSelectionChangedEventArgs args)
 		{
-			if (args.IsSettingsSelected == false && args.SelectedItemContainer is NavigationViewItem selectedItem)
+			/*if (args.IsSettingsSelected == false && args.SelectedItemContainer is NavigationViewItem selectedItem)
 			{
 
 				string selectedTag = selectedItem.Tag.ToString();
 
 
-				switch (selectedTag)
+				*//*switch (selectedTag)
 				{
 					case "SamplePage1":
 						contentFrame.Navigate(typeof(SamplePage1));
@@ -66,13 +66,13 @@ namespace Clinic_Management_System
 						contentFrame.Navigate(typeof(SamplePage6));
 						break;
 					default:
-						break;
+						break;*//*
 				}
 			}
 			else
 			{
-				contentFrame.Navigate(typeof(SettingsPage));
-			}
+				*//*contentFrame.Navigate(typeof(SettingsPage));*//*
+			}*/
 		}
 	}
 }

@@ -1,3 +1,4 @@
+using Clinic_Management_System.Views.DoctorView;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Controls.Primitives;
@@ -43,8 +44,14 @@ namespace Clinic_Management_System.Views
 
 				switch (selectedTag)
 				{
-					case "SamplePage1":
-						contentFrame.Navigate(typeof(SamplePage1));
+                    case "MedicalExaminationPage":
+                        contentFrame.Navigate(typeof(MedicalExaminationPage), contentFrame);
+                        break;
+                    case "DiagnosisPage":
+						contentFrame.Navigate(typeof(DiagnosisPage), contentFrame);
+						break;
+					case "MedicineSelectionPage":
+						contentFrame.Navigate(typeof(MedicineSelectionPage));
 						break;
 					case "SamplePage2":
 						contentFrame.Navigate(typeof(SamplePage2));
