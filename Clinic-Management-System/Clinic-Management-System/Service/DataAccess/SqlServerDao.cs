@@ -4,10 +4,12 @@ using Microsoft.UI.Xaml;
 using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Globalization;
 using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
+using static Clinic_Management_System.Service.DataAccess.IDao;
 
 namespace Clinic_Management_System.Service.DataAccess
 {
@@ -128,6 +130,7 @@ namespace Clinic_Management_System.Service.DataAccess
             string formatDate = currentDate.ToString("yyyy-MM-dd");
 			int id = UserSessionService.Instance.LoggedInUserId;
 
+
 			var command = new SqlCommand("INSERT INTO MedicalExaminationForm (PatientId, StaffId, DoctorId, Time, Symptom) VALUES (@PatientId, @StaffId, @DoctorId, @Time, @Symptom)", connection);
 
 			
@@ -183,6 +186,78 @@ namespace Clinic_Management_System.Service.DataAccess
 
 			connection.Close();
 			return result;
+		}
+
+
+		// Lấy phiếu khám bệnh
+		// Thêm thông tin bệnh nhân
+		public Tuple<List<MedicalExaminationForm>, int> GetMedicalExaminationForm(
+			int page,
+			int rowsPerPage, 
+			string keyword, 
+			Dictionary<string, SortType> sortOptions)
+		{
+			var result = new List<MedicalExaminationForm>();
+			var connectionString = GetConnectionString();
+			SqlConnection connection = new SqlConnection(connectionString);
+			connection.Open();
+
+			string sortString = "ORDER BY ";
+			bool useDefault = true;
+
+			foreach (var item in sortOptions)
+			{
+				useDefault = false;
+				if(item.Key == "patientId")
+				{
+					if (item.Value == SortType.Ascending)
+					{
+						sortString += "patientId ASC, ";
+					}
+					else
+					{
+						sortString += "patientId DESC, ";
+					}
+				}
+			}
+
+			if(useDefault)
+			{
+				sortString +="ID ";
+			}
+
+			var sql = $"""
+				SELECT count(*) over() as Total, id, patientId, staffId, time, symptom, doctorId
+				FROM MedicalExaminationForm
+				WHERE patientId like @Keyword
+				{sortString}
+				OFFSET @Skip ROWS FETCH NEXT @Take ROWS ONLY;
+				""";
+
+			var command = new SqlCommand(sql, connection);
+			AddParameters(command, ("@Skip", (page - 1) * rowsPerPage), ("@Take", rowsPerPage), ("@Keyword", $"%{keyword}%"));
+			var reader = command.ExecuteReader();
+			int count = -1;
+
+			while (reader.Read())
+			{
+				if (count == -1)
+				{
+					count = (int)reader["Total"];
+				}
+
+				var medicalExaminationForm = new MedicalExaminationForm();
+				medicalExaminationForm.Id = (int)reader["id"];
+				medicalExaminationForm.PatientId = (int)reader["patientId"];
+				medicalExaminationForm.StaffId = (int)reader["staffId"];
+				medicalExaminationForm.Time = (DateTime)reader["time"];
+				medicalExaminationForm.Symptoms = (string)reader["symptom"];
+				medicalExaminationForm.DoctorId = (int)reader["doctorId"];
+
+				result.Add(medicalExaminationForm);
+			}
+			connection.Close();
+			return new Tuple<List<MedicalExaminationForm>, int>(result, count);
 		}
 	}
 }

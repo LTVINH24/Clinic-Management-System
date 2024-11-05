@@ -25,7 +25,7 @@ namespace Clinic_Management_System.Views.StaffView
 
 	// Dữ liệu trống (x)
 	// Dữ liệu không đúng định dạng (x)
-	// Dữ liệu nằm ngoài miền giá trị lưu vào database
+	// Dữ liệu không đúng miền giá trị (x)
 
 
 	public sealed partial class AddMedicalExaminationForm : Page
@@ -39,7 +39,6 @@ namespace Clinic_Management_System.Views.StaffView
 			viewModel.AddCompleted += ViewModel_AddCompleted;
 		}
 
-        
 		private void Add_Button(object sender, RoutedEventArgs e)
 		{
             viewModel.AddMedicalExaminationForm();

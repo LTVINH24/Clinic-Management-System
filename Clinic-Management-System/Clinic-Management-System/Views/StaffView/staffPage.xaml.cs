@@ -45,7 +45,7 @@ namespace Clinic_Management_System.Views
 				switch (selectedTag)
 				{
 					case "homeStaff":
-						contentFrame.Navigate(typeof(homeStaff));
+						contentFrame.Navigate(typeof(listMedicalExaminationForm));
 						break;
 					case "AddMedicalExaminationForm":
 						contentFrame.Navigate(typeof(AddMedicalExaminationForm));

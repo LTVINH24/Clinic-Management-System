@@ -13,7 +13,7 @@ namespace Clinic_Management_System.Model
 		public int PatientId { get; set; }  
 		public int StaffId { get; set; }    
 		public int DoctorId { get; set; }  
-		public string Time { get; set; }
+		public DateTimeOffset? Time { get; set; }
 		public string Symptoms { get; set; }
 
 

@@ -11,6 +11,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Net.Mail;
 using Clinic_Management_System.Helper;
+using static Clinic_Management_System.Service.DataAccess.IDao;
 
 namespace Clinic_Management_System.ViewModel
 {
@@ -206,5 +207,7 @@ namespace Clinic_Management_System.ViewModel
 			SpecialtyFilter = null;
 			LoadDoctors();
 		}
+		//==================================List MedicalExaminationForm===============================
+		
 	}
 }

@@ -20,6 +20,7 @@
     <None Remove="Views\StaffView\AddMedicalExaminationForm.xaml" />
     <None Remove="Views\StaffView\DeleteMedicalExaminationForm.xaml" />
     <None Remove="Views\StaffView\homeStaff.xaml" />
+    <None Remove="Views\StaffView\listMedicalExaminationForm.xaml" />
     <None Remove="Views\StaffView\UpdateMedicalExaminationForm.xaml" />
     
   </ItemGroup>
@@ -49,6 +50,11 @@
   -->
   <ItemGroup Condition="'$(DisableMsixProjectCapabilityAddedByProject)'!='true' and '$(EnableMsixTooling)'=='true'">
     <ProjectCapability Include="Msix" />
+  </ItemGroup>
+  <ItemGroup>
+    <Page Update="Views\StaffView\listMedicalExaminationForm.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
   </ItemGroup>
   <ItemGroup>
     <Page Update="Views\StaffView\homeStaff.xaml">

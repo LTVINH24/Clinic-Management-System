@@ -30,5 +30,10 @@ namespace Clinic_Management_System.Service.DataAccess
 		bool AddMedicalExaminationForm(int patientId, MedicalExaminationForm medicalExaminationForm);
 		public List<Doctor> GetInforDoctor();
 		(bool, int) checkPatientExists(string residentId);
+		public Tuple<List<MedicalExaminationForm>, int> GetMedicalExaminationForm(
+			int page,
+			int rowsPerPage,
+			string keyword,
+			Dictionary<string, SortType> sortOptions);
 	}
 }

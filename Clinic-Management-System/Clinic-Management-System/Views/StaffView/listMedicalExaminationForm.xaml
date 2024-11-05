@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Page
+    x:Class="Clinic_Management_System.Views.StaffView.listMedicalExaminationForm"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:Clinic_Management_System.Views.StaffView"
+    xmlns:localmodel="using:Clinic_Management_System.Model"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+
+    <Page.Resources>
+        <DataTemplate x:Key="HorizontalUser" x:DataType="localmodel:MedicalExaminationForm">
+            <Border BorderThickness="1" BorderBrush="#b5b5e8">
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Width="100" Margin="20" Text="{x:Bind Id}" ></TextBlock>
+                    <TextBlock Width="100" Margin="20" Text="{x:Bind PatientId}" ></TextBlock>
+                    <TextBlock Width="100" Margin="20" Text="{x:Bind StaffId}" ></TextBlock>
+                    <TextBlock Width="100" Margin="20" Text="{x:Bind Time}" ></TextBlock>
+                    <TextBlock Width="100" Margin="20" Text="{x:Bind DoctorId}" ></TextBlock>
+                    <TextBlock Width="100" Margin="20" Text="{x:Bind Symptoms}" ></TextBlock>
+                </StackPanel>
+            </Border>
+        </DataTemplate>
+    </Page.Resources>
+
+    <Grid VerticalAlignment="Stretch">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*" />
+            <RowDefinition Height="70" />
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="3*" />
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+
+
+        <StackPanel>
+
+            <StackPanel Margin ="35,0,0,20"  Orientation="Horizontal" HorizontalAlignment="Left">
+                <TextBlock FontWeight="Bold" FontSize="20" Width="140">ID</TextBlock>
+                <TextBlock FontWeight="Bold" FontSize="20"  Width="140">Patient ID</TextBlock>
+                <TextBlock FontWeight="Bold" FontSize="20"  Width="140">Staff ID</TextBlock>
+                <TextBlock FontWeight="Bold" FontSize="20"  Width="140">Time</TextBlock>
+                <TextBlock FontWeight="Bold" FontSize="20"  Width="140">Doctor ID</TextBlock>
+                <TextBlock FontWeight="Bold" FontSize="20"  Width="140">Symptoms</TextBlock>
+            </StackPanel>
+
+            <ListView Name="itemsComboBox" Margin="0,10,0,0"
+                SelectionChanged="medicalExaminationFormList_SelectionChanged"
+                ItemsSource="{Binding MedicalExaminationForms, Mode=TwoWay}"
+                ItemTemplate="{StaticResource HorizontalUser}">
+            </ListView>
+
+
+        </StackPanel>
+
+        <StackPanel Margin="0"  Grid.Row="1" Grid.Column="0" Orientation="Horizontal" VerticalAlignment="Bottom" HorizontalAlignment="Center">
+            <Button  Click="previousButton_Click" >
+                <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xE76B;"/>
+            </Button>
+            <StackPanel Orientation="Vertical">
+                <TextBlock TextAlignment="Center" Width="60" FontSize="16" >
+                    <Run Text="{x:Bind ViewModel.SelectedPageInfoItem.Page ,Mode=OneWay}"/> of <Run Text="{x:Bind ViewModel.SelectedPageInfoItem.Total, Mode=OneWay}"/>
+                </TextBlock>
+                <ComboBox ItemsSource="{Binding PageInfos, Mode=OneWay}"
+                    SelectedItem="{x:Bind ViewModel.SelectedPageInfoItem, Mode=TwoWay}"
+                    SelectionChanged="pagesComboBox_SelectionChanged"
+                    Margin="5" Name="pagesComboBox" Width="100" Height="30">        
+                    <ComboBox.ItemTemplate>
+                        <DataTemplate x:DataType="localmodel:PageInfo">
+                            <TextBlock >
+                                <Run Text="{x:Bind Page,Mode=OneWay}"/>/<Run Text="{x:Bind Total, Mode=OneWay}"/>
+                            </TextBlock>
+                        </DataTemplate>
+                    </ComboBox.ItemTemplate>
+                </ComboBox>
+            </StackPanel>
+
+            <Button  Click="nextButton_Click" >
+                <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xE76C;"/>
+            </Button>
+        </StackPanel>
+
+
+    </Grid>
+
+
+</Page>
