@@ -22,5 +22,14 @@ namespace Clinic_Management_System.Views.DoctorView
                 ((DiagnosisViewModel)this.DataContext).LoadData(selectedForm.Id);
             }
         }
+
+        private void BackButton_Click(object sender, Microsoft.UI.Xaml.RoutedEventArgs e)
+        {
+            // Điều hướng trở về DoctorPage
+            if (Frame.CanGoBack)
+            {
+                Frame.GoBack();
+            }
+        }
     }
 }

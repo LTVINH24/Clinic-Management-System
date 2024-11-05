@@ -7,32 +7,52 @@
     xmlns:model="using:Clinic_Management_System.Model.DoctorModel"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
-    <Grid>
+    <Grid Padding="20">
         <Grid.RowDefinitions>
             <RowDefinition Height="*"/>
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
 
         <!-- ListView hiển thị các phiếu khám -->
-        <ListView ItemsSource="{Binding ExaminationForms}" SelectionChanged="ListView_SelectionChanged" Grid.Row="0">
+        <ListView ItemsSource="{Binding ExaminationForms}" 
+                  SelectionChanged="ListView_SelectionChanged" 
+                  Grid.Row="0"
+                  Margin="0,0,0,10"
+                  Background="White"
+                  BorderBrush="{ThemeResource SystemAccentColor}"
+                  BorderThickness="1"
+                  CornerRadius="8"
+                  Padding="10">
             <ListView.ItemTemplate>
                 <DataTemplate x:DataType="model:MedicalExaminationForm">
-                    <StackPanel>
-                        <TextBlock Text="ID:" FontWeight="Bold" />
-                        <TextBlock Text="{x:Bind Id}" />
-                        <TextBlock Text="Time:" FontWeight="Bold" />
-                        <TextBlock Text="{x:Bind Time}" />
-                        <TextBlock Text="Symptom:" FontWeight="Bold" />
-                        <TextBlock Text="{x:Bind Symptom}" />
-                    </StackPanel>
+                    <Border BorderBrush="{ThemeResource SystemAccentColor}" 
+                            BorderThickness="0,0,0,1" 
+                            Padding="10">
+                        <StackPanel>
+                            <TextBlock Text="Examination ID:" FontWeight="Bold" Foreground="Gray"/>
+                            <TextBlock Text="{x:Bind Id}" FontSize="16" Margin="0,0,0,10"/>
+
+                            <TextBlock Text="Time:" FontWeight="Bold" Foreground="Gray"/>
+                            <TextBlock Text="{x:Bind Time}" FontSize="16" Margin="0,0,0,10"/>
+
+                            <TextBlock Text="Symptom:" FontWeight="Bold" Foreground="Gray"/>
+                            <TextBlock Text="{x:Bind Symptom}" FontSize="16" TextWrapping="Wrap"/>
+                        </StackPanel>
+                    </Border>
                 </DataTemplate>
             </ListView.ItemTemplate>
         </ListView>
 
         <!-- Các nút điều hướng -->
-        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="10" Grid.Row="1">
-            <Button Content="Previous" Command="{Binding PreviousPageCommand}" Margin="5"/>
-            <Button Content="Next" Command="{Binding NextPageCommand}" Margin="5"/>
+        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Grid.Row="1" Margin="0,20,0,0">
+            <Button Content="Previous" Command="{Binding PreviousPageCommand}" 
+                    Width="100" 
+                    Style="{StaticResource AccentButtonStyle}" 
+                    Margin="5"/>
+            <Button Content="Next" Command="{Binding NextPageCommand}" 
+                    Width="100" 
+                    Style="{StaticResource AccentButtonStyle}" 
+                    Margin="5"/>
         </StackPanel>
     </Grid>
 </Page>

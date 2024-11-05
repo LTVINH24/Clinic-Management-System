@@ -15,15 +15,21 @@
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
-
-
+        <!--
+            <TextBlock Grid.Row="1" Text="Welcome Back!" FontSize="24" FontWeight="Bold" Foreground="{ThemeResource SystemAccentColor}" 
+                HorizontalAlignment="Left" Margin="20,20,0,10"/>
+        -->
+        
         <NavigationView x:Name="nvSample" Grid.Row="1" 
             IsPaneOpen="False"
             PaneDisplayMode="Left"
             IsTabStop="False"
-            SelectionChanged="NavigationView_SelectionChanged">
+            SelectionChanged="NavigationView_SelectionChanged"
+            Background="#FFB5B5E8">
+            
             <NavigationView.MenuItems>
                 <NavigationViewItem Content="Medical Examinations" Icon="Document" ToolTipService.ToolTip="Medical Examinations" Tag="MedicalExaminationPage"/>
+                <!-- 
                 <NavigationViewItem Content="Home" Icon="Home" ToolTipService.ToolTip="Home" Tag="DiagnosisPage"/>
                 <NavigationViewItem Content="Home" Icon="Home" ToolTipService.ToolTip="Home" Tag="MedicineSelectionPage"/>
                 <NavigationViewItem Content="Account" Icon="Contact" ToolTipService.ToolTip="Account" Tag="SamplePage2">
@@ -38,6 +44,7 @@
                         <NavigationViewItem Content="Upload file" Icon="OpenLocal" ToolTipService.ToolTip="Upload file" Tag="SamplePage6"/>
                     </NavigationViewItem.MenuItems>
                 </NavigationViewItem>
+                -->
             </NavigationView.MenuItems>
             <Frame x:Name="contentFrame" />
         </NavigationView>

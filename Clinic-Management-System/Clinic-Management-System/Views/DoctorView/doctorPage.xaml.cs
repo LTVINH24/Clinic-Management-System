@@ -47,7 +47,7 @@ namespace Clinic_Management_System.Views
                     case "MedicalExaminationPage":
                         contentFrame.Navigate(typeof(MedicalExaminationPage), contentFrame);
                         break;
-                    case "DiagnosisPage":
+                    /*case "DiagnosisPage":
 						contentFrame.Navigate(typeof(DiagnosisPage), contentFrame);
 						break;
 					case "MedicineSelectionPage":
@@ -68,6 +68,7 @@ namespace Clinic_Management_System.Views
 					case "SamplePage6":
 						contentFrame.Navigate(typeof(SamplePage6));
 						break;
+					*/
 					default:
 						break;
 				}
