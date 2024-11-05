@@ -141,9 +141,11 @@ namespace Clinic_Management_System.ViewModel
         } 
         public bool Update()
         {
+            string temp = UserEdit.password;
             var (password, entropyUserEdit) = UserViewModel.EncryptPassword(UserEdit.password);
             UserEdit.password = password;
             bool sucess=_dao.UpdateUser(UserEdit, entropyUserEdit);
+            UserEdit.password = temp;
             return sucess;
         }
         public void Delete()

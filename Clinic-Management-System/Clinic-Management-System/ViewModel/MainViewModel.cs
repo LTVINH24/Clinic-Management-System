@@ -35,6 +35,7 @@ namespace Clinic_Management_System.ViewModel
             if (role != "")
             {
                 LoginCompleted?.Invoke(role);
+                UserSessionService.Instance.SetLoggedInUserId(id);
                 return true;
             }
             else
