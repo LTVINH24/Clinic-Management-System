@@ -14,6 +14,18 @@
     <Page Update="Views\StaffView\listMedicalExaminationForm.xaml">
       <SubType>Designer</SubType>
     </Page>
+    <Page Update="Views\AdminView\listAccount.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Views\AdminView\settingAdmin.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Views\AdminView\homeAdmin.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Views\AdminView\addAccount.xaml">
+      <SubType>Designer</SubType>
+    </Page>
     <Page Update="Views\StaffView\homeStaff.xaml">
       <SubType>Designer</SubType>
     </Page>

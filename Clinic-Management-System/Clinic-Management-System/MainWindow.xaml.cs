@@ -12,6 +12,8 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
+using System.Security.Cryptography;
+using System.Text;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
 using Windows.Networking.Vpn;
@@ -32,10 +34,20 @@ namespace Clinic_Management_System
 			viewModel.LoginCompleted += OnLoginCompleted;
 
         }
-		public MainViewModel viewModel { get;set; }=new MainViewModel();
+        private void Window_Activated(object sender, WindowActivatedEventArgs args)
+        {
+			viewModel.LoadPassword(usernameTextbox, passwordBox);
+        }
+        public MainViewModel viewModel { get;set; }=new MainViewModel();
         public void Login_Click(object sender, RoutedEventArgs e)
 		{
-			viewModel.Authentication(viewModel.UserLogin);
+			if (rememberPassword.IsChecked == true) {
+				viewModel.SavePassWord(viewModel.UserLogin);
+			}
+            else
+            {
+            viewModel.Authentication(viewModel.UserLogin);
+            }
         }
 		private void OnLoginCompleted(string isSuccess)
 		{

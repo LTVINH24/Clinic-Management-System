@@ -16,6 +16,12 @@
   <ItemGroup>
     <None Remove="Dashboard.xaml" />
     <None Remove="Views\SettingsPage.xaml" />
+    <None Remove="Views\adminPage.xaml" />
+    <None Remove="Views\AdminView\addAccount.xaml" />
+    <None Remove="Views\AdminView\homeAdmin.xaml" />
+    <None Remove="Views\AdminView\listAccount.xaml" />
+    <None Remove="Views\AdminView\settingAdmin.xaml" />
+    <None Remove="Views\doctorPage.xaml" />
     <None Remove="Views\staffPage.xaml" />
     <None Remove="Views\StaffView\AddMedicalExaminationForm.xaml" />
     <None Remove="Views\StaffView\DeleteMedicalExaminationForm.xaml" />
@@ -24,6 +30,7 @@
     <None Remove="Views\StaffView\UpdateMedicalExaminationForm.xaml" />
     
   </ItemGroup>
+
 
   <ItemGroup>
     <Content Include="Assets\SplashScreen.scale-200.png" />
@@ -34,6 +41,7 @@
     <Content Include="Assets\StoreLogo.png" />
     <Content Include="Assets\Wide310x150Logo.scale-200.png" />
   </ItemGroup>
+
 
   <ItemGroup>
     <PackageReference Include="Microsoft.Data.SqlClient" Version="5.2.2" />
@@ -51,46 +59,104 @@
   <ItemGroup Condition="'$(DisableMsixProjectCapabilityAddedByProject)'!='true' and '$(EnableMsixTooling)'=='true'">
     <ProjectCapability Include="Msix" />
   </ItemGroup>
+  
+  
   <ItemGroup>
     <Page Update="Views\StaffView\listMedicalExaminationForm.xaml">
+          <Generator>MSBuild:Compile</Generator>
+    </Page>
+  </ItemGroup>
+  
+  
+  <ItemGroup>
+    <Page Update="Views\AdminView\listAccount.xaml">
       <Generator>MSBuild:Compile</Generator>
     </Page>
   </ItemGroup>
+  
+  
   <ItemGroup>
     <Page Update="Views\StaffView\homeStaff.xaml">
+          <Generator>MSBuild:Compile</Generator>
+    </Page>
+  </ItemGroup>
+    
+    
+  <ItemGroup>
+    <Page Update="Views\AdminView\settingAdmin.xaml">
       <Generator>MSBuild:Compile</Generator>
     </Page>
   </ItemGroup>
+  
+  
   <ItemGroup>
     <Page Update="Views\StaffView\UpdateMedicalExaminationForm.xaml">
       <Generator>MSBuild:Compile</Generator>
     </Page>
   </ItemGroup>
+  
+  
+  <ItemGroup>
+    <Page Update="Views\AdminView\homeAdmin.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+  </ItemGroup>
+  
+  
   <ItemGroup>
     <Page Update="Views\StaffView\DeleteMedicalExaminationForm.xaml">
       <Generator>MSBuild:Compile</Generator>
     </Page>
   </ItemGroup>
+  
   <ItemGroup>
     <Page Update="Views\StaffView\AddMedicalExaminationForm.xaml">
       <Generator>MSBuild:Compile</Generator>
     </Page>
   </ItemGroup>
+  
+  <ItemGroup>
+    <Page Update="Views\AdminView\addAccount.xaml">]
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+  </ItemGroup>
+  
+  
   <ItemGroup>
     <Page Update="Views\staffPage.xaml">
       <Generator>MSBuild:Compile</Generator>
     </Page>
   </ItemGroup>
   
+  
   <ItemGroup>
     <Page Update="Views\SettingsPage.xaml">
       <Generator>MSBuild:Compile</Generator>
     </Page>
   </ItemGroup>
+  
+  
+  <ItemGroup>
+    <Page Update="Views\doctorPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+  </ItemGroup>
+  
+  <ItemGroup>
+    <Page Update="Views\adminPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+  </ItemGroup>
+  
+  
   <ItemGroup>
     <Page Update="Dashboard.xaml">
       <Generator>MSBuild:Compile</Generator>
     </Page>
+  </ItemGroup>
+  
+  <ItemGroup>
+    <Folder Include="Helper\" />
   </ItemGroup>
 
   <!--

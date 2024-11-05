@@ -14,3 +14,4 @@ namespace Clinic_Management_System.Model
 		public event PropertyChangedEventHandler PropertyChanged;
 	}
 }
+

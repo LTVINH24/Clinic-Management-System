@@ -1,4 +1,4 @@
-using Clinic_Management_System.Views.StaffView;
+using Clinic_Management_System.Views.AdminView;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Controls.Primitives;
@@ -22,9 +22,9 @@ namespace Clinic_Management_System.Views
 	/// <summary>
 	/// An empty page that can be used on its own or navigated to within a Frame.
 	/// </summary>
-	public sealed partial class staffPage : Page
+	public sealed partial class adminPage : Page
 	{
-		public staffPage()
+		public adminPage()
 		{
 			this.InitializeComponent();
 
@@ -40,33 +40,27 @@ namespace Clinic_Management_System.Views
 			{
 
 				string selectedTag = selectedItem.Tag.ToString();
-				
+
+
 				switch (selectedTag)
 				{
-					case "homeStaff":
-						contentFrame.Navigate(typeof(listMedicalExaminationForm));
+					case "addAccount":
+						contentFrame.Navigate(typeof(addAccount));
 						break;
-					case "AddMedicalExaminationForm":
-						contentFrame.Navigate(typeof(AddMedicalExaminationForm));
+					case "homeAdmin":
+						contentFrame.Navigate(typeof(homeAdmin));
 						break;
-					case "DeleteMedicalExaminationForm":
-						contentFrame.Navigate(typeof(DeleteMedicalExaminationForm));
-						break;
-					case "UpdateMedicalExaminationForm":
-						contentFrame.Navigate(typeof(UpdateMedicalExaminationForm));
-						break;
-					default:
+                    case "listAccount":
+                        contentFrame.Navigate(typeof(listAccount));
+                        break;
+                    default:
 						break;
 				}
 			}
 			else
 			{
-				contentFrame.Navigate(typeof(SettingsPage));
+				contentFrame.Navigate(typeof(settingAdmin));
 			}
-			//else
-			//{
-			//	contentFrame.Navigate(typeof(SettingsPage));
-			//}
 		}
 	}
 }

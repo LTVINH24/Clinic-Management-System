@@ -1,4 +1,3 @@
-using Clinic_Management_System.Views.StaffView;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Controls.Primitives;
@@ -22,9 +21,9 @@ namespace Clinic_Management_System.Views
 	/// <summary>
 	/// An empty page that can be used on its own or navigated to within a Frame.
 	/// </summary>
-	public sealed partial class staffPage : Page
+	public sealed partial class doctorPage : Page
 	{
-		public staffPage()
+		public doctorPage()
 		{
 			this.InitializeComponent();
 
@@ -40,28 +39,31 @@ namespace Clinic_Management_System.Views
 			{
 
 				string selectedTag = selectedItem.Tag.ToString();
-				
-				switch (selectedTag)
-				{
-					case "homeStaff":
-						contentFrame.Navigate(typeof(listMedicalExaminationForm));
-						break;
-					case "AddMedicalExaminationForm":
-						contentFrame.Navigate(typeof(AddMedicalExaminationForm));
-						break;
-					case "DeleteMedicalExaminationForm":
-						contentFrame.Navigate(typeof(DeleteMedicalExaminationForm));
-						break;
-					case "UpdateMedicalExaminationForm":
-						contentFrame.Navigate(typeof(UpdateMedicalExaminationForm));
-						break;
-					default:
-						break;
-				}
-			}
-			else
-			{
-				contentFrame.Navigate(typeof(SettingsPage));
+
+
+				//switch (selectedTag)
+				//{
+				//	case "SamplePage1":
+				//		contentFrame.Navigate(typeof(SamplePage1));
+				//		break;
+				//	case "SamplePage2":
+				//		contentFrame.Navigate(typeof(SamplePage2));
+				//		break;
+				//	case "SamplePage3":
+				//		contentFrame.Navigate(typeof(SamplePage3));
+				//		break;
+				//	case "SamplePage4":
+				//		contentFrame.Navigate(typeof(SamplePage4));
+				//		break;
+				//	case "SamplePage5":
+				//		contentFrame.Navigate(typeof(SamplePage5));
+				//		break;
+				//	case "SamplePage6":
+				//		contentFrame.Navigate(typeof(SamplePage6));
+				//		break;
+				//	default:
+				//		break;
+				//}
 			}
 			//else
 			//{

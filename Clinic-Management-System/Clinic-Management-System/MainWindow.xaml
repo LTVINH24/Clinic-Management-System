@@ -6,10 +6,7 @@
     xmlns:local="using:Clinic_Management_System"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    mc:Ignorable="d"
-    
-    >
-    
+    mc:Ignorable="d" Activated="Window_Activated">
 
     <Border  CornerRadius="10" BorderThickness="1.5" BorderBrush="#43f196" Background="{ThemeResource ApplicationPageBackgroundThemeBrush}" HorizontalAlignment="Center" VerticalAlignment="Center" >
         <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
@@ -22,8 +19,8 @@
             </Border>
             <StackPanel VerticalAlignment="Center" Margin="50,0,50,0" >
                 <Image VerticalAlignment="Top" Source="Assets/hopital.png"></Image>
-                <TextBox Margin="0,60,0,30" Header="Enter your Username:" PlaceholderText="Username" Text="{x:Bind viewModel.UserLogin.Username, Mode=TwoWay}"/>
-                <PasswordBox Margin="0,0,0,30" Width="300" Header="Password" PlaceholderText="Enter your password" PasswordChar="*" Password="{x:Bind viewModel.UserLogin.Password, Mode=TwoWay}"/>
+                <TextBox Name="usernameTextbox" Margin="0,60,0,30" Header="Enter your Username:" PlaceholderText="Username" Text="{x:Bind viewModel.UserLogin.Username, Mode=TwoWay}"/>
+                <PasswordBox Name="passwordBox" Margin="0,0,0,30" Width="300" Header="Password" PlaceholderText="Enter your password" PasswordChar="*" Password="{x:Bind viewModel.UserLogin.Password, Mode=TwoWay}"/>
                 <Grid Padding="20,0,20,0">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="Auto"/>
@@ -32,7 +29,7 @@
                         <ColumnDefinition Width="*" />
                         <ColumnDefinition Width="*" />
                     </Grid.ColumnDefinitions>
-                    <CheckBox Grid.Column="0">Remember me</CheckBox>
+                    <CheckBox Name="rememberPassword" Grid.Column="0">Remember me</CheckBox>
                     <Button Click="Login_Click" FontWeight="Bold" Background="#a7a7eb" Width="80" HorizontalAlignment="Right" Grid.Column="1">Login</Button>
                 </Grid>
             </StackPanel>
