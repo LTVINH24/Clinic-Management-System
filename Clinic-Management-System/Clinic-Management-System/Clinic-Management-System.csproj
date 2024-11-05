@@ -116,7 +116,7 @@
   </ItemGroup>
   
   <ItemGroup>
-    <Page Update="Views\AdminView\addAccount.xaml">]
+    <Page Update="Views\AdminView\addAccount.xaml">
       <Generator>MSBuild:Compile</Generator>
     </Page>
   </ItemGroup>
