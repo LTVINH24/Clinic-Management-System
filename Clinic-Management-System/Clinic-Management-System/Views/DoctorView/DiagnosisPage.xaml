@@ -1,0 +1,84 @@
+﻿<Page
+    x:Class="Clinic_Management_System.Views.DoctorView.DiagnosisPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:Clinic_Management_System.Views.DoctorView"
+    xmlns:vm="using:Clinic_Management_System.ViewModel"
+    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+
+    <Grid Padding="20">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <!-- Header -->
+        <TextBlock Text="Diagnosis Information"
+                   FontSize="24"
+                   FontWeight="Bold"
+                   Foreground="{ThemeResource SystemAccentColor}"
+                   Margin="0,0,0,20"/>
+
+        <!-- Nội dung thông tin và chẩn đoán -->
+        <StackPanel Grid.Row="1" Spacing="15">
+            <!-- Thông tin phiếu khám -->
+            <StackPanel Orientation="Horizontal" Spacing="10">
+                <TextBlock Text="Examination ID:" FontWeight="SemiBold" Foreground="Gray"/>
+                <TextBlock Text="{Binding MedicalExaminationForm.Id}" FontWeight="Normal"/>
+            </StackPanel>
+
+            <StackPanel Orientation="Horizontal" Spacing="10">
+                <TextBlock Text="Time:" FontWeight="SemiBold" Foreground="Gray"/>
+                <TextBlock Text="{Binding MedicalExaminationForm.Time}" FontWeight="Normal"/>
+            </StackPanel>
+
+            <StackPanel Orientation="Horizontal" Spacing="10">
+                <TextBlock Text="Symptom:" FontWeight="SemiBold" Foreground="Gray"/>
+                <TextBlock Text="{Binding MedicalExaminationForm.Symptom}" FontWeight="Normal" TextWrapping="Wrap"/>
+            </StackPanel>
+
+            <!-- Nhập liệu chẩn đoán -->
+            <TextBlock Text="Diagnosis:" FontWeight="SemiBold" Margin="0,20,0,5"/>
+            <TextBox Text="{Binding MedicalRecord.Diagnosis, Mode=TwoWay}" 
+                     AcceptsReturn="True" 
+                     Height="100" 
+                     PlaceholderText="Enter diagnosis details" 
+                     Padding="10"
+                     BorderBrush="{ThemeResource SystemAccentColor}"
+                     BorderThickness="1"/>
+
+            <!-- Danh sách thuốc
+            <TextBlock Text="Select Medicines" FontSize="18" FontWeight="SemiBold" Margin="0,20,0,5"/>
+            <ListView x:Name="MedicinesListView" ItemsSource="{Binding Medicines}" SelectionMode="Multiple">
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <StackPanel Orientation="Horizontal" Spacing="10" VerticalAlignment="Center">
+                            <CheckBox x:Name="SelectCheckBox" Content="{Binding Name}" Margin="5"/>
+                            <TextBox Width="50" PlaceholderText="Qty" Margin="5"
+                                     Text="{Binding QuantityUsed, Mode=TwoWay}"
+                                     BorderBrush="{ThemeResource SystemAccentColor}"/>
+                            <TextBox Width="100" PlaceholderText="Dosage" Margin="5"
+                                     Text="{Binding Dosage, Mode=TwoWay}"
+                                     BorderBrush="{ThemeResource SystemAccentColor}"/>
+                        </StackPanel>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+            -->
+        </StackPanel>
+        
+
+        <!-- Nút lưu và quay lại -->
+        <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Center" Spacing="20" Margin="0,20,0,0">
+            <Button Content="Save" Command="{Binding SaveCommand}" 
+                    Style="{StaticResource AccentButtonStyle}" 
+                    HorizontalAlignment="Center" 
+                    Width="100"/>
+            <Button Content="Back" Click="BackButton_Click" 
+                    Style="{StaticResource DefaultButtonStyle}" 
+                    HorizontalAlignment="Center" 
+                    Width="100"/>
+        </StackPanel>
+    </Grid>
+</Page>

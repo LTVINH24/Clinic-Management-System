@@ -1,0 +1,22 @@
+<Page
+    x:Class="Clinic_Management_System.Views.DoctorView.MedicineSelectionPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:model="using:Clinic_Management_System.Model"
+    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+
+    <StackPanel>
+        <ListView ItemsSource="{Binding Medicines}">
+            <ListView.ItemTemplate>
+                <DataTemplate x:DataType="model:Medicine">
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="{x:Bind Name}" Margin="0,0,10,0"/>
+                        <TextBox PlaceholderText="Quantity" Text="{x:Bind Quantity, Mode=TwoWay}" Width="50"/>
+                        <TextBox PlaceholderText="Dosage" Text="{x:Bind Dosage, Mode=TwoWay}" Width="150"/>
+                    </StackPanel>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>
+        <Button Content="Confirm Selection" Command="{Binding ConfirmSelectionCommand}" HorizontalAlignment="Center" Margin="10"/>
+    </StackPanel>
+</Page>

@@ -17,7 +17,7 @@
                     <TextBlock Width="100" Margin="20" Text="{x:Bind Id}" ></TextBlock>
                     <TextBlock Width="100" Margin="20" Text="{x:Bind PatientId}" ></TextBlock>
                     <TextBlock Width="100" Margin="20" Text="{x:Bind StaffId}" ></TextBlock>
-                    <TextBlock Width="100" Margin="20" Text="{x:Bind Time}" ></TextBlock>
+                    <TextBlock Width="140" Margin="20" Text="{x:Bind Time}" ></TextBlock>
                     <TextBlock Width="100" Margin="20" Text="{x:Bind DoctorId}" ></TextBlock>
                     <TextBlock Width="100" Margin="20" Text="{x:Bind Symptoms}" ></TextBlock>
                 </StackPanel>
@@ -42,7 +42,7 @@
                 <TextBlock FontWeight="Bold" FontSize="20" Width="140">ID</TextBlock>
                 <TextBlock FontWeight="Bold" FontSize="20"  Width="140">Patient ID</TextBlock>
                 <TextBlock FontWeight="Bold" FontSize="20"  Width="140">Staff ID</TextBlock>
-                <TextBlock FontWeight="Bold" FontSize="20"  Width="140">Time</TextBlock>
+                <TextBlock FontWeight="Bold" FontSize="20"  Width="180">Time</TextBlock>
                 <TextBlock FontWeight="Bold" FontSize="20"  Width="140">Doctor ID</TextBlock>
                 <TextBlock FontWeight="Bold" FontSize="20"  Width="140">Symptoms</TextBlock>
             </StackPanel>

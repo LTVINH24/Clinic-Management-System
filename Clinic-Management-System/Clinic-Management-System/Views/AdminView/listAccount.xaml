@@ -34,7 +34,7 @@
         <StackPanel Grid.Row="0" Grid.Column="0" Margin="40,20,40,0">
             <StackPanel Margin ="35,0,0,20"  Orientation="Horizontal" HorizontalAlignment="Left">
                 <TextBlock FontWeight="Bold" FontSize="20" Width="140">ID</TextBlock>
-                <TextBlock FontWeight="Bold" FontSize="20"  Width="140">Name</TextBlock>
+                <TextBlock FontWeight="Bold" FontSize="20"  Width="190">Name</TextBlock>
                 <TextBlock FontWeight="Bold" FontSize="20"  Width="140">Gender</TextBlock>
                 <TextBlock FontWeight="Bold" FontSize="20"  Width="140">Phone</TextBlock>
                 <TextBlock FontWeight="Bold" FontSize="20"  Width="140">Role</TextBlock>
