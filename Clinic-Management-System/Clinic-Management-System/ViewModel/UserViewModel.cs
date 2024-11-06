@@ -25,15 +25,19 @@ namespace Clinic_Management_System.ViewModel
         public string CreateUser(User user)
         {
             string error = valid.IsNotValid(user);
-            if(_dao.CheckUserExists(user.username))
-            {
-                return "Username already exists";
-            }
+            
             if (error == "")
             {
+                if (_dao.CheckUserExists(user.username))
+                {
+                    return "Username already exists";
+                }
+                else
+                {
                 var (encryptedPasswordInBase64, entropyInBase64) = EncryptPassword(user.password); 
                 var success=_dao.CreateUser(user,encryptedPasswordInBase64,entropyInBase64);
                 return success?"":"Create false";
+                }    
             }
             else
             {
