@@ -16,7 +16,6 @@
   </PropertyGroup>
   <ItemGroup>
     <None Remove="Dashboard.xaml" />
-    <None Remove="Views\adminPage.xaml" />
     <None Remove="Views\doctorPage.xaml" />
     <None Remove="Views\DoctorView\MedicalExaminationPage.xaml" />
     <None Remove="Views\DoctorView\MedicineSelectionPage.xaml" />
@@ -27,7 +26,6 @@
     <None Remove="Views\SamplePage5.xaml" />
     <None Remove="Views\SamplePage6.xaml" />
     <None Remove="Views\SettingsPage.xaml" />
-    <None Remove="Views\staffPage.xaml" />
     
   </ItemGroup>
 
@@ -71,17 +69,7 @@
     </Page>
   </ItemGroup>
   <ItemGroup>
-    <Page Update="Views\staffPage.xaml">
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-  </ItemGroup>
-  <ItemGroup>
     <Page Update="Views\doctorPage.xaml">
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-  </ItemGroup>
-  <ItemGroup>
-    <Page Update="Views\adminPage.xaml">
       <Generator>MSBuild:Compile</Generator>
     </Page>
   </ItemGroup>

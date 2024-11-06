@@ -17,12 +17,6 @@
     <Page Update="Views\DoctorView\MedicineSelectionPage.xaml">
       <SubType>Designer</SubType>
     </Page>
-    <Page Update="Views\staffPage.xaml">
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Update="Views\adminPage.xaml">
-      <SubType>Designer</SubType>
-    </Page>
     <Page Update="Views\ShellWindow.xaml">
       <SubType>Designer</SubType>
     </Page>
