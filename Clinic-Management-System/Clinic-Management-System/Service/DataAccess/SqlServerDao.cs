@@ -1,4 +1,4 @@
-﻿using Clinic_Management_System.Model.DoctorModel;
+﻿using Clinic_Management_System.Model;
 using Microsoft.Data.SqlClient;
 using System;
 using System.Collections.Generic;

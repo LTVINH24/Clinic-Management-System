@@ -1,4 +1,5 @@
-﻿using Clinic_Management_System.ViewModel;
+﻿using Clinic_Management_System.Model;
+using Clinic_Management_System.ViewModel;
 using Clinic_Management_System.Views.DoctorView;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Navigation;
@@ -30,7 +31,7 @@ namespace Clinic_Management_System.Views
 
         private void ListView_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            if (sender is ListView listView && listView.SelectedItem is Model.DoctorModel.MedicalExaminationForm selectedForm)
+            if (sender is ListView listView && listView.SelectedItem is MedicalExaminationForm selectedForm)
             {
                 // Sử dụng NavigationFrame của ViewModel để điều hướng
                 ((MedicalExaminationViewModel)this.DataContext).NavigateToDiagnosisPage(selectedForm);

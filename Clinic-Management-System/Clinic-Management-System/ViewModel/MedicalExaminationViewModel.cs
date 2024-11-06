@@ -3,7 +3,7 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Windows.Input;
 using Clinic_Management_System.Command;
-using Clinic_Management_System.Model.DoctorModel;
+using Clinic_Management_System.Model;
 using Clinic_Management_System.Service.DataAccess;
 using Clinic_Management_System.Views.DoctorView;
 using Microsoft.UI.Xaml.Controls;

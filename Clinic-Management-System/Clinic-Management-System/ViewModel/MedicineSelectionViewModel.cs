@@ -1,12 +1,12 @@
 ﻿using System.Collections.ObjectModel;
 using System.Windows.Input;
-using Clinic_Management_System.Model.DoctorModel;
 using Clinic_Management_System.Service.DataAccess;
 using Clinic_Management_System.Command;
 using System.Collections.Generic;
 using System;
+using Clinic_Management_System.Model;
 
-namespace Clinic_Management_System.ViewModel.DoctorViewModel
+namespace Clinic_Management_System.ViewModel
 {
     public class MedicineSelectionViewModel : BaseViewModel
     {

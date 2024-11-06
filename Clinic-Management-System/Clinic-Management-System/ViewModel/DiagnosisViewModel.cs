@@ -1,5 +1,5 @@
 ﻿using Clinic_Management_System.Command;
-using Clinic_Management_System.Model.DoctorModel;
+using Clinic_Management_System.Model;
 using Clinic_Management_System.Service.DataAccess;
 using System;
 using System.Windows.Input;

@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Clinic_Management_System.Model.DoctorModel
+namespace Clinic_Management_System.Model
 {
     public class MedicalRecord
     {

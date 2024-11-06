@@ -4,7 +4,7 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:local="using:Clinic_Management_System.Views"
     xmlns:vm="using:Clinic_Management_System.ViewModel"
-    xmlns:model="using:Clinic_Management_System.Model.DoctorModel"
+    xmlns:model="using:Clinic_Management_System.Model"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
     <Grid Padding="20">

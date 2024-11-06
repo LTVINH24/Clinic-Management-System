@@ -1,4 +1,4 @@
-using Clinic_Management_System.ViewModel.DoctorViewModel;
+using Clinic_Management_System.ViewModel;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Navigation;
