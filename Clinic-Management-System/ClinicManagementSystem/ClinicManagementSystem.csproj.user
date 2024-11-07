@@ -1,0 +1,68 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="Current" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup />
+  <ItemGroup>
+    <None Update="App.xaml">
+      <SubType>Designer</SubType>
+    </None>
+    <None Update="MainWindow.xaml">
+      <SubType>Designer</SubType>
+    </None>
+    <None Update="Package.appxmanifest">
+      <SubType>Designer</SubType>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Page Update="Views\AdminView\addAccount.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Views\AdminView\adminPage.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Views\AdminView\homeAdmin.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Views\AdminView\listAccount.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Views\AdminView\settingAdmin.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Views\DoctorView\DiagnosisPage.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Views\DoctorView\doctorPage.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Views\DoctorView\MedicalExaminationPage.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Views\DoctorView\MedicineSelectionPage.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Views\SettingsPage.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Views\ShellWindow.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Views\StaffView\AddMedicalExaminationForm.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Views\StaffView\DeleteMedicalExaminationForm.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Views\StaffView\homeStaff.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Views\StaffView\listMedicalExaminationForm.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Views\StaffView\staffPage.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Views\StaffView\UpdateMedicalExaminationForm.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+  </ItemGroup>
+</Project>
