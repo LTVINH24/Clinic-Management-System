@@ -160,5 +160,11 @@ namespace ClinicManagementSystem.ViewModel
 			bool success = _dao.UpdateMedicalExaminationForm(FormEdit);
 			return success;
 		}
+
+		public bool Delete()
+		{
+			bool success = _dao.DeleteMedicalExaminationForm(FormEdit);
+			return success;
+		}
 	}
 }

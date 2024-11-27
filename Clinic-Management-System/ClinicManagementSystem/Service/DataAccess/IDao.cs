@@ -34,5 +34,7 @@ namespace ClinicManagementSystem.Service.DataAccess
         bool CheckUserExists(string username);
         bool UpdateUser(User info);
         bool UpdateMedicalExaminationForm(MedicalExaminationForm form);
+        bool DeleteMedicalExaminationForm(MedicalExaminationForm form);
+
     }
 }

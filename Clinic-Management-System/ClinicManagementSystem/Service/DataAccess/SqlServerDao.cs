@@ -212,7 +212,6 @@ namespace ClinicManagementSystem.Service.DataAccess
             connection.Close();
             return success;
         }
-
         public List<MedicalExaminationForm> GetMedicalExaminationForms()
         {
             var forms = new List<MedicalExaminationForm>();
@@ -251,9 +250,8 @@ namespace ClinicManagementSystem.Service.DataAccess
 				command.Parameters.AddWithValue(parameterName, value);
 			}
 		}
-
-
-		public (bool, int) AddPatient(Patient patient)
+		
+        public (bool, int) AddPatient(Patient patient)
         {
             var connectionString = GetConnectionString();
             SqlConnection connection = new SqlConnection(connectionString);
@@ -331,7 +329,6 @@ namespace ClinicManagementSystem.Service.DataAccess
 			connection.Close();
 			return result > 0;
 		}
-
 		public List<Doctor> GetInforDoctor()
 		{
 			var connectionString = GetConnectionString();
@@ -371,7 +368,6 @@ namespace ClinicManagementSystem.Service.DataAccess
 			connection.Close();
 			return result;
 		}
-
 
 		// Lấy phiếu khám bệnh
 		// Thêm thông tin bệnh nhân
@@ -643,5 +639,55 @@ namespace ClinicManagementSystem.Service.DataAccess
             connection.Close();
             return success;
 		}
-	}
+	
+        public bool DeleteMedicalExaminationForm(MedicalExaminationForm form)
+        {
+			var connectionString = GetConnectionString();
+			SqlConnection connection = new SqlConnection(connectionString);
+			connection.Open();
+
+            using (var transaction = connection.BeginTransaction())
+            {
+                try
+                {
+                    // Delete Prescripstion
+                    var deletePrescriptionSql = @"DELETE FROM Prescription
+                                                  WHERE medicalRecordId IN (
+                                                       SELECT Id
+                                                       FROM MedicalRecord
+                                                       WHERE MedicalExaminationFormId = @Id
+                                                  )";
+                    var deletePrescriptionCommand = new SqlCommand(deletePrescriptionSql, connection, transaction);
+                    AddParameters(deletePrescriptionCommand, ("@Id", form.Id));
+					deletePrescriptionCommand.ExecuteNonQuery();
+
+					// Delete MedicalRecord
+                    var deleteMedicalRecordSql = @"DELETE FROM MedicalRecord
+                                                   WHERE MedicalExaminationFormId = @Id";
+
+					var deleteMedicalRecordCommand = new SqlCommand(deleteMedicalRecordSql, connection, transaction);
+					AddParameters(deleteMedicalRecordCommand, ("@Id", form.Id));
+                    deleteMedicalRecordCommand.ExecuteNonQuery();
+
+					// Delete MedicalExaminationForm
+                    var deleteMedicalExaminationFormSql = @"DELETE FROM MedicalExaminationForm
+                                                            WHERE Id = @Id";
+					var deleteMedicalExaminationFormCommand = new SqlCommand(deleteMedicalExaminationFormSql, connection, transaction);
+					AddParameters(deleteMedicalExaminationFormCommand, ("@Id", form.Id));
+                    int count = deleteMedicalExaminationFormCommand.ExecuteNonQuery();
+
+					// Commit transaction if successful
+					transaction.Commit();
+					return count == 1;
+				}
+                catch
+                {
+                    // Rollback
+                    transaction.Rollback();
+                    throw;
+                }
+
+			}
+		}
+    }
 }

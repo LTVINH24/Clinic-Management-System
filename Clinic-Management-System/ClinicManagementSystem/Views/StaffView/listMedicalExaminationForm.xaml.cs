@@ -83,23 +83,34 @@ namespace ClinicManagementSystem.Views.StaffView
 			string notify = "";
 			if (success)
 			{
-				notify = "Updated successfully";
+				notify = "Updated successfully.";
 			}
 			else
 			{
-				notify = "Update failed";
+				notify = "Update failed.";
 			}
 			Notify(notify);
 		}
 
 		private void deleteMedicalExaminationForm(object sender, RoutedEventArgs e)
 		{
-
+			var success = ViewModel.Delete();
+			ViewModel.LoadData();
+			string notify = "";
+			if (success)
+			{
+				notify = "Deleted successfully.";
+			}
+			else
+			{
+				notify = "Delete failed.";
+			}
+			Notify(notify);
 		}
 
 		private void cancelEdit(object sender, RoutedEventArgs e)
 		{
-
+			ViewModel.Cancel();
 		}
 
 		private async void Notify(string notify)
