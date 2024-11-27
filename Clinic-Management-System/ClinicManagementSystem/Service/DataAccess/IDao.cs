@@ -35,6 +35,11 @@ namespace ClinicManagementSystem.Service.DataAccess
         bool UpdateUser(User info);
         bool UpdateMedicalExaminationForm(MedicalExaminationForm form);
         bool DeleteMedicalExaminationForm(MedicalExaminationForm form);
-
+        Tuple<List<Patient>, int> GetPatients(
+            int page, 
+            int rowsPerPage,
+            string keyword,
+            Dictionary<string, SortType> sortOptions
+        );
     }
 }
