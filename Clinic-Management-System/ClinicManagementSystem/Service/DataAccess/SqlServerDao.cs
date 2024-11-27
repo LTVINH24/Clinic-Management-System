@@ -1,4 +1,4 @@
-﻿using ClinicManagementSystem.Model;
+﻿    using ClinicManagementSystem.Model;
 using Microsoft.Data.SqlClient;
 using Microsoft.UI.Xaml;
 using System;
@@ -303,7 +303,6 @@ namespace ClinicManagementSystem.Service.DataAccess
 			return (false, 0);
 
 		}
-
 
 		public bool AddMedicalExaminationForm(int patientId ,MedicalExaminationForm medicalExaminationForm)
 		{
@@ -615,5 +614,34 @@ namespace ClinicManagementSystem.Service.DataAccess
             return medicines;
         }
 
-    }
+
+        public bool UpdateMedicalExaminationForm(MedicalExaminationForm form)
+        {
+			var connectionString = GetConnectionString();
+			SqlConnection connection = new SqlConnection(connectionString);
+			connection.Open();
+
+            var time = DateTime.Now;
+            var sql = "update MedicalExaminationForm set " +
+                "patientId=@patientId, " +
+                "doctorId=@doctorId, " +
+                "Time=@time, " +
+                "symptom=@symptom " +
+                "where id=@Id";
+
+            var command = new SqlCommand(sql, connection);
+            AddParameters(command,
+                ("@Id", form.Id),
+                ("@patientId", form.PatientId),
+                ("@doctorId", form.DoctorId),
+                ("@time", form.Time),
+                ("@symptom", form.Symptoms));
+
+            int count = command.ExecuteNonQuery();
+            bool success = count == 1;
+
+            connection.Close();
+            return success;
+		}
+	}
 }

@@ -145,9 +145,20 @@ namespace ClinicManagementSystem.ViewModel
 			LoadData();
 		}
 
-		public void Update(MedicalExaminationForm formEdit)
+		public void Edit(MedicalExaminationForm formEdit)
+		{
+			FormEdit = formEdit;
+		}
+
+		public void Cancel()
+		{
+			FormEdit = new MedicalExaminationForm();
+		}
+
+		public bool Update()
         {
-			formEdit = FormEdit;
+			bool success = _dao.UpdateMedicalExaminationForm(FormEdit);
+			return success;
 		}
 	}
 }

@@ -63,8 +63,54 @@ namespace ClinicManagementSystem.Views.StaffView
 		private void medicalExaminationFormList_SelectionChanged(object sender, SelectionChangedEventArgs e)
 		{
 			var formEdit = itemsComboBox.SelectedItem as MedicalExaminationForm;
-			ViewModel.Update(formEdit);
+			ViewModel.Edit(formEdit);
 		}
 
+		private void searchTextbox_Click(object sender, TextChangedEventArgs e)
+		{
+
+        }
+
+		private void searchButton_Click(object sender, RoutedEventArgs e)
+		{
+
+		}
+
+		private void updateMedicalExaminationForm(object sender, RoutedEventArgs e)
+		{
+			var success = ViewModel.Update();
+			ViewModel.LoadData();
+			string notify = "";
+			if (success)
+			{
+				notify = "Updated successfully";
+			}
+			else
+			{
+				notify = "Update failed";
+			}
+			Notify(notify);
+		}
+
+		private void deleteMedicalExaminationForm(object sender, RoutedEventArgs e)
+		{
+
+		}
+
+		private void cancelEdit(object sender, RoutedEventArgs e)
+		{
+
+		}
+
+		private async void Notify(string notify)
+		{
+			await new ContentDialog()
+			{
+				XamlRoot = this.Content.XamlRoot,
+				Title = "Notify",
+				Content = $"{notify}",
+				CloseButtonText = "OK"
+			}.ShowAsync();
+		}
 	}	
 }

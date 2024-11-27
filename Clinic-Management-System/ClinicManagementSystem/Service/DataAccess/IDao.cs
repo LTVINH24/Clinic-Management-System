@@ -33,5 +33,6 @@ namespace ClinicManagementSystem.Service.DataAccess
         bool CreateUser( User user);
         bool CheckUserExists(string username);
         bool UpdateUser(User info);
+        bool UpdateMedicalExaminationForm(MedicalExaminationForm form);
     }
 }
