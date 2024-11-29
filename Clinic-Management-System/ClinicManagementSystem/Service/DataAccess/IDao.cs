@@ -30,8 +30,12 @@ namespace ClinicManagementSystem.Service.DataAccess
             Dictionary<string, SortType> sortOptions
         );
         (int, string, string, string, string, string) Authentication (string username, string password);
-        bool CreateUser( User user);
+        bool CreateUser( User user,string encryptedPasswordInBase64,string entropyInBase64);
+        bool CreateUserRoleDoctor(User user, string encryptedPasswordInBase64, string entropyInBase64, int specialty, string room);
+
         bool CheckUserExists(string username);
-        bool UpdateUser(User info);
+        bool UpdateUser(User info,string entropyUserEdit);
+		public List<Specialty> GetSpecialty();
+
     }
 }
