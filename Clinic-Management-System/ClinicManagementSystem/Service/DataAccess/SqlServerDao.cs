@@ -234,6 +234,25 @@ namespace ClinicManagementSystem.Service.DataAccess
             connection.Close();
             return success;
         }
+        public bool DeleteUser(User user) { 
+            var connectionString = GetConnectionString();
+            SqlConnection connection = new SqlConnection( connectionString);
+            connection.Open();
+            int result = 0;
+            if (user.role == "doctor")
+            {
+                string query = $"Delete from Doctor where userId =@userId ";
+                var command = new SqlCommand(query, connection);
+                AddParameters(command, ("@userId", user.id));
+                result =command.ExecuteNonQuery();
+            }
+            string querydelete = $"Delete from EndUser where id =@userId";
+            var commandDelete = new SqlCommand(querydelete, connection);
+            AddParameters(commandDelete, ("@userId", user.id));
+            result =commandDelete.ExecuteNonQuery();
+            connection.Close();
+            return result >0;
+        }
 
 
         public List<Specialty> GetSpecialty() {

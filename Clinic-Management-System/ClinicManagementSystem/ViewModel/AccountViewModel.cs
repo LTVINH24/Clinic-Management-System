@@ -148,9 +148,9 @@ namespace ClinicManagementSystem.ViewModel
             UserEdit.password = temp;
             return sucess;
         }
-        public void Delete()
+        public bool Delete()
         {
-
+            return _dao.DeleteUser(UserEdit);
         }
     }
 }

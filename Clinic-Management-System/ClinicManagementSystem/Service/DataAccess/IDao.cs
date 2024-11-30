@@ -35,7 +35,8 @@ namespace ClinicManagementSystem.Service.DataAccess
 
         bool CheckUserExists(string username);
         bool UpdateUser(User info,string entropyUserEdit);
-		public List<Specialty> GetSpecialty();
+        bool DeleteUser(User user);
+        public List<Specialty> GetSpecialty();
 
     }
 }
