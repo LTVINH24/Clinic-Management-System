@@ -23,7 +23,7 @@ namespace ClinicManagementSystem.Service.DataAccess
             var result = new List<User>();
             var connectionString = GetConnectionString();
             SqlConnection connection = new SqlConnection(connectionString);
-        connection.Open();
+            connection.Open();
             string sortString = "ORDER BY ";
             bool useDefault = true;
             foreach (var item in sortOptions)
@@ -273,7 +273,121 @@ namespace ClinicManagementSystem.Service.DataAccess
             connection.Close();
             return specialties;
         }
+        public Tuple<List<Medicine>, int> GetMedicines(
+                int page, int rowsPerPage,
+                string keyword,
+                Dictionary<string, SortType> sortOptions)
+        {
+            var result = new List<Medicine>();
+            var connectionString = GetConnectionString();
+            SqlConnection connection = new SqlConnection(connectionString);
+            connection.Open();
+            string sortString = "ORDER BY ";
+            bool useDefault = true;
+            foreach (var item in sortOptions)
+            {
+                useDefault = false;
+                if (item.Key == "Name")
+                {
+                    if (item.Value == SortType.Ascending)
+                    {
+                        sortString += "Name asc ";
+                    }
+                    else
+                    {
+                        sortString += "Name desc ";
+                    }
+                }
+            }
+            if (useDefault)
+            {
+                sortString += "ID ";
+            }
 
+
+            var sql = $"""
+            SELECT count(*) over() as Total, id, name, manufacturer, price,quantity
+            FROM Medicine
+            WHERE Name like @Keyword
+            {sortString} 
+            OFFSET @Skip ROWS FETCH NEXT @Take ROWS ONLY;        
+        """;
+            var command = new SqlCommand(sql, connection);
+            AddParameters(command, ("@Skip", (page - 1) * rowsPerPage), ("@Take", rowsPerPage), ("@Keyword", $"%{keyword}%"));
+            var reader = command.ExecuteReader();
+            int count = -1;
+            while (reader.Read())
+            {
+                if (count == -1)
+                {
+                    count = (int)reader["Total"];
+                }
+                var medicine = new Medicine();
+                medicine.Id = (int)reader["id"];
+                medicine.Name = (string)reader["name"];
+                medicine.Manufacturer = (string)reader["manufacturer"];
+                medicine.Price = (int)reader["price"];
+                medicine.Quantity = (int)reader["quantity"];
+                result.Add(medicine);
+            }
+            connection.Close();
+            return new Tuple<List<Medicine>, int>(
+                result, count
+            );
+        }
+        
+        public bool CreateMedicine(Medicine medicine)
+        {
+            string connectionString = GetConnectionString();
+            SqlConnection connection= new SqlConnection(connectionString );
+            connection.Open();
+            string query = $"insert into Medicine(name,manufacturer,price,quantity,ExpDate,MfgDate) values(@name,@manufacturer,@price,@quantity,@ExpDate,@MfgDate)";
+            var command = new SqlCommand(query, connection);
+            AddParameters( command,
+                ("@name",medicine.Name ),
+                ("@manufacturer",medicine.Manufacturer),
+                ("@price",medicine.Price),
+                ("@quantity",medicine.Quantity),
+                ("@ExpDate",medicine.ExpDate),
+                ("@MfgDate",medicine.MfgDate));
+            int count =command.ExecuteNonQuery();
+            connection.Close();
+            return count == 1;
+        }
+        public bool UpdateMedicine(Medicine medicine)
+        {
+            string connectionString = GetConnectionString();
+            SqlConnection connection = new SqlConnection(connectionString);
+            connection.Open();
+            string query = $"update Medicine set name=@name, manufacturer =@manufacturer, price =@price, quantity =@quantity, ExpDate =@expdate ,MfgDate =@mfgdate where id =@id";
+            var command = new SqlCommand(query, connection);
+            AddParameters(command,
+                ("@name", medicine.Name),
+                ("@manufacturer", medicine.Manufacturer),
+                ("@price", medicine.Price),
+                ("@quantity", medicine.Quantity),
+                ("@ExpDate", medicine.ExpDate),
+                ("@MfgDate", medicine.MfgDate),
+                ("@id",medicine.Id)
+                );
+            int count = command.ExecuteNonQuery();
+            connection.Close();
+            return count == 1;
+        }
+        public bool DeleteMedicine(Medicine medicine)
+        {
+            string connectionString = GetConnectionString();
+            SqlConnection connection = new SqlConnection( connectionString);
+            connection.Open();
+            string query = $"Delete from Medicine where id =@id";
+            var command = new SqlCommand(query, connection);
+            AddParameters(command,
+                ("@id", medicine.Id));
+            int count = command.ExecuteNonQuery();
+
+            connection.Close();
+            return count >0;
+        }
         public List<MedicalExaminationForm> GetMedicalExaminationForms()
          {
             var forms = new List<MedicalExaminationForm>();

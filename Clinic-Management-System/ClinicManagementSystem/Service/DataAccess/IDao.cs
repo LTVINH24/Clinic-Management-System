@@ -37,6 +37,16 @@ namespace ClinicManagementSystem.Service.DataAccess
         bool UpdateUser(User info,string entropyUserEdit);
         bool DeleteUser(User user);
         public List<Specialty> GetSpecialty();
+        Tuple<List<Medicine>, int> GetMedicines(
+         int page, int rowsPerPage,
+         string keyword,
+         Dictionary<string, SortType> sortOptions
+     );
+        bool CreateMedicine(Medicine medicine);
+        bool UpdateMedicine( Medicine medicine);
+        bool DeleteMedicine(Medicine medicine);
+
+
 
     }
 }

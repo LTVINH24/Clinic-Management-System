@@ -23,22 +23,16 @@
             SelectionChanged="NavigationView_SelectionChanged">
             <NavigationView.MenuItems>
                 <NavigationViewItem Content="Home" Icon="Home" ToolTipService.ToolTip="Home" Tag="homeAdmin"/>
-                <NavigationViewItem Content="Add Account" Icon="Add" ToolTipService.ToolTip="Add Account" Tag="addAccount"/>
-                <NavigationViewItem Content="List Account" Icon="People" ToolTipService.ToolTip="List Account" Tag="listAccount"/>
-
-
-                <!--<NavigationViewItem Content="Account" Icon="Contact" ToolTipService.ToolTip="Account" Tag="addAccount">
-                    --><!--<NavigationViewItem.MenuItems>
-                        <NavigationViewItem Content="Mail" Icon="Mail" ToolTipService.ToolTip="Mail" Tag="SamplePage3"/>
-                        <NavigationViewItem Content="Calendar" Icon="Calendar" ToolTipService.ToolTip="Calendar" Tag="SamplePage4"/>
-                    </NavigationViewItem.MenuItems>--><!--
-                </NavigationViewItem>-->
-                <!--<NavigationViewItem Content="Document options" Icon="Page2" ToolTipService.ToolTip="Document options" SelectsOnInvoked="False">
+                <!--<NavigationViewItem Content="Add Account" Icon="Add" ToolTipService.ToolTip="Add Account" Tag="addAccount"/>-->
+                <NavigationViewItem Content="Add" Icon="Add" ToolTipService.ToolTip="Add" Tag="homeAdmin">
                     <NavigationViewItem.MenuItems>
-                        <NavigationViewItem Content="Create new" Icon="NewFolder" ToolTipService.ToolTip="Create new" Tag="SamplePage5"/>
-                        <NavigationViewItem Content="Upload file" Icon="OpenLocal" ToolTipService.ToolTip="Upload file" Tag="SamplePage6"/>
+                        <NavigationViewItem Content="Add Account" Icon="People" ToolTipService.ToolTip="Add Account" Tag="addAccount"/>
+                        <!--<NavigationViewItem Content="Add Medicine" Icon="Add" ToolTipService.ToolTip="Add" Tag=""/>-->
                     </NavigationViewItem.MenuItems>
-                </NavigationViewItem>-->
+                </NavigationViewItem>
+                <NavigationViewItem Content="List Account" Icon="People" ToolTipService.ToolTip="List Account" Tag="listAccount"/>
+                <NavigationViewItem Content="Medicine" Icon="Shop" ToolTipService.ToolTip="Medicine" Tag="Medicine"/>
+
             </NavigationView.MenuItems>
             <Frame x:Name="contentFrame" />
         </NavigationView>

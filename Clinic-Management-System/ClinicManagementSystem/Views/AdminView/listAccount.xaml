@@ -54,19 +54,18 @@
                     <Run Text="{x:Bind ViewModel.SelectedPageInfoItem.Page ,Mode=OneWay}"/> of <Run Text="{x:Bind ViewModel.SelectedPageInfoItem.Total, Mode=OneWay}"/>
                 </TextBlock>
                 <ComboBox ItemsSource="{x:Bind ViewModel.PageInfos, Mode=OneWay}"
-        SelectedItem="{x:Bind ViewModel.SelectedPageInfoItem, Mode=TwoWay}"
-        SelectionChanged="pagesComboBox_SelectionChanged"
-        Margin="5" Name="pagesComboBox" Width="100" Height="30">
+                        SelectedItem="{x:Bind ViewModel.SelectedPageInfoItem, Mode=TwoWay}"
+                        SelectionChanged="pagesComboBox_SelectionChanged"
+                        Margin="5" Name="pagesComboBox" Width="100" Height="30">
                     <ComboBox.ItemTemplate>
                         <DataTemplate x:DataType="localmodel:PageInfo">
                             <TextBlock >
-             <Run Text="{x:Bind Page,Mode=OneWay}"/>/<Run Text="{x:Bind Total, Mode=OneWay}"/>
+                            <Run Text="{x:Bind Page,Mode=OneWay}"/>/<Run Text="{x:Bind Total, Mode=OneWay}"/>
                             </TextBlock>
                         </DataTemplate>
                     </ComboBox.ItemTemplate>
                 </ComboBox>
             </StackPanel>
-            
             <Button  Click="nextButton_Click" >
                 <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xE76C;"/>
             </Button>
