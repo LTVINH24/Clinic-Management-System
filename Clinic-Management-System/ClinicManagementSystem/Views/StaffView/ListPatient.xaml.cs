@@ -97,7 +97,7 @@ namespace ClinicManagementSystem.Views.StaffView
 
 		private void cancel_editUser(object sender, RoutedEventArgs e)
 		{
-
+			ViewModel.Cancel();
 		}
 
 

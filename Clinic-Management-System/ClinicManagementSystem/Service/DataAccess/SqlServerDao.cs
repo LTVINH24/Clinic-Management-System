@@ -759,5 +759,36 @@ namespace ClinicManagementSystem.Service.DataAccess
 				result, count
 			);
 		}
+
+        public bool UpdatePatient(Patient patient)
+        {
+            var connectionString = GetConnectionString();
+			SqlConnection connection = new SqlConnection(connectionString);
+			connection.Open();
+
+            var sql = @"update Patient set 
+                        name=@name,
+                        residentId=@residentId,
+                        email=@email, 
+                        gender=@gender, 
+                        birthday=@birthday, 
+                        address=@address
+                        where id=@id";
+            var command = new SqlCommand(sql, connection);
+            AddParameters(command,
+                ("@id", patient.Id),
+                ("@name", patient.Name),
+                ("@residentId", patient.ResidentId),
+                ("@email", patient.Email),
+                ("@gender", patient.Gender),
+                ("@birthday", patient.DoB),
+                ("@address", patient.Address));
+
+            int count = command.ExecuteNonQuery();
+			bool success = count == 1;
+
+            connection.Close();
+            return success;
+		}
     }
 }

@@ -41,5 +41,6 @@ namespace ClinicManagementSystem.Service.DataAccess
             string keyword,
             Dictionary<string, SortType> sortOptions
         );
-    }
+        bool UpdatePatient(Patient patient);
+	}
 }
