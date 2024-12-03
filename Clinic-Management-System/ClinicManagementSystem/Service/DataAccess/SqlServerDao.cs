@@ -805,5 +805,54 @@ namespace ClinicManagementSystem.Service.DataAccess
             connection.Close();
             return success;
 		}
+
+        public bool DeletePatient(Patient patient)
+        {
+            var connectionString = GetConnectionString();
+            SqlConnection connection = new SqlConnection(connectionString);
+            connection.Open();
+
+            using (var transaction = connection.BeginTransaction())
+            {
+                try
+                {
+                    var getMedicalExaminationFormsSql = @"SELECT Id FROM MedicalExaminationForm WHERE PatientId = @PatientId";
+                    var getMedicalExaminationFormsCommand = new SqlCommand(getMedicalExaminationFormsSql, connection, transaction);
+                    AddParameters(getMedicalExaminationFormsCommand, ("@PatientId", patient.Id));
+                    var reader = getMedicalExaminationFormsCommand.ExecuteReader();
+
+                    var formIdsToDelete = new List<int>();
+                    while (reader.Read())
+                    {
+                        formIdsToDelete.Add(reader.GetInt32(0));
+                    }
+                    reader.Close();
+
+                    foreach (var formId in formIdsToDelete)
+                    {
+                        var form = new MedicalExaminationForm { Id = formId };
+                        bool delete = DeleteMedicalExaminationForm(form);
+                        if (!delete)
+                        {
+                            transaction.Rollback();
+                            return false;
+                        }
+                    }
+
+                    var deletePatientSql = @"DELETE FROM Patient WHERE Id = @Id";
+                    var deletePatientCommand = new SqlCommand(deletePatientSql, connection, transaction);
+					AddParameters(deletePatientCommand, ("@Id", patient.Id));
+                    int count = deletePatientCommand.ExecuteNonQuery();
+
+					transaction.Commit();
+					return count == 1;
+				}
+                catch
+                {
+                    transaction.Rollback();
+                    throw;
+                }
+            }
+        }
     }
 }

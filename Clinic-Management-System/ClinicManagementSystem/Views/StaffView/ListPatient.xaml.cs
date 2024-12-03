@@ -25,6 +25,7 @@ namespace ClinicManagementSystem.Views.StaffView
 	/// </summary>
 	public sealed partial class ListPatient : Page
 	{
+		public PatientViewModel ViewModel { get; set; }
 		public ListPatient()
 		{
 			ViewModel = new PatientViewModel();
@@ -32,7 +33,6 @@ namespace ClinicManagementSystem.Views.StaffView
 			this.InitializeComponent();
 		}
 
-		public PatientViewModel ViewModel { get; set; }
 		bool init = false;
 
 		private void searchTextbox_Click(object sender, TextChangedEventArgs e)
@@ -63,18 +63,12 @@ namespace ClinicManagementSystem.Views.StaffView
 			}
 		}
 
-		private void listPatientSelectionChanged(object sender, SelectionChangedEventArgs e)
-		{
-			var patientEdit = itemsComboBox.SelectedItems as Patient;
-			ViewModel.Edit(patientEdit);
-		}
-
 		private void searchButton_Click(object sender, RoutedEventArgs e)
 		{
 
 		}
 
-		private void update_editUser(object sender, RoutedEventArgs e)
+		private void updatePatient(object sender, RoutedEventArgs e)
 		{
 			var success = ViewModel.Update();
 			ViewModel.LoadData();
@@ -90,16 +84,35 @@ namespace ClinicManagementSystem.Views.StaffView
 			Notify(notify);
 		}
 
-		private void delete_editUser(object sender, RoutedEventArgs e)
+		private async void deletePatient(object sender, RoutedEventArgs e)
 		{
+			var confirmContentDialog = new ContentDialog
+			{
+				XamlRoot = this.Content.XamlRoot,
+				Title = "Confirmation",
+				Content = "Are you sure you want to delete this Medical Examination Form?",
+				PrimaryButtonText = "Yes",
+				SecondaryButtonText = "Cancel"
+			};
 
+			var result = await confirmContentDialog.ShowAsync();
+
+			if (result == ContentDialogResult.Primary)
+			{
+				var success = ViewModel.Delete();
+				ViewModel.LoadData();
+				string notify = "";
+				if (success)
+				{
+					notify = "Deleted successfully";
+				}
+				else
+				{
+					notify = "Delete failed";
+				}
+				Notify(notify);
+			}
 		}
-
-		private void cancel_editUser(object sender, RoutedEventArgs e)
-		{
-			ViewModel.Cancel();
-		}
-
 
 
 		private async void Notify(string notify)
@@ -111,6 +124,17 @@ namespace ClinicManagementSystem.Views.StaffView
 				Content = $"{notify}",
 				CloseButtonText = "OK"
 			}.ShowAsync();
+		}
+
+		private void cancelEdit(object sender, RoutedEventArgs e)
+		{
+			ViewModel.LoadData();
+		}
+
+		private void Patient_SelectionChanged(object sender, SelectionChangedEventArgs e)
+		{
+			var patientEdit = itemsComboBox.SelectedItem as Patient;
+			ViewModel.Edit(patientEdit);
 		}
 	}
 }
