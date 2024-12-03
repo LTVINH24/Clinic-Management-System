@@ -152,9 +152,9 @@ namespace ClinicManagementSystem.ViewModel
 
 		public void Cancel()
 		{
-			FormEdit = new MedicalExaminationForm();
+			LoadData();
 		}
-
+		
 		public bool Update()
         {
 			bool success = _dao.UpdateMedicalExaminationForm(FormEdit);

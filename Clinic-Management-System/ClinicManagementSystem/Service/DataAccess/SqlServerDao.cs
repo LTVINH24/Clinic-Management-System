@@ -650,8 +650,23 @@ namespace ClinicManagementSystem.Service.DataAccess
             {
                 try
                 {
-                    // Delete Prescripstion
-                    var deletePrescriptionSql = @"DELETE FROM Prescription
+                    // Delete Bill
+                    var deleteBillSql = @"DELETE FROM Bill
+                                          WHERE prescriptionId IN (
+                                               SELECT Id
+                                               FROM Prescription
+                                               WHERE medicalRecordId IN (
+                                                    SELECT Id
+                                                    FROM MedicalRecord
+                                                    WHERE MedicalExaminationFormId = @Id
+                                               )
+                                          )";
+                    var deleteBillCommand = new SqlCommand(deleteBillSql, connection, transaction);
+					AddParameters(deleteBillCommand, ("@Id", form.Id));
+                    deleteBillCommand.ExecuteNonQuery();
+
+					// Delete Prescripstion
+					var deletePrescriptionSql = @"DELETE FROM Prescription
                                                   WHERE medicalRecordId IN (
                                                        SELECT Id
                                                        FROM MedicalRecord

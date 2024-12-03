@@ -92,24 +92,39 @@ namespace ClinicManagementSystem.Views.StaffView
 			Notify(notify);
 		}
 
-		private void deleteMedicalExaminationForm(object sender, RoutedEventArgs e)
+		private async void deleteMedicalExaminationForm(object sender, RoutedEventArgs e)
 		{
-			var success = ViewModel.Delete();
-			ViewModel.LoadData();
-			string notify = "";
-			if (success)
+			var confirmContentDialog = new ContentDialog
 			{
-				notify = "Deleted successfully.";
-			}
-			else
+				XamlRoot = this.Content.XamlRoot,
+				Title = "Confirmation",
+				Content = "Are you sure you want to delete this Medical Examination Form?",
+				PrimaryButtonText = "Yes",
+				SecondaryButtonText = "Cancel"
+			};
+
+			var result = await confirmContentDialog.ShowAsync();
+
+			if(result == ContentDialogResult.Primary)
 			{
-				notify = "Delete failed.";
+				var success = ViewModel.Delete();
+				ViewModel.LoadData();
+				string notify = "";
+				if (success)
+				{
+					notify = "Deleted successfully.";
+				}
+				else
+				{
+					notify = "Delete failed.";
+				}
+				Notify(notify);
 			}
-			Notify(notify);
 		}
 
 		private void cancelEdit(object sender, RoutedEventArgs e)
 		{
+			
 			ViewModel.Cancel();
 		}
 

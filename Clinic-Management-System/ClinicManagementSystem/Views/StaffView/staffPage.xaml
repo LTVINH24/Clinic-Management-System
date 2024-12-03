@@ -26,9 +26,9 @@
             <NavigationView.MenuItems>
                 <NavigationViewItem Content="Home" Icon="Home" ToolTipService.ToolTip="Home" Tag="HomePage"/>
                 <NavigationViewItem Content="Patient" Icon="People" ToolTipService.ToolTip="Patient" Tag="ListPatient"/>
-                <NavigationViewItem Content="Forms" Icon="Document" ToolTipService.ToolTip="Medical Examination Form" Tag="MedicalExaminationForm"/>
+                <NavigationViewItem Content="Medical Examination Form" Icon="Document" ToolTipService.ToolTip="Medical Examination Form" Tag="MedicalExaminationForm"/>
                 <NavigationViewItem Content="Add" Icon="Add" ToolTipService.ToolTip="Add" Tag="AddMedicalExaminationForm"/>
-
+    
                 
                
                 
