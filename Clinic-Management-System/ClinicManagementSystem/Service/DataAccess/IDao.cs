@@ -14,49 +14,89 @@ namespace ClinicManagementSystem.Service.DataAccess
             Ascending,
             Descending
         }
-		(bool, int) AddPatient(Patient patient);
-		bool AddMedicalExaminationForm(int patientId, MedicalExaminationForm medicalExaminationForm);
+
+		//============================================Helper=====================================
+		(int, string, string, string, string, string) Authentication(string username, string password);
+		//=======================================================================================
+
+
+
+		//========================================EndUser========================================
+		Tuple<List<User>, int> GetUsers(
+			int page, int rowsPerPage,
+			string keyword,
+			Dictionary<string, SortType> sortOptions
+		);
+
+		bool CreateUser(User user, string encryptedPasswordInBase64, string entropyInBase64);
+
+		bool CreateUserRoleDoctor(User user, string encryptedPasswordInBase64, string entropyInBase64, int specialty, string room);
+
+		bool CheckUserExists(string username);
+
+		bool UpdateUser(User info, string entropyUserEdit);
+
+		bool DeleteUser(User user);
+		
+		public List<Specialty> GetSpecialty();
+		Tuple<List<Medicine>, int> GetMedicines(
+		 int page, int rowsPerPage,
+		 string keyword,
+		 Dictionary<string, SortType> sortOptions
+		);
+		//========================================================================================
+
+
+
+		//========================================Doctor==========================================
 		public List<Doctor> GetInforDoctor();
-		(bool, int) checkPatientExists(string residentId);
+		//========================================================================================
+
+
+
+		//========================================MedicalExaminationForm==========================
+		bool AddMedicalExaminationForm(int patientId, MedicalExaminationForm medicalExaminationForm);
+
 		public Tuple<List<MedicalExaminationForm>, int> GetMedicalExaminationForm(
 			int page,
 			int rowsPerPage,
 			string keyword,
 			Dictionary<string, SortType> sortOptions);
 
-        Tuple<List<User>, int> GetUsers(
-            int page, int rowsPerPage,
-            string keyword,
-            Dictionary<string, SortType> sortOptions
-        );
-        (int, string, string, string, string, string) Authentication (string username, string password);
-        bool CreateUser( User user,string encryptedPasswordInBase64,string entropyInBase64);
-        bool CreateUserRoleDoctor(User user, string encryptedPasswordInBase64, string entropyInBase64, int specialty, string room);
+		bool UpdateMedicalExaminationForm(MedicalExaminationForm form);
 
-        bool CheckUserExists(string username);
-        
-        bool UpdateMedicalExaminationForm(MedicalExaminationForm form);
-        bool DeleteMedicalExaminationForm(MedicalExaminationForm form);
-        Tuple<List<Patient>, int> GetPatients(
-            int page, 
-            int rowsPerPage,
-            string keyword,
-            Dictionary<string, SortType> sortOptions
-        );
-        bool UpdatePatient(Patient patient);
-        bool DeletePatient(Patient patient);
-	
-        bool UpdateUser(User info,string entropyUserEdit);
-        bool DeleteUser(User user);
-        public List<Specialty> GetSpecialty();
-        Tuple<List<Medicine>, int> GetMedicines(
-         int page, int rowsPerPage,
-         string keyword,
-         Dictionary<string, SortType> sortOptions
-     );
-        bool CreateMedicine(Medicine medicine);
-        bool UpdateMedicine( Medicine medicine);
-        bool DeleteMedicine(Medicine medicine);
+		bool DeleteMedicalExaminationForm(MedicalExaminationForm form);
+		//========================================================================================
+
+
+
+		//========================================Medicine========================================
+		bool CreateMedicine(Medicine medicine);
+		bool UpdateMedicine(Medicine medicine);
+		bool DeleteMedicine(Medicine medicine);
+		//========================================================================================
+
+		//========================================Specialty=======================================
+		//========================================================================================
+
+
+
+		//========================================Patient=========================================
+		(bool, int) AddPatient(Patient patient);
+
+		(bool, int) checkPatientExists(string residentId);
+
+		Tuple<List<Patient>, int> GetPatients(
+			int page,
+			int rowsPerPage,
+			string keyword,
+			Dictionary<string, SortType> sortOptions
+		);
+
+		bool UpdatePatient(Patient patient);
+
+		bool DeletePatient(Patient patient);
+		//========================================================================================
 
     }
 }

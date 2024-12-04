@@ -7,7 +7,7 @@ using System;
 
 namespace ClinicManagementSystem.Views
 {
-    public sealed partial class MedicalExaminationPage : Page
+	public sealed partial class MedicalExaminationPage : Page
     {
         public MedicalExaminationPage()
         {

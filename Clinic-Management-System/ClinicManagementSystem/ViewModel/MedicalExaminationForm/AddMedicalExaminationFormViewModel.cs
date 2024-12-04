@@ -164,14 +164,14 @@ namespace ClinicManagementSystem.ViewModel
 					AddCompleted?.Invoke(false, 400, "Failed to add new patient.");
 				}
 			}
-	}
+		}
 
 
 		public void LoadDoctors(string doctorNameFilter = null, string specialtyFilter = null)
 		{
 
-			var doctors = _dao.GetInforDoctor(); 
-			Doctors.Clear(); 
+			var doctors = _dao.GetInforDoctor();
+			Doctors.Clear();
 
 
 			foreach (var doctor in doctors)
@@ -183,7 +183,7 @@ namespace ClinicManagementSystem.ViewModel
 
 				if (matchesName && matchesSpecialty)
 				{
-					Doctors.Add(doctor); 
+					Doctors.Add(doctor);
 				}
 			}
 
@@ -200,6 +200,6 @@ namespace ClinicManagementSystem.ViewModel
 			SpecialtyFilter = null;
 			LoadDoctors();
 		}
-		
+
 	}
 }

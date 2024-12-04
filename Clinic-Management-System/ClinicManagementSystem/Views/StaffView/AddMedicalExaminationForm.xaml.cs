@@ -12,16 +12,16 @@ using Microsoft.UI.Xaml.Data;
 using Microsoft.UI.Xaml.Input;
 using Microsoft.UI.Xaml.Media;
 using Microsoft.UI.Xaml.Navigation;
-using ClinicManagementSystem.ViewModel;
 using System.Collections;
 using Microsoft.IdentityModel.Protocols;
+using ClinicManagementSystem.ViewModel;
 
 // To learn more about WinUI, the WinUI project structure,
 // and more about our project templates, see: http://aka.ms/winui-project-info.
 
 namespace ClinicManagementSystem.Views.StaffView
 {
-    
+
 
 	// Dữ liệu trống (x)
 	// Dữ liệu không đúng định dạng (x)

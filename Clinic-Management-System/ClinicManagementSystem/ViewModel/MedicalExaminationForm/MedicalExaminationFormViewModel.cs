@@ -115,12 +115,12 @@ namespace ClinicManagementSystem.ViewModel
 
 			MedicalExaminationForms.Clear();
 
-			foreach(var item in items)
+			foreach (var item in items)
 			{
 				MedicalExaminationForms.Add(item);
 			}
 
-			if(count != TotalItems)
+			if (count != TotalItems)
 			{
 				TotalItems = count;
 				TotalPages = TotalItems / RowsPerPage +
@@ -154,9 +154,9 @@ namespace ClinicManagementSystem.ViewModel
 		{
 			LoadData();
 		}
-		
+
 		public bool Update()
-        {
+		{
 			bool success = _dao.UpdateMedicalExaminationForm(FormEdit);
 			return success;
 		}

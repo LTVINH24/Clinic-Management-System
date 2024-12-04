@@ -1,4 +1,4 @@
-﻿    using ClinicManagementSystem.Model;
+﻿using ClinicManagementSystem.Model;
 using Microsoft.Data.SqlClient;
 using Microsoft.UI.Xaml;
 using System;
@@ -15,7 +15,93 @@ namespace ClinicManagementSystem.Service.DataAccess
 {
     public class SqlServerDao : IDao
     {
-        public Tuple<List<User>, int> GetUsers(
+        private static string GetConnectionString()
+        {
+            var connectionString = """
+                    Server = localhost,1433;
+                    Database = ClinicManagementSystemDatabase;
+                    User Id = sa;
+                    Password = SqlServer@123;
+                    TrustServerCertificate = True;
+                """;
+            return connectionString;
+        }
+        private readonly string _connectionString = GetConnectionString();
+        
+        
+
+		//==============================================Helper===========================================
+		public (int,string,string,string,string,string) Authentication(string username , string password )
+        {
+
+            var connectionString = GetConnectionString();
+            SqlConnection connection = new SqlConnection(connectionString);
+            connection.Open();
+            string query = $"SELECT id,name, role,password,phone,birthday,gender,address,entropy FROM EndUser WHERE username = @Username";
+            var command = new SqlCommand(query, connection);
+            command.Parameters.AddWithValue("@Username", username);
+            var reader = command.ExecuteReader();
+            int id = 0;
+            string name = "";
+            string role = "";
+            string encryptedPasswordInBase64 = "";
+            string phone = "";
+            DateTime birthday;
+            string gender;
+            string address;
+            string entropyInBase64 = "";
+            if (reader.Read())
+            {
+                id = (int)reader["id"];
+                name = (string)reader["name"];
+                role = reader["role"].ToString();
+                encryptedPasswordInBase64 = reader["password"].ToString();
+                phone = reader["phone"].ToString();
+                birthday = (DateTime)reader["birthday"];
+                gender = reader["gender"].ToString();
+                address = reader["address"].ToString();
+                entropyInBase64 = reader["entropy"].ToString();
+                connection.Close();
+                var encryptedPasswordInBytes = Convert.FromBase64String(encryptedPasswordInBase64);
+                var entropyInBytes = Convert.FromBase64String(entropyInBase64);
+                var passwordInBytes = ProtectedData.Unprotect(encryptedPasswordInBytes, entropyInBytes, DataProtectionScope.CurrentUser);
+                var passwordGetFromDatabase = Encoding.UTF8.GetString(passwordInBytes);
+                if (password == passwordGetFromDatabase)
+                {
+                    return (id, name, role, phone, gender, address);
+                }
+                return (0, "", "", "", "", "");
+            }
+            else
+            {
+                connection.Close();
+                return (0, "", "", "", "", "");
+            }
+            // return (0, "", "admin", "", "", "");
+        }
+
+        private void AddParameters(SqlCommand command, params (string ParameterName, object Value)[] parameters)
+        {
+            foreach (var (parameterName, value) in parameters)
+            {
+                command.Parameters.AddWithValue(parameterName, value);
+            }
+        }
+
+		public string DecryptionPassword(string encryptedPasswordInBase64, string entropyInBase64)
+		{
+			var encryptedPasswordInBytes = Convert.FromBase64String(encryptedPasswordInBase64);
+			var entropyInBytes = Convert.FromBase64String(entropyInBase64);
+			var passwordInBytes = ProtectedData.Unprotect(encryptedPasswordInBytes, entropyInBytes, DataProtectionScope.CurrentUser);
+			var password = Encoding.UTF8.GetString(passwordInBytes);
+			return password;
+		}
+		//===============================================================================================
+
+
+
+		//================================================EndUser========================================
+		public Tuple<List<User>, int> GetUsers(
         int page, int rowsPerPage,
         string keyword,
         Dictionary<string, SortType> sortOptions)
@@ -84,71 +170,6 @@ namespace ClinicManagementSystem.Service.DataAccess
             );
         }
 
-
-        private static string GetConnectionString()
-        {
-            var connectionString = """
-                    Server = localhost,1433;
-                    Database = ClinicManagementSystemDatabase;
-                    User Id = sa;
-                    Password = SqlServer@123;
-                    TrustServerCertificate = True;
-                """;
-            return connectionString;
-        }
-
-
-        private readonly string _connectionString = GetConnectionString();
-
-        public (int,string,string,string,string,string) Authentication(string username , string password )
-        {
-
-            var connectionString = GetConnectionString();
-            SqlConnection connection = new SqlConnection(connectionString);
-            connection.Open();
-            string query = $"SELECT id,name, role,password,phone,birthday,gender,address,entropy FROM EndUser WHERE username = @Username";
-            var command = new SqlCommand(query, connection);
-            command.Parameters.AddWithValue("@Username", username);
-            var reader = command.ExecuteReader();
-            int id = 0;
-            string name = "";
-            string role = "";
-            string encryptedPasswordInBase64 = "";
-            string phone = "";
-            DateTime birthday;
-            string gender;
-            string address;
-            string entropyInBase64 = "";
-            if (reader.Read())
-            {
-                id = (int)reader["id"];
-                name = (string)reader["name"];
-                role = reader["role"].ToString();
-                encryptedPasswordInBase64 = reader["password"].ToString();
-                phone = reader["phone"].ToString();
-                birthday = (DateTime)reader["birthday"];
-                gender = reader["gender"].ToString();
-                address = reader["address"].ToString();
-                entropyInBase64 = reader["entropy"].ToString();
-                connection.Close();
-                var encryptedPasswordInBytes = Convert.FromBase64String(encryptedPasswordInBase64);
-                var entropyInBytes = Convert.FromBase64String(entropyInBase64);
-                var passwordInBytes = ProtectedData.Unprotect(encryptedPasswordInBytes, entropyInBytes, DataProtectionScope.CurrentUser);
-                var passwordGetFromDatabase = Encoding.UTF8.GetString(passwordInBytes);
-                if (password == passwordGetFromDatabase)
-                {
-                    return (id, name, role, phone, gender, address);
-                }
-                return (0, "", "", "", "", "");
-            }
-            else
-            {
-                connection.Close();
-                return (0, "", "", "", "", "");
-            }
-        }
-
-
         public bool CheckUserExists(string username)
         {
             var connectionString = GetConnectionString();
@@ -162,7 +183,6 @@ namespace ClinicManagementSystem.Service.DataAccess
             int count = (int)command.ExecuteScalar();
             return count > 0;
         }
-
 
         public bool CreateUser(User user, string encryptedPasswordInBase64,string entropyInBase64)
         {
@@ -188,6 +208,7 @@ namespace ClinicManagementSystem.Service.DataAccess
             connection.Close();
             return success;
         }
+
         public bool CreateUserRoleDoctor(User user, string encryptedPasswordInBase64, string entropyInBase64,int specialty,string room)
         { 
             bool success = true;
@@ -208,6 +229,7 @@ namespace ClinicManagementSystem.Service.DataAccess
             connection.Close();
             return success;
         }
+
         public bool UpdateUser(User info,string entropyUserEdit)
         {
             var connectionString = GetConnectionString();
@@ -233,7 +255,7 @@ namespace ClinicManagementSystem.Service.DataAccess
             connection.Close();
             return success;
         }
-        
+
         public bool DeleteUser(User user) { 
             var connectionString = GetConnectionString();
             SqlConnection connection = new SqlConnection( connectionString);
@@ -253,9 +275,12 @@ namespace ClinicManagementSystem.Service.DataAccess
             connection.Close();
             return result >0;
         }
+        //=============================================================================================
 
 
-        public List<Specialty> GetSpecialty() {
+
+		//================================================Specialty========================================
+		public List<Specialty> GetSpecialty() {
             var specialties =new List<Specialty>();
             var connectionString = GetConnectionString();
             SqlConnection connection = new SqlConnection(connectionString);
@@ -273,7 +298,12 @@ namespace ClinicManagementSystem.Service.DataAccess
             connection.Close();
             return specialties;
         }
-        public Tuple<List<Medicine>, int> GetMedicines(
+		//=============================================================================================
+
+
+
+		//================================================Medicine========================================
+		public Tuple<List<Medicine>, int> GetMedicines(
                 int page, int rowsPerPage,
                 string keyword,
                 Dictionary<string, SortType> sortOptions)
@@ -335,7 +365,7 @@ namespace ClinicManagementSystem.Service.DataAccess
                 result, count
             );
         }
-        
+
         public bool CreateMedicine(Medicine medicine)
         {
             string connectionString = GetConnectionString();
@@ -354,6 +384,7 @@ namespace ClinicManagementSystem.Service.DataAccess
             connection.Close();
             return count == 1;
         }
+
         public bool UpdateMedicine(Medicine medicine)
         {
             string connectionString = GetConnectionString();
@@ -374,6 +405,7 @@ namespace ClinicManagementSystem.Service.DataAccess
             connection.Close();
             return count == 1;
         }
+
         public bool DeleteMedicine(Medicine medicine)
         {
             string connectionString = GetConnectionString();
@@ -388,7 +420,51 @@ namespace ClinicManagementSystem.Service.DataAccess
             connection.Close();
             return count >0;
         }
-        public List<MedicalExaminationForm> GetMedicalExaminationForms()
+
+		public void UpdateMedicineQuantity(int medicineId, int quantityChange)
+		{
+			using (var connection = new SqlConnection(_connectionString))
+			{
+				connection.Open();
+				string query = "UPDATE Medicine SET Quantity = Quantity + @QuantityChange WHERE Id = @MedicineId AND Quantity >= 0";
+				var command = new SqlCommand(query, connection);
+				command.Parameters.AddWithValue("@QuantityChange", quantityChange);
+				command.Parameters.AddWithValue("@MedicineId", medicineId);
+				command.ExecuteNonQuery();
+			}
+		}
+
+		public List<Medicine> GetAvailableMedicines()
+		{
+			var medicines = new List<Medicine>();
+
+			using (var connection = new SqlConnection(_connectionString))
+			{
+				connection.Open();
+				var command = new SqlCommand("SELECT Id, Name, Quantity FROM Medicine WHERE Quantity > 0", connection);
+
+				using (var reader = command.ExecuteReader())
+				{
+					while (reader.Read())
+					{
+						medicines.Add(new Medicine
+						{
+							Id = reader.GetInt32(0),
+							Name = reader.GetString(1),
+							Quantity = reader.GetInt32(2)
+						});
+					}
+				}
+			}
+
+			return medicines;
+		}
+		//=============================================================================================
+
+
+
+		//=============================================MedicalExaminationForm==========================
+		public List<MedicalExaminationForm> GetMedicalExaminationForms()
          {
             var forms = new List<MedicalExaminationForm>();
 
@@ -419,15 +495,76 @@ namespace ClinicManagementSystem.Service.DataAccess
             return forms;
         }
 
-        private void AddParameters(SqlCommand command, params (string ParameterName, object Value)[] parameters)
-        {
-            foreach (var (parameterName, value) in parameters)
-            {
-                command.Parameters.AddWithValue(parameterName, value);
-            }
-        }
+		public Tuple<List<MedicalExaminationForm>, int> GetMedicalExaminationForm(
+			int page,
+			int rowsPerPage,
+			string keyword,
+			Dictionary<string, SortType> sortOptions)
+		{
+			var result = new List<MedicalExaminationForm>();
+			var connectionString = GetConnectionString();
+			SqlConnection connection = new SqlConnection(connectionString);
+			connection.Open();
 
-        public (bool, int) AddPatient(Patient patient)
+			string sortString = "ORDER BY ";
+			bool useDefault = true;
+
+			foreach (var item in sortOptions)
+			{
+				useDefault = false;
+				if (item.Key == "patientId")
+				{
+					if (item.Value == SortType.Ascending)
+					{
+						sortString += "patientId ASC, ";
+					}
+					else
+					{
+						sortString += "patientId DESC, ";
+					}
+				}
+			}
+
+			if (useDefault)
+			{
+				sortString += "ID ";
+			}
+
+			var sql = $"""
+				SELECT count(*) over() as Total, id, patientId, staffId, time, symptom, doctorId
+				FROM MedicalExaminationForm
+				WHERE patientId like @Keyword
+				{sortString}
+				OFFSET @Skip ROWS FETCH NEXT @Take ROWS ONLY;
+				""";
+
+			var command = new SqlCommand(sql, connection);
+			AddParameters(command, ("@Skip", (page - 1) * rowsPerPage), ("@Take", rowsPerPage), ("@Keyword", $"%{keyword}%"));
+			var reader = command.ExecuteReader();
+			int count = -1;
+
+			while (reader.Read())
+			{
+				if (count == -1)
+				{
+					count = (int)reader["Total"];
+				}
+
+				var medicalExaminationForm = new MedicalExaminationForm();
+				medicalExaminationForm.Id = (int)reader["id"];
+				medicalExaminationForm.PatientId = (int)reader["patientId"];
+				medicalExaminationForm.StaffId = (int)reader["staffId"];
+				medicalExaminationForm.Time = (DateTime)reader["time"];
+				medicalExaminationForm.Symptoms = (string)reader["symptom"];
+				medicalExaminationForm.DoctorId = (int)reader["doctorId"];
+
+				result.Add(medicalExaminationForm);
+			}
+			connection.Close();
+			return new Tuple<List<MedicalExaminationForm>, int>(result, count);
+		}
+
+		public (bool, int) AddPatient(Patient patient)
         {
             var connectionString = GetConnectionString();
             SqlConnection connection = new SqlConnection(connectionString);
@@ -505,7 +642,133 @@ namespace ClinicManagementSystem.Service.DataAccess
             connection.Close();
             return result > 0;
         }
-        public List<Doctor> GetInforDoctor()
+
+		public MedicalExaminationForm GetMedicalExaminationFormById(int id)
+		{
+			using (var connection = new SqlConnection(_connectionString))
+			{
+				connection.Open();
+				var command = new SqlCommand("SELECT * FROM MedicalExaminationForm WHERE id = @Id", connection);
+				command.Parameters.AddWithValue("@Id", id);
+
+				using (var reader = command.ExecuteReader())
+				{
+					if (reader.Read())
+					{
+						return new MedicalExaminationForm
+						{
+							Id = reader.GetInt32(reader.GetOrdinal("id")),
+							PatientId = reader.GetInt32(reader.GetOrdinal("patientId")),
+							StaffId = reader.GetInt32(reader.GetOrdinal("staffId")),
+							Time = reader.GetDateTime(reader.GetOrdinal("time")),
+							Symptoms = reader.IsDBNull(reader.GetOrdinal("symptom")) ? (string)null : reader.GetString(reader.GetOrdinal("symptom")),
+							DoctorId = reader.GetInt32(reader.GetOrdinal("doctorId"))
+						};
+					}
+				}
+			}
+			return null;
+		}
+
+		public bool UpdateMedicalExaminationForm(MedicalExaminationForm form)
+		{
+			var connectionString = GetConnectionString();
+			SqlConnection connection = new SqlConnection(connectionString);
+			connection.Open();
+
+			var time = DateTime.Now;
+			var sql = "update MedicalExaminationForm set " +
+				"patientId=@patientId, " +
+				"doctorId=@doctorId, " +
+				"Time=@time, " +
+				"symptom=@symptom " +
+				"where id=@Id";
+
+			var command = new SqlCommand(sql, connection);
+			AddParameters(command,
+				("@Id", form.Id),
+				("@patientId", form.PatientId),
+				("@doctorId", form.DoctorId),
+				("@time", form.Time),
+				("@symptom", form.Symptoms));
+
+			int count = command.ExecuteNonQuery();
+			bool success = count == 1;
+
+			connection.Close();
+			return success;
+		}
+
+		public bool DeleteMedicalExaminationForm(MedicalExaminationForm form)
+		{
+			var connectionString = GetConnectionString();
+			SqlConnection connection = new SqlConnection(connectionString);
+			connection.Open();
+
+			using (var transaction = connection.BeginTransaction())
+			{
+				try
+				{
+					// Delete Bill
+					var deleteBillSql = @"DELETE FROM Bill
+                                          WHERE prescriptionId IN (
+                                               SELECT Id
+                                               FROM Prescription
+                                               WHERE medicalRecordId IN (
+                                                    SELECT Id
+                                                    FROM MedicalRecord
+                                                    WHERE MedicalExaminationFormId = @Id
+                                               )
+                                          )";
+					var deleteBillCommand = new SqlCommand(deleteBillSql, connection, transaction);
+					AddParameters(deleteBillCommand, ("@Id", form.Id));
+					deleteBillCommand.ExecuteNonQuery();
+
+					// Delete Prescripstion
+					var deletePrescriptionSql = @"DELETE FROM Prescription
+                                                  WHERE medicalRecordId IN (
+                                                       SELECT Id
+                                                       FROM MedicalRecord
+                                                       WHERE MedicalExaminationFormId = @Id
+                                                  )";
+					var deletePrescriptionCommand = new SqlCommand(deletePrescriptionSql, connection, transaction);
+					AddParameters(deletePrescriptionCommand, ("@Id", form.Id));
+					deletePrescriptionCommand.ExecuteNonQuery();
+
+					// Delete MedicalRecord
+					var deleteMedicalRecordSql = @"DELETE FROM MedicalRecord
+                                                   WHERE MedicalExaminationFormId = @Id";
+
+					var deleteMedicalRecordCommand = new SqlCommand(deleteMedicalRecordSql, connection, transaction);
+					AddParameters(deleteMedicalRecordCommand, ("@Id", form.Id));
+					deleteMedicalRecordCommand.ExecuteNonQuery();
+
+					// Delete MedicalExaminationForm
+					var deleteMedicalExaminationFormSql = @"DELETE FROM MedicalExaminationForm
+                                                            WHERE Id = @Id";
+					var deleteMedicalExaminationFormCommand = new SqlCommand(deleteMedicalExaminationFormSql, connection, transaction);
+					AddParameters(deleteMedicalExaminationFormCommand, ("@Id", form.Id));
+					int count = deleteMedicalExaminationFormCommand.ExecuteNonQuery();
+
+					// Commit transaction if successful
+					transaction.Commit();
+					return count == 1;
+				}
+				catch
+				{
+					// Rollback
+					transaction.Rollback();
+					throw;
+				}
+
+			}
+		}
+		//==============================================================================================
+
+
+
+		//================================================Doctor========================================
+		public List<Doctor> GetInforDoctor()
         {
             var connectionString = GetConnectionString();
             SqlConnection connection = new SqlConnection(connectionString);
@@ -544,118 +807,12 @@ namespace ClinicManagementSystem.Service.DataAccess
             connection.Close();
             return result;
         }
-
-        // Lấy phiếu khám bệnh
-        // Thêm thông tin bệnh nhân
-        public Tuple<List<MedicalExaminationForm>, int> GetMedicalExaminationForm(
-            int page,
-            int rowsPerPage,
-            string keyword,
-            Dictionary<string, SortType> sortOptions)
-        {
-            var result = new List<MedicalExaminationForm>();
-            var connectionString = GetConnectionString();
-            SqlConnection connection = new SqlConnection(connectionString);
-            connection.Open();
-
-            string sortString = "ORDER BY ";
-            bool useDefault = true;
-
-            foreach (var item in sortOptions)
-            {
-                useDefault = false;
-                if (item.Key == "patientId")
-                {
-                    if (item.Value == SortType.Ascending)
-                    {
-                        sortString += "patientId ASC, ";
-                    }
-                    else
-                    {
-                        sortString += "patientId DESC, ";
-                    }
-                }
-            }
-
-            if (useDefault)
-            {
-                sortString += "ID ";
-            }
-
-            var sql = $"""
-				SELECT count(*) over() as Total, id, patientId, staffId, time, symptom, doctorId
-				FROM MedicalExaminationForm
-				WHERE patientId like @Keyword
-				{sortString}
-				OFFSET @Skip ROWS FETCH NEXT @Take ROWS ONLY;
-				""";
-
-            var command = new SqlCommand(sql, connection);
-            AddParameters(command, ("@Skip", (page - 1) * rowsPerPage), ("@Take", rowsPerPage), ("@Keyword", $"%{keyword}%"));
-            var reader = command.ExecuteReader();
-            int count = -1;
-
-            while (reader.Read())
-            {
-                if (count == -1)
-                {
-                    count = (int)reader["Total"];
-                }
-
-                var medicalExaminationForm = new MedicalExaminationForm();
-                medicalExaminationForm.Id = (int)reader["id"];
-                medicalExaminationForm.PatientId = (int)reader["patientId"];
-                medicalExaminationForm.StaffId = (int)reader["staffId"];
-                medicalExaminationForm.Time = (DateTime)reader["time"];
-                medicalExaminationForm.Symptoms = (string)reader["symptom"];
-                medicalExaminationForm.DoctorId = (int)reader["doctorId"];
-
-                result.Add(medicalExaminationForm);
-            }
-            connection.Close();
-            return new Tuple<List<MedicalExaminationForm>, int>(result, count);
-        }
-
-        public string DecryptionPassword(string encryptedPasswordInBase64, string entropyInBase64)
-        {
-            var encryptedPasswordInBytes = Convert.FromBase64String(encryptedPasswordInBase64);
-            var entropyInBytes = Convert.FromBase64String(entropyInBase64);
-            var passwordInBytes = ProtectedData.Unprotect(encryptedPasswordInBytes, entropyInBytes, DataProtectionScope.CurrentUser);
-            var password = Encoding.UTF8.GetString(passwordInBytes);
-            return password;
-        }
+		//===============================================================================================
 
 
-        /*====================================================================================================*/
 
-        public MedicalExaminationForm GetMedicalExaminationFormById(int id)
-        {
-            using (var connection = new SqlConnection(_connectionString))
-            {
-                connection.Open();
-                var command = new SqlCommand("SELECT * FROM MedicalExaminationForm WHERE id = @Id", connection);
-                command.Parameters.AddWithValue("@Id", id);
-
-                using (var reader = command.ExecuteReader())
-                {
-                    if (reader.Read())
-                    {
-                        return new MedicalExaminationForm
-                        {
-                            Id = reader.GetInt32(reader.GetOrdinal("id")),
-                            PatientId = reader.GetInt32(reader.GetOrdinal("patientId")),
-                            StaffId = reader.GetInt32(reader.GetOrdinal("staffId")),
-                            Time = reader.GetDateTime(reader.GetOrdinal("time")),
-                            Symptoms = reader.IsDBNull(reader.GetOrdinal("symptom")) ? (string)null : reader.GetString(reader.GetOrdinal("symptom")),
-                            DoctorId = reader.GetInt32(reader.GetOrdinal("doctorId"))
-                        };
-                    }
-                }
-            }
-            return null;
-        }
-
-        public MedicalRecord GetMedicalRecordByExaminationFormId(int medicalExaminationFormId)
+		//========================================MedicalRecord==========================================
+		public MedicalRecord GetMedicalRecordByExaminationFormId(int medicalExaminationFormId)
         {
             using (var connection = new SqlConnection(_connectionString))
             {
@@ -727,10 +884,12 @@ namespace ClinicManagementSystem.Service.DataAccess
                 command.ExecuteNonQuery();
             }
         }
+		//=========================================================================================================
 
-        /*====================================================================================================*/
 
-        public void SavePrescription(Prescription prescription)
+
+		//==============================================Prescription===============================================
+		public void SavePrescription(Prescription prescription)
         {
             using (var connection = new SqlConnection(_connectionString))
             {
@@ -746,142 +905,12 @@ namespace ClinicManagementSystem.Service.DataAccess
                 command.ExecuteNonQuery();
             }
         }
-
-        public void UpdateMedicineQuantity(int medicineId, int quantityChange)
-        {
-            using (var connection = new SqlConnection(_connectionString))
-            {
-                connection.Open();
-                string query = "UPDATE Medicine SET Quantity = Quantity + @QuantityChange WHERE Id = @MedicineId AND Quantity >= 0";
-                var command = new SqlCommand(query, connection);
-                command.Parameters.AddWithValue("@QuantityChange", quantityChange);
-                command.Parameters.AddWithValue("@MedicineId", medicineId);
-                command.ExecuteNonQuery();
-            }
-        }
-
-        public List<Medicine> GetAvailableMedicines()
-        {
-            var medicines = new List<Medicine>();
-
-            using (var connection = new SqlConnection(_connectionString))
-            {
-                connection.Open();
-                var command = new SqlCommand("SELECT Id, Name, Quantity FROM Medicine WHERE Quantity > 0", connection);
-
-                using (var reader = command.ExecuteReader())
-                {
-                    while (reader.Read())
-                    {
-                        medicines.Add(new Medicine
-                        {
-                            Id = reader.GetInt32(0),
-                            Name = reader.GetString(1),
-                            Quantity = reader.GetInt32(2)
-                        });
-                    }
-                }
-            }
-
-            return medicines;
-        }
+		//=========================================================================================================
 
 
-        public bool UpdateMedicalExaminationForm(MedicalExaminationForm form)
-        {
-            var connectionString = GetConnectionString();
-            SqlConnection connection = new SqlConnection(connectionString);
-            connection.Open();
 
-            var time = DateTime.Now;
-            var sql = "update MedicalExaminationForm set " +
-                "patientId=@patientId, " +
-                "doctorId=@doctorId, " +
-                "Time=@time, " +
-                "symptom=@symptom " +
-                "where id=@Id";
-
-            var command = new SqlCommand(sql, connection);
-            AddParameters(command,
-                ("@Id", form.Id),
-                ("@patientId", form.PatientId),
-                ("@doctorId", form.DoctorId),
-                ("@time", form.Time),
-                ("@symptom", form.Symptoms));
-
-            int count = command.ExecuteNonQuery();
-            bool success = count == 1;
-
-            connection.Close();
-            return success;
-        }
-
-        public bool DeleteMedicalExaminationForm(MedicalExaminationForm form)
-        {
-            var connectionString = GetConnectionString();
-            SqlConnection connection = new SqlConnection(connectionString);
-            connection.Open();
-
-            using (var transaction = connection.BeginTransaction())
-            {
-                try
-                {
-                    // Delete Bill
-                    var deleteBillSql = @"DELETE FROM Bill
-                                          WHERE prescriptionId IN (
-                                               SELECT Id
-                                               FROM Prescription
-                                               WHERE medicalRecordId IN (
-                                                    SELECT Id
-                                                    FROM MedicalRecord
-                                                    WHERE MedicalExaminationFormId = @Id
-                                               )
-                                          )";
-                    var deleteBillCommand = new SqlCommand(deleteBillSql, connection, transaction);
-					AddParameters(deleteBillCommand, ("@Id", form.Id));
-                    deleteBillCommand.ExecuteNonQuery();
-
-					// Delete Prescripstion
-					var deletePrescriptionSql = @"DELETE FROM Prescription
-                                                  WHERE medicalRecordId IN (
-                                                       SELECT Id
-                                                       FROM MedicalRecord
-                                                       WHERE MedicalExaminationFormId = @Id
-                                                  )";
-                    var deletePrescriptionCommand = new SqlCommand(deletePrescriptionSql, connection, transaction);
-                    AddParameters(deletePrescriptionCommand, ("@Id", form.Id));
-                    deletePrescriptionCommand.ExecuteNonQuery();
-
-                    // Delete MedicalRecord
-                    var deleteMedicalRecordSql = @"DELETE FROM MedicalRecord
-                                                   WHERE MedicalExaminationFormId = @Id";
-
-                    var deleteMedicalRecordCommand = new SqlCommand(deleteMedicalRecordSql, connection, transaction);
-                    AddParameters(deleteMedicalRecordCommand, ("@Id", form.Id));
-                    deleteMedicalRecordCommand.ExecuteNonQuery();
-
-                    // Delete MedicalExaminationForm
-                    var deleteMedicalExaminationFormSql = @"DELETE FROM MedicalExaminationForm
-                                                            WHERE Id = @Id";
-                    var deleteMedicalExaminationFormCommand = new SqlCommand(deleteMedicalExaminationFormSql, connection, transaction);
-                    AddParameters(deleteMedicalExaminationFormCommand, ("@Id", form.Id));
-                    int count = deleteMedicalExaminationFormCommand.ExecuteNonQuery();
-
-                    // Commit transaction if successful
-                    transaction.Commit();
-                    return count == 1;
-                }
-                catch
-                {
-                    // Rollback
-                    transaction.Rollback();
-                    throw;
-                }
-
-            }
-        }
-
-        public Tuple<List<Patient>, int> GetPatients(
+		//===================================================Patient===============================================
+		public Tuple<List<Patient>, int> GetPatients(
             int page, int rowsPerPage,
             string keyword,
             Dictionary<string, SortType> sortOptions
@@ -1030,5 +1059,6 @@ namespace ClinicManagementSystem.Service.DataAccess
                 }
             }
         }
-    }
+		//=========================================================================================================
+	}
 }

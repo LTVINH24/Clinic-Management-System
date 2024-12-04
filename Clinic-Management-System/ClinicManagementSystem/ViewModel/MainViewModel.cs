@@ -10,10 +10,11 @@ using Windows.System;
 using Windows.Storage;
 using Microsoft.UI.Xaml.Controls;
 using System.Security.Cryptography;
+using ClinicManagementSystem.ViewModel.EndUser;
 
 namespace ClinicManagementSystem.ViewModel
 {
-    public class MainViewModel
+	public class MainViewModel
     {
         IDao _dao;
 

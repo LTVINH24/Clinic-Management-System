@@ -5,7 +5,7 @@ using Microsoft.UI.Xaml.Navigation;
 
 namespace ClinicManagementSystem.Views.DoctorView
 {
-    public sealed partial class DiagnosisPage : Page
+	public sealed partial class DiagnosisPage : Page
     {
         public DiagnosisPage()
         {
