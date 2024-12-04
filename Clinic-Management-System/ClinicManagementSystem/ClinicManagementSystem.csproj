@@ -18,6 +18,8 @@
     <None Remove="Assets\doctor.png" />
     <None Remove="Assets\hopital.png" />
     <None Remove="Assets\logo.png" />
+    <None Remove="Views\StaffView\HomePage.xaml" />
+    <None Remove="Views\StaffView\ListPatient.xaml" />
     <None Remove="Views\AdminView\Medicine.xaml" />
   </ItemGroup>
 
@@ -34,7 +36,7 @@
   <ItemGroup>
     <PackageReference Include="Microsoft.Data.SqlClient" Version="5.2.2" />
     <PackageReference Include="Microsoft.Windows.SDK.BuildTools" Version="10.0.26100.1742" />
-    <PackageReference Include="Microsoft.WindowsAppSDK" Version="1.6.240923002" />
+    <PackageReference Include="Microsoft.WindowsAppSDK" Version="1.6.241114003" />
     <PackageReference Include="PropertyChanged.Fody" Version="4.1.0" />
     <Manifest Include="$(ApplicationManifest)" />
   </ItemGroup>
@@ -47,7 +49,19 @@
   <ItemGroup Condition="'$(DisableMsixProjectCapabilityAddedByProject)'!='true' and '$(EnableMsixTooling)'=='true'">
     <ProjectCapability Include="Msix" />
   </ItemGroup>
+  
   <ItemGroup>
+    <Page Update="Views\StaffView\HomePage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+  </ItemGroup>
+  
+  <ItemGroup>
+    <Page Update="Views\StaffView\ListPatient.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+  </ItemGroup>
+  
     <Page Update="Views\AdminView\Medicine.xaml">
       <Generator>MSBuild:Compile</Generator>
     </Page>

@@ -34,6 +34,18 @@ namespace ClinicManagementSystem.Service.DataAccess
         bool CreateUserRoleDoctor(User user, string encryptedPasswordInBase64, string entropyInBase64, int specialty, string room);
 
         bool CheckUserExists(string username);
+        
+        bool UpdateMedicalExaminationForm(MedicalExaminationForm form);
+        bool DeleteMedicalExaminationForm(MedicalExaminationForm form);
+        Tuple<List<Patient>, int> GetPatients(
+            int page, 
+            int rowsPerPage,
+            string keyword,
+            Dictionary<string, SortType> sortOptions
+        );
+        bool UpdatePatient(Patient patient);
+        bool DeletePatient(Patient patient);
+	
         bool UpdateUser(User info,string entropyUserEdit);
         bool DeleteUser(User user);
         public List<Specialty> GetSpecialty();
@@ -45,8 +57,6 @@ namespace ClinicManagementSystem.Service.DataAccess
         bool CreateMedicine(Medicine medicine);
         bool UpdateMedicine( Medicine medicine);
         bool DeleteMedicine(Medicine medicine);
-
-
 
     }
 }

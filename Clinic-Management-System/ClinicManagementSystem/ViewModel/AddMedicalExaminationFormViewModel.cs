@@ -46,7 +46,6 @@ namespace ClinicManagementSystem.ViewModel
 			}
 		}
 
-
 		private Doctor _selectedDoctor;
 		public Doctor SelectedDoctor
 		{
@@ -62,7 +61,6 @@ namespace ClinicManagementSystem.ViewModel
 			}
 		}
 
-
 		public AddMedicalExaminationFormViewModel()
 		{
 			_dao = ServiceFactory.GetChildOf(typeof(IDao)) as IDao;
@@ -72,16 +70,12 @@ namespace ClinicManagementSystem.ViewModel
 		public Patient Patient { get; set; } = new Patient();
 		public MedicalExaminationForm MedicalExaminationForm { get; set; } = new MedicalExaminationForm();
 
-
-
-
 		public event Action<bool, int, string> AddCompleted;
 		public event PropertyChangedEventHandler PropertyChanged;
 		public void OnPropertyChanged(string propertyName)
 		{
 			PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
 		}
-
 
 		public (bool, int, string) isValidData()
 		{
@@ -103,7 +97,6 @@ namespace ClinicManagementSystem.ViewModel
 				return (false, 307, "Invalid symptoms.");
 
 			return (true, 200, "Valid data.");
-
 		}
 
 
@@ -207,7 +200,6 @@ namespace ClinicManagementSystem.ViewModel
 			SpecialtyFilter = null;
 			LoadDoctors();
 		}
-		//==================================List MedicalExaminationForm===============================
 		
 	}
 }

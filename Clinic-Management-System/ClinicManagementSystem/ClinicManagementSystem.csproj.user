@@ -8,13 +8,24 @@
     <None Update="MainWindow.xaml">
       <SubType>Designer</SubType>
     </None>
+    
     <None Update="Package.appxmanifest">
       <SubType>Designer</SubType>
     </None>
+    
+    <Page Update="Views\StaffView\HomePage.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    
+    <Page Update="Views\StaffView\ListPatient.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+
     <Page Update="Views\AdminView\Medicine.xaml">
       <SubType>Designer</SubType>
     </Page>
   </ItemGroup>
+  
   <ItemGroup>
     <Page Update="Views\AdminView\addAccount.xaml">
       <SubType>Designer</SubType>
@@ -52,19 +63,10 @@
     <Page Update="Views\StaffView\AddMedicalExaminationForm.xaml">
       <SubType>Designer</SubType>
     </Page>
-    <Page Update="Views\StaffView\DeleteMedicalExaminationForm.xaml">
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Update="Views\StaffView\homeStaff.xaml">
-      <SubType>Designer</SubType>
-    </Page>
     <Page Update="Views\StaffView\listMedicalExaminationForm.xaml">
       <SubType>Designer</SubType>
     </Page>
     <Page Update="Views\StaffView\staffPage.xaml">
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Update="Views\StaffView\UpdateMedicalExaminationForm.xaml">
       <SubType>Designer</SubType>
     </Page>
   </ItemGroup>

@@ -23,14 +23,21 @@ namespace ClinicManagementSystem.Views.StaffView
 	/// <summary>
 	/// An empty page that can be used on its own or navigated to within a Frame.
 	/// </summary>
-	public sealed partial class listMedicalExaminationForm : Page
+	public sealed partial class ListPatient : Page
 	{
-		public MedicalExaminationFormViewModel ViewModel { get; set; }
-		public listMedicalExaminationForm()
+		public PatientViewModel ViewModel { get; set; }
+		public ListPatient()
 		{
-			ViewModel = new MedicalExaminationFormViewModel();
+			ViewModel = new PatientViewModel();
 			this.DataContext = ViewModel;
 			this.InitializeComponent();
+		}
+
+		bool init = false;
+
+		private void searchTextbox_Click(object sender, TextChangedEventArgs e)
+		{
+			ViewModel.GoToNextPage();
 		}
 
 		private void nextButton_Click(object sender, RoutedEventArgs e)
@@ -42,57 +49,42 @@ namespace ClinicManagementSystem.Views.StaffView
 		{
 			ViewModel.GoToPreviousPage();
 		}
-
-		bool init = false;
-
-
 		private void pagesComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
 		{
-			if (init == false)
+			if(init == false)
 			{
 				init = true;
 				return;
 			}
-			if (pagesComboBox.SelectedIndex >= 0)
+			if(pagesComboBox.SelectedIndex >= 0)
 			{
 				var item = pagesComboBox.SelectedItem as PageInfo;
 				ViewModel.GoToPage(item.Page);
 			}
 		}
 
-		private void medicalExaminationFormList_SelectionChanged(object sender, SelectionChangedEventArgs e)
-		{
-			var formEdit = itemsComboBox.SelectedItem as MedicalExaminationForm;
-			ViewModel.Edit(formEdit);
-		}
-
-		private void searchTextbox_Click(object sender, TextChangedEventArgs e)
-		{
-
-        }
-
 		private void searchButton_Click(object sender, RoutedEventArgs e)
 		{
 
 		}
 
-		private void updateMedicalExaminationForm(object sender, RoutedEventArgs e)
+		private void updatePatient(object sender, RoutedEventArgs e)
 		{
 			var success = ViewModel.Update();
 			ViewModel.LoadData();
 			string notify = "";
 			if (success)
 			{
-				notify = "Updated successfully.";
+				notify = "Updated successfully";
 			}
 			else
 			{
-				notify = "Update failed.";
+				notify = "Update failed";
 			}
 			Notify(notify);
 		}
 
-		private async void deleteMedicalExaminationForm(object sender, RoutedEventArgs e)
+		private async void deletePatient(object sender, RoutedEventArgs e)
 		{
 			var confirmContentDialog = new ContentDialog
 			{
@@ -105,28 +97,23 @@ namespace ClinicManagementSystem.Views.StaffView
 
 			var result = await confirmContentDialog.ShowAsync();
 
-			if(result == ContentDialogResult.Primary)
+			if (result == ContentDialogResult.Primary)
 			{
 				var success = ViewModel.Delete();
 				ViewModel.LoadData();
 				string notify = "";
 				if (success)
 				{
-					notify = "Deleted successfully.";
+					notify = "Deleted successfully";
 				}
 				else
 				{
-					notify = "Delete failed.";
+					notify = "Delete failed";
 				}
 				Notify(notify);
 			}
 		}
 
-		private void cancelEdit(object sender, RoutedEventArgs e)
-		{
-			
-			ViewModel.Cancel();
-		}
 
 		private async void Notify(string notify)
 		{
@@ -138,5 +125,16 @@ namespace ClinicManagementSystem.Views.StaffView
 				CloseButtonText = "OK"
 			}.ShowAsync();
 		}
-	}	
+
+		private void cancelEdit(object sender, RoutedEventArgs e)
+		{
+			ViewModel.LoadData();
+		}
+
+		private void Patient_SelectionChanged(object sender, SelectionChangedEventArgs e)
+		{
+			var patientEdit = itemsComboBox.SelectedItem as Patient;
+			ViewModel.Edit(patientEdit);
+		}
+	}
 }

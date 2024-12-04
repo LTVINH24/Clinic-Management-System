@@ -24,16 +24,17 @@
             IsTabStop="False"
             SelectionChanged="NavigationView_SelectionChanged">
             <NavigationView.MenuItems>
-                <NavigationViewItem Content="Home" Icon="Home" ToolTipService.ToolTip="Home" Tag="homeStaff"/>
-                <NavigationViewItem Content="Patient" Icon="People" ToolTipService.ToolTip="Patient" Tag="homeStaff">
-                    <NavigationViewItem.MenuItems>
-                        <NavigationViewItem Content="Add" Icon="Add" ToolTipService.ToolTip="Add" Tag="AddMedicalExaminationForm"/>
-                        <NavigationViewItem Content="Delete" Icon="Delete" ToolTipService.ToolTip="Delete" Tag="DeleteMedicalExaminationForm"/>
-                        <NavigationViewItem Content="Update" Icon="Refresh" ToolTipService.ToolTip="Update" Tag="UpdateMedicalExaminationForm"/>
-                    </NavigationViewItem.MenuItems>
-                   
-                </NavigationViewItem>
+                <NavigationViewItem Content="Home" Icon="Home" ToolTipService.ToolTip="Home" Tag="HomePage"/>
+                <NavigationViewItem Content="Patient" Icon="People" ToolTipService.ToolTip="Patient" Tag="ListPatient"/>
+                <NavigationViewItem Content="Medical Examination Form" Icon="Document" ToolTipService.ToolTip="Medical Examination Form" Tag="MedicalExaminationForm"/>
+                <NavigationViewItem Content="Add" Icon="Add" ToolTipService.ToolTip="Add" Tag="AddMedicalExaminationForm"/>
+    
                 
+               
+                
+
+
+
             </NavigationView.MenuItems>
             <Frame x:Name="contentFrame" Content="Staff Page"/>
         </NavigationView>

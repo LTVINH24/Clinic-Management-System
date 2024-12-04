@@ -6,20 +6,17 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
-using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
-using System.Net.Mail;
-using ClinicManagementSystem.Helper;
 using static ClinicManagementSystem.Service.DataAccess.IDao;
-using Windows.System;
+
 namespace ClinicManagementSystem.ViewModel
 {
-	public class MedicalExaminationFormViewModel : INotifyPropertyChanged
+	public class PatientViewModel : INotifyPropertyChanged
 	{
 		IDao _dao;
 
-		private ObservableCollection<MedicalExaminationForm> _medicalExaminationForms;
+		private ObservableCollection<Patient> _patients;
 		private ObservableCollection<PageInfo> _pageinfos;
 		public int CurrentPage { get; set; }
 		public int TotalPages { get; set; }
@@ -27,7 +24,8 @@ namespace ClinicManagementSystem.ViewModel
 		public int RowsPerPage { get; set; }
 		public string Keyword { get; set; } = "";
 		public PageInfo SelectedPageInfoItem { get; set; } = new PageInfo();
-		public MedicalExaminationForm FormEdit { get; set; }
+		public Patient PatientEdit { get; set; }
+
 		public ObservableCollection<PageInfo> PageInfos
 		{
 			get => _pageinfos ??= new ObservableCollection<PageInfo>();
@@ -36,12 +34,13 @@ namespace ClinicManagementSystem.ViewModel
 				_pageinfos = value;
 			}
 		}
-		public ObservableCollection<MedicalExaminationForm> MedicalExaminationForms
+
+		public ObservableCollection<Patient> Patients
 		{
-			get => _medicalExaminationForms ??= new ObservableCollection<MedicalExaminationForm>();
+			get => _patients ??= new ObservableCollection<Patient>();
 			set
 			{
-				_medicalExaminationForms = value;
+				_patients = value;
 			}
 		}
 
@@ -49,7 +48,7 @@ namespace ClinicManagementSystem.ViewModel
 
 		public event PropertyChangedEventHandler PropertyChanged;
 
-		public MedicalExaminationFormViewModel()
+		public PatientViewModel()
 		{
 			RowsPerPage = 10;
 			CurrentPage = 1;
@@ -61,31 +60,10 @@ namespace ClinicManagementSystem.ViewModel
 		{
 			get
 			{
-				return $"Displaying {MedicalExaminationForms.Count}/{RowsPerPage} of total {TotalItems} item(s)";
+				return $"Displaying {Patients.Count}/{RowsPerPage} of total {TotalItems} item(s)";
 			}
 		}
 		private bool _sortById = false;
-
-		public bool SortById
-		{
-			get => _sortById;
-			set
-			{
-				_sortById = value;
-				if (value == true)
-				{
-					_sortOptions.Add("patientId", SortType.Ascending);
-				}
-				else
-				{
-					if (_sortOptions.ContainsKey("patientId"))
-					{
-						_sortOptions.Remove("patientId");
-					}
-				}
-				LoadData();
-			}
-		}
 
 		public void GoToNextPage()
 		{
@@ -111,16 +89,16 @@ namespace ClinicManagementSystem.ViewModel
 
 		public void LoadData()
 		{
-			var (items, count) = _dao.GetMedicalExaminationForm(CurrentPage, RowsPerPage, Keyword, _sortOptions);
+			var (items, count) = _dao.GetPatients(CurrentPage, RowsPerPage, Keyword, _sortOptions);
 
-			MedicalExaminationForms.Clear();
+			Patients.Clear();
 
-			foreach(var item in items)
+			foreach (var item in items)
 			{
-				MedicalExaminationForms.Add(item);
+				Patients.Add(item);
 			}
 
-			if(count != TotalItems)
+			if (count != TotalItems)
 			{
 				TotalItems = count;
 				TotalPages = TotalItems / RowsPerPage +
@@ -145,25 +123,25 @@ namespace ClinicManagementSystem.ViewModel
 			LoadData();
 		}
 
-		public void Edit(MedicalExaminationForm formEdit)
+		public void Edit(Patient patient)
 		{
-			FormEdit = formEdit;
+			PatientEdit = patient;
 		}
 
 		public void Cancel()
 		{
 			LoadData();
 		}
-		
+
 		public bool Update()
-        {
-			bool success = _dao.UpdateMedicalExaminationForm(FormEdit);
+		{
+			bool success = _dao.UpdatePatient(PatientEdit);
 			return success;
 		}
 
 		public bool Delete()
 		{
-			bool success = _dao.DeleteMedicalExaminationForm(FormEdit);
+			bool success = _dao.DeletePatient(PatientEdit);
 			return success;
 		}
 	}
