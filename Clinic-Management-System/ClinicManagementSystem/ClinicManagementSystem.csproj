@@ -62,6 +62,7 @@
     </Page>
   </ItemGroup>
   
+  <ItemGroup>
     <Page Update="Views\AdminView\Medicine.xaml">
       <Generator>MSBuild:Compile</Generator>
     </Page>
