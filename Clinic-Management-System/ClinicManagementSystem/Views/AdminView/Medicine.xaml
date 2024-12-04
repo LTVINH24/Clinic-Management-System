@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Page
+    x:Class="ClinicManagementSystem.Views.AdminView.Medicine"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:ClinicManagementSystem.Views.AdminView"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:localmodel="using:ClinicManagementSystem.Model"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+    <Page.Resources>
+        <DataTemplate x:Key="HorizontalMedicine" x:DataType="localmodel:Medicine">
+            <Border BorderThickness="1" BorderBrush="#b5b5e8">
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Width="80" Margin="20" Text="{x:Bind Id}" ></TextBlock>
+                    <TextBlock Width="150" Margin="20" Text="{x:Bind Name}" ></TextBlock>
+                    <TextBlock Width="100" Margin="20" Text="{x:Bind Quantity}" ></TextBlock>
+                    <TextBlock Width="100" Margin="20" Text="{x:Bind Price}" ></TextBlock>
+                    <TextBlock Width="300" Margin="20" Text="{x:Bind Manufacturer}" ></TextBlock>
+                    <Button Click="Edit_Click" Background="Transparent" BorderBrush="Transparent">
+                        <FontIcon Glyph="&#xE70F;" />
+                    </Button>
+                    <Button Margin="40,0,0,0" Click="Delete_Click" Background="Transparent" BorderBrush="Transparent">
+                        <FontIcon Glyph="&#xE74D;" />
+                    </Button>
+                </StackPanel>
+            </Border>
+        </DataTemplate>
+    </Page.Resources>
+    <Grid  Padding="10">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+        <StackPanel Grid.Row="0" Margin ="35,0,0,0"  Orientation="Horizontal" HorizontalAlignment="Left">
+            <TextBlock FontWeight="Bold" FontSize="20" Width="120">ID</TextBlock>
+            <TextBlock FontWeight="Bold" FontSize="20"  Width="190">Name</TextBlock>
+            <TextBlock FontWeight="Bold" FontSize="20"  Width="140">Quantity</TextBlock>
+            <TextBlock FontWeight="Bold" FontSize="20"  Width="140">Price</TextBlock>
+            <TextBlock FontWeight="Bold" FontSize="20"  Width="340">Manufacturer</TextBlock>
+            <TextBox HorizontalAlignment="Stretch" PlaceholderText="Search" TextChanged="searchTextbox_Click" Padding="10" CornerRadius="20" Name="keyword" Text="{x:Bind ViewModel.Keyword, 
+                        Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Width="200"/>
+        </StackPanel>
+       
+
+        <ListView Grid.Row="1"  Name="itemsComboBox" Margin="0,10,0,0"                
+           ItemsSource="{Binding Medicines, Mode=TwoWay}"
+           ItemTemplate="{StaticResource HorizontalMedicine}">
+        </ListView>
+        <StackPanel Margin="0,0,0,20" Grid.Row="2"    Orientation="Horizontal" VerticalAlignment="Bottom" HorizontalAlignment="Center">
+            <Button  Click="previousButton_Click" >
+                <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xE76B;"/>
+            </Button>
+            <StackPanel Orientation="Vertical">
+                <TextBlock TextAlignment="Center" Width="60" FontSize="16" >
+                       <Run Text="{x:Bind ViewModel.SelectedPageInfoItem.Page ,Mode=OneWay}"/> of <Run Text="{x:Bind ViewModel.SelectedPageInfoItem.Total, Mode=OneWay}"/>
+                </TextBlock>
+                <ComboBox ItemsSource="{x:Bind ViewModel.PageInfos, Mode=OneWay}"
+                            SelectedItem="{x:Bind ViewModel.SelectedPageInfoItem, Mode=TwoWay}"
+                            SelectionChanged="pagesComboBox_SelectionChanged"
+                            Margin="5" Name="pagesComboBox" Width="100" Height="30">
+                    <ComboBox.ItemTemplate>
+                        <DataTemplate x:DataType="localmodel:PageInfo">
+                            <TextBlock >
+                                 <Run Text="{x:Bind Page,Mode=OneWay}"/>/<Run Text="{x:Bind Total, Mode=OneWay}"/>
+                            </TextBlock>
+                        </DataTemplate>
+                    </ComboBox.ItemTemplate>
+                </ComboBox>
+            </StackPanel>
+            <Button  Click="nextButton_Click" >
+                <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xE76C;"/>
+            </Button>
+        </StackPanel>
+        <StackPanel Background="Pink" Grid.Row="3" Width="1000" BorderBrush="#b5b5e8" BorderThickness="2">
+            <Grid  HorizontalAlignment="Center">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="Auto"/>
+
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <TextBox  Width="300" Margin="10" Header="Name" Grid.Row="0" Grid.Column="0" Text="{x:Bind ViewModel.MedicineEdit.Name,Mode=TwoWay}"></TextBox>
+                <TextBox  Width="300" Margin="10" Header="Price" Grid.Row="0" Grid.Column="1" Text="{x:Bind ViewModel.MedicineEdit.Price,Mode=TwoWay}"></TextBox>
+                <TextBox  Width="300" Margin="10" Header="Quantity" Grid.Row="1" Grid.Column="0" Text="{x:Bind ViewModel.MedicineEdit.Quantity,Mode=TwoWay}"></TextBox>
+                <TextBox  Width="300" Margin="10" Header="Manufacturer" Grid.Row="1" Grid.Column="1" Text="{x:Bind ViewModel.MedicineEdit.Manufacturer,Mode=TwoWay}"></TextBox>
+                <CalendarDatePicker Margin="10" Width="300" Grid.Row="2" Grid.Column="0"   PlaceholderText="Pick a date" Header="EXP Date"   Date="{x:Bind ViewModel.MedicineEdit.ExpDate,Mode=TwoWay}"/>
+                <CalendarDatePicker Margin="10" Width="300"  Grid.Row="2" Grid.Column="1"  PlaceholderText="Pick a date" Header="MFG Date"   Date="{x:Bind ViewModel.MedicineEdit.MfgDate,Mode=TwoWay}"/>
+                <StackPanel  Grid.Row="3" Grid.ColumnSpan="2" Orientation="Horizontal" HorizontalAlignment="Center">
+                    <Button Click="addMedicine" x:Name="AddBtn" Margin="20" Width="80" Background="Blue"  Foreground="White">Add</Button>
+                    <Button Click="saveMedicine" x:Name="SaveBtn" Visibility="Collapsed" Background="Blue" Foreground="White" Margin="20" Width="80">Save</Button>
+                    <Button Click="cancelMedicine" Margin="20" Width="80">Cancel</Button>
+                </StackPanel>
+            </Grid>
+        </StackPanel>
+    </Grid>
+</Page>

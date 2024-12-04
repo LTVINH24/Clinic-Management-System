@@ -20,9 +20,40 @@ namespace ClinicManagementSystem.Helper
 
 			return Regex.IsMatch(name, @"^[\p{L}\s]+$");
 		}
+        public bool IsValidPhone(string phone)
+        {
+            if (string.IsNullOrWhiteSpace(phone))
+            {
+                return false;
+            }
+            string pattern = @"^\+?[0-9\s\-\(\)]{10,15}$";
+            return Regex.IsMatch(phone, pattern);
+        }
+        public bool IsValidUsername(string username)
+        {
+            if (string.IsNullOrWhiteSpace(username))
+            {
+                return false;
+            }
 
-		// Email
-		public bool IsValidEmail(string email)
+          
+            string pattern = @"^[a-zA-Z0-9_]{3,}$";
+            return Regex.IsMatch(username, pattern);
+        }
+        public bool IsValidPassword(string password)
+        {
+            if (string.IsNullOrWhiteSpace(password))
+            {
+                return false;
+            }
+
+            // Password phải có ít nhất 8 ký tự, chứa ít nhất một chữ cái viết hoa, một chữ cái thường, một số và một ký tự đặc biệt
+            string pattern = @"^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$";
+            return Regex.IsMatch(password, pattern);
+        }
+
+        // Email
+        public bool IsValidEmail(string email)
 		{
 			if (string.IsNullOrWhiteSpace(email))
 			{

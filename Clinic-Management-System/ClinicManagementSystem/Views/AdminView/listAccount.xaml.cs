@@ -90,7 +90,18 @@ namespace ClinicManagementSystem.Views.AdminView
 
         private void delete_editUser(object sender, RoutedEventArgs e)
         {
-
+            var success = ViewModel.Delete();
+            ViewModel.LoadData();
+            string notify = "";
+            if (success)
+            {
+                notify = "Deleted successfully";
+            }
+            else
+            {
+                notify = "Deleted failed";
+            }
+            Notify(notify);
         }
 
         private void cancel_editUser(object sender, RoutedEventArgs e)

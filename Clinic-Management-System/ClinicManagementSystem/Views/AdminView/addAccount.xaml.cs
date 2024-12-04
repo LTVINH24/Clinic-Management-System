@@ -13,6 +13,7 @@ using Microsoft.UI.Xaml.Input;
 using Microsoft.UI.Xaml.Media;
 using Microsoft.UI.Xaml.Navigation;
 using ClinicManagementSystem.ViewModel;
+using ClinicManagementSystem.Helper;
 
 // To learn more about WinUI, the WinUI project structure,
 // and more about our project templates, see: http://aka.ms/winui-project-info.
@@ -37,10 +38,25 @@ namespace ClinicManagementSystem.Views.AdminView
 
         private void RoleMenuFlyoutItem_Click(object sender, RoutedEventArgs e)
         {
+            var valid = new IsValidData();
             if(sender is MenuFlyoutItem menuItem)
             {
+                if(menuItem.Text=="doctor")
+                {
+                    Specialty.Visibility = Visibility.Visible;
+                    Room.Visibility = Visibility.Visible;
+                    Grid.SetRowSpan(RoleAndSpecialty, 2);
+                }
+                else
+                {
+                    Specialty.Visibility = Visibility.Collapsed;
+                    Room.Visibility = Visibility.Collapsed;
+                    Grid.SetRowSpan(RoleAndSpecialty, 1);
+                }
                 RoleDropDown.Content = menuItem.Text;
+                RoleDropDown.Tag =menuItem.Text;
             }
+           
         }
         private void GenderMenuFlyoutItem_Click(object sender, RoutedEventArgs e)
         {
@@ -51,16 +67,65 @@ namespace ClinicManagementSystem.Views.AdminView
         }
         private void Create_Click(object sender, RoutedEventArgs e) 
         {
-            string notify= viewModel.CreateUser(viewModel.user);
-            if(notify == "")
+            if (ValidData())
             {
-                Notify("Account created successfully");
+                string notify= viewModel.CreateUser(viewModel.user);
+                if(notify == "")
+                {
+                    Notify("Account created successfully");
 
+                }
+                else
+                {
+                    Notify(notify);
+                }    
             }
-            else
+        }
+        private bool  ValidData()
+        {
+            var valid = new IsValidData();
+            if (!valid.IsValidName(NameUser.Text))
             {
-                Notify(notify);
-            }    
+                Notify("Please enter a valid name");
+                return false;
+            }
+            if (!valid.IsValidPhone(PhoneUser.Text))
+            {
+                Notify("Please enter a valid phone number");
+                return false;
+            }
+            if (!valid.IsValidAddress(AddressUser.Text))
+            {
+                Notify("Please enter a valid address");
+                return false;
+            }
+            if (!valid.IsValidUsername(UserNameUser.Text))
+            {
+                Notify("A username must be at least 3 characters long and contain only letters, numbers, or underscores");
+                return false;
+            }
+
+            //if (!valid.IsValidGender(GenderDropDown.Tag.ToString()))
+            //{
+            //    Notify("Please choose a gender");
+            //    return false;
+            //}
+            //if (!valid.IsValidDescription(RoleDropDown.Tag.ToString()))
+            //{
+            //    Notify("Please choose a gender");
+            //    return false;
+            //}
+            if (!valid.IsValidDatePicker(BirthDayUser.Date))
+            {
+                Notify("Please choose a valid birthday");
+                return false;
+            }
+            if (!valid.IsValidPassword(PasswordUser.Password))
+            {
+                Notify("Password: 8+ chars, uppercase, lowercase, number, special char");
+                return false ;
+            }
+            return true;
         }
         private async void Notify(string notify)
         {

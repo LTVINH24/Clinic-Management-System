@@ -30,9 +30,11 @@ namespace ClinicManagementSystem.Service.DataAccess
             Dictionary<string, SortType> sortOptions
         );
         (int, string, string, string, string, string) Authentication (string username, string password);
-        bool CreateUser( User user);
+        bool CreateUser( User user,string encryptedPasswordInBase64,string entropyInBase64);
+        bool CreateUserRoleDoctor(User user, string encryptedPasswordInBase64, string entropyInBase64, int specialty, string room);
+
         bool CheckUserExists(string username);
-        bool UpdateUser(User info);
+        
         bool UpdateMedicalExaminationForm(MedicalExaminationForm form);
         bool DeleteMedicalExaminationForm(MedicalExaminationForm form);
         Tuple<List<Patient>, int> GetPatients(
@@ -43,5 +45,18 @@ namespace ClinicManagementSystem.Service.DataAccess
         );
         bool UpdatePatient(Patient patient);
         bool DeletePatient(Patient patient);
-	}
+	
+        bool UpdateUser(User info,string entropyUserEdit);
+        bool DeleteUser(User user);
+        public List<Specialty> GetSpecialty();
+        Tuple<List<Medicine>, int> GetMedicines(
+         int page, int rowsPerPage,
+         string keyword,
+         Dictionary<string, SortType> sortOptions
+     );
+        bool CreateMedicine(Medicine medicine);
+        bool UpdateMedicine( Medicine medicine);
+        bool DeleteMedicine(Medicine medicine);
+
+    }
 }

@@ -20,6 +20,7 @@
     <None Remove="Assets\logo.png" />
     <None Remove="Views\StaffView\HomePage.xaml" />
     <None Remove="Views\StaffView\ListPatient.xaml" />
+    <None Remove="Views\AdminView\Medicine.xaml" />
   </ItemGroup>
 
   <ItemGroup>
@@ -48,13 +49,20 @@
   <ItemGroup Condition="'$(DisableMsixProjectCapabilityAddedByProject)'!='true' and '$(EnableMsixTooling)'=='true'">
     <ProjectCapability Include="Msix" />
   </ItemGroup>
+  
   <ItemGroup>
     <Page Update="Views\StaffView\HomePage.xaml">
       <Generator>MSBuild:Compile</Generator>
     </Page>
   </ItemGroup>
+  
   <ItemGroup>
     <Page Update="Views\StaffView\ListPatient.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+  </ItemGroup>
+  
+    <Page Update="Views\AdminView\Medicine.xaml">
       <Generator>MSBuild:Compile</Generator>
     </Page>
   </ItemGroup>
