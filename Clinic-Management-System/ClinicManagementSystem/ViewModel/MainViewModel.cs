@@ -46,12 +46,26 @@ namespace ClinicManagementSystem.ViewModel
             }
         }
         private UserViewModel userViewModfel { get; set; } = new UserViewModel();
+        private (string, string) EncryptPassword(string password)
+        {
+            var passwordInBytes = Encoding.UTF8.GetBytes(password);
+            var entropyInBytes = new byte[20];
+            using (var rng = RandomNumberGenerator.Create())
+            {
+                rng.GetBytes(entropyInBytes);
+            }
+            var encryptedPassword = ProtectedData.Protect(passwordInBytes,
+                        entropyInBytes, DataProtectionScope.CurrentUser);
+            var encryptedPasswordInBase64 = Convert.ToBase64String(encryptedPassword);
+            var entropyInBase64 = Convert.ToBase64String(entropyInBytes);
+            return (encryptedPasswordInBase64, entropyInBase64);
+        }
         public void SavePassWord(UserLogin userLogin)
         {
             var checkLogin=Authentication(UserLogin);
             if(checkLogin)
             {
-                var (encryptedPasswordInBase64, entropyInBase64) = userViewModfel.EncryptPassword(userLogin.Password);
+                var (encryptedPasswordInBase64, entropyInBase64) = EncryptPassword(userLogin.Password);
                 var localSettings = ApplicationData.Current.LocalSettings;
                 localSettings.Values["username"] = userLogin.Username;
                 localSettings.Values["password"] = encryptedPasswordInBase64;

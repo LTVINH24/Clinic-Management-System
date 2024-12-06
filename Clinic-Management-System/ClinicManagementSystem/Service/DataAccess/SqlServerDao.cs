@@ -1,4 +1,5 @@
 ﻿using ClinicManagementSystem.Model;
+using ClinicManagementSystem.ViewModel;
 using Microsoft.Data.SqlClient;
 using Microsoft.UI.Xaml;
 using System;
@@ -37,36 +38,31 @@ namespace ClinicManagementSystem.Service.DataAccess
             var connectionString = GetConnectionString();
             SqlConnection connection = new SqlConnection(connectionString);
             connection.Open();
-            string query = $"SELECT id,name, role,password,phone,birthday,gender,address,entropy FROM EndUser WHERE username = @Username";
+            string query = $"SELECT id,name, role,password,phone,birthday,gender,address FROM EndUser WHERE username = @Username";
             var command = new SqlCommand(query, connection);
             command.Parameters.AddWithValue("@Username", username);
             var reader = command.ExecuteReader();
             int id = 0;
             string name = "";
             string role = "";
-            string encryptedPasswordInBase64 = "";
+            string hassPassword = "";
             string phone = "";
             DateTime birthday;
             string gender;
             string address;
-            string entropyInBase64 = "";
+            var Password = new Password();
             if (reader.Read())
             {
                 id = (int)reader["id"];
                 name = (string)reader["name"];
                 role = reader["role"].ToString();
-                encryptedPasswordInBase64 = reader["password"].ToString();
+                hassPassword = reader["password"].ToString();
                 phone = reader["phone"].ToString();
                 birthday = (DateTime)reader["birthday"];
                 gender = reader["gender"].ToString();
                 address = reader["address"].ToString();
-                entropyInBase64 = reader["entropy"].ToString();
                 connection.Close();
-                var encryptedPasswordInBytes = Convert.FromBase64String(encryptedPasswordInBase64);
-                var entropyInBytes = Convert.FromBase64String(entropyInBase64);
-                var passwordInBytes = ProtectedData.Unprotect(encryptedPasswordInBytes, entropyInBytes, DataProtectionScope.CurrentUser);
-                var passwordGetFromDatabase = Encoding.UTF8.GetString(passwordInBytes);
-                if (password == passwordGetFromDatabase)
+                if (Password.VerifyPassword(password,hassPassword))
                 {
                     return (id, name, role, phone, gender, address);
                 }
@@ -88,14 +84,6 @@ namespace ClinicManagementSystem.Service.DataAccess
             }
         }
 
-		public string DecryptionPassword(string encryptedPasswordInBase64, string entropyInBase64)
-		{
-			var encryptedPasswordInBytes = Convert.FromBase64String(encryptedPasswordInBase64);
-			var entropyInBytes = Convert.FromBase64String(entropyInBase64);
-			var passwordInBytes = ProtectedData.Unprotect(encryptedPasswordInBytes, entropyInBytes, DataProtectionScope.CurrentUser);
-			var password = Encoding.UTF8.GetString(passwordInBytes);
-			return password;
-		}
 		//===============================================================================================
 
 
@@ -134,7 +122,7 @@ namespace ClinicManagementSystem.Service.DataAccess
 
 
             var sql = $"""
-            SELECT count(*) over() as Total, id, name, role, username,password,phone,birthday,address,gender,entropy
+            SELECT count(*) over() as Total, id, name, role, username,password,phone,birthday,address,gender
             FROM EndUser
             WHERE Name like @Keyword
             {sortString} 
@@ -144,7 +132,6 @@ namespace ClinicManagementSystem.Service.DataAccess
             AddParameters(command, ("@Skip", (page - 1) * rowsPerPage), ("@Take", rowsPerPage), ("@Keyword", $"%{keyword}%"));
             var reader = command.ExecuteReader();
             int count = -1;
-            string entropy = "";
             while (reader.Read())
             {
                 if (count == -1)
@@ -160,8 +147,6 @@ namespace ClinicManagementSystem.Service.DataAccess
                 user.birthday = (DateTime)reader["birthday"];
                 user.address = (string)reader["address"];
                 user.phone = (string)reader["phone"];
-                entropy = (string)reader["entropy"];
-                user.password = DecryptionPassword((string)reader["password"], entropy);
                 result.Add(user);
             }
             connection.Close();
