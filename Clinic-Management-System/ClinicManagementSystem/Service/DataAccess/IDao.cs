@@ -28,13 +28,13 @@ namespace ClinicManagementSystem.Service.DataAccess
 			Dictionary<string, SortType> sortOptions
 		);
 
-		bool CreateUser(User user, string encryptedPasswordInBase64, string entropyInBase64);
+		bool CreateUser(User user);
 
-		bool CreateUserRoleDoctor(User user, string encryptedPasswordInBase64, string entropyInBase64, int specialty, string room);
+		bool CreateUserRoleDoctor(User user, int specialty, string room);
 
 		bool CheckUserExists(string username);
 
-		bool UpdateUser(User info, string entropyUserEdit);
+		bool UpdateUser(User info);
 
 		bool DeleteUser(User user);
 		

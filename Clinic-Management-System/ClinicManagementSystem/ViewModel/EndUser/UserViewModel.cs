@@ -44,36 +44,23 @@ namespace ClinicManagementSystem.ViewModel.EndUser
 			}
 			else
 			{
-				var (encryptedPasswordInBase64, entropyInBase64) = EncryptPassword(user.password);
+				var Password = new Password();
+				user.password = Password.HashPassword(user.password);
 				var success = true;
 				if (user.role == "doctor")
 				{
 
-					success = _dao.CreateUserRoleDoctor(user, encryptedPasswordInBase64, entropyInBase64, selectedSpecialty.id, Room);
+					success = _dao.CreateUserRoleDoctor(user, selectedSpecialty.id, Room);
 				}
 				else
 				{
-					success = _dao.CreateUser(user, encryptedPasswordInBase64, entropyInBase64);
+					success = _dao.CreateUser(user);
 				}
 				return success ? "" : "Create false";
 			}
 
 		}
 
-		public (string, string) EncryptPassword(string password)
-		{
-			var passwordInBytes = Encoding.UTF8.GetBytes(password);
-			var entropyInBytes = new byte[20];
-			using (var rng = RandomNumberGenerator.Create())
-			{
-				rng.GetBytes(entropyInBytes);
-			}
-			var encryptedPassword = ProtectedData.Protect(passwordInBytes,
-						entropyInBytes, DataProtectionScope.CurrentUser);
-			var encryptedPasswordInBase64 = Convert.ToBase64String(encryptedPassword);
-			var entropyInBase64 = Convert.ToBase64String(entropyInBytes);
-			return (encryptedPasswordInBase64, entropyInBase64);
-		}
 		private void LoadSpecialties()
 		{
 			var specialties = _dao.GetSpecialty();

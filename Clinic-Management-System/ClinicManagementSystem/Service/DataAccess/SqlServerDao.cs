@@ -184,23 +184,22 @@ namespace ClinicManagementSystem.Service.DataAccess
             return count > 0;
         }
 
-        public bool CreateUser(User user, string encryptedPasswordInBase64,string entropyInBase64)
+        public bool CreateUser(User user)
         {
             var connectionString = GetConnectionString();
             SqlConnection connection = new SqlConnection(connectionString);
             connection.Open();
-            string query = $"insert into EndUser(name,role,username,password,phone,birthday,address,gender,entropy) values(@name,@role,@username,@password,@phone,@birthday,@address,@gender,@entropy) ";
+            string query = $"insert into EndUser(name,role,username,password,phone,birthday,address,gender) values(@name,@role,@username,@password,@phone,@birthday,@address,@gender) ";
             var command = new SqlCommand(query, connection);
             AddParameters(command,
                 ("@name", user.name),
                 ("@role", user.role),
                 ("@username", user.username),
-                ("@password", encryptedPasswordInBase64),
+                ("@password", user.password),
                 ("@phone", user.phone),
                 ("@birthday", user.birthday),
                 ("@address", user.address),
-                ("@gender", user.gender),
-                ("@entropy", entropyInBase64)
+                ("@gender", user.gender)
                 );
 
             int count = command.ExecuteNonQuery();
@@ -209,10 +208,10 @@ namespace ClinicManagementSystem.Service.DataAccess
             return success;
         }
 
-        public bool CreateUserRoleDoctor(User user, string encryptedPasswordInBase64, string entropyInBase64,int specialty,string room)
+        public bool CreateUserRoleDoctor(User user,int specialty,string room)
         { 
             bool success = true;
-           success= CreateUser(user, encryptedPasswordInBase64, entropyInBase64);
+           success= CreateUser(user);
 
             var connectionString = GetConnectionString();
             SqlConnection connection = new SqlConnection(connectionString);
@@ -230,12 +229,12 @@ namespace ClinicManagementSystem.Service.DataAccess
             return success;
         }
 
-        public bool UpdateUser(User info,string entropyUserEdit)
+        public bool UpdateUser(User info)
         {
             var connectionString = GetConnectionString();
             SqlConnection connection = new SqlConnection(connectionString);
             connection.Open();
-            var sql = "update EndUser set name=@name, role=@role,username=@username,password=@password,phone=@phone,birthday=@birthday,address=@address,gender=@gender,entropy=@entropy where id=@id";
+            var sql = "update EndUser set name=@name, role=@role,username=@username,password=@password,phone=@phone,birthday=@birthday,address=@address,gender=@gender where id=@id";
             var command = new SqlCommand(sql, connection);
             AddParameters(command,
                 ("@id", info.id),
@@ -246,12 +245,10 @@ namespace ClinicManagementSystem.Service.DataAccess
                 ("@phone", info.phone),
                 ("@birthday", info.birthday),
                 ("@address", info.address),
-                ("@gender", info.gender),
-                ("@entropy", entropyUserEdit)
+                ("@gender", info.gender)
                 );
             int count = command.ExecuteNonQuery();
             bool success = count == 1;
-
             connection.Close();
             return success;
         }
