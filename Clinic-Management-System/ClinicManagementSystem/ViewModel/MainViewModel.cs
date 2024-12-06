@@ -25,7 +25,7 @@ namespace ClinicManagementSystem.ViewModel
         public UserLogin UserLogin { get; set; } = new UserLogin();
         public event Action<string> LoginCompleted;
         
-        public bool Authentication (UserLogin userLogin)
+        public bool Authentication (UserLogin userLogin, bool isSavePassword)
         {
             if (userLogin.Password == null || userLogin.Username == null)
             {
@@ -35,6 +35,9 @@ namespace ClinicManagementSystem.ViewModel
             var(id, name, role, phone, gender, address) = _dao.Authentication(userLogin.Username, userLogin.Password);
             if (role != "")
             {
+                if (isSavePassword) {
+                    SavePassWord(userLogin);
+                }
                 LoginCompleted?.Invoke(role);
                 UserSessionService.Instance.SetLoggedInUserId(id);
                 return true;
@@ -62,15 +65,11 @@ namespace ClinicManagementSystem.ViewModel
         }
         public void SavePassWord(UserLogin userLogin)
         {
-            var checkLogin=Authentication(UserLogin);
-            if(checkLogin)
-            {
                 var (encryptedPasswordInBase64, entropyInBase64) = EncryptPassword(userLogin.Password);
                 var localSettings = ApplicationData.Current.LocalSettings;
                 localSettings.Values["username"] = userLogin.Username;
                 localSettings.Values["password"] = encryptedPasswordInBase64;
-                localSettings.Values["entropy"] = entropyInBase64;
-            }    
+                localSettings.Values["entropy"] = entropyInBase64;  
         }
         public void LoadPassword(TextBox usernameTextbox, PasswordBox passwordBox)
         {

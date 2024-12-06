@@ -41,14 +41,13 @@ namespace ClinicManagementSystem
         public MainViewModel viewModel { get; set; } = new MainViewModel();
         public void Login_Click(object sender, RoutedEventArgs e)
         {
-            if (rememberPassword.IsChecked == true)
+
+
+            if ( rememberPassword.IsChecked==true)
             {
-                viewModel.SavePassWord(viewModel.UserLogin);
+                viewModel.Authentication(viewModel.UserLogin,true);
             }
-            else
-            {
-                viewModel.Authentication(viewModel.UserLogin);
-            }
+             viewModel.Authentication(viewModel.UserLogin,false);
         }
         private void OnLoginCompleted(string isSuccess)
         {
