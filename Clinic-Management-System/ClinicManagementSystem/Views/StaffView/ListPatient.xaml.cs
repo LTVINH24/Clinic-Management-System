@@ -35,11 +35,6 @@ namespace ClinicManagementSystem.Views.StaffView
 
 		bool init = false;
 
-		private void searchTextbox_Click(object sender, TextChangedEventArgs e)
-		{
-			ViewModel.GoToNextPage();
-		}
-
 		private void nextButton_Click(object sender, RoutedEventArgs e)
 		{
 			ViewModel.GoToNextPage();
@@ -63,9 +58,14 @@ namespace ClinicManagementSystem.Views.StaffView
 			}
 		}
 
+		private void searchTextbox_Click(object sender, TextChangedEventArgs e)
+		{
+			ViewModel.Search();
+		}
+
 		private void searchButton_Click(object sender, RoutedEventArgs e)
 		{
-
+			ViewModel.Search();
 		}
 
 		private void updatePatient(object sender, RoutedEventArgs e)

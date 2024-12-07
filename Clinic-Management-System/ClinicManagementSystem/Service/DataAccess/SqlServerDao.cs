@@ -513,9 +513,9 @@ namespace ClinicManagementSystem.Service.DataAccess
 			}
 
 			var sql = $"""
-				SELECT count(*) over() as Total, id, patientId, staffId, time, symptom, doctorId
+				SELECT count(*) over() as Total, id, patientId, staffId, time, symptom, doctorId, visitType
 				FROM MedicalExaminationForm
-				WHERE patientId like @Keyword
+				WHERE symptom like @Keyword
 				{sortString}
 				OFFSET @Skip ROWS FETCH NEXT @Take ROWS ONLY;
 				""";
@@ -539,6 +539,7 @@ namespace ClinicManagementSystem.Service.DataAccess
 				medicalExaminationForm.Time = (DateTime)reader["time"];
 				medicalExaminationForm.Symptoms = (string)reader["symptom"];
 				medicalExaminationForm.DoctorId = (int)reader["doctorId"];
+                medicalExaminationForm.VisitType = (string)reader["visitType"];
 
 				result.Add(medicalExaminationForm);
 			}

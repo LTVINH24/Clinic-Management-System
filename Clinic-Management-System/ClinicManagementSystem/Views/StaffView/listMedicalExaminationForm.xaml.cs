@@ -68,12 +68,12 @@ namespace ClinicManagementSystem.Views.StaffView
 
 		private void searchTextbox_Click(object sender, TextChangedEventArgs e)
 		{
-
+			ViewModel.Search();
         }
 
 		private void searchButton_Click(object sender, RoutedEventArgs e)
 		{
-
+			ViewModel.Search();
 		}
 
 		private void updateMedicalExaminationForm(object sender, RoutedEventArgs e)
