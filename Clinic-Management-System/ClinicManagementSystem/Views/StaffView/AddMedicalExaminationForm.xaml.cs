@@ -90,5 +90,13 @@ namespace ClinicManagementSystem.Views.StaffView
 
 			await dialog.ShowAsync();
 		}
-	}
+
+		private void Set_VisitType(object sender, RoutedEventArgs e)
+		{
+			if(sender is MenuFlyoutItem menuItem)
+			{
+				VisitTypeDropDown.Content = menuItem.Text;
+			}
+        }
+    }
 }

@@ -608,7 +608,7 @@ namespace ClinicManagementSystem.Service.DataAccess
             int id = UserSessionService.Instance.LoggedInUserId;
 
 
-            var command = new SqlCommand("INSERT INTO MedicalExaminationForm (PatientId, StaffId, DoctorId, Time, Symptom) VALUES (@PatientId, @StaffId, @DoctorId, @Time, @Symptom)", connection);
+            var command = new SqlCommand("INSERT INTO MedicalExaminationForm (PatientId, StaffId, DoctorId, Time, Symptom, VisitType) VALUES (@PatientId, @StaffId, @DoctorId, @Time, @Symptom, @VisitType)", connection);
 
 
 
@@ -617,7 +617,8 @@ namespace ClinicManagementSystem.Service.DataAccess
                 ("@StaffId", id),
                 ("@DoctorId", medicalExaminationForm.DoctorId),
                 ("@Time", formatDate),
-                ("@Symptom", medicalExaminationForm.Symptoms));
+                ("@Symptom", medicalExaminationForm.Symptoms),
+                ("@VisitType", medicalExaminationForm.VisitType));
 
             int result = command.ExecuteNonQuery();
 
