@@ -36,7 +36,7 @@
 
 
             </NavigationView.MenuItems>
-            <Frame x:Name="contentFrame" Content="Staff Page" Background="White"/>
+            <Frame x:Name="contentFrame" Content="Staff Page" Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"/>
         </NavigationView>
     </Grid>
 </Page>
