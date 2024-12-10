@@ -665,7 +665,8 @@ namespace ClinicManagementSystem.Service.DataAccess
 				"patientId=@patientId, " +
 				"doctorId=@doctorId, " +
 				"Time=@time, " +
-				"symptom=@symptom " +
+				"symptom=@symptom, " +
+                "visitType=@visitType " +
 				"where id=@Id";
 
 			var command = new SqlCommand(sql, connection);
@@ -674,7 +675,8 @@ namespace ClinicManagementSystem.Service.DataAccess
 				("@patientId", form.PatientId),
 				("@doctorId", form.DoctorId),
 				("@time", form.Time),
-				("@symptom", form.Symptoms));
+				("@symptom", form.Symptoms),
+                ("@visitType", form.VisitType));
 
 			int count = command.ExecuteNonQuery();
 			bool success = count == 1;
