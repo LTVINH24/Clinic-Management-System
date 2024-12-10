@@ -136,5 +136,13 @@ namespace ClinicManagementSystem.Views.StaffView
 			var patientEdit = itemsComboBox.SelectedItem as Patient;
 			ViewModel.Edit(patientEdit);
 		}
+
+		private void setGender(object sender, RoutedEventArgs e)
+		{
+			if (sender is MenuFlyoutItem menuItem)
+			{
+				ViewModel.PatientEdit.Gender = menuItem.Text;
+			}
+		}
 	}
 }

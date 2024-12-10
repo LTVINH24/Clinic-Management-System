@@ -144,5 +144,13 @@ namespace ClinicManagementSystem.Views.StaffView
 				CloseButtonText = "OK"
 			}.ShowAsync();
 		}
+
+		private void setVisitType(object sender, RoutedEventArgs e)
+		{
+			if (sender is MenuFlyoutItem menuItem)
+			{
+				ViewModel.FormEdit.VisitType = menuItem.Text;
+			}
+		}
 	}	
 }

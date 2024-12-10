@@ -118,5 +118,13 @@ namespace ClinicManagementSystem.Views.AdminView
                 CloseButtonText = "OK"
             }.ShowAsync();
         }
+
+		private void setGender(object sender, RoutedEventArgs e)
+		{
+            if (sender is MenuFlyoutItem menuItem)
+            {
+                ViewModel.UserEdit.gender = menuItem.Text;
+            }
+        }
     }
 }

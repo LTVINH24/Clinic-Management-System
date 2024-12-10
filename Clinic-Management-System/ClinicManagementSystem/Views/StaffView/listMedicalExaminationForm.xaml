@@ -102,8 +102,8 @@
                     <DropDownButton Height="32" Width="120" Name="VisitTypeEditDropDown" Margin="0,8,0,0" Content="{x:Bind ViewModel.FormEdit.VisitType, Mode=TwoWay}">
                         <DropDownButton.Flyout>
                             <MenuFlyout Placement="Bottom">
-                                <MenuFlyoutItem Text="New"  />
-                                <MenuFlyoutItem Text="Follow-up"/>
+                                <MenuFlyoutItem Text="New" Click="setVisitType"/>
+                                <MenuFlyoutItem Text="Follow-up" Click="setVisitType"/>
                             </MenuFlyout>
                         </DropDownButton.Flyout>
                     </DropDownButton>

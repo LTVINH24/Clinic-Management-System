@@ -98,9 +98,9 @@
                     <DropDownButton Height="32" Width="100" Name="GenderEditDropDown" Margin="0,8,0,0" Content="{x:Bind ViewModel.PatientEdit.Gender,Mode=TwoWay}">
                         <DropDownButton.Flyout>
                             <MenuFlyout Placement="Bottom">
-                                <MenuFlyoutItem Text="Male"  />
-                                <MenuFlyoutItem Text="Female"/>
-                                <MenuFlyoutItem Text="Other" />
+                                <MenuFlyoutItem Text="Male" Click="setGender" />
+                                <MenuFlyoutItem Text="Female" Click="setGender"/>
+                                <MenuFlyoutItem Text="Other" Click="setGender"/>
                             </MenuFlyout>
                         </DropDownButton.Flyout>
                     </DropDownButton>
