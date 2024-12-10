@@ -104,7 +104,7 @@
                         </DropDownButton.Flyout>
                     </DropDownButton>
                 </StackPanel>
-                <CalendarDatePicker Margin="0,10,0,0" Grid.Row ="4" PlaceholderText="Pick a date" Header="Birthday" Date="{x:Bind ViewModel.UserEdit.birthday,Mode=TwoWay}"  />
+                <CalendarDatePicker Margin="0,10,0,0" Grid.Row ="4" PlaceholderText="Pick a date" Header="Birthday" Date="{x:Bind ViewModel.UserEdit.birthday,Mode=TwoWay}" Foreground="{ThemeResource ApplicationForegroundThemeBrush}" />
                 <TextBox Text="{x:Bind ViewModel.UserEdit.address,Mode=TwoWay}" Margin="0,10,0,0" Header="Address"></TextBox>
                 <TextBox Text="{x:Bind ViewModel.UserEdit.phone,Mode=TwoWay}" Margin="0,10,0,0"  Header="Phone"></TextBox>
                 <StackPanel Margin="0,10,0,0" VerticalAlignment="Center">
@@ -120,7 +120,10 @@
                     </DropDownButton>
                 </StackPanel>
                 <TextBox Text="{x:Bind ViewModel.UserEdit.username,Mode=TwoWay}" Margin="0,10,0,0" Header="Username"></TextBox>
-                <TextBox Text="{x:Bind ViewModel.UserEdit.password,Mode=TwoWay}" Margin="0,10,0,0" Header="Password"></TextBox>
+                <TextBox TextWrapping="Wrap" Text="{x:Bind ViewModel.UserEdit.password,Mode=TwoWay}" Margin="0,10,0,0" Header="Password" IsReadOnly="True"></TextBox>
+
+                
+
             </StackPanel>
             <StackPanel Margin="0,20,0,0" Orientation="Horizontal" HorizontalAlignment="Center">
                 <Button Click="update_editUser" FontWeight="Bold" Background="#18b4f6" Foreground="White">

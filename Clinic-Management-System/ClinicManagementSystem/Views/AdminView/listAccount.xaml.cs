@@ -1,4 +1,4 @@
-using ClinicManagementSystem.Model;
+﻿using ClinicManagementSystem.Model;
 using ClinicManagementSystem.ViewModel.EndUser;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
@@ -126,5 +126,7 @@ namespace ClinicManagementSystem.Views.AdminView
                 ViewModel.UserEdit.gender = menuItem.Text;
             }
         }
+
+		
     }
 }

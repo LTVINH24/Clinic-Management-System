@@ -145,6 +145,7 @@ namespace ClinicManagementSystem.Service.DataAccess
                 user.gender = (string)reader["gender"];
                 user.role = (string)reader["role"];
                 user.birthday = (DateTime)reader["birthday"];
+                user.password = (string)reader["password"];
                 user.address = (string)reader["address"];
                 user.phone = (string)reader["phone"];
                 result.Add(user);
