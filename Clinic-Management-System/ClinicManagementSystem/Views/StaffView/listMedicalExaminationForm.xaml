@@ -8,24 +8,41 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d"
+    
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
+    
+    
     <Page.Resources>
-        <DataTemplate x:Key="HorizontalUser" x:DataType="localmodel:MedicalExaminationForm">
-            <Border BorderThickness="1" BorderBrush="#b5b5e8">
-                <StackPanel Orientation="Horizontal">
-                    <TextBlock Width="50" Margin="20" Text="{x:Bind Id}" ></TextBlock>
-                    <TextBlock Width="100" Margin="20" Text="{x:Bind PatientId}" ></TextBlock>
-                    <TextBlock Width="50" Margin="20" Text="{x:Bind StaffId}" ></TextBlock>
-                    <TextBlock Width="200" Margin="20" Text="{x:Bind Time}" TextWrapping="Wrap"></TextBlock>
-                    <TextBlock Width="100" Margin="20" Text="{x:Bind DoctorId}" ></TextBlock>
-                    <ScrollViewer MaxHeight="80" VerticalScrollMode="Enabled" HorizontalScrollMode="Disabled" Margin="20" Width="120">
-                        <TextBlock  Text="{x:Bind Symptoms}" TextWrapping="Wrap" ></TextBlock>
-                    </ScrollViewer>
-                    <TextBlock Width="auto" Margin="20" Text="{x:Bind VisitType}" ></TextBlock>
-                </StackPanel>
-            </Border>
-        </DataTemplate>
+        <ResourceDictionary>
+            <ResourceDictionary.ThemeDictionaries>
+                <ResourceDictionary x:Key="Light">
+                    <SolidColorBrush x:Key="EditPanelBackground" Color="Pink" />
+                </ResourceDictionary>
+                <ResourceDictionary x:Key="Dark">
+                    <SolidColorBrush x:Key="EditPanelBackground" Color="Transparent" />
+                </ResourceDictionary>
+            </ResourceDictionary.ThemeDictionaries>
+
+            <!--<SolidColorBrush x:Key="EditPanelBackground" Color="Transparent" />--> 
+        
+
+            <DataTemplate x:Key="HorizontalUser" x:DataType="localmodel:MedicalExaminationForm">
+                <Border BorderThickness="1" BorderBrush="#b5b5e8">
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Width="50" Margin="20" Text="{x:Bind Id}" ></TextBlock>
+                        <TextBlock Width="100" Margin="20" Text="{x:Bind PatientId}" ></TextBlock>
+                        <TextBlock Width="50" Margin="20" Text="{x:Bind StaffId}" ></TextBlock>
+                        <TextBlock Width="200" Margin="20" Text="{x:Bind Time}" TextWrapping="Wrap"></TextBlock>
+                        <TextBlock Width="100" Margin="20" Text="{x:Bind DoctorId}" ></TextBlock>
+                        <ScrollViewer MaxHeight="80" VerticalScrollMode="Enabled" HorizontalScrollMode="Disabled" Margin="20" Width="120">
+                            <TextBlock  Text="{x:Bind Symptoms}" TextWrapping="Wrap" ></TextBlock>
+                        </ScrollViewer>
+                        <TextBlock Width="auto" Margin="20" Text="{x:Bind VisitType}" ></TextBlock>
+                    </StackPanel>
+                </Border>
+            </DataTemplate>
+        </ResourceDictionary>
     </Page.Resources>
 
     <Grid VerticalAlignment="Stretch">
@@ -69,7 +86,7 @@
 
         </StackPanel>
 
-        <StackPanel Margin="0"  Grid.Row="1" Grid.Column="0" Orientation="Horizontal" VerticalAlignment="Bottom" HorizontalAlignment="Center">
+        <StackPanel Margin="0"  Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" Orientation="Horizontal" VerticalAlignment="Bottom" HorizontalAlignment="Center">
             <Button  Click="previousButton_Click" >
                 <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xE76B;"/>
             </Button>
@@ -96,9 +113,11 @@
             </Button>
         </StackPanel>
 
-        <StackPanel x:Name="EditPanel" Background="Orange" Grid.RowSpan="2" Grid.Column="1" Visibility="Collapsed">
+        <StackPanel x:Name="EditPanel" Background="{ThemeResource EditPanelBackground}" Grid.RowSpan="2" Grid.Column="1" Visibility="Collapsed">
             <StackPanel Padding="25">
                 <TextBox  Header="Patient ID" IsReadOnly="True" Text="{x:Bind ViewModel.FormEdit.PatientId, Mode=TwoWay}"></TextBox>
+                <TextBox  Margin="0,10,0,0" Header="Staff ID" IsReadOnly="True" Text="{x:Bind ViewModel.FormEdit.StaffId, Mode=TwoWay}"></TextBox>
+                <TextBox  Margin="0,10,0,0"  Header="Doctor ID" IsReadOnly="True" Text="{x:Bind ViewModel.FormEdit.DoctorId, Mode=TwoWay}"></TextBox>
                 <StackPanel Margin="0,10,0,0" VerticalAlignment="Center">
                     <TextBlock>Visit Type</TextBlock>
                     <DropDownButton Height="32" Width="120" Name="VisitTypeEditDropDown" Margin="0,8,0,0" Content="{x:Bind ViewModel.FormEdit.VisitType, Mode=TwoWay}">
@@ -110,9 +129,7 @@
                         </DropDownButton.Flyout>
                     </DropDownButton>
                 </StackPanel>
-                <TextBox  Margin="0,10,0,0" Header="Staff ID" IsReadOnly="True" Text="{x:Bind ViewModel.FormEdit.StaffId, Mode=TwoWay}"></TextBox>
-                <TextBox  Margin="0,10,0,0"  Header="Doctor ID" IsReadOnly="True" Text="{x:Bind ViewModel.FormEdit.DoctorId, Mode=TwoWay}"></TextBox>
-                <TextBox  Margin="0,10,0,0" Header="Symptoms" Text="{x:Bind ViewModel.FormEdit.Symptoms, Mode=TwoWay}"></TextBox>
+                <TextBox  Margin="0,10,0,0" Header="Symptoms" Text="{x:Bind ViewModel.FormEdit.Symptoms, Mode=TwoWay}" TextWrapping="Wrap"></TextBox>
             </StackPanel>
             <StackPanel Margin="0,20,0,0" Orientation="Horizontal" HorizontalAlignment="Center">
                 <Button Click="updateMedicalExaminationForm" FontWeight="Bold" Background="#18b4f6" Foreground="White">

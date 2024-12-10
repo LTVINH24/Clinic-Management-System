@@ -11,24 +11,34 @@
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
     <Page.Resources>
-        <DataTemplate x:Key="HorizontalUser" x:DataType="localmodel:Patient">
-            <Border BorderThickness="1" BorderBrush="#b5b5e8">
-                <StackPanel Orientation="Horizontal">
-                    <TextBlock Width="100" Margin="20" Text="{x:Bind Id}" ></TextBlock>
-                    <TextBlock Width="150" Margin="20" Text="{x:Bind Name}" ></TextBlock>
-                    <TextBlock Width="120" Margin="20" Text="{x:Bind ResidentId}" ></TextBlock>
-                    <ScrollViewer Width="100" MaxHeight="80" VerticalScrollMode="Enabled" Margin="20" >
-                        <TextBlock Text="{x:Bind Email}" TextWrapping="Wrap"></TextBlock>
-                    </ScrollViewer>
-                    
-                    <TextBlock Width="100" Margin="20" Text="{x:Bind Gender}" ></TextBlock>
-                    <!--<TextBlock Width="150" Margin="20" Text="{x:Bind Address}" TextWrapping="Wrap"></TextBlock>-->
-                    <ScrollViewer MaxHeight="80" VerticalScrollMode="Enabled" HorizontalScrollMode="Disabled" Margin="20" Width="120">
-                        <TextBlock  Text="{x:Bind Address}" TextWrapping="Wrap" ></TextBlock>
-                    </ScrollViewer>
-                </StackPanel>
-            </Border>
-        </DataTemplate>
+        <ResourceDictionary>
+            <ResourceDictionary.ThemeDictionaries>
+                <ResourceDictionary x:Key="Light">
+                    <SolidColorBrush x:Key="EditPanelBackground" Color="Pink" />
+                </ResourceDictionary>
+                <ResourceDictionary x:Key="Dark">
+                    <SolidColorBrush x:Key="EditPanelBackground" Color="Transparent" />
+                </ResourceDictionary>
+            </ResourceDictionary.ThemeDictionaries>
+
+            <DataTemplate x:Key="HorizontalUser" x:DataType="localmodel:Patient">
+                <Border BorderThickness="1" BorderBrush="#b5b5e8">
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Width="100" Margin="20" Text="{x:Bind Id}" ></TextBlock>
+                        <TextBlock Width="150" Margin="20" Text="{x:Bind Name}" ></TextBlock>
+                        <TextBlock Width="120" Margin="20" Text="{x:Bind ResidentId}" ></TextBlock>
+                        <ScrollViewer Width="100" MaxHeight="80" VerticalScrollMode="Enabled" Margin="20" >
+                            <TextBlock Text="{x:Bind Email}" TextWrapping="Wrap"></TextBlock>
+                        </ScrollViewer>
+
+                        <TextBlock Width="100" Margin="20" Text="{x:Bind Gender}" ></TextBlock>
+                        <ScrollViewer MaxHeight="80" VerticalScrollMode="Enabled" HorizontalScrollMode="Disabled" Margin="20" Width="120">
+                            <TextBlock  Text="{x:Bind Address}" TextWrapping="Wrap" ></TextBlock>
+                        </ScrollViewer>
+                    </StackPanel>
+                </Border>
+            </DataTemplate>
+        </ResourceDictionary>
     </Page.Resources>
 
 
@@ -69,7 +79,7 @@
             </ListView>
         </StackPanel>
 
-        <StackPanel Margin="0"  Grid.Row="1" Grid.Column="0" Orientation="Horizontal" VerticalAlignment="Bottom" HorizontalAlignment="Center">
+        <StackPanel Margin="0"  Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" Orientation="Horizontal" VerticalAlignment="Bottom" HorizontalAlignment="Center">
             <Button  Click="previousButton_Click" >
                 <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xE76B;"/>
             </Button>
@@ -96,7 +106,7 @@
             </Button>
         </StackPanel>
 
-        <StackPanel x:Name="EditPanel" Background="Orange" Grid.RowSpan="2" Grid.Column="1" Visibility="Collapsed">
+        <StackPanel x:Name="EditPanel" Background="{ThemeResource EditPanelBackground}" Grid.RowSpan="2" Grid.Column="1" Visibility="Collapsed">
             
             <StackPanel Padding="25">
                 <TextBox  Header="Name" Margin="0,10" Text="{x:Bind ViewModel.PatientEdit.Name,Mode=TwoWay}"></TextBox>
@@ -115,7 +125,7 @@
                 </StackPanel>
                 <CalendarDatePicker Margin="0,10,0,0" Grid.Row ="4" PlaceholderText="Pick a date" Header="Date of Birth" Date="{x:Bind ViewModel.PatientEdit.DoB,Mode=TwoWay}" Foreground="{ThemeResource ApplicationForegroundThemeBrush}" />
                 <TextBox Text="{x:Bind ViewModel.PatientEdit.Email,Mode=TwoWay}" Margin="0,10,0,0" Header="Email"></TextBox>
-                <TextBox Text="{x:Bind ViewModel.PatientEdit.Address,Mode=TwoWay}" Margin="0,10,0,0"  Header="Address"></TextBox>
+                <TextBox Text="{x:Bind ViewModel.PatientEdit.Address,Mode=TwoWay}" Margin="0,10,0,0"  Header="Address" TextWrapping="Wrap"></TextBox>
                 
                 
             </StackPanel>
