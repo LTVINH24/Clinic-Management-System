@@ -32,8 +32,9 @@ namespace ClinicManagementSystem
         {
             this.InitializeComponent();
             viewModel.LoginCompleted += OnLoginCompleted;
+            this.Title = "Clinic Management System";
 
-        }
+		}
         private void Window_Activated(object sender, WindowActivatedEventArgs args)
         {
             viewModel.LoadPassword(usernameTextbox, passwordBox);

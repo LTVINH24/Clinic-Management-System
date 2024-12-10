@@ -135,6 +135,20 @@ namespace ClinicManagementSystem.Views.StaffView
 		{
 			var patientEdit = itemsComboBox.SelectedItem as Patient;
 			ViewModel.Edit(patientEdit);
+
+			if (EditPanel.Visibility == Visibility.Visible && ViewModel.PatientEdit == patientEdit)
+			{
+				EditPanel.Visibility = Visibility.Collapsed;
+				itemsComboBox.SelectedItem = null;
+			}
+			else
+			{
+				if (patientEdit != null)
+				{
+					ViewModel.Edit(patientEdit);
+					EditPanel.Visibility = Visibility.Visible;
+				}
+			}
 		}
 
 		private void setGender(object sender, RoutedEventArgs e)

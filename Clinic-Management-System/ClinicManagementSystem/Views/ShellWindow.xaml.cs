@@ -30,6 +30,8 @@ namespace ClinicManagementSystem.Views
 			var fullNamespace = $"{GetType().Namespace}.{name}";
 			var type = Type.GetType(fullNamespace);
 			content.Navigate(type);
+
+			this.Title = "Clinic Management System";
 		}
 
 		private void Window_Closed(object sender, WindowEventArgs args)

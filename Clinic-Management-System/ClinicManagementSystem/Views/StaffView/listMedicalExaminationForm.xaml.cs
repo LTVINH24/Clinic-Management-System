@@ -65,6 +65,19 @@ namespace ClinicManagementSystem.Views.StaffView
 			var formEdit = itemsComboBox.SelectedItem as MedicalExaminationForm;
 			ViewModel.Edit(formEdit);
 
+			if (EditPanel.Visibility == Visibility.Visible && ViewModel.FormEdit == formEdit)
+			{
+				EditPanel.Visibility = Visibility.Collapsed;
+				itemsComboBox.SelectedItem = null;
+			}
+			else
+			{
+				if (formEdit != null)
+				{
+					ViewModel.Edit(formEdit);
+					EditPanel.Visibility = Visibility.Visible;
+				}
+			}
 			//if(itemsComboBox.SelectedItem is MedicalExaminationForm selectedForm)
 			//{
 			//	Frame.Navigate(typeof(MedicalExaminationFormDetail), selectedForm);

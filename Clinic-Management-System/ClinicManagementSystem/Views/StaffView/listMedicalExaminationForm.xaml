@@ -17,9 +17,11 @@
                     <TextBlock Width="50" Margin="20" Text="{x:Bind Id}" ></TextBlock>
                     <TextBlock Width="100" Margin="20" Text="{x:Bind PatientId}" ></TextBlock>
                     <TextBlock Width="50" Margin="20" Text="{x:Bind StaffId}" ></TextBlock>
-                    <TextBlock Width="200" Margin="20" Text="{x:Bind Time}" ></TextBlock>
+                    <TextBlock Width="200" Margin="20" Text="{x:Bind Time}" TextWrapping="Wrap"></TextBlock>
                     <TextBlock Width="100" Margin="20" Text="{x:Bind DoctorId}" ></TextBlock>
-                    <TextBlock Width="120" Margin="20" Text="{x:Bind Symptoms}" ></TextBlock>
+                    <ScrollViewer MaxHeight="80" VerticalScrollMode="Enabled" HorizontalScrollMode="Disabled" Margin="20" Width="120">
+                        <TextBlock  Text="{x:Bind Symptoms}" TextWrapping="Wrap" ></TextBlock>
+                    </ScrollViewer>
                     <TextBlock Width="auto" Margin="20" Text="{x:Bind VisitType}" ></TextBlock>
                 </StackPanel>
             </Border>
@@ -38,17 +40,17 @@
 
 
         <StackPanel>
-            <TextBlock Text="List Medical Examination Form" FontSize="24" FontWeight="Bold" Margin="10,0,0,0" Padding="20"/>
+            <TextBlock Text="List Medical Examination Form" FontSize="24" FontWeight="Bold" Margin="10,0,0,0" Padding="20,20,0,0"/>
 
-            <StackPanel Margin="0,10,0,0" Padding="20" Orientation="Horizontal" HorizontalAlignment="Center">
+            <StackPanel Margin="0,10,0,10" Orientation="Horizontal" HorizontalAlignment="Center">
                 <TextBox PlaceholderText="Search by Symptoms" TextChanged="searchTextbox_Click" Padding="10" CornerRadius="20" Name="keyword" Text="{x:Bind ViewModel.Keyword, 
-        Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Width="200"/>
+                    Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Width="400"/>
                 <Button CornerRadius="100" Padding="10" Margin="20,0,0,0" Click="searchButton_Click">
                     <FontIcon FontSize="12" FontFamily="Segoe MDL2 Assets" Glyph="&#xE721;"/>
                 </Button>
             </StackPanel>
 
-            <StackPanel Margin ="35,10,0,20"  Orientation="Horizontal" HorizontalAlignment="Left">
+            <StackPanel Margin ="35,0,0,20"  Orientation="Horizontal" HorizontalAlignment="Left">
                 <TextBlock FontWeight="Bold" FontSize="20" Width="80">ID</TextBlock>
                 <TextBlock FontWeight="Bold" FontSize="20"  Width="140">Patient ID</TextBlock>
                 <TextBlock FontWeight="Bold" FontSize="20"  Width="140">Staff ID</TextBlock>
@@ -94,9 +96,9 @@
             </Button>
         </StackPanel>
 
-        <StackPanel Background="Orange" Grid.RowSpan="2" Grid.Column="1">
+        <StackPanel x:Name="EditPanel" Background="Orange" Grid.RowSpan="2" Grid.Column="1" Visibility="Collapsed">
             <StackPanel Padding="25">
-                <TextBox  Header="Patient ID" Text="{x:Bind ViewModel.FormEdit.PatientId, Mode=TwoWay}"></TextBox>
+                <TextBox  Header="Patient ID" IsReadOnly="True" Text="{x:Bind ViewModel.FormEdit.PatientId, Mode=TwoWay}"></TextBox>
                 <StackPanel Margin="0,10,0,0" VerticalAlignment="Center">
                     <TextBlock>Visit Type</TextBlock>
                     <DropDownButton Height="32" Width="120" Name="VisitTypeEditDropDown" Margin="0,8,0,0" Content="{x:Bind ViewModel.FormEdit.VisitType, Mode=TwoWay}">
@@ -108,8 +110,8 @@
                         </DropDownButton.Flyout>
                     </DropDownButton>
                 </StackPanel>
-                <TextBox  Margin="0,10,0,0" Header="Staff ID" Text="{x:Bind ViewModel.FormEdit.StaffId, Mode=TwoWay}"></TextBox>
-                <TextBox  Margin="0,10,0,0"  Header="Doctor ID" Text="{x:Bind ViewModel.FormEdit.DoctorId, Mode=TwoWay}"></TextBox>
+                <TextBox  Margin="0,10,0,0" Header="Staff ID" IsReadOnly="True" Text="{x:Bind ViewModel.FormEdit.StaffId, Mode=TwoWay}"></TextBox>
+                <TextBox  Margin="0,10,0,0"  Header="Doctor ID" IsReadOnly="True" Text="{x:Bind ViewModel.FormEdit.DoctorId, Mode=TwoWay}"></TextBox>
                 <TextBox  Margin="0,10,0,0" Header="Symptoms" Text="{x:Bind ViewModel.FormEdit.Symptoms, Mode=TwoWay}"></TextBox>
             </StackPanel>
             <StackPanel Margin="0,20,0,0" Orientation="Horizontal" HorizontalAlignment="Center">
