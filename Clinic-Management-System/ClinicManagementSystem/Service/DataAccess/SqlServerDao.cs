@@ -698,11 +698,7 @@ namespace ClinicManagementSystem.Service.DataAccess
                                           WHERE prescriptionId IN (
                                                SELECT Id
                                                FROM Prescription
-                                               WHERE medicalRecordId IN (
-                                                    SELECT Id
-                                                    FROM MedicalRecord
-                                                    WHERE MedicalExaminationFormId = @Id
-                                               )
+                                               WHERE MedicalExaminationFormId = @Id
                                           )";
 					var deleteBillCommand = new SqlCommand(deleteBillSql, connection, transaction);
 					AddParameters(deleteBillCommand, ("@Id", form.Id));
@@ -710,22 +706,11 @@ namespace ClinicManagementSystem.Service.DataAccess
 
 					// Delete Prescripstion
 					var deletePrescriptionSql = @"DELETE FROM Prescription
-                                                  WHERE medicalRecordId IN (
-                                                       SELECT Id
-                                                       FROM MedicalRecord
-                                                       WHERE MedicalExaminationFormId = @Id
-                                                  )";
+                                                  WHERE MedicalExaminationFormId = @Id
+                                                  ";
 					var deletePrescriptionCommand = new SqlCommand(deletePrescriptionSql, connection, transaction);
 					AddParameters(deletePrescriptionCommand, ("@Id", form.Id));
 					deletePrescriptionCommand.ExecuteNonQuery();
-
-					// Delete MedicalRecord
-					var deleteMedicalRecordSql = @"DELETE FROM MedicalRecord
-                                                   WHERE MedicalExaminationFormId = @Id";
-
-					var deleteMedicalRecordCommand = new SqlCommand(deleteMedicalRecordSql, connection, transaction);
-					AddParameters(deleteMedicalRecordCommand, ("@Id", form.Id));
-					deleteMedicalRecordCommand.ExecuteNonQuery();
 
 					// Delete MedicalExaminationForm
 					var deleteMedicalExaminationFormSql = @"DELETE FROM MedicalExaminationForm
