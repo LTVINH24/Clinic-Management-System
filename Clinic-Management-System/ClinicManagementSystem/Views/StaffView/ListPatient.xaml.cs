@@ -35,11 +35,6 @@ namespace ClinicManagementSystem.Views.StaffView
 
 		bool init = false;
 
-		private void searchTextbox_Click(object sender, TextChangedEventArgs e)
-		{
-			ViewModel.GoToNextPage();
-		}
-
 		private void nextButton_Click(object sender, RoutedEventArgs e)
 		{
 			ViewModel.GoToNextPage();
@@ -63,9 +58,14 @@ namespace ClinicManagementSystem.Views.StaffView
 			}
 		}
 
+		private void searchTextbox_Click(object sender, TextChangedEventArgs e)
+		{
+			ViewModel.Search();
+		}
+
 		private void searchButton_Click(object sender, RoutedEventArgs e)
 		{
-
+			ViewModel.Search();
 		}
 
 		private void updatePatient(object sender, RoutedEventArgs e)
@@ -135,6 +135,28 @@ namespace ClinicManagementSystem.Views.StaffView
 		{
 			var patientEdit = itemsComboBox.SelectedItem as Patient;
 			ViewModel.Edit(patientEdit);
+
+			if (EditPanel.Visibility == Visibility.Visible && ViewModel.PatientEdit == patientEdit)
+			{
+				EditPanel.Visibility = Visibility.Collapsed;
+				itemsComboBox.SelectedItem = null;
+			}
+			else
+			{
+				if (patientEdit != null)
+				{
+					ViewModel.Edit(patientEdit);
+					EditPanel.Visibility = Visibility.Visible;
+				}
+			}
+		}
+
+		private void setGender(object sender, RoutedEventArgs e)
+		{
+			if (sender is MenuFlyoutItem menuItem)
+			{
+				ViewModel.PatientEdit.Gender = menuItem.Text;
+			}
 		}
 	}
 }

@@ -1,4 +1,4 @@
-using ClinicManagementSystem.Model;
+﻿using ClinicManagementSystem.Model;
 using ClinicManagementSystem.ViewModel.EndUser;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
@@ -117,6 +117,22 @@ namespace ClinicManagementSystem.Views.AdminView
                 Content = $"{notify}",
                 CloseButtonText = "OK"
             }.ShowAsync();
+        }
+
+		private void setGender(object sender, RoutedEventArgs e)
+		{
+            if (sender is MenuFlyoutItem menuItem)
+            {
+                ViewModel.UserEdit.gender = menuItem.Text;
+            }
+        }
+
+        private void setRole(object sender, RoutedEventArgs e)
+        {
+            if(sender is MenuFlyoutItem menuItem)
+            {
+                ViewModel.UserEdit.role = menuItem.Text;
+            }
         }
     }
 }

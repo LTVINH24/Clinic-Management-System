@@ -34,7 +34,7 @@
                 <NavigationViewItem Content="Medicine" Icon="Shop" ToolTipService.ToolTip="Medicine" Tag="Medicine"/>
 
             </NavigationView.MenuItems>
-            <Frame x:Name="contentFrame" />
+            <Frame x:Name="contentFrame" Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"/>
         </NavigationView>
     </Grid>
 </Page>

@@ -8,7 +8,7 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
-
+   
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
@@ -36,7 +36,7 @@
 
 
             </NavigationView.MenuItems>
-            <Frame x:Name="contentFrame" Content="Staff Page"/>
+            <Frame x:Name="contentFrame" Content="Staff Page" Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"/>
         </NavigationView>
     </Grid>
 </Page>

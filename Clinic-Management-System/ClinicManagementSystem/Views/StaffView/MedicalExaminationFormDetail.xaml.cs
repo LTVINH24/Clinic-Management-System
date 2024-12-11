@@ -23,78 +23,28 @@ namespace ClinicManagementSystem.Views.StaffView
 	/// <summary>
 	/// An empty page that can be used on its own or navigated to within a Frame.
 	/// </summary>
-	public sealed partial class listMedicalExaminationForm : Page
+	public sealed partial class MedicalExaminationFormDetail : Page
 	{
 		public MedicalExaminationFormViewModel ViewModel { get; set; }
-		public listMedicalExaminationForm()
+		public MedicalExaminationForm selectedForm { get; set; }
+		public MedicalExaminationFormDetail()
 		{
 			ViewModel = new MedicalExaminationFormViewModel();
-			this.DataContext = ViewModel;
+			DataContext = ViewModel;
 			this.InitializeComponent();
 		}
 
-		private void nextButton_Click(object sender, RoutedEventArgs e)
+		protected override void OnNavigatedTo(NavigationEventArgs e)
 		{
-			ViewModel.GoToNextPage();
-		}
-
-		private void previousButton_Click(object sender, RoutedEventArgs e)
-		{
-			ViewModel.GoToPreviousPage();
-		}
-
-		bool init = false;
-
-
-		private void pagesComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
-		{
-			if (init == false)
+			base.OnNavigatedTo(e);
+			if(e.Parameter is MedicalExaminationForm form)
 			{
-				init = true;
-				return;
-			}
-			if (pagesComboBox.SelectedIndex >= 0)
-			{
-				var item = pagesComboBox.SelectedItem as PageInfo;
-				ViewModel.GoToPage(item.Page);
+				selectedForm = form;
+				DataContext = this;
+				ViewModel.Edit(selectedForm);
+				//ViewModel.FormEdit = selectedForm;
 			}
 		}
-
-		private void medicalExaminationFormList_SelectionChanged(object sender, SelectionChangedEventArgs e)
-		{
-			var formEdit = itemsComboBox.SelectedItem as MedicalExaminationForm;
-			ViewModel.Edit(formEdit);
-
-			if (EditPanel.Visibility == Visibility.Visible && ViewModel.FormEdit == formEdit)
-			{
-				EditPanel.Visibility = Visibility.Collapsed;
-				itemsComboBox.SelectedItem = null;
-			}
-			else
-			{
-				if (formEdit != null)
-				{
-					ViewModel.Edit(formEdit);
-					EditPanel.Visibility = Visibility.Visible;
-				}
-			}
-			//if(itemsComboBox.SelectedItem is MedicalExaminationForm selectedForm)
-			//{
-			//	Frame.Navigate(typeof(MedicalExaminationFormDetail), selectedForm);
-			//	ViewModel.Edit(selectedForm);
-			//}
-		}
-
-		private void searchTextbox_Click(object sender, TextChangedEventArgs e)
-		{
-			ViewModel.Search();
-        }
-
-		private void searchButton_Click(object sender, RoutedEventArgs e)
-		{
-			ViewModel.Search();
-		}
-
 		private void updateMedicalExaminationForm(object sender, RoutedEventArgs e)
 		{
 			var success = ViewModel.Update();
@@ -124,7 +74,7 @@ namespace ClinicManagementSystem.Views.StaffView
 
 			var result = await confirmContentDialog.ShowAsync();
 
-			if(result == ContentDialogResult.Primary)
+			if (result == ContentDialogResult.Primary)
 			{
 				var success = ViewModel.Delete();
 				ViewModel.LoadData();
@@ -143,7 +93,7 @@ namespace ClinicManagementSystem.Views.StaffView
 
 		private void cancelEdit(object sender, RoutedEventArgs e)
 		{
-			
+
 			ViewModel.Cancel();
 		}
 
@@ -158,12 +108,12 @@ namespace ClinicManagementSystem.Views.StaffView
 			}.ShowAsync();
 		}
 
-		private void setVisitType(object sender, RoutedEventArgs e)
+		private void OnVisitTypeChanged(object sender, RoutedEventArgs e)
 		{
-			if (sender is MenuFlyoutItem menuItem)
+			if(sender is MenuFlyoutItem item)
 			{
-				ViewModel.FormEdit.VisitType = menuItem.Text;
+				selectedForm.VisitType = item.Text;
 			}
 		}
-	}	
+	}
 }

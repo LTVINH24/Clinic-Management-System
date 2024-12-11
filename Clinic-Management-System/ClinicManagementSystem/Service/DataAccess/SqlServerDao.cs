@@ -62,7 +62,7 @@ namespace ClinicManagementSystem.Service.DataAccess
                 gender = reader["gender"].ToString();
                 address = reader["address"].ToString();
                 connection.Close();
-                if (Password.VerifyPassword(password,hassPassword))
+                if (Password.VerifyPassword(password, hassPassword))
                 {
                     return (id, name, role, phone, gender, address);
                 }
@@ -73,7 +73,7 @@ namespace ClinicManagementSystem.Service.DataAccess
                 connection.Close();
                 return (0, "", "", "", "", "");
             }
-            // return (0, "", "admin", "", "", "");
+            //return (0, "", "admin", "", "", "");
         }
 
         private void AddParameters(SqlCommand command, params (string ParameterName, object Value)[] parameters)
@@ -145,6 +145,7 @@ namespace ClinicManagementSystem.Service.DataAccess
                 user.gender = (string)reader["gender"];
                 user.role = (string)reader["role"];
                 user.birthday = (DateTime)reader["birthday"];
+                user.password = (string)reader["password"];
                 user.address = (string)reader["address"];
                 user.phone = (string)reader["phone"];
                 result.Add(user);
@@ -513,9 +514,9 @@ namespace ClinicManagementSystem.Service.DataAccess
 			}
 
 			var sql = $"""
-				SELECT count(*) over() as Total, id, patientId, staffId, time, symptom, doctorId
+				SELECT count(*) over() as Total, id, patientId, staffId, time, symptom, doctorId, visitType
 				FROM MedicalExaminationForm
-				WHERE patientId like @Keyword
+				WHERE symptom like @Keyword
 				{sortString}
 				OFFSET @Skip ROWS FETCH NEXT @Take ROWS ONLY;
 				""";
@@ -539,6 +540,7 @@ namespace ClinicManagementSystem.Service.DataAccess
 				medicalExaminationForm.Time = (DateTime)reader["time"];
 				medicalExaminationForm.Symptoms = (string)reader["symptom"];
 				medicalExaminationForm.DoctorId = (int)reader["doctorId"];
+                medicalExaminationForm.VisitType = (string)reader["visitType"];
 
 				result.Add(medicalExaminationForm);
 			}
@@ -608,7 +610,7 @@ namespace ClinicManagementSystem.Service.DataAccess
             int id = UserSessionService.Instance.LoggedInUserId;
 
 
-            var command = new SqlCommand("INSERT INTO MedicalExaminationForm (PatientId, StaffId, DoctorId, Time, Symptom) VALUES (@PatientId, @StaffId, @DoctorId, @Time, @Symptom)", connection);
+            var command = new SqlCommand("INSERT INTO MedicalExaminationForm (PatientId, StaffId, DoctorId, Time, Symptom, VisitType) VALUES (@PatientId, @StaffId, @DoctorId, @Time, @Symptom, @VisitType)", connection);
 
 
 
@@ -617,7 +619,8 @@ namespace ClinicManagementSystem.Service.DataAccess
                 ("@StaffId", id),
                 ("@DoctorId", medicalExaminationForm.DoctorId),
                 ("@Time", formatDate),
-                ("@Symptom", medicalExaminationForm.Symptoms));
+                ("@Symptom", medicalExaminationForm.Symptoms),
+                ("@VisitType", medicalExaminationForm.VisitType));
 
             int result = command.ExecuteNonQuery();
 
@@ -663,7 +666,8 @@ namespace ClinicManagementSystem.Service.DataAccess
 				"patientId=@patientId, " +
 				"doctorId=@doctorId, " +
 				"Time=@time, " +
-				"symptom=@symptom " +
+				"symptom=@symptom, " +
+                "visitType=@visitType " +
 				"where id=@Id";
 
 			var command = new SqlCommand(sql, connection);
@@ -672,7 +676,8 @@ namespace ClinicManagementSystem.Service.DataAccess
 				("@patientId", form.PatientId),
 				("@doctorId", form.DoctorId),
 				("@time", form.Time),
-				("@symptom", form.Symptoms));
+				("@symptom", form.Symptoms),
+                ("@visitType", form.VisitType));
 
 			int count = command.ExecuteNonQuery();
 			bool success = count == 1;
@@ -696,11 +701,7 @@ namespace ClinicManagementSystem.Service.DataAccess
                                           WHERE prescriptionId IN (
                                                SELECT Id
                                                FROM Prescription
-                                               WHERE medicalRecordId IN (
-                                                    SELECT Id
-                                                    FROM MedicalRecord
-                                                    WHERE MedicalExaminationFormId = @Id
-                                               )
+                                               WHERE MedicalExaminationFormId = @Id
                                           )";
 					var deleteBillCommand = new SqlCommand(deleteBillSql, connection, transaction);
 					AddParameters(deleteBillCommand, ("@Id", form.Id));
@@ -708,22 +709,11 @@ namespace ClinicManagementSystem.Service.DataAccess
 
 					// Delete Prescripstion
 					var deletePrescriptionSql = @"DELETE FROM Prescription
-                                                  WHERE medicalRecordId IN (
-                                                       SELECT Id
-                                                       FROM MedicalRecord
-                                                       WHERE MedicalExaminationFormId = @Id
-                                                  )";
+                                                  WHERE MedicalExaminationFormId = @Id
+                                                  ";
 					var deletePrescriptionCommand = new SqlCommand(deletePrescriptionSql, connection, transaction);
 					AddParameters(deletePrescriptionCommand, ("@Id", form.Id));
 					deletePrescriptionCommand.ExecuteNonQuery();
-
-					// Delete MedicalRecord
-					var deleteMedicalRecordSql = @"DELETE FROM MedicalRecord
-                                                   WHERE MedicalExaminationFormId = @Id";
-
-					var deleteMedicalRecordCommand = new SqlCommand(deleteMedicalRecordSql, connection, transaction);
-					AddParameters(deleteMedicalRecordCommand, ("@Id", form.Id));
-					deleteMedicalRecordCommand.ExecuteNonQuery();
 
 					// Delete MedicalExaminationForm
 					var deleteMedicalExaminationFormSql = @"DELETE FROM MedicalExaminationForm

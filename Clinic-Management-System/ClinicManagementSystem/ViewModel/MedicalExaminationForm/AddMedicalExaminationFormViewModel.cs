@@ -95,6 +95,8 @@ namespace ClinicManagementSystem.ViewModel
 				return (false, 306, "Invalid gender.");
 			if (!isValid.IsValidDescription(MedicalExaminationForm.Symptoms))
 				return (false, 307, "Invalid symptoms.");
+			if (!isValid.IsValidDescription(MedicalExaminationForm.VisitType))
+				return (false, 309, "Invalid visit type.");
 
 			return (true, 200, "Valid data.");
 		}
@@ -109,7 +111,8 @@ namespace ClinicManagementSystem.ViewModel
 		// Failed, 305: DoB không hợp lệ
 		// Failed, 306: Gender không hợp lệ
 		// Failed, 307: Symptoms không hợp lệ
-		// Failed, 308: Chua chọn Doctor
+		// Failed, 308: Chưa chọn Doctor
+		// Failed, 309: Chưa chọn Visit Type
 		// Failed, 400: Thêm thất bại
 		public void AddMedicalExaminationForm()
 		{
@@ -136,11 +139,11 @@ namespace ClinicManagementSystem.ViewModel
 				bool examinationSaved = _dao.AddMedicalExaminationForm(patientId, MedicalExaminationForm);
 				if (examinationSaved)
 				{
-					AddCompleted?.Invoke(true, 201, "Medical examination form added successfully. Medical examination form added for existing patient.");
+					AddCompleted?.Invoke(true, 201, "Medical Examination Form added successfully.\nMedical Examination Form added for existing patient.");
 				}
 				else
 				{
-					AddCompleted?.Invoke(false, 400, "Failed to add medical examination form for existing patient.");
+					AddCompleted?.Invoke(false, 400, "Failed to add Medical Examination Form for existing patient.");
 				}
 			}
 			else
@@ -152,11 +155,11 @@ namespace ClinicManagementSystem.ViewModel
 					bool examinationSaved = _dao.AddMedicalExaminationForm(newPatientId, MedicalExaminationForm);
 					if (examinationSaved)
 					{
-						AddCompleted?.Invoke(true, 200, "Patient and medical examination form added successfully.");
+						AddCompleted?.Invoke(true, 200, "Patient and Medical Examination Form added successfully.");
 					}
 					else
 					{
-						AddCompleted?.Invoke(false, 400, "Failed to add medical examination form for new patient.");
+						AddCompleted?.Invoke(false, 400, "Failed to add Medical Examination Form for new patient.");
 					}
 				}
 				else

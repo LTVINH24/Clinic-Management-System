@@ -15,7 +15,7 @@ namespace ClinicManagementSystem.Model
 		public int DoctorId { get; set; }  
 		public DateTimeOffset? Time { get; set; }
 		public string Symptoms { get; set; }
-
+		public string VisitType { get; set; }
 
 		public event PropertyChangedEventHandler PropertyChanged;
 	}
