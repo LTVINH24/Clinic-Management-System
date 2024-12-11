@@ -123,10 +123,10 @@
                 <TextBox TextWrapping="Wrap" Text="{x:Bind ViewModel.newPassword,Mode=TwoWay}" Margin="0,10,0,0" Header="Password" ></TextBox>
             </StackPanel>
             <StackPanel Margin="0,20,0,0" Orientation="Horizontal" HorizontalAlignment="Center">
-                <Button Click="update_editUser" FontWeight="Bold" Background="#18b4f6" Foreground="White">
+                <Button Click="update_editUser" FontWeight="Bold" Background="#18b4f6" Foreground="White" Margin="20">
                     Update
                 </Button>
-                <Button Click="delete_editUser" FontWeight="Bold" Background="#d50000" Margin="20,0,20,0" Foreground="White">Delete</Button>
+                <Button Click="delete_editUser" FontWeight="Bold" Background="#d50000" Margin="20,0,20,0" Foreground="White" Visibility="Collapsed">Delete</Button>
                 <Button Click="cancel_editUser" FontWeight="Bold">Cancel</Button>
             </StackPanel>
         </StackPanel>
