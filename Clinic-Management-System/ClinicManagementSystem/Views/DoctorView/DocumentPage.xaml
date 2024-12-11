@@ -6,10 +6,19 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d">
 
-    <Grid Padding="10">
-        <StackPanel>
-            <Button Content="Open Google Drive" Click="OpenGoogleDrive_Click" Margin="0,0,0,10"/>
-            <ListView x:Name="FileListView">
+    <Grid Padding="0">
+
+        <Grid.RowDefinitions>
+            <RowDefinition Height="9*" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+        
+        
+        <StackPanel Grid.Row="0">
+            <TextBlock Text="List of Document" FontSize="24" FontWeight="Bold" Margin="10,0,0,20" Padding="20,20,0,0" HorizontalAlignment="Center"/>
+            
+            
+            <ListView x:Name="FileListView" Margin="10">
                 <ListView.ItemTemplate>
                     <DataTemplate>
                         <TextBlock Text="{Binding}" />
@@ -17,5 +26,6 @@
                 </ListView.ItemTemplate>
             </ListView>
         </StackPanel>
+        <Button Grid.Row="1" Content="Open Google Drive" Click="OpenGoogleDrive_Click" Margin="20,10,10,10" HorizontalAlignment="Center"/>
     </Grid>
 </Page>
