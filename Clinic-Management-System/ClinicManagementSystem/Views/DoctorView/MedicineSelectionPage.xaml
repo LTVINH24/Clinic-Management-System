@@ -1,22 +1,116 @@
-<Page
+﻿<Page
     x:Class="ClinicManagementSystem.Views.DoctorView.MedicineSelectionPage"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:model="using:ClinicManagementSystem.Model"
-    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+    xmlns:local="using:ClinicManagementSystem.Views.DoctorView"
+    xmlns:vm="using:ClinicManagementSystem.ViewModel"
+    xmlns:converters="using:ClinicManagementSystem.Converters"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d">
 
-    <StackPanel>
-        <ListView ItemsSource="{Binding Medicines}">
+    <Page.Resources>
+        <converters:BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
+        <Style TargetType="TextBlock" x:Key="HeaderStyle">
+            <Setter Property="FontWeight" Value="Bold" />
+            <Setter Property="FontSize" Value="18" />
+            <Setter Property="HorizontalAlignment" Value="Center" />
+        </Style>
+        <Style TargetType="TextBlock" x:Key="CellStyle">
+            <Setter Property="FontSize" Value="16" />
+            <Setter Property="HorizontalAlignment" Value="Center" />
+            <Setter Property="Margin" Value="5" />
+        </Style>
+        <Style TargetType="CheckBox">
+            <Setter Property="HorizontalAlignment" Value="Left" />
+            <Setter Property="Margin" Value="5" />
+        </Style>
+        <Style TargetType="Button">
+            <Setter Property="FontSize" Value="16" />
+            <Setter Property="Margin" Value="5" />
+            <Setter Property="Padding" Value="10,5" />
+            <Setter Property="Background" Value="#0078D4" />
+            <Setter Property="Foreground" Value="White" />
+        </Style>
+    </Page.Resources>
+
+    <Grid Padding="20">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+
+        <!-- Title -->
+        <TextBlock Grid.Row="0" FontSize="24" FontWeight="Bold" Text="Medicine Selection" HorizontalAlignment="Center" Margin="0,10" />
+
+        <!-- Header Grid -->
+        <Grid Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="0.5*" />
+                <ColumnDefinition Width="3*" />
+                <ColumnDefinition Width="1.5*" />
+                <ColumnDefinition Width="1.5*" />
+                <ColumnDefinition Width="4*" />
+                <ColumnDefinition Width="4.5*" />
+                <ColumnDefinition Width="4.5*" />
+                <ColumnDefinition Width="2*" />
+                <ColumnDefinition Width="3*" />
+                <ColumnDefinition Width="3*" />
+            </Grid.ColumnDefinitions>
+
+            <TextBlock Grid.Column="0" Text="ID" Style="{StaticResource HeaderStyle}" />
+            <TextBlock Grid.Column="1" Text="Name" Style="{StaticResource HeaderStyle}" />
+            <TextBlock Grid.Column="2" Text="Quantity" Style="{StaticResource HeaderStyle}" />
+            <TextBlock Grid.Column="3" Text="Price" Style="{StaticResource HeaderStyle}" />
+            <TextBlock Grid.Column="4" Text="Manufacturer" Style="{StaticResource HeaderStyle}" />
+            <TextBlock Grid.Column="5" Text="MfgDate" Style="{StaticResource HeaderStyle}" />
+            <TextBlock Grid.Column="6" Text="ExpDate" Style="{StaticResource HeaderStyle}" />
+            <TextBlock Grid.Column="7" Text="Select" Style="{StaticResource HeaderStyle}" />
+            <TextBlock Grid.Column="8" Text="Quantity" Style="{StaticResource HeaderStyle}" />
+            <TextBlock Grid.Column="9" Text="Dosage" Style="{StaticResource HeaderStyle}" />
+        </Grid>
+
+        <!-- ListView -->
+        <ListView Grid.Row="2" ItemsSource="{Binding AvailableMedicines}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
             <ListView.ItemTemplate>
-                <DataTemplate x:DataType="model:Medicine">
-                    <StackPanel Orientation="Horizontal">
-                        <TextBlock Text="{x:Bind Name}" Margin="0,0,10,0"/>
-                        <TextBox PlaceholderText="Quantity" Text="{x:Bind Quantity, Mode=TwoWay}" Width="50"/>
-                        <TextBox PlaceholderText="Dosage" Text="{x:Bind Dosage, Mode=TwoWay}" Width="150"/>
-                    </StackPanel>
+                <DataTemplate>
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="0.5*" />
+                            <ColumnDefinition Width="3*" />
+                            <ColumnDefinition Width="1.5*" />
+                            <ColumnDefinition Width="1.5*" />
+                            <ColumnDefinition Width="4*" />
+                            <ColumnDefinition Width="4.5*" />
+                            <ColumnDefinition Width="4.5*" />
+                            <ColumnDefinition Width="2*" />
+                            <ColumnDefinition Width="3*" />
+                            <ColumnDefinition Width="3*" />
+                        </Grid.ColumnDefinitions>
+
+                        <TextBlock Grid.Column="0" Text="{Binding Medicine.Id}" Style="{StaticResource CellStyle}" />
+                        <TextBlock Grid.Column="1" Text="{Binding Medicine.Name}" Style="{StaticResource CellStyle}" />
+                        <TextBlock Grid.Column="2" Text="{Binding Medicine.Quantity}" Style="{StaticResource CellStyle}" />
+                        <TextBlock Grid.Column="3" Text="{Binding Medicine.Price}" Style="{StaticResource CellStyle}" />
+                        <TextBlock Grid.Column="4" Text="{Binding Medicine.Manufacturer}" Style="{StaticResource CellStyle}" />
+                        <TextBlock Grid.Column="5" Text="{Binding Medicine.MfgDate}" Style="{StaticResource CellStyle}" />
+                        <TextBlock Grid.Column="6" Text="{Binding Medicine.ExpDate}" Style="{StaticResource CellStyle}" />
+                        <CheckBox Grid.Column="7" IsChecked="{Binding IsSelected, Mode=TwoWay}" HorizontalAlignment="Left" />
+                        <TextBox Grid.Column="8" PlaceholderText="Enter Quantity" HorizontalAlignment="Center"
+                                 Visibility="{Binding IsSelected, Converter={StaticResource BooleanToVisibilityConverter}}" Text="{Binding SelectedQuantity, Mode=TwoWay}" />
+                        <TextBox Grid.Column="9" PlaceholderText="Enter Dosage" HorizontalAlignment="Center"
+                                 Visibility="{Binding IsSelected, Converter={StaticResource BooleanToVisibilityConverter}}" Text="{Binding SelectedDosage, Mode=TwoWay}" />
+                    </Grid>
                 </DataTemplate>
             </ListView.ItemTemplate>
         </ListView>
-        <Button Content="Confirm Selection" Command="{Binding ConfirmSelectionCommand}" HorizontalAlignment="Center" Margin="10"/>
-    </StackPanel>
+
+        <!-- Footer -->
+        <StackPanel Grid.Row="3" Orientation="Horizontal" HorizontalAlignment="Right">
+            <Button Content="Back" Click="BackButton_Click" />
+            <Button Content="Confirm" Click="ConfirmButton_Click" />
+        </StackPanel>
+    </Grid>
 </Page>

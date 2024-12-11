@@ -1,22 +1,11 @@
-﻿using System.Collections.Generic;
-using System;
+﻿using System;
 
-namespace ClinicManagementSystem.Model
+public class Prescription
 {
-    public class Prescription
-    {
-        public int Id { get; set; } // Mã đơn thuốc
-        public int MedicalRecordId { get; set; } // Mã hồ sơ bệnh nhân
-        public DateTime DateIssued { get; set; } // Ngày kê đơn
-        public string Diagnosis { get; set; } // Chẩn đoán đi kèm
-
-        // Danh sách thuốc trong đơn
-        public List<Medicine> Medicines { get; set; } = new List<Medicine>();
-
-        // Phương thức để thêm thuốc vào đơn
-        public void AddMedicine(Medicine medicine)
-        {
-            Medicines.Add(medicine);
-        }
-    }
+    public int Id { get; set; }
+    public DateTime Time { get; set; }
+    public int MedicineId { get; set; }
+    public int Quantity { get; set; }
+    public string Dosage { get; set; }
+    public int MedicalExaminationFormId { get; set; }
 }

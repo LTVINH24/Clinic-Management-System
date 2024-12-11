@@ -18,7 +18,6 @@
                   SelectionChanged="ListView_SelectionChanged" 
                   Grid.Row="0"
                   Margin="0,0,0,10"
-                  Background="White"
                   BorderBrush="{ThemeResource SystemAccentColor}"
                   BorderThickness="1"
                   CornerRadius="8"
@@ -47,7 +46,7 @@
         <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Grid.Row="1" Margin="0,20,0,0">
             <Button Content="Previous" Command="{Binding PreviousPageCommand}" 
                     Width="100" 
-                    Style="{StaticResource AccentButtonStyle}" 
+                    Style="{StaticResource AccentButtonStyle}"  
                     Margin="5"/>
             <Button Content="Next" Command="{Binding NextPageCommand}" 
                     Width="100" 
