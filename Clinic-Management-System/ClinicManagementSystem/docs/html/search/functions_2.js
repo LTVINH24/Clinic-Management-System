@@ -1,8 +1,0 @@
-var searchData=
-[
-  ['delete_0',['Delete',['../class_clinic_management_system_1_1_view_model_1_1_end_user_1_1_account_view_model.html#a377d6c4396961718a329cfdb7dfe4476',1,'ClinicManagementSystem.ViewModel.EndUser.AccountViewModel.Delete()'],['../class_clinic_management_system_1_1_view_model_1_1_medical_examination_form_view_model.html#aab42e0b790e2f0615278dcc15d5d7d53',1,'ClinicManagementSystem.ViewModel.MedicalExaminationFormViewModel.Delete()'],['../class_clinic_management_system_1_1_view_model_1_1_patient_view_model.html#aa5585b1be2d9e7cf9555f6f75af8c404',1,'ClinicManagementSystem.ViewModel.PatientViewModel.Delete()']]],
-  ['deletemedicalexaminationform_1',['DeleteMedicalExaminationForm',['../class_clinic_management_system_1_1_service_1_1_data_access_1_1_sql_server_dao.html#a751979d75df5456e6937369dd01d48c7',1,'ClinicManagementSystem::Service::DataAccess::SqlServerDao']]],
-  ['deletemedicine_2',['DeleteMedicine',['../class_clinic_management_system_1_1_service_1_1_data_access_1_1_sql_server_dao.html#a763f5454534af297958c6ca6f1e5246f',1,'ClinicManagementSystem.Service.DataAccess.SqlServerDao.DeleteMedicine()'],['../class_clinic_management_system_1_1_view_model_1_1_medicine_view_model.html#ab642073541e757fd59d7d5466f1997d5',1,'ClinicManagementSystem.ViewModel.MedicineViewModel.DeleteMedicine()']]],
-  ['deletepatient_3',['DeletePatient',['../class_clinic_management_system_1_1_service_1_1_data_access_1_1_sql_server_dao.html#a87127c0bb4cea1b2baffbc388708a3d1',1,'ClinicManagementSystem::Service::DataAccess::SqlServerDao']]],
-  ['deleteuser_4',['DeleteUser',['../class_clinic_management_system_1_1_service_1_1_data_access_1_1_sql_server_dao.html#a212e45c59fa459584bf3e4477a127ab6',1,'ClinicManagementSystem::Service::DataAccess::SqlServerDao']]]
-];
