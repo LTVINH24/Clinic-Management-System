@@ -52,10 +52,10 @@ namespace ClinicManagementSystem.Views
                     case "MedicalExaminationPage":
                         contentFrame.Navigate(typeof(MedicalExaminationPage), contentFrame);
                         break;
-                    /*case "DiagnosisPage":
-						contentFrame.Navigate(typeof(DiagnosisPage), contentFrame);
+                    case "DocumentPage":
+						contentFrame.Navigate(typeof(DocumentPage), contentFrame);
 						break;
-					case "MedicineSelectionPage":
+					/*case "MedicineSelectionPage":
 						contentFrame.Navigate(typeof(MedicineSelectionPage));
 						break;
 					case "SamplePage2":

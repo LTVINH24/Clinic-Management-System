@@ -57,6 +57,34 @@ namespace ClinicManagementSystem.Views.DoctorView
 
             foreach (var medicineSelection in selectedMedicines)
             {
+                if (medicineSelection.SelectedQuantity <= 0)
+                {
+                    // Notify the user that the selected quantity is invalid
+                    ShowMessage("Selected quantity must be greater than zero.");
+                    return;
+                }
+
+                if (medicineSelection.SelectedDosage <= 0)
+                {
+                    // Notify the user that the selected quantity is invalid
+                    ShowMessage("Selected dosage must be greater than zero.");
+                    return;
+                }
+
+                if (medicineSelection.SelectedQuantity > medicineSelection.Medicine.Quantity)
+                {
+                    // Notify the user that the selected quantity exceeds the available quantity
+                    ShowMessage($"Selected quantity for {medicineSelection.Medicine.Name} exceeds available quantity.");
+                    return;
+                }
+                
+                if (medicineSelection.SelectedDosage > medicineSelection.SelectedQuantity)
+                {
+                    // Notify the user that the selected quantity exceeds the available quantity
+                    ShowMessage($"Selected dosage for {medicineSelection.Medicine.Name} must not greater than selected quantity.");
+                    return;
+                }
+
                 if (!ViewModel.SelectedMedicines.Any(m => m.Medicine.Id == medicineSelection.Medicine.Id))
                 {
                     ViewModel.SelectedMedicines.Add(medicineSelection);
@@ -92,8 +120,19 @@ namespace ClinicManagementSystem.Views.DoctorView
 
             // Navigate back to DiagnosisPage
             Frame.GoBack();
+        }
 
+        private async void ShowMessage(string message)
+        {
+            var dialog = new ContentDialog
+            {
+                Title = "Invalid Selection",
+                Content = message,
+                CloseButtonText = "OK",
+                XamlRoot = this.Content.XamlRoot
+            };
 
+            await dialog.ShowAsync();
         }
 
         //private int GetCurrentMedicalRecordId()

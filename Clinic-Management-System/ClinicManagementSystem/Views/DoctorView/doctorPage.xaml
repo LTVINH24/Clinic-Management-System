@@ -30,8 +30,9 @@
             
             <NavigationView.MenuItems>
                 <NavigationViewItem Content="Medical Examinations" Icon="Document" ToolTipService.ToolTip="Medical Examinations" Tag="MedicalExaminationPage"/>
+                <NavigationViewItem Content="Documents" Icon="Document" ToolTipService.ToolTip="" Tag="DocumentPage"/>
+                
                 <!-- 
-                <NavigationViewItem Content="Home" Icon="Home" ToolTipService.ToolTip="Home" Tag="DiagnosisPage"/>
                 <NavigationViewItem Content="Home" Icon="Home" ToolTipService.ToolTip="Home" Tag="MedicineSelectionPage"/>
                 <NavigationViewItem Content="Account" Icon="Contact" ToolTipService.ToolTip="Account" Tag="SamplePage2">
                     <NavigationViewItem.MenuItems>
