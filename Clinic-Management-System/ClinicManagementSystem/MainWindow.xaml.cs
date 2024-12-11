@@ -1,4 +1,4 @@
-using ClinicManagementSystem.ViewModel;
+﻿using ClinicManagementSystem.ViewModel;
 using ClinicManagementSystem.Views;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
@@ -35,12 +35,23 @@ namespace ClinicManagementSystem
             this.Title = "Clinic Management System";
 
 		}
-        private void Window_Activated(object sender, WindowActivatedEventArgs args)
+		/// <summary>
+		/// Xử lí sự kiện khi cửa sổ được bật
+		/// </summary>
+		/// <param name="sender"></param>
+		/// <param name="args"></param>
+		private void Window_Activated(object sender, WindowActivatedEventArgs args)
         {
             viewModel.LoadPassword(usernameTextbox, passwordBox);
         }
         public MainViewModel viewModel { get; set; } = new MainViewModel();
-        public void Login_Click(object sender, RoutedEventArgs e)
+
+		/// <summary>
+		/// Xử lí sự kiện khi nhấn nút đăng nhập
+		/// </summary>
+		/// <param name="sender"></param>
+		/// <param name="e"></param>
+		public void Login_Click(object sender, RoutedEventArgs e)
         {
 
 
@@ -50,7 +61,12 @@ namespace ClinicManagementSystem
             }
              viewModel.Authentication(viewModel.UserLogin,false);
         }
-        private void OnLoginCompleted(string isSuccess)
+
+		/// <summary>
+		/// Xử lí sự kiện khi đăng nhập thành công
+		/// </summary>
+		/// <param name="isSuccess"></param>
+		private void OnLoginCompleted(string isSuccess)
         {
             if (isSuccess != "")
             {
@@ -72,7 +88,11 @@ namespace ClinicManagementSystem
 
             }
         }
-        private async void LoginFailed()
+
+		/// <summary>
+		/// Xử lí sự kiện khi đăng nhập thất bại
+		/// </summary>
+		private async void LoginFailed()
         {
             await new ContentDialog()
             {

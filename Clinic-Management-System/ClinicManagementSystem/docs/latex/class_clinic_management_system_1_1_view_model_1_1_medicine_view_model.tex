@@ -1,0 +1,154 @@
+\doxysection{Clinic\+Management\+System.\+View\+Model.\+Medicine\+View\+Model Class Reference}
+\hypertarget{class_clinic_management_system_1_1_view_model_1_1_medicine_view_model}{}\label{class_clinic_management_system_1_1_view_model_1_1_medicine_view_model}\index{ClinicManagementSystem.ViewModel.MedicineViewModel@{ClinicManagementSystem.ViewModel.MedicineViewModel}}
+Inheritance diagram for Clinic\+Management\+System.\+View\+Model.\+Medicine\+View\+Model\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=2.000000cm]{class_clinic_management_system_1_1_view_model_1_1_medicine_view_model}
+\end{center}
+\end{figure}
+\doxysubsubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{class_clinic_management_system_1_1_view_model_1_1_medicine_view_model_ae752c39e1d201fec590cd66288359dc9}\label{class_clinic_management_system_1_1_view_model_1_1_medicine_view_model_ae752c39e1d201fec590cd66288359dc9} 
+void {\bfseries Search} ()
+\begin{DoxyCompactList}\small\item\em Tìm kiếm thuốc. \end{DoxyCompactList}\item 
+\Hypertarget{class_clinic_management_system_1_1_view_model_1_1_medicine_view_model_ad2e388f31c4a2de1a7125c26093da72c}\label{class_clinic_management_system_1_1_view_model_1_1_medicine_view_model_ad2e388f31c4a2de1a7125c26093da72c} 
+void {\bfseries Go\+To\+Next\+Page} ()
+\begin{DoxyCompactList}\small\item\em Chuyển đến trang kế tiếp. \end{DoxyCompactList}\item 
+\Hypertarget{class_clinic_management_system_1_1_view_model_1_1_medicine_view_model_aaf53e1e81afbcc7dfe47865377ff6961}\label{class_clinic_management_system_1_1_view_model_1_1_medicine_view_model_aaf53e1e81afbcc7dfe47865377ff6961} 
+void {\bfseries Go\+To\+Previous\+Page} ()
+\begin{DoxyCompactList}\small\item\em Chuyển đến trang trước. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{class_clinic_management_system_1_1_view_model_1_1_medicine_view_model_a55596249bd586c16342c207092e99aa5}{Go\+To\+Page}} (int page)
+\begin{DoxyCompactList}\small\item\em Chuyển đến trang được chỉ định. \end{DoxyCompactList}\item 
+bool \mbox{\hyperlink{class_clinic_management_system_1_1_view_model_1_1_medicine_view_model_a3e6ea9a9981d6cfc731ed5d57aa83fbd}{Update\+Medicine}} ()
+\begin{DoxyCompactList}\small\item\em Cập nhật thông tin thuốc. \end{DoxyCompactList}\item 
+bool \mbox{\hyperlink{class_clinic_management_system_1_1_view_model_1_1_medicine_view_model_a57d29580a949b5e2808700d68becb52b}{Add\+Medicine}} ()
+\begin{DoxyCompactList}\small\item\em Thêm thuốc mới. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{class_clinic_management_system_1_1_view_model_1_1_medicine_view_model_a400b9841259f6e303285549ed7a789ba}{Edit\+Medicine}} (\mbox{\hyperlink{class_clinic_management_system_1_1_model_1_1_medicine}{Medicine}} medicine)
+\begin{DoxyCompactList}\small\item\em Chỉnh sửa thông tin thuốc. \end{DoxyCompactList}\item 
+bool \mbox{\hyperlink{class_clinic_management_system_1_1_view_model_1_1_medicine_view_model_ab642073541e757fd59d7d5466f1997d5}{Delete\+Medicine}} (\mbox{\hyperlink{class_clinic_management_system_1_1_model_1_1_medicine}{Medicine}} new\+Medicine)
+\begin{DoxyCompactList}\small\item\em Xóa thuốc. \end{DoxyCompactList}\item 
+\Hypertarget{class_clinic_management_system_1_1_view_model_1_1_medicine_view_model_a738678632fe4dba133c88eb3c399fdd5}\label{class_clinic_management_system_1_1_view_model_1_1_medicine_view_model_a738678632fe4dba133c88eb3c399fdd5} 
+void {\bfseries Cancel\+Medicine} ()
+\begin{DoxyCompactList}\small\item\em Hủy thao tác. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsubsection*{Properties}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{class_clinic_management_system_1_1_view_model_1_1_medicine_view_model_ae4519054a0ef37450658467f5f409c29}\label{class_clinic_management_system_1_1_view_model_1_1_medicine_view_model_ae4519054a0ef37450658467f5f409c29} 
+Observable\+Collection$<$ \mbox{\hyperlink{class_clinic_management_system_1_1_model_1_1_medicine}{Medicine}} $>$ {\bfseries Medicines}\hspace{0.3cm}{\ttfamily  \mbox{[}get, set\mbox{]}}
+\item 
+\Hypertarget{class_clinic_management_system_1_1_view_model_1_1_medicine_view_model_ae8c79cc56f162cc42b248ac00cb03356}\label{class_clinic_management_system_1_1_view_model_1_1_medicine_view_model_ae8c79cc56f162cc42b248ac00cb03356} 
+\mbox{\hyperlink{class_clinic_management_system_1_1_model_1_1_medicine}{Medicine}} {\bfseries Medicine\+Edit} = new \mbox{\hyperlink{class_clinic_management_system_1_1_model_1_1_medicine}{Medicine}}()\hspace{0.3cm}{\ttfamily  \mbox{[}get, set\mbox{]}}
+\item 
+\Hypertarget{class_clinic_management_system_1_1_view_model_1_1_medicine_view_model_a569e1e6442e16732f455a89e7e7c5000}\label{class_clinic_management_system_1_1_view_model_1_1_medicine_view_model_a569e1e6442e16732f455a89e7e7c5000} 
+int {\bfseries Current\+Page}\hspace{0.3cm}{\ttfamily  \mbox{[}get, set\mbox{]}}
+\item 
+\Hypertarget{class_clinic_management_system_1_1_view_model_1_1_medicine_view_model_a39433a29f1fbadf2c75345f4747240fd}\label{class_clinic_management_system_1_1_view_model_1_1_medicine_view_model_a39433a29f1fbadf2c75345f4747240fd} 
+int {\bfseries Total\+Pages}\hspace{0.3cm}{\ttfamily  \mbox{[}get, set\mbox{]}}
+\item 
+\Hypertarget{class_clinic_management_system_1_1_view_model_1_1_medicine_view_model_a8514abf295ffc6979481bd5018a77955}\label{class_clinic_management_system_1_1_view_model_1_1_medicine_view_model_a8514abf295ffc6979481bd5018a77955} 
+int {\bfseries Total\+Items} = 0\hspace{0.3cm}{\ttfamily  \mbox{[}get, set\mbox{]}}
+\item 
+\Hypertarget{class_clinic_management_system_1_1_view_model_1_1_medicine_view_model_af5dde82bb4d7c2007eec983dc15c9c6d}\label{class_clinic_management_system_1_1_view_model_1_1_medicine_view_model_af5dde82bb4d7c2007eec983dc15c9c6d} 
+int {\bfseries Rows\+Per\+Page}\hspace{0.3cm}{\ttfamily  \mbox{[}get, set\mbox{]}}
+\item 
+\Hypertarget{class_clinic_management_system_1_1_view_model_1_1_medicine_view_model_a92e99b74e68a63086792f32ca35a3eb3}\label{class_clinic_management_system_1_1_view_model_1_1_medicine_view_model_a92e99b74e68a63086792f32ca35a3eb3} 
+string {\bfseries Keyword} = "{}"{}\hspace{0.3cm}{\ttfamily  \mbox{[}get, set\mbox{]}}
+\item 
+\Hypertarget{class_clinic_management_system_1_1_view_model_1_1_medicine_view_model_a9749155bd102a944885715ed9f33f5d0}\label{class_clinic_management_system_1_1_view_model_1_1_medicine_view_model_a9749155bd102a944885715ed9f33f5d0} 
+\mbox{\hyperlink{class_clinic_management_system_1_1_model_1_1_page_info}{Page\+Info}} {\bfseries Selected\+Page\+Info\+Item} = new \mbox{\hyperlink{class_clinic_management_system_1_1_model_1_1_page_info}{Page\+Info}}()\hspace{0.3cm}{\ttfamily  \mbox{[}get, set\mbox{]}}
+\item 
+\Hypertarget{class_clinic_management_system_1_1_view_model_1_1_medicine_view_model_ab1838995ae012f16eadf54d06ca4786d}\label{class_clinic_management_system_1_1_view_model_1_1_medicine_view_model_ab1838995ae012f16eadf54d06ca4786d} 
+Observable\+Collection$<$ \mbox{\hyperlink{class_clinic_management_system_1_1_model_1_1_page_info}{Page\+Info}} $>$ {\bfseries Page\+Infos}\hspace{0.3cm}{\ttfamily  \mbox{[}get, set\mbox{]}}
+\item 
+\Hypertarget{class_clinic_management_system_1_1_view_model_1_1_medicine_view_model_a2b1bf69cd933f964d4eb50272788b210}\label{class_clinic_management_system_1_1_view_model_1_1_medicine_view_model_a2b1bf69cd933f964d4eb50272788b210} 
+bool {\bfseries Sort\+By\+Id}\hspace{0.3cm}{\ttfamily  \mbox{[}get, set\mbox{]}}
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Events}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{class_clinic_management_system_1_1_view_model_1_1_medicine_view_model_af645761633707bb3da13240d341efe5d}\label{class_clinic_management_system_1_1_view_model_1_1_medicine_view_model_af645761633707bb3da13240d341efe5d} 
+Property\+Changed\+Event\+Handler {\bfseries Property\+Changed}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Member Function Documentation}
+\Hypertarget{class_clinic_management_system_1_1_view_model_1_1_medicine_view_model_a57d29580a949b5e2808700d68becb52b}\index{ClinicManagementSystem.ViewModel.MedicineViewModel@{ClinicManagementSystem.ViewModel.MedicineViewModel}!AddMedicine@{AddMedicine}}
+\index{AddMedicine@{AddMedicine}!ClinicManagementSystem.ViewModel.MedicineViewModel@{ClinicManagementSystem.ViewModel.MedicineViewModel}}
+\doxysubsubsection{\texorpdfstring{AddMedicine()}{AddMedicine()}}
+{\footnotesize\ttfamily \label{class_clinic_management_system_1_1_view_model_1_1_medicine_view_model_a57d29580a949b5e2808700d68becb52b} 
+bool Clinic\+Management\+System.\+View\+Model.\+Medicine\+View\+Model.\+Add\+Medicine (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Thêm thuốc mới. 
+
+\begin{DoxyReturn}{Returns}
+True nếu thêm thành công, False nếu thêm thất bại
+\end{DoxyReturn}
+\Hypertarget{class_clinic_management_system_1_1_view_model_1_1_medicine_view_model_ab642073541e757fd59d7d5466f1997d5}\index{ClinicManagementSystem.ViewModel.MedicineViewModel@{ClinicManagementSystem.ViewModel.MedicineViewModel}!DeleteMedicine@{DeleteMedicine}}
+\index{DeleteMedicine@{DeleteMedicine}!ClinicManagementSystem.ViewModel.MedicineViewModel@{ClinicManagementSystem.ViewModel.MedicineViewModel}}
+\doxysubsubsection{\texorpdfstring{DeleteMedicine()}{DeleteMedicine()}}
+{\footnotesize\ttfamily \label{class_clinic_management_system_1_1_view_model_1_1_medicine_view_model_ab642073541e757fd59d7d5466f1997d5} 
+bool Clinic\+Management\+System.\+View\+Model.\+Medicine\+View\+Model.\+Delete\+Medicine (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{class_clinic_management_system_1_1_model_1_1_medicine}{Medicine}}}]{new\+Medicine}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Xóa thuốc. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em new\+Medicine} & \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+True nếu xóa thành công, False nếu xóa thất bại
+\end{DoxyReturn}
+\Hypertarget{class_clinic_management_system_1_1_view_model_1_1_medicine_view_model_a400b9841259f6e303285549ed7a789ba}\index{ClinicManagementSystem.ViewModel.MedicineViewModel@{ClinicManagementSystem.ViewModel.MedicineViewModel}!EditMedicine@{EditMedicine}}
+\index{EditMedicine@{EditMedicine}!ClinicManagementSystem.ViewModel.MedicineViewModel@{ClinicManagementSystem.ViewModel.MedicineViewModel}}
+\doxysubsubsection{\texorpdfstring{EditMedicine()}{EditMedicine()}}
+{\footnotesize\ttfamily \label{class_clinic_management_system_1_1_view_model_1_1_medicine_view_model_a400b9841259f6e303285549ed7a789ba} 
+void Clinic\+Management\+System.\+View\+Model.\+Medicine\+View\+Model.\+Edit\+Medicine (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{class_clinic_management_system_1_1_model_1_1_medicine}{Medicine}}}]{medicine}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Chỉnh sửa thông tin thuốc. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em medicine} & \\
+\hline
+\end{DoxyParams}
+\Hypertarget{class_clinic_management_system_1_1_view_model_1_1_medicine_view_model_a55596249bd586c16342c207092e99aa5}\index{ClinicManagementSystem.ViewModel.MedicineViewModel@{ClinicManagementSystem.ViewModel.MedicineViewModel}!GoToPage@{GoToPage}}
+\index{GoToPage@{GoToPage}!ClinicManagementSystem.ViewModel.MedicineViewModel@{ClinicManagementSystem.ViewModel.MedicineViewModel}}
+\doxysubsubsection{\texorpdfstring{GoToPage()}{GoToPage()}}
+{\footnotesize\ttfamily \label{class_clinic_management_system_1_1_view_model_1_1_medicine_view_model_a55596249bd586c16342c207092e99aa5} 
+void Clinic\+Management\+System.\+View\+Model.\+Medicine\+View\+Model.\+Go\+To\+Page (\begin{DoxyParamCaption}\item[{int}]{page}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Chuyển đến trang được chỉ định. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em page} & \\
+\hline
+\end{DoxyParams}
+\Hypertarget{class_clinic_management_system_1_1_view_model_1_1_medicine_view_model_a3e6ea9a9981d6cfc731ed5d57aa83fbd}\index{ClinicManagementSystem.ViewModel.MedicineViewModel@{ClinicManagementSystem.ViewModel.MedicineViewModel}!UpdateMedicine@{UpdateMedicine}}
+\index{UpdateMedicine@{UpdateMedicine}!ClinicManagementSystem.ViewModel.MedicineViewModel@{ClinicManagementSystem.ViewModel.MedicineViewModel}}
+\doxysubsubsection{\texorpdfstring{UpdateMedicine()}{UpdateMedicine()}}
+{\footnotesize\ttfamily \label{class_clinic_management_system_1_1_view_model_1_1_medicine_view_model_a3e6ea9a9981d6cfc731ed5d57aa83fbd} 
+bool Clinic\+Management\+System.\+View\+Model.\+Medicine\+View\+Model.\+Update\+Medicine (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Cập nhật thông tin thuốc. 
+
+\begin{DoxyReturn}{Returns}
+True nếu cập nhật thành công, False nếu cập nhật thất bại
+\end{DoxyReturn}
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+D\+:/\+HCMUS/\+Jurch/\+Hk5 24-\/25/\+LẬ\+P TRÌ\+NH WINDOWS/\+Project/\+Clinic-\/\+Management-\/\+System/\+Clinic-\/\+Management-\/\+System/\+Clinic\+Management\+System/\+View\+Model/\+Medicine/Medicine\+View\+Model.\+cs\end{DoxyCompactItemize}
