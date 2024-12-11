@@ -2,10 +2,11 @@
 using ClinicManagementSystem.ViewModel;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Navigation;
+using System.Collections.ObjectModel;
 
 namespace ClinicManagementSystem.Views.DoctorView
 {
-	public sealed partial class DiagnosisPage : Page
+    public sealed partial class DiagnosisPage : Page
     {
         public DiagnosisPage()
         {
@@ -30,6 +31,20 @@ namespace ClinicManagementSystem.Views.DoctorView
             {
                 Frame.GoBack();
             }
+        }
+
+        private void SelectMedicinesButton_Click(object sender, Microsoft.UI.Xaml.RoutedEventArgs e)
+        {
+            // Navigate to the medicine selection page
+            var medicineSelectionPage = new MedicineSelectionPage();
+            medicineSelectionPage.MedicineSelectionConfirmed += OnMedicineSelectionConfirmed;
+            Frame.Navigate(typeof(MedicineSelectionPage), null, null);
+        }
+
+        private void OnMedicineSelectionConfirmed(object sender, ObservableCollection<MedicineSelection> selectedMedicines)
+        {
+            var viewModel = (DiagnosisViewModel)this.DataContext;
+            viewModel.UpdateSelectedMedicines(selectedMedicines);
         }
     }
 }
