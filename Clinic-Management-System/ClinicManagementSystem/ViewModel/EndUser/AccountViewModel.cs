@@ -24,6 +24,7 @@ namespace ClinicManagementSystem.ViewModel.EndUser
 		public string Keyword { get; set; } = "";
 		public PageInfo SelectedPageInfoItem { get; set; } = new PageInfo();
 		public User UserEdit { get; set; } = new User();
+		public string newPassword {  get; set; }
 		public ObservableCollection<PageInfo> PageInfos
 		{
 			get => _pageinfos ??= new ObservableCollection<PageInfo>();
@@ -41,7 +42,8 @@ namespace ClinicManagementSystem.ViewModel.EndUser
 
 		public AccountViewModel()
 		{
-			RowsPerPage = 10;
+			newPassword = "";
+            RowsPerPage = 10;
 			CurrentPage = 1;
 			_dao = ServiceFactory.GetChildOf(typeof(IDao)) as IDao;
 			LoadData();
@@ -142,11 +144,14 @@ namespace ClinicManagementSystem.ViewModel.EndUser
 		}
 		public bool Update()
 		{
-			var Password = new Password();	
-			string temp = UserEdit.password;
-			UserEdit.password = Password.HashPassword(UserEdit.password);
+			var Password = new Password();
+			if (newPassword != "")
+			{
+				UserEdit.password = Password.HashPassword(newPassword);
+			}
 			bool sucess = _dao.UpdateUser(UserEdit);
-			UserEdit.password = temp;
+			UserEdit = new User();
+			newPassword = "";
 			return sucess;
 		}
 		public bool Delete()

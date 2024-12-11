@@ -127,6 +127,12 @@ namespace ClinicManagementSystem.Views.AdminView
             }
         }
 
-		
+        private void setRole(object sender, RoutedEventArgs e)
+        {
+            if(sender is MenuFlyoutItem menuItem)
+            {
+                ViewModel.UserEdit.role = menuItem.Text;
+            }
+        }
     }
 }

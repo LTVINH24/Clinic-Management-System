@@ -62,7 +62,7 @@ namespace ClinicManagementSystem.Service.DataAccess
                 gender = reader["gender"].ToString();
                 address = reader["address"].ToString();
                 connection.Close();
-                if (Password.VerifyPassword(password,hassPassword))
+                if (Password.VerifyPassword(password, hassPassword))
                 {
                     return (id, name, role, phone, gender, address);
                 }
@@ -73,7 +73,7 @@ namespace ClinicManagementSystem.Service.DataAccess
                 connection.Close();
                 return (0, "", "", "", "", "");
             }
-            // return (0, "", "admin", "", "", "");
+            //return (0, "", "admin", "", "", "");
         }
 
         private void AddParameters(SqlCommand command, params (string ParameterName, object Value)[] parameters)
