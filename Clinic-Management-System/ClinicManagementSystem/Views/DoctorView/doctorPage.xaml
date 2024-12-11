@@ -25,7 +25,7 @@
             PaneDisplayMode="Left"
             IsTabStop="False"
             SelectionChanged="NavigationView_SelectionChanged"
-            Background="#FF000000">
+            Background="#FFB5B5E8">
         <!--#FFB5B5E8-->
             
             <NavigationView.MenuItems>
@@ -47,7 +47,7 @@
                 </NavigationViewItem>
                 -->
             </NavigationView.MenuItems>
-            <Frame x:Name="contentFrame" />
+            <Frame x:Name="contentFrame" Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"/>
         </NavigationView>
     </Grid>
 </Page>

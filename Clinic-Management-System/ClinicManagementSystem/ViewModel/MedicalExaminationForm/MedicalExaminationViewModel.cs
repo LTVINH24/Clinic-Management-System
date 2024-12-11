@@ -17,7 +17,7 @@ namespace ClinicManagementSystem.ViewModel
 		private ObservableCollection<MedicalExaminationForm> _examinationForms;
 
 		// Số phần tử mỗi trang
-		private const int PageSize = 2;
+		private const int PageSize = 4;
 		private int _currentPage = 0; // Trang hiện tại
 
 		public ObservableCollection<MedicalExaminationForm> ExaminationForms
