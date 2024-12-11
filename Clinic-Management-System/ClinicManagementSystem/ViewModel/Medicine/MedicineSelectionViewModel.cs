@@ -1,43 +1,46 @@
 ﻿using System.Collections.ObjectModel;
-using System.Windows.Input;
 using ClinicManagementSystem.Service.DataAccess;
-using ClinicManagementSystem.Command;
-using System.Collections.Generic;
-using System;
 using ClinicManagementSystem.Model;
+using System.ComponentModel;
 
 namespace ClinicManagementSystem.ViewModel
 {
-	public class MedicineSelectionViewModel : BaseViewModel
-	{
-		private readonly SqlServerDao _dataAccess;
+    public class MedicineSelectionViewModel : BaseViewModel
+    {
+        private readonly SqlServerDao _dataAccess;
 
-		public ObservableCollection<Medicine> AvailableMedicines { get; set; } = new ObservableCollection<Medicine>();
-		public event Action<List<Medicine>> MedicinesSelected;
+        private ObservableCollection<MedicineSelection> _availableMedicines;
+        public ObservableCollection<MedicineSelection> AvailableMedicines
+        {
+            get { return _availableMedicines; }
+            set
+            {
+                if (_availableMedicines != value)
+                {
+                    _availableMedicines = value;
+                    OnPropertyChanged(nameof(AvailableMedicines));
+                }
+            }
+        }
 
-		public ICommand ConfirmSelectionCommand { get; }
+        public ObservableCollection<MedicineSelection> SelectedMedicines { get; set; }
 
-		public MedicineSelectionViewModel()
-		{
-			_dataAccess = new SqlServerDao();
-			LoadAvailableMedicines();
-			ConfirmSelectionCommand = new RelayCommand(ConfirmSelection);
-		}
+        public MedicineSelectionViewModel()
+        {
+            _dataAccess = new SqlServerDao();
+            AvailableMedicines = new ObservableCollection<MedicineSelection>();
+            SelectedMedicines = new ObservableCollection<MedicineSelection>();
+            LoadAvailableMedicines();
+        }
 
-		private void LoadAvailableMedicines()
-		{
-			var medicines = _dataAccess.GetAvailableMedicines();
-			AvailableMedicines.Clear();
-			foreach (var medicine in medicines)
-			{
-				AvailableMedicines.Add(medicine);
-			}
-		}
-
-		private void ConfirmSelection()
-		{
-			// Logic xác nhận lựa chọn thuốc và gửi sự kiện
-			MedicinesSelected?.Invoke(new List<Medicine>(AvailableMedicines));
-		}
-	}
+        private void LoadAvailableMedicines()
+        {
+            var medicines = _dataAccess.GetAvailableMedicines();
+            AvailableMedicines.Clear();
+            foreach (var medicine in medicines)
+            {
+                AvailableMedicines.Add(new MedicineSelection { Medicine = medicine });
+            }
+        }
+    }
 }

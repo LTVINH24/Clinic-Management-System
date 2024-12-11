@@ -1,12 +1,21 @@
-using ClinicManagementSystem.ViewModel;
+﻿using ClinicManagementSystem.ViewModel;
+using ClinicManagementSystem.Model;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Navigation;
+using System.Linq;
+using System.Collections.ObjectModel;
+using System;
+using ClinicManagementSystem.Service.DataAccess;
 
 namespace ClinicManagementSystem.Views.DoctorView
 {
-	public sealed partial class MedicineSelectionPage : Page
+    public sealed partial class MedicineSelectionPage : Page
     {
+        private MedicineSelectionViewModel ViewModel => (MedicineSelectionViewModel)DataContext;
+
+        public event EventHandler<ObservableCollection<MedicineSelection>> MedicineSelectionConfirmed;
+
         public MedicineSelectionPage()
         {
             this.InitializeComponent();
@@ -17,11 +26,89 @@ namespace ClinicManagementSystem.Views.DoctorView
         {
             base.OnNavigatedTo(e);
 
-            if (e.Parameter is int medicalExaminationFormId)
+            if (e.Parameter is ObservableCollection<MedicineSelection> selectedMedicines)
             {
-                var viewModel = DataContext as MedicineSelectionViewModel;
-                //viewModel?.LoadMedicines(medicalExaminationFormId);
+                foreach (var medicine in selectedMedicines)
+                {
+                    var availableMedicine = ViewModel.AvailableMedicines.FirstOrDefault(m => m.Medicine.Id == medicine.Medicine.Id);
+                    if (availableMedicine != null)
+                    {
+                        availableMedicine.IsSelected = true;
+                        availableMedicine.SelectedQuantity = medicine.SelectedQuantity;
+                        availableMedicine.SelectedDosage = medicine.SelectedDosage;
+                    }
+                }
             }
         }
+
+        private void BackButton_Click(object sender, RoutedEventArgs e)
+        {
+            // Navigate back to the previous page
+            if (Frame.CanGoBack)
+            {
+                Frame.GoBack();
+            }
+        }
+
+        private void ConfirmButton_Click(object sender, RoutedEventArgs e)
+        {
+            var selectedMedicines = ViewModel.AvailableMedicines.Where(m => m.IsSelected).ToList();
+            int totalAmount = 0;
+
+            foreach (var medicineSelection in selectedMedicines)
+            {
+                if (!ViewModel.SelectedMedicines.Any(m => m.Medicine.Id == medicineSelection.Medicine.Id))
+                {
+                    ViewModel.SelectedMedicines.Add(medicineSelection);
+                }
+
+                // Calculate the total amount
+                totalAmount += medicineSelection.Medicine.Price * medicineSelection.SelectedQuantity;
+            }
+
+            // Update the medicine quantities
+            var dao = new SqlServerDao();
+            dao.UpdateMedicineQuantities(selectedMedicines);
+
+            //// Create a new prescription
+            //var prescription = new Prescription
+            //{
+            //    Time = DateTime.Now,
+            //    MedicineId = selectedMedicines.First().Medicine.Id,
+            //    Quantity = selectedMedicines.First().SelectedQuantity,
+            //    Dosage = selectedMedicines.First().SelectedDosage,
+            //    MedicalExaminationFormId = GetCurrentMedicalRecordId() // Assuming this is the same as MedicalRecordId
+            //};
+
+            //// Save the prescription in the database
+            //dao.SavePrescription(prescription);
+
+            //// Insert the bill in the database
+            //int prescriptionId = GetCurrentPrescriptionId();
+            //dao.InsertBill(prescriptionId, totalAmount);
+
+            // Trigger the event to send selected medicines back to DiagnosisPage
+            MedicineSelectionConfirmed?.Invoke(this, new ObservableCollection<MedicineSelection>(ViewModel.SelectedMedicines));
+
+            // Navigate back to DiagnosisPage
+            Frame.GoBack();
+
+
+        }
+
+        //private int GetCurrentMedicalRecordId()
+        //{
+        //    var dao = new SqlServerDao();
+        //    // Giả sử bạn có một phương thức trong dao để lấy hồ sơ y tế hiện tại
+        //    var medicalRecord = dao.GetMedicalRecordByExaminationFormId(GetCurrentMedicalExaminationFormId());
+        //    return medicalRecord?.Id ?? 0; // Trả về ID của hồ sơ y tế hoặc 0 nếu không tìm thấy
+        //}
+
+        //private int GetCurrentPrescriptionId()
+        //{
+        //    // Implement this method to get the current prescription ID
+        //    // This is just a placeholder implementation
+        //    return 1;
+        //}
     }
 }
