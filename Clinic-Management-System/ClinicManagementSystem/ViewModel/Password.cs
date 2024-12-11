@@ -7,12 +7,24 @@ namespace ClinicManagementSystem.ViewModel
 {
     public class Password
     {
-        public string HashPassword(string password)
+		/// <summary>
+		/// Mã hóa mật khẩu
+		/// </summary>
+		/// <param name="password"></param>
+		/// <returns>Mật khẩu đã được mã hóa</returns>
+		public string HashPassword(string password)
         {
             return BCrypt.Net.BCrypt.HashPassword(password);
         }
 
-        public bool VerifyPassword(string password, string hashedPassword)
+
+		/// <summary>
+		/// Xác thực mật khẩu
+		/// </summary>
+		/// <param name="password"></param>
+		/// <param name="hashedPassword"></param>
+		/// <returns>True nếu xác thực thành công, False nếu xác thực thất bại</returns>
+		public bool VerifyPassword(string password, string hashedPassword)
         {
             return BCrypt.Net.BCrypt.Verify(password, hashedPassword);
         }

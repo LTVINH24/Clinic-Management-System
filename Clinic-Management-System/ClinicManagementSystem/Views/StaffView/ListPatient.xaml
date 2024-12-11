@@ -130,10 +130,10 @@
                 
             </StackPanel>
             <StackPanel Margin="0,20,0,0" Orientation="Horizontal" HorizontalAlignment="Center">
-                <Button Click="updatePatient" FontWeight="Bold" Background="#18b4f6" Foreground="White">
+                <Button Click="updatePatient" FontWeight="Bold" Margin="20" Background="#18b4f6" Foreground="White">
                     Update
                 </Button>
-                <Button Click="deletePatient" FontWeight="Bold" Background="#d50000" Margin="20,0,20,0" Foreground="White">Delete</Button>
+                <Button Click="deletePatient" FontWeight="Bold" Background="#d50000" Margin="20,0,20,0" Foreground="White" Visibility="Collapsed">Delete</Button>
                 <Button Click="cancelEdit" FontWeight="Bold">Cancel</Button>
             </StackPanel>
         </StackPanel>

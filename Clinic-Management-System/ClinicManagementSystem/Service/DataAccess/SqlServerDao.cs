@@ -16,7 +16,11 @@ namespace ClinicManagementSystem.Service.DataAccess
 {
     public class SqlServerDao : IDao
     {
-        private static string GetConnectionString()
+		/// <summary>
+		/// Lấy chuỗi kết nối database
+		/// </summary>
+		/// <returns>Chuỗi kết nối</returns>
+		private static string GetConnectionString()
         {
             var connectionString = """
                     Server = localhost,1433;
@@ -31,8 +35,14 @@ namespace ClinicManagementSystem.Service.DataAccess
 
 
 
-        //==============================================Helper===========================================
-        public (int, string, string, string, string, string) Authentication(string username, string password)
+		//==============================================Helper===========================================
+		/// <summary>
+		/// Xứ lí xác thực người dùng
+		/// </summary>
+		/// <param name="username"></param>
+		/// <param name="password"></param>
+		/// <returns>Thông tin người dùng</returns>
+		public (int, string, string, string, string, string) Authentication(string username, string password)
         {
 
             var connectionString = GetConnectionString();
@@ -76,7 +86,12 @@ namespace ClinicManagementSystem.Service.DataAccess
             //return (0, "", "admin", "", "", "");
         }
 
-        private void AddParameters(SqlCommand command, params (string ParameterName, object Value)[] parameters)
+		/// <summary>
+		/// Thêm các tham số vào câu lệnh sql
+		/// </summary>
+		/// <param name="command"></param>
+		/// <param name="parameters"></param>
+		private void AddParameters(SqlCommand command, params (string ParameterName, object Value)[] parameters)
         {
             foreach (var (parameterName, value) in parameters)
             {
@@ -84,12 +99,20 @@ namespace ClinicManagementSystem.Service.DataAccess
             }
         }
 
-        //===============================================================================================
+		//===============================================================================================
 
 
 
-        //================================================EndUser========================================
-        public Tuple<List<User>, int> GetUsers(
+		//================================================EndUser========================================
+		/// <summary>
+		/// Lấy danh sách người dùng
+		/// </summary>
+		/// <param name="page"></param>
+		/// <param name="rowsPerPage"></param>
+		/// <param name="keyword"></param>
+		/// <param name="sortOptions"></param>
+		/// <returns>Danh sách người dùng</returns>
+		public Tuple<List<User>, int> GetUsers(
         int page, int rowsPerPage,
         string keyword,
         Dictionary<string, SortType> sortOptions)
@@ -156,7 +179,12 @@ namespace ClinicManagementSystem.Service.DataAccess
             );
         }
 
-        public bool CheckUserExists(string username)
+		/// <summary>
+		/// Kiểm tra người dùng tồn tại
+		/// </summary>
+		/// <param name="username"></param>
+		/// <returns>True nếu người dùng tồn tại, False nếu người dùng không tồn tại</returns>
+		public bool CheckUserExists(string username)
         {
             var connectionString = GetConnectionString();
             SqlConnection connection = new SqlConnection(connectionString);
@@ -170,7 +198,12 @@ namespace ClinicManagementSystem.Service.DataAccess
             return count > 0;
         }
 
-        public bool CreateUser(User user)
+		/// <summary>
+		/// Tạo người dùng
+		/// </summary>
+		/// <param name="user"></param>
+		/// <returns>True nếu tạo người dùng thành công</returns>
+		public bool CreateUser(User user)
         {
             var connectionString = GetConnectionString();
             SqlConnection connection = new SqlConnection(connectionString);
@@ -194,7 +227,14 @@ namespace ClinicManagementSystem.Service.DataAccess
             return success;
         }
 
-        public bool CreateUserRoleDoctor(User user, int specialty, string room)
+		/// <summary>
+		/// Tạo người dùng là bác sĩ
+		/// </summary>
+		/// <param name="user"></param>
+		/// <param name="specialty"></param>
+		/// <param name="room"></param>
+		/// <returns>Trả về true nếu tạo thành công</returns>
+		public bool CreateUserRoleDoctor(User user, int specialty, string room)
         {
             bool success = true;
             success = CreateUser(user);
@@ -215,7 +255,12 @@ namespace ClinicManagementSystem.Service.DataAccess
             return success;
         }
 
-        public bool UpdateUser(User info)
+		/// <summary>
+		/// Cập nhật thông tin người dùng
+		/// </summary>
+		/// <param name="info"></param>
+		/// <returns>Trả về true nếu cập nhật thành công</returns>
+		public bool UpdateUser(User info)
         {
             var connectionString = GetConnectionString();
             SqlConnection connection = new SqlConnection(connectionString);
@@ -239,7 +284,12 @@ namespace ClinicManagementSystem.Service.DataAccess
             return success;
         }
 
-        public bool DeleteUser(User user)
+		/// <summary>
+		/// Xóa người dùng
+		/// </summary>
+		/// <param name="user"></param>
+		/// <returns>Trả về true nếu xóa thành công</returns>
+		public bool DeleteUser(User user)
         {
             var connectionString = GetConnectionString();
             SqlConnection connection = new SqlConnection(connectionString);
@@ -259,12 +309,16 @@ namespace ClinicManagementSystem.Service.DataAccess
             connection.Close();
             return result > 0;
         }
-        //=============================================================================================
+		//=============================================================================================
 
 
 
-        //================================================Specialty========================================
-        public List<Specialty> GetSpecialty()
+		//================================================Specialty========================================
+		/// <summary>
+		/// Lấy danh sách chuyên khoa
+		/// </summary>
+		/// <returns>Danh sách khoa</returns>
+		public List<Specialty> GetSpecialty()
         {
             var specialties = new List<Specialty>();
             var connectionString = GetConnectionString();
@@ -283,12 +337,20 @@ namespace ClinicManagementSystem.Service.DataAccess
             connection.Close();
             return specialties;
         }
-        //=============================================================================================
+		//=============================================================================================
 
 
 
-        //================================================Medicine========================================
-        public Tuple<List<Medicine>, int> GetMedicines(
+		//================================================Medicine========================================
+		/// <summary>
+		/// Lấy danh sách thuốc
+		/// </summary>
+		/// <param name="page"></param>
+		/// <param name="rowsPerPage"></param>
+		/// <param name="keyword"></param>
+		/// <param name="sortOptions"></param>
+		/// <returns>Danh sách thuốc và số lượng thuốc</returns>
+		public Tuple<List<Medicine>, int> GetMedicines(
                 int page, int rowsPerPage,
                 string keyword,
                 Dictionary<string, SortType> sortOptions)
@@ -351,7 +413,12 @@ namespace ClinicManagementSystem.Service.DataAccess
             );
         }
 
-        public bool CreateMedicine(Medicine medicine)
+		/// <summary>
+		/// Tạo thuốc
+		/// </summary>
+		/// <param name="medicine"></param>
+		/// <returns>True nếu tạo thành công, False nếu tạo thất bại</returns>
+		public bool CreateMedicine(Medicine medicine)
         {
             string connectionString = GetConnectionString();
             SqlConnection connection = new SqlConnection(connectionString);
@@ -370,7 +437,12 @@ namespace ClinicManagementSystem.Service.DataAccess
             return count == 1;
         }
 
-        public bool UpdateMedicine(Medicine medicine)
+		/// <summary>
+		/// Cập nhật thông tin thuốc
+		/// </summary>
+		/// <param name="medicine"></param>
+		/// <returns>True nếu update thành công, False nếu update thất bại</returns>
+		public bool UpdateMedicine(Medicine medicine)
         {
             string connectionString = GetConnectionString();
             SqlConnection connection = new SqlConnection(connectionString);
@@ -391,7 +463,12 @@ namespace ClinicManagementSystem.Service.DataAccess
             return count == 1;
         }
 
-        public bool DeleteMedicine(Medicine medicine)
+		/// <summary>
+		/// Xóa thuốc
+		/// </summary>
+		/// <param name="medicine"></param>
+		/// <returns>True nếu xóa thành công, False nếu xóa thất bại</returns>
+		public bool DeleteMedicine(Medicine medicine)
         {
             string connectionString = GetConnectionString();
             SqlConnection connection = new SqlConnection(connectionString);
@@ -406,7 +483,12 @@ namespace ClinicManagementSystem.Service.DataAccess
             return count > 0;
         }
 
-        public void UpdateMedicineQuantity(int medicineId, int quantityChange)
+		/// <summary>
+		/// Cập nhật số lượng thuốc
+		/// </summary>
+		/// <param name="medicineId"></param>
+		/// <param name="quantityChange"></param>
+		public void UpdateMedicineQuantity(int medicineId, int quantityChange)
         {
             using (var connection = new SqlConnection(_connectionString))
             {
@@ -419,7 +501,11 @@ namespace ClinicManagementSystem.Service.DataAccess
             }
         }
 
-        public List<Medicine> GetAvailableMedicines()
+		/// <summary>
+		/// Lấy danh sách thuốc còn trong kho
+		/// </summary>
+		/// <returns>Danh sách thuốc</returns>
+		public List<Medicine> GetAvailableMedicines()
         {
             var medicines = new List<Medicine>();
             using (var connection = new SqlConnection(GetConnectionString()))
@@ -448,12 +534,16 @@ namespace ClinicManagementSystem.Service.DataAccess
             return medicines;
         }
 
-        //=============================================================================================
+		//=============================================================================================
 
 
 
-        //=============================================MedicalExaminationForm==========================
-        public List<MedicalExaminationForm> GetMedicalExaminationForms()
+		//=============================================MedicalExaminationForm==========================
+		/// <summary>
+		/// Lấy danh sách phiếu khám bệnh
+		/// </summary>
+		/// <returns>Danh sách phiếu khám bệnh</returns>
+		public List<MedicalExaminationForm> GetMedicalExaminationForms()
         {
             var forms = new List<MedicalExaminationForm>();
 
@@ -483,8 +573,15 @@ namespace ClinicManagementSystem.Service.DataAccess
 
             return forms;
         }
-
-        public Tuple<List<MedicalExaminationForm>, int> GetMedicalExaminationForm(
+		/// <summary>
+		/// Lấy danh sách phiếu khám bệnh
+		/// </summary>
+		/// <param name="page"></param>
+		/// <param name="rowsPerPage"></param>
+		/// <param name="keyword"></param>
+		/// <param name="sortOptions"></param>
+		/// <returns>Danh sách phiếu khám bệnh và số lượng phiếu khám bệnh</returns>
+		public Tuple<List<MedicalExaminationForm>, int> GetMedicalExaminationForm(
             int page,
             int rowsPerPage,
             string keyword,
@@ -553,7 +650,11 @@ namespace ClinicManagementSystem.Service.DataAccess
             connection.Close();
             return new Tuple<List<MedicalExaminationForm>, int>(result, count);
         }
-
+        /// <summary>
+        /// Thêm bệnh nhân
+        /// </summary>
+        /// <param name="patient"></param>
+        /// <returns>True và id bệnh nhân nếu tạo thành công, False và id bằng 0 nếu tạo thất bại</returns>
         public (bool, int) AddPatient(Patient patient)
         {
             var connectionString = GetConnectionString();
@@ -580,7 +681,12 @@ namespace ClinicManagementSystem.Service.DataAccess
             return (id > 0, id);
         }
 
-        public (bool, int) checkPatientExists(string residentId)
+		/// <summary>
+		/// Kiểm tra bệnh nhân tồn tại
+		/// </summary>
+		/// <param name="residentId"></param>
+		/// <returns>True và id nếu bệnh nhân tồn tại, False và 0 nếu bệnh nhân không tồn tại</returns>
+		public (bool, int) checkPatientExists(string residentId)
         {
             var connectionString = GetConnectionString();
             SqlConnection connection = new SqlConnection(connectionString);
@@ -605,7 +711,13 @@ namespace ClinicManagementSystem.Service.DataAccess
 
         }
 
-        public bool AddMedicalExaminationForm(int patientId, MedicalExaminationForm medicalExaminationForm)
+		/// <summary>
+		/// Thêm phiếu khám bệnh
+		/// </summary>
+		/// <param name="patientId"></param>
+		/// <param name="medicalExaminationForm"></param>
+		/// <returns>True nếu thêm thành công, False nếu thêm thất bại</returns>
+		public bool AddMedicalExaminationForm(int patientId, MedicalExaminationForm medicalExaminationForm)
         {
             var connectionString = GetConnectionString();
             SqlConnection connection = new SqlConnection(connectionString);
@@ -634,7 +746,12 @@ namespace ClinicManagementSystem.Service.DataAccess
             return result > 0;
         }
 
-        public MedicalExaminationForm GetMedicalExaminationFormById(int id)
+		/// <summary>
+		/// Lấy thông tin phiếu khám bệnh theo id
+		/// </summary>
+		/// <param name="id"></param>
+		/// <returns>Phiếu khám bệnh</returns>
+		public MedicalExaminationForm GetMedicalExaminationFormById(int id)
         {
             using (var connection = new SqlConnection(_connectionString))
             {
@@ -661,7 +778,12 @@ namespace ClinicManagementSystem.Service.DataAccess
             return null;
         }
 
-        public bool UpdateMedicalExaminationForm(MedicalExaminationForm form)
+		/// <summary>
+		/// Cập nhật thông tin phiếu khám bệnh
+		/// </summary>
+		/// <param name="form"></param>
+		/// <returns>True nếu cập nhật thành công, False nếu cập nhật thất bại</returns>
+		public bool UpdateMedicalExaminationForm(MedicalExaminationForm form)
         {
             var connectionString = GetConnectionString();
             SqlConnection connection = new SqlConnection(connectionString);
@@ -692,7 +814,12 @@ namespace ClinicManagementSystem.Service.DataAccess
             return success;
         }
 
-        public bool DeleteMedicalExaminationForm(MedicalExaminationForm form)
+		/// <summary>
+		/// Xóa phiếu khám bệnh
+		/// </summary>
+		/// <param name="form"></param>
+		/// <returns>True nếu xóa thành công, False nếu xóa thất bạu</returns>
+		public bool DeleteMedicalExaminationForm(MedicalExaminationForm form)
         {
             var connectionString = GetConnectionString();
             SqlConnection connection = new SqlConnection(connectionString);
@@ -741,12 +868,16 @@ namespace ClinicManagementSystem.Service.DataAccess
 
             }
         }
-        //==============================================================================================
+		//==============================================================================================
 
 
 
-        //================================================Doctor========================================
-        public List<Doctor> GetInforDoctor()
+		//================================================Doctor========================================
+		/// <summary>
+		/// Lấy danh sách bác sĩ
+		/// </summary>
+		/// <returns>Danh sách các bác sĩ</returns>
+		public List<Doctor> GetInforDoctor()
         {
             var connectionString = GetConnectionString();
             SqlConnection connection = new SqlConnection(connectionString);
@@ -785,12 +916,17 @@ namespace ClinicManagementSystem.Service.DataAccess
             connection.Close();
             return result;
         }
-        //===============================================================================================
+		//===============================================================================================
 
 
 
-        //========================================MedicalRecord==========================================
-        public MedicalRecord GetMedicalRecordByExaminationFormId(int medicalExaminationFormId)
+		//========================================MedicalRecord==========================================
+		/// <summary>
+		/// Lấy thông tin bệnh án theo id
+		/// </summary>
+		/// <param name="medicalExaminationFormId"></param>
+		/// <returns>Bệnh án</returns>
+		public MedicalRecord GetMedicalRecordByExaminationFormId(int medicalExaminationFormId)
         {
             using (var connection = new SqlConnection(_connectionString))
             {
@@ -816,8 +952,13 @@ namespace ClinicManagementSystem.Service.DataAccess
             return null;
         }
 
-        // New method to create a MedicalRecord using data from MedicalExaminationForm
-        public MedicalRecord CreateMedicalRecordFromForm(MedicalExaminationForm form)
+		// New method to create a MedicalRecord using data from MedicalExaminationForm
+		/// <summary>
+		/// Tạo bệnh án từ phiếu khám bệnh
+		/// </summary>
+		/// <param name="form"></param>
+		/// <returns>Bệnh án vừa được tạo</returns>
+		public MedicalRecord CreateMedicalRecordFromForm(MedicalExaminationForm form)
         {
             var record = new MedicalRecord
             {
@@ -845,7 +986,11 @@ namespace ClinicManagementSystem.Service.DataAccess
             return record;
         }
 
-        public void UpdateMedicalRecord(MedicalRecord record)
+		/// <summary>
+		/// Cập nhật thông tin bệnh án
+		/// </summary>
+		/// <param name="record"></param>
+		public void UpdateMedicalRecord(MedicalRecord record)
         {
             using (var connection = new SqlConnection(_connectionString))
             {
@@ -862,12 +1007,16 @@ namespace ClinicManagementSystem.Service.DataAccess
                 command.ExecuteNonQuery();
             }
         }
-        //=========================================================================================================
+		//=========================================================================================================
 
 
 
-        //==============================================Prescription===============================================
-        public void SavePrescription(Prescription prescription)
+		//==============================================Prescription===============================================
+		/// <summary>
+		/// Lưu dơn thuốc vào cơ sở dữ liệu
+		/// </summary>
+		/// <param name="prescription"></param>
+		public void SavePrescription(Prescription prescription)
         {
             using (SqlConnection connection = new SqlConnection(_connectionString))
             {
@@ -887,12 +1036,20 @@ namespace ClinicManagementSystem.Service.DataAccess
             }
         }
 
-        //=========================================================================================================
+		//=========================================================================================================
 
 
 
-        //===================================================Patient===============================================
-        public Tuple<List<Patient>, int> GetPatients(
+		//===================================================Patient===============================================
+		/// <summary>
+		/// Lấy danh sách bệnh nhân từ cơ sở dữ liệu
+		/// </summary>
+		/// <param name="page"></param>
+		/// <param name="rowsPerPage"></param>
+		/// <param name="keyword"></param>
+		/// <param name="sortOptions"></param>
+		/// <returns>Danh sách bệnh nhân và số lượng bệnh nhân</returns>
+		public Tuple<List<Patient>, int> GetPatients(
             int page, int rowsPerPage,
             string keyword,
             Dictionary<string, SortType> sortOptions
@@ -961,8 +1118,12 @@ namespace ClinicManagementSystem.Service.DataAccess
                 result, count
             );
         }
-
-        public bool UpdatePatient(Patient patient)
+		/// <summary>
+		/// Cập nhật thông tin bệnh nhân
+		/// </summary>
+		/// <param name="patient"></param>
+		/// <returns>True nếu cập nhật thành công, False nếu cập nhật thất bại</returns>
+		public bool UpdatePatient(Patient patient)
         {
             var connectionString = GetConnectionString();
             SqlConnection connection = new SqlConnection(connectionString);
@@ -993,7 +1154,12 @@ namespace ClinicManagementSystem.Service.DataAccess
             return success;
         }
 
-        public bool DeletePatient(Patient patient)
+		/// <summary>
+		/// Xóa bệnh nhân
+		/// </summary>
+		/// <param name="patient"></param>
+		/// <returns>True nếu xóa thành công, False nếu xóa thất bại</returns>
+		public bool DeletePatient(Patient patient)
         {
             var connectionString = GetConnectionString();
             SqlConnection connection = new SqlConnection(connectionString);
@@ -1042,7 +1208,12 @@ namespace ClinicManagementSystem.Service.DataAccess
             }
         }
 
-        public Patient GetPatientById(int patientId)
+		/// <summary>
+		/// Lấy thông tin bệnh nhân theo id
+		/// </summary>
+		/// <param name="patientId"></param>
+		/// <returns>Bệnh nhân được lấy thông tin</returns>
+		public Patient GetPatientById(int patientId)
         {
             Patient patient = null;
             string query = "SELECT * FROM Patient WHERE Id = @Id";
@@ -1074,10 +1245,14 @@ namespace ClinicManagementSystem.Service.DataAccess
 
             return patient;
         }
-        //=========================================================================================================
+		//=========================================================================================================
 
-        //=====================================================Bill================================================
-        public void UpdateMedicineQuantities(List<MedicineSelection> selectedMedicines)
+		//=====================================================Bill================================================
+		/// <summary>
+		/// Cập nhật số lượng thuốc
+		/// </summary>
+		/// <param name="selectedMedicines"></param>
+		public void UpdateMedicineQuantities(List<MedicineSelection> selectedMedicines)
         {
             using (var connection = new SqlConnection(GetConnectionString()))
             {

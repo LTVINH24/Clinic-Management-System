@@ -7,6 +7,9 @@ using System.Threading.Tasks;
 
 namespace ClinicManagementSystem.Model
 {
+	/// <summary>
+	/// Lớp MedicalExaminationForm chứa thông tin của phiếu khám bệnh gồm các thuộc tính Id, PatientId, StaffId, DoctorId, Time, Symptoms, VisitType
+	/// </summary>
 	public class MedicalExaminationForm : INotifyPropertyChanged
 	{
 		public int Id { get; set; }

@@ -1,4 +1,4 @@
-using ClinicManagementSystem.Views.DoctorView;
+﻿using ClinicManagementSystem.Views.DoctorView;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Controls.Primitives;
@@ -34,6 +34,11 @@ namespace ClinicManagementSystem.Views
 			};
 		}
 
+		/// <summary>
+		/// Xử lí sự kiện khi chọn mục trong NavigationView
+		/// </summary>
+		/// <param name="sender"></param>
+		/// <param name="args"></param>
 		private void NavigationView_SelectionChanged(NavigationView sender, NavigationViewSelectionChangedEventArgs args)
 		{
 			if (args.IsSettingsSelected == false && args.SelectedItemContainer is NavigationViewItem selectedItem)

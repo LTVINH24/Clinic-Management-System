@@ -7,6 +7,9 @@ using System.Threading.Tasks;
 
 namespace ClinicManagementSystem.Model
 {
+	/// <summary>
+	/// Lớp PageInfo chứa thông tin của trang gồm các thuộc tính Page, Total
+	/// </summary>
 	public class PageInfo : INotifyPropertyChanged
 	{
 		public int Page { get; set; }

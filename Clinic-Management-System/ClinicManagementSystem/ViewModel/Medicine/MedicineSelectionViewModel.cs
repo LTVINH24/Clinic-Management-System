@@ -33,7 +33,10 @@ namespace ClinicManagementSystem.ViewModel
             LoadAvailableMedicines();
         }
 
-        private void LoadAvailableMedicines()
+		/// <summary>
+		/// Load dữ liệu thuốc có sẵn từ database
+		/// </summary>
+		private void LoadAvailableMedicines()
         {
             var medicines = _dataAccess.GetAvailableMedicines();
             AvailableMedicines.Clear();

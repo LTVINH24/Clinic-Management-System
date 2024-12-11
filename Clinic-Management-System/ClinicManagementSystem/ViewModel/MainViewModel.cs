@@ -24,8 +24,14 @@ namespace ClinicManagementSystem.ViewModel
         }
         public UserLogin UserLogin { get; set; } = new UserLogin();
         public event Action<string> LoginCompleted;
-        
-        public bool Authentication (UserLogin userLogin, bool isSavePassword)
+
+		/// <summary>
+		/// Xác thực người dùng
+		/// </summary>
+		/// <param name="userLogin"></param>
+		/// <param name="isSavePassword"></param>
+		/// <returns>True nếu xác thực thành công, False nếu xác thực thất bại</returns>
+		public bool Authentication (UserLogin userLogin, bool isSavePassword)
         {
             if (userLogin.Password == null || userLogin.Username == null)
             {
@@ -49,7 +55,13 @@ namespace ClinicManagementSystem.ViewModel
             }
         }
         private UserViewModel userViewModfel { get; set; } = new UserViewModel();
-        private (string, string) EncryptPassword(string password)
+
+		/// <summary>
+		/// Lưu thông tin đăng nhập
+		/// </summary>
+		/// <param name="password"></param>
+		/// <returns>Mật khẩu và mật khẩu đã được mã hóa</returns>
+		private (string, string) EncryptPassword(string password)
         {
             var passwordInBytes = Encoding.UTF8.GetBytes(password);
             var entropyInBytes = new byte[20];
@@ -63,7 +75,12 @@ namespace ClinicManagementSystem.ViewModel
             var entropyInBase64 = Convert.ToBase64String(entropyInBytes);
             return (encryptedPasswordInBase64, entropyInBase64);
         }
-        public void SavePassWord(UserLogin userLogin)
+
+		/// <summary>
+		/// Lưu mật khẩu
+		/// </summary>
+		/// <param name="userLogin"></param>
+		public void SavePassWord(UserLogin userLogin)
         {
                 var (encryptedPasswordInBase64, entropyInBase64) = EncryptPassword(userLogin.Password);
                 var localSettings = ApplicationData.Current.LocalSettings;
@@ -71,7 +88,13 @@ namespace ClinicManagementSystem.ViewModel
                 localSettings.Values["password"] = encryptedPasswordInBase64;
                 localSettings.Values["entropy"] = entropyInBase64;  
         }
-        public void LoadPassword(TextBox usernameTextbox, PasswordBox passwordBox)
+
+		/// <summary>
+		/// Load mật khẩu
+		/// </summary>
+		/// <param name="usernameTextbox"></param>
+		/// <param name="passwordBox"></param>
+		public void LoadPassword(TextBox usernameTextbox, PasswordBox passwordBox)
         {
             var localSettings = ApplicationData.Current.LocalSettings;
             if (localSettings.Values.ContainsKey("username"))

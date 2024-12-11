@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -36,6 +36,11 @@ namespace ClinicManagementSystem.Views.AdminView
 
         }
 
+        /// <summary>
+        /// Xử lí sự kiện khi chọn click role
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void RoleMenuFlyoutItem_Click(object sender, RoutedEventArgs e)
         {
             var valid = new IsValidData();
@@ -58,14 +63,26 @@ namespace ClinicManagementSystem.Views.AdminView
             }
            
         }
-        private void GenderMenuFlyoutItem_Click(object sender, RoutedEventArgs e)
+
+		/// <summary>
+		/// Xử lí sự kiện khi chọn click giới tính
+		/// </summary>
+		/// <param name="sender"></param>
+		/// <param name="e"></param>
+		private void GenderMenuFlyoutItem_Click(object sender, RoutedEventArgs e)
         {
             if (sender is MenuFlyoutItem menuItem)
             {
                 GenderDropDown.Content = menuItem.Text;
             }
         }
-        private void Create_Click(object sender, RoutedEventArgs e) 
+
+		/// <summary>
+		/// Xử lí sự kiện khi click vào nút tạo tài khoản
+		/// </summary>
+		/// <param name="sender"></param>
+		/// <param name="e"></param>
+		private void Create_Click(object sender, RoutedEventArgs e) 
         {
             if (ValidData())
             {
@@ -81,7 +98,12 @@ namespace ClinicManagementSystem.Views.AdminView
                 }    
             }
         }
-        private bool  ValidData()
+
+		/// <summary>
+		/// Kiểm tra dữ liệu nhập vào
+		/// </summary>
+		/// <returns>True nếu dữ liệu hợp lệ, False nếu dữ liệu không hợp lệ</returns>
+		private bool  ValidData()
         {
             var valid = new IsValidData();
             if (!valid.IsValidName(NameUser.Text))
@@ -127,7 +149,12 @@ namespace ClinicManagementSystem.Views.AdminView
             }
             return true;
         }
-        private async void Notify(string notify)
+
+		/// <summary>
+		/// Hiển thị thông báo
+		/// </summary>
+		/// <param name="notify"></param>
+		private async void Notify(string notify)
         {
             await new ContentDialog()
             {

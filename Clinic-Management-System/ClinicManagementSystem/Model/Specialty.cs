@@ -7,7 +7,10 @@ using System.Threading.Tasks;
 
 namespace ClinicManagementSystem.Model
 {
-    public class Specialty : INotifyPropertyChanged
+	/// <summary>
+	/// Lớp Specialty chứa thông tin của chuyên khoa gồm các thuộc tính id, name
+	/// </summary>
+	public class Specialty : INotifyPropertyChanged
     {
         public int id { get; set; }
         public string name { get; set; }

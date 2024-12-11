@@ -44,6 +44,9 @@ namespace ClinicManagementSystem.ViewModel
 			LoadExaminationForms(); // Gọi phương thức để tải dữ liệu
 		}
 
+		/// <summary>
+		/// Tải dữ liệu các phiếu khám từ cơ sở dữ liệu
+		/// </summary>
 		private void LoadExaminationForms()
 		{
 			var forms = _dataAccess.GetMedicalExaminationForms();
@@ -57,6 +60,9 @@ namespace ClinicManagementSystem.ViewModel
 			}
 		}
 
+		/// <summary>
+		/// Chuyển sang trang trước
+		/// </summary>
 		private void PreviousPage()
 		{
 			if (_currentPage > 0)
@@ -66,6 +72,9 @@ namespace ClinicManagementSystem.ViewModel
 			}
 		}
 
+		/// <summary>
+		/// Chuyển sang trang tiếp theo
+		/// </summary>
 		private void NextPage()
 		{
 			if (ExaminationForms.Count == PageSize)
@@ -75,6 +84,10 @@ namespace ClinicManagementSystem.ViewModel
 			}
 		}
 
+		/// <summary>
+		/// Điều hướng sang trang chẩn đoán
+		/// </summary>
+		/// <param name="selectedForm"></param>
 		public void NavigateToDiagnosisPage(MedicalExaminationForm selectedForm)
 		{
 			// Điều hướng từ MedicalExaminationPage sang DiagnosisPage

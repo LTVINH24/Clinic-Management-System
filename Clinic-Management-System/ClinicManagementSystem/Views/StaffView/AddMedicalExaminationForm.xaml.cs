@@ -39,16 +39,31 @@ namespace ClinicManagementSystem.Views.StaffView
 			viewModel.AddCompleted += ViewModel_AddCompleted;
 		}
 
+		/// <summary>
+		/// Xử lí sự kiện khi nhấn nút Add
+		/// </summary>
+		/// <param name="sender"></param>
+		/// <param name="e"></param>
 		private void Add_Button(object sender, RoutedEventArgs e)
 		{
             viewModel.AddMedicalExaminationForm();
 		}
 
+		/// <summary>
+		/// Xử lí sự kiện khi nhấn nút Cancel
+		/// </summary>
+		/// <param name="sender"></param>
+		/// <param name="e"></param>
 		private void Cancel_Button(object sender, RoutedEventArgs e)
 		{
 			viewModel.Reset();
 		}
 
+		/// <summary>
+		/// Xử lí sự kiện khi chọn giới tính
+		/// </summary>
+		/// <param name="sender"></param>
+		/// <param name="e"></param>
 		private void Set_Gender(object sender, RoutedEventArgs e)
 		{
 			if (sender is MenuFlyoutItem menuItem)
@@ -57,7 +72,12 @@ namespace ClinicManagementSystem.Views.StaffView
 			}
 		}
 
-
+		/// <summary>
+		/// Xử lí sự kiện khi thêm thành công
+		/// </summary>
+		/// <param name="isSuccess"></param>
+		/// <param name="statusCode"></param>
+		/// <param name="message"></param>
 		private async void ViewModel_AddCompleted(bool isSuccess, int statusCode, string message)
 		{
 			string displayMessage;
@@ -91,6 +111,11 @@ namespace ClinicManagementSystem.Views.StaffView
 			await dialog.ShowAsync();
 		}
 
+		/// <summary>
+		/// Xử lí sự kiện khi chọn loại khám
+		/// </summary>
+		/// <param name="sender"></param>
+		/// <param name="e"></param>
 		private void Set_VisitType(object sender, RoutedEventArgs e)
 		{
 			if(sender is MenuFlyoutItem menuItem)

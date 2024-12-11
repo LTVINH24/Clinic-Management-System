@@ -39,7 +39,11 @@ namespace ClinicManagementSystem.ViewModel
             SaveCommand = new RelayCommand(SaveDiagnosis);
         }
 
-        public void LoadData(int medicalExaminationFormId)
+		/// <summary>
+		/// Load dữ liệu từ cơ sở dữ liệu dựa vào Id của phiếu khám bệnh
+		/// </summary>
+		/// <param name="medicalExaminationFormId"></param>
+		public void LoadData(int medicalExaminationFormId)
         {
             // Load MedicalExaminationForm data
             MedicalExaminationForm = _dataAccess.GetMedicalExaminationFormById(medicalExaminationFormId);
@@ -60,7 +64,10 @@ namespace ClinicManagementSystem.ViewModel
             }
         }
 
-        private void SaveDiagnosis()
+		/// <summary>
+		/// Lưu thông tin chẩn đoán 
+		/// </summary>
+		private void SaveDiagnosis()
         {
             if (MedicalRecord != null)
             {
@@ -69,7 +76,11 @@ namespace ClinicManagementSystem.ViewModel
             }
         }
 
-        public void AddSelectedMedicine(MedicineSelection medicineSelection)
+		/// <summary>
+		/// Thêm thuốc được chọn vào danh sách thuốc đã chọn
+		/// </summary>
+		/// <param name="medicineSelection"></param>
+		public void AddSelectedMedicine(MedicineSelection medicineSelection)
         {
             var existingMedicine = SelectedMedicines.FirstOrDefault(m => m.Medicine.Id == medicineSelection.Medicine.Id);
             if (existingMedicine != null)
@@ -83,7 +94,11 @@ namespace ClinicManagementSystem.ViewModel
             }
         }
 
-        public void UpdateSelectedMedicines(ObservableCollection<MedicineSelection> selectedMedicines)
+		/// <summary>
+		/// Cập nhật danh sách thuốc đã chọn
+		/// </summary>
+		/// <param name="selectedMedicines"></param>
+		public void UpdateSelectedMedicines(ObservableCollection<MedicineSelection> selectedMedicines)
         {
             SelectedMedicines.Clear();
             foreach (var medicine in selectedMedicines)

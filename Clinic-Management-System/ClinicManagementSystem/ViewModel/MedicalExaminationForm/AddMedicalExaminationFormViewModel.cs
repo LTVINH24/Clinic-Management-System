@@ -77,6 +77,14 @@ namespace ClinicManagementSystem.ViewModel
 			PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
 		}
 
+		/// <summary>
+		/// Kiểm tra dữ liệu nhập vào có hợp lệ không
+		/// </summary>
+		/// <returns>
+		///		Biến bool: Cho biết thành công
+		///		Biến int: Mã lỗi
+		///		Biến string: Thông báo
+		/// </returns>
 		public (bool, int, string) isValidData()
 		{
 			IsValidData isValid = new IsValidData();
@@ -114,6 +122,10 @@ namespace ClinicManagementSystem.ViewModel
 		// Failed, 308: Chưa chọn Doctor
 		// Failed, 309: Chưa chọn Visit Type
 		// Failed, 400: Thêm thất bại
+
+		/// <summary>
+		/// Thêm phiếu khám bệnh
+		/// </summary>
 		public void AddMedicalExaminationForm()
 		{
 
@@ -170,6 +182,11 @@ namespace ClinicManagementSystem.ViewModel
 		}
 
 
+		/// <summary>
+		/// Load danh sách bác sĩ
+		/// </summary>
+		/// <param name="doctorNameFilter"></param>
+		/// <param name="specialtyFilter"></param>
 		public void LoadDoctors(string doctorNameFilter = null, string specialtyFilter = null)
 		{
 
@@ -194,6 +211,9 @@ namespace ClinicManagementSystem.ViewModel
 
 		}
 
+		/// <summary>
+		/// Reset dữ liệu
+		/// </summary>
 		public void Reset()
 		{
 			Patient = new Patient();

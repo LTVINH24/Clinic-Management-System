@@ -2,7 +2,10 @@
 
 namespace ClinicManagementSystem.Model
 {
-    public class MedicalRecord
+	/// <summary>
+	/// Lớp MedicalRecord chứa thông tin của bệnh án gồm các thuộc tính Id, DoctorId, MedicalExaminationFormID, Time, Diagnosis
+	/// </summary>
+	public class MedicalRecord
     {
         public int Id { get; set; }
         public int DoctorId { get; set; }

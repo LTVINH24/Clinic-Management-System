@@ -7,6 +7,9 @@ using System.Threading.Tasks;
 
 namespace ClinicManagementSystem.Model
 {
+	/// <summary>
+	/// Lớp Doctor kế thừa từ lớp User, thêm các thuộc tính chuyên khoa, phòng khám
+	/// </summary>
 	public class Doctor : User, INotifyCollectionChanged
 	{
 		public int Id { get; set; }

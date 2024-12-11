@@ -7,7 +7,10 @@ using System.Threading.Tasks;
 
 namespace ClinicManagementSystem.Model
 {
-    public class UserLogin:INotifyPropertyChanged
+	/// <summary>
+	/// Lớp UserLogin chứa thông tin của người dùng khi đăng nhập gồm các thuộc tính Username, Password
+	/// </summary>
+	public class UserLogin:INotifyPropertyChanged
     {
 		public string Username { get; set; }
         public string Password { get; set; }

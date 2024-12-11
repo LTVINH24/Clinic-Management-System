@@ -48,6 +48,7 @@ namespace ClinicManagementSystem.ViewModel.EndUser
 			_dao = ServiceFactory.GetChildOf(typeof(IDao)) as IDao;
 			LoadData();
 		}
+
 		public string Info
 		{
 			get
@@ -79,6 +80,9 @@ namespace ClinicManagementSystem.ViewModel.EndUser
 				LoadData();
 			}
 		}
+		/// <summary>
+		/// Chuyển đến trang tiếp theo
+		/// </summary>
 		public void GoToNextPage()
 		{
 			if (CurrentPage < TotalPages)
@@ -87,6 +91,9 @@ namespace ClinicManagementSystem.ViewModel.EndUser
 				LoadData();
 			}
 		}
+		/// <summary>
+		/// Chuyển về trang trước đó
+		/// </summary>
 		public void GoToPreviousPage()
 		{
 			if (CurrentPage > 1)
@@ -95,11 +102,19 @@ namespace ClinicManagementSystem.ViewModel.EndUser
 				LoadData();
 			}
 		}
+		/// <summary>
+		/// Chuyển đến trang được chỉ định
+		/// </summary>
+		/// <param name="page"></param>
 		public void GoToPage(int page)
 		{
 			CurrentPage = page;
 			LoadData();
 		}
+
+		/// <summary>
+		/// Load dữ liệu từ database
+		/// </summary>
 		public void LoadData()
 		{
 
@@ -129,19 +144,37 @@ namespace ClinicManagementSystem.ViewModel.EndUser
 			}
 			SelectedPageInfoItem = new PageInfo { Page = CurrentPage, Total = TotalPages };
 		}
+
+		/// <summary>
+		/// Tìm kiếm dữ liệu
+		/// </summary>
 		public void Search()
 		{
 			CurrentPage = 1;
 			LoadData();
 		}
+
+		/// <summary>
+		/// Chỉnh sửa thông tin User
+		/// </summary>
+		/// <param name="useredit"></param>
 		public void Edit(User useredit)
 		{
 			UserEdit = useredit;
 		}
+
+		/// <summary>
+		/// Hủy bỏ việc chỉnh sửa thông tin User
+		/// </summary>
 		public void Cancel()
 		{
 			UserEdit = new User();
 		}
+
+		/// <summary>
+		/// Cập nhật thông tin User
+		/// </summary>
+		/// <returns></returns>
 		public bool Update()
 		{
 			var Password = new Password();
@@ -154,6 +187,11 @@ namespace ClinicManagementSystem.ViewModel.EndUser
 			newPassword = "";
 			return sucess;
 		}
+
+		/// <summary>
+		/// Xóa User
+		/// </summary>
+		/// <returns></returns>
 		public bool Delete()
 		{
 			return _dao.DeleteUser(UserEdit);

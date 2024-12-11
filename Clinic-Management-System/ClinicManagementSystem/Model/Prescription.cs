@@ -1,5 +1,8 @@
 ﻿using System;
 
+/// <summary>
+/// Lớp Prescription chứa thông tin của đơn thuốc gồm các thuộc tính Id, Time, MedicineId, Quantity, Dosage, MedicalExaminationFormId
+/// </summary>
 public class Prescription
 {
     public int Id { get; set; }

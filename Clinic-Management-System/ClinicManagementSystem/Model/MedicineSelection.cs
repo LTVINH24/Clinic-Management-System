@@ -3,7 +3,10 @@ using System.Runtime.CompilerServices;
 
 namespace ClinicManagementSystem.Model
 {
-    public class MedicineSelection : INotifyPropertyChanged
+	/// <summary>
+	/// Lớp MedicineSelection chứa thông tin của thuốc được chọn gồm các thuộc tính Medicine, IsSelected, SelectedQuantity, SelectedDosage
+	/// </summary>
+	public class MedicineSelection : INotifyPropertyChanged
     {
         private Medicine _medicine;
         private bool _isSelected;

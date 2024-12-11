@@ -1,4 +1,4 @@
-using Microsoft.UI.Xaml;
+﻿using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Controls.Primitives;
 using Microsoft.UI.Xaml.Data;
@@ -34,6 +34,11 @@ namespace ClinicManagementSystem.Views
 			this.Title = "Clinic Management System";
 		}
 
+		/// <summary>
+		/// Xử lí sự kiện khi cửa sổ được đóng
+		/// </summary>
+		/// <param name="sender"></param>
+		/// <param name="args"></param>
 		private void Window_Closed(object sender, WindowEventArgs args)
 		{
 			var screen = new MainWindow();

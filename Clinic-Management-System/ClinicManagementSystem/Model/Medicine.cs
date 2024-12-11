@@ -4,6 +4,9 @@ using System.Runtime.CompilerServices;
 
 namespace ClinicManagementSystem.Model
 {
+	/// <summary>
+	/// Lớp Medicine chứa thông tin của thuốc gồm các thuộc tính Id, Name, Manufacturer, Price, Quantity, QuantityUsed, Dosage, ExpDate, MfgDate
+	/// </summary>
 	public class Medicine : INotifyPropertyChanged
 	{
 		public int Id { get; set; }

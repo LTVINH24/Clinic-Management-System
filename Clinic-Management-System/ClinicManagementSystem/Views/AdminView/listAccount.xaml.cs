@@ -33,16 +33,32 @@ namespace ClinicManagementSystem.Views.AdminView
             this.InitializeComponent();
         }
 
-        private void nextButton_Click(object sender, RoutedEventArgs e)
+		/// <summary>
+		/// Xử lí sự kiện khi chọn button next
+		/// </summary>
+		/// <param name="sender"></param>
+		/// <param name="e"></param>
+		private void nextButton_Click(object sender, RoutedEventArgs e)
         {
             ViewModel.GoToNextPage();
         }
-        private void previousButton_Click(object sender, RoutedEventArgs e)
+		/// <summary>
+		/// Xử lí sự kiện khi chọn button previous
+		/// </summary>
+		/// <param name="sender"></param>
+		/// <param name="e"></param>
+		private void previousButton_Click(object sender, RoutedEventArgs e)
          {
             ViewModel.GoToPreviousPage();
          }
         bool init = false;
-        private void pagesComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+
+		/// <summary>
+		/// Xử lí sự kiện khi chọn page
+		/// </summary>
+		/// <param name="sender"></param>
+		/// <param name="e"></param>
+		private void pagesComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             if (init == false)
             {
@@ -56,23 +72,43 @@ namespace ClinicManagementSystem.Views.AdminView
             }
         }
 
-        private void searchButton_Click(object sender, RoutedEventArgs e)
+		/// <summary>
+		/// Xử lí sự kiện khi chọn button search
+		/// </summary>
+		/// <param name="sender"></param>
+		/// <param name="e"></param>
+		private void searchButton_Click(object sender, RoutedEventArgs e)
         {
             ViewModel.Search();
         }
 
-        private void searchTextbox_Click(object sender, TextChangedEventArgs e)
+		/// <summary>
+		/// Xử lí sự kiện khi nhập text vào search box
+		/// </summary>
+		/// <param name="sender"></param>
+		/// <param name="e"></param>
+		private void searchTextbox_Click(object sender, TextChangedEventArgs e)
         {
             ViewModel.Search();
         }
 
-        private void userList_SelectionChanged(object sender, SelectionChangedEventArgs e)
+		/// <summary>
+		/// Xử lí sự kiện khi chọn item trong list
+		/// </summary>
+		/// <param name="sender"></param>
+		/// <param name="e"></param>
+		private void userList_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             var useredit = itemsComboBox.SelectedItem as User;
             ViewModel.Edit(useredit);
         }
 
-        private void update_editUser(object sender, RoutedEventArgs e)
+		/// <summary>
+		/// Xử lí sự kiện khi chọn button update
+		/// </summary>
+		/// <param name="sender"></param>
+		/// <param name="e"></param>
+		private void update_editUser(object sender, RoutedEventArgs e)
         {
             var success=ViewModel.Update();
             ViewModel.LoadData();
@@ -88,7 +124,12 @@ namespace ClinicManagementSystem.Views.AdminView
             Notify(notify);
         }
 
-        private void delete_editUser(object sender, RoutedEventArgs e)
+		/// <summary>
+		/// Xử lí sự kiện khi chọn button delete
+		/// </summary>
+		/// <param name="sender"></param>
+		/// <param name="e"></param>
+		private void delete_editUser(object sender, RoutedEventArgs e)
         {
             var success = ViewModel.Delete();
             ViewModel.LoadData();
@@ -104,11 +145,21 @@ namespace ClinicManagementSystem.Views.AdminView
             Notify(notify);
         }
 
-        private void cancel_editUser(object sender, RoutedEventArgs e)
+		/// <summary>
+		/// Xử lí sự kiện khi chọn button cancel
+		/// </summary>
+		/// <param name="sender"></param>
+		/// <param name="e"></param>
+		private void cancel_editUser(object sender, RoutedEventArgs e)
         {
             ViewModel.Cancel();
         }
-        private async void Notify(string notify)
+
+		/// <summary>
+		/// Hiển thị thông báo
+		/// </summary>
+		/// <param name="notify"></param>
+		private async void Notify(string notify)
         {
             await new ContentDialog()
             {
@@ -119,6 +170,11 @@ namespace ClinicManagementSystem.Views.AdminView
             }.ShowAsync();
         }
 
+		/// <summary>
+		/// Xử lí sự kiện khi chọn giới tính
+		/// </summary>
+		/// <param name="sender"></param>
+		/// <param name="e"></param>
 		private void setGender(object sender, RoutedEventArgs e)
 		{
             if (sender is MenuFlyoutItem menuItem)
@@ -127,7 +183,12 @@ namespace ClinicManagementSystem.Views.AdminView
             }
         }
 
-        private void setRole(object sender, RoutedEventArgs e)
+		/// <summary>
+		/// Xử lí sự kiện khi chọn role
+		/// </summary>
+		/// <param name="sender"></param>
+		/// <param name="e"></param>
+		private void setRole(object sender, RoutedEventArgs e)
         {
             if(sender is MenuFlyoutItem menuItem)
             {

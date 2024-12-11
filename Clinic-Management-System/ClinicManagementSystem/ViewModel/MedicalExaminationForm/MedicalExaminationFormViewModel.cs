@@ -87,6 +87,9 @@ namespace ClinicManagementSystem.ViewModel
 			}
 		}
 
+		/// <summary>
+		/// Chuyển đến trang kế tiếp
+		/// </summary>
 		public void GoToNextPage()
 		{
 			if (CurrentPage < TotalPages)
@@ -95,6 +98,10 @@ namespace ClinicManagementSystem.ViewModel
 				LoadData();
 			}
 		}
+
+		/// <summary>
+		/// Chuyển đến trang trước đó
+		/// </summary>
 		public void GoToPreviousPage()
 		{
 			if (CurrentPage > 1)
@@ -103,12 +110,20 @@ namespace ClinicManagementSystem.ViewModel
 				LoadData();
 			}
 		}
+
+		/// <summary>
+		/// Chuyển đến trang được chỉ định
+		/// </summary>
+		/// <param name="page"></param>
 		public void GoToPage(int page)
 		{
 			CurrentPage = page;
 			LoadData();
 		}
 
+		/// <summary>
+		/// Load dữ liệu phiếu khám bệnh
+		/// </summary>
 		public void LoadData()
 		{
 			var (items, count) = _dao.GetMedicalExaminationForm(CurrentPage, RowsPerPage, Keyword, _sortOptions);
@@ -139,28 +154,46 @@ namespace ClinicManagementSystem.ViewModel
 			SelectedPageInfoItem = new PageInfo { Page = CurrentPage, Total = TotalPages };
 		}
 
+		/// <summary>
+		/// Tìm kiếm phiếu khám bệnh	
+		/// </summary>
 		public void Search()
 		{
 			CurrentPage = 1;
 			LoadData();
 		}
 
+		/// <summary>
+		/// Chỉnh sửa phiếu khám bệnh
+		/// </summary>
+		/// <param name="formEdit"></param>
 		public void Edit(MedicalExaminationForm formEdit)
 		{
 			FormEdit = formEdit;
 		}
 
+		/// <summary>
+		/// Hủy chỉnh sửa
+		/// </summary>
 		public void Cancel()
 		{
 			LoadData();
 		}
 
+		/// <summary>
+		/// Cập nhật phiếu khám bệnh
+		/// </summary>
+		/// <returns></returns>
 		public bool Update()
 		{
 			bool success = _dao.UpdateMedicalExaminationForm(FormEdit);
 			return success;
 		}
 
+		/// <summary>
+		/// Xóa phiếu khám bệnh
+		/// </summary>
+		/// <returns></returns>
 		public bool Delete()
 		{
 			bool success = _dao.DeleteMedicalExaminationForm(FormEdit);

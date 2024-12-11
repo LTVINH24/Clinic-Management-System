@@ -34,6 +34,11 @@ namespace ClinicManagementSystem.ViewModel.EndUser
 			LoadSpecialties();
 		}
 
+		/// <summary>
+		/// Tạo mới user
+		/// </summary>
+		/// <param name="user"></param>
+		/// <returns>Thông báo tạo thành công hay thất bại</returns>
 		public string CreateUser(User user)
 		{
 
@@ -61,6 +66,9 @@ namespace ClinicManagementSystem.ViewModel.EndUser
 
 		}
 
+		/// <summary>
+		/// Load dữ liệu chuyên khoa
+		/// </summary>
 		private void LoadSpecialties()
 		{
 			var specialties = _dao.GetSpecialty();

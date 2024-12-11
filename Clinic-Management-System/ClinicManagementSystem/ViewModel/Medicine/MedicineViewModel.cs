@@ -67,6 +67,10 @@ namespace ClinicManagementSystem.ViewModel
 				LoadMedicines();
 			}
 		}
+
+		/// <summary>
+		/// Load dữ liệu thuốc từ database
+		/// </summary>
 		private void LoadMedicines()
 		{
 			var (items, count) = _dao.GetMedicines(
@@ -97,11 +101,19 @@ namespace ClinicManagementSystem.ViewModel
 			SelectedPageInfoItem = new PageInfo { Page = CurrentPage, Total = TotalPages };
 
 		}
+
+		/// <summary>
+		/// Tìm kiếm thuốc
+		/// </summary>
 		public void Search()
 		{
 			CurrentPage = 1;
 			LoadMedicines();
 		}
+
+		/// <summary>
+		/// Chuyển đến trang kế tiếp
+		/// </summary>
 		public void GoToNextPage()
 		{
 			if (CurrentPage < TotalPages)
@@ -110,6 +122,10 @@ namespace ClinicManagementSystem.ViewModel
 				LoadMedicines();
 			}
 		}
+
+		/// <summary>
+		/// Chuyển đến trang trước
+		/// </summary>
 		public void GoToPreviousPage()
 		{
 			if (CurrentPage > 1)
@@ -118,11 +134,21 @@ namespace ClinicManagementSystem.ViewModel
 				LoadMedicines();
 			}
 		}
+
+		/// <summary>
+		/// Chuyển đến trang được chỉ định
+		/// </summary>
+		/// <param name="page"></param>
 		public void GoToPage(int page)
 		{
 			CurrentPage = page;
 			LoadMedicines();
 		}
+
+		/// <summary>
+		/// Cập nhật thông tin thuốc
+		/// </summary>
+		/// <returns>True nếu cập nhật thành công, False nếu cập nhật thất bại</returns>
 		public bool UpdateMedicine()
 		{
 			bool success = _dao.UpdateMedicine(MedicineEdit);
@@ -130,6 +156,11 @@ namespace ClinicManagementSystem.ViewModel
 			return success;
 
 		}
+
+		/// <summary>
+		/// Thêm thuốc mới
+		/// </summary>
+		/// <returns>True nếu thêm thành công, False nếu thêm thất bại</returns>
 		public bool AddMedicine()
 		{
 			bool success = _dao.CreateMedicine(MedicineEdit);
@@ -137,16 +168,31 @@ namespace ClinicManagementSystem.ViewModel
 			return success;
 
 		}
+
+		/// <summary>
+		/// Chỉnh sửa thông tin thuốc
+		/// </summary>
+		/// <param name="medicine"></param>
 		public void EditMedicine(Medicine medicine)
 		{
 			MedicineEdit = medicine;
 		}
+
+		/// <summary>
+		/// Xóa thuốc
+		/// </summary>
+		/// <param name="newMedicine"></param>
+		/// <returns>True nếu xóa thành công, False nếu xóa thất bại</returns>
 		public bool DeleteMedicine(Medicine newMedicine)
 		{
 			bool success = _dao.DeleteMedicine(newMedicine);
 			LoadMedicines();
 			return success;
 		}
+
+		/// <summary>
+		/// Hủy thao tác
+		/// </summary>
 		public void CancelMedicine()
 		{
 			MedicineEdit = new Medicine();

@@ -1,4 +1,4 @@
-
+﻿
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -8,6 +8,9 @@ using System.Threading.Tasks;
 
 namespace ClinicManagementSystem.Model
 {
+	/// <summary>
+	/// Lớp Patient chứa thông tin của bệnh nhân gồm các thuộc tính Id, Name, Email, Resident, Address, DoB, Gender
+	/// </summary>
 	public class Patient :INotifyPropertyChanged
 	{
 		public int Id { get; set; }

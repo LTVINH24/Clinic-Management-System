@@ -1,4 +1,4 @@
-using ClinicManagementSystem.Model;
+﻿using ClinicManagementSystem.Model;
 using ClinicManagementSystem.ViewModel;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
@@ -35,15 +35,31 @@ namespace ClinicManagementSystem.Views.StaffView
 
 		bool init = false;
 
+		/// <summary>
+		/// Xử lí sự kiện khi nhấn nút Next
+		/// </summary>
+		/// <param name="sender"></param>
+		/// <param name="e"></param>
 		private void nextButton_Click(object sender, RoutedEventArgs e)
 		{
 			ViewModel.GoToNextPage();
 		}
 
+		/// <summary>
+		/// Xử lí sự kiện khi nhấn nút Previous
+		/// </summary>
+		/// <param name="sender"></param>
+		/// <param name="e"></param>
 		private void previousButton_Click(object sender, RoutedEventArgs e)
 		{
 			ViewModel.GoToPreviousPage();
 		}
+
+		/// <summary>
+		/// Xử lí sự kiện khi chọn trang
+		/// </summary>
+		/// <param name="sender"></param>
+		/// <param name="e"></param>
 		private void pagesComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
 		{
 			if(init == false)
@@ -58,16 +74,31 @@ namespace ClinicManagementSystem.Views.StaffView
 			}
 		}
 
+		/// <summary>
+		/// Xử lí sự kiện khi nhập vào ô tìm kiếm
+		/// </summary>
+		/// <param name="sender"></param>
+		/// <param name="e"></param>
 		private void searchTextbox_Click(object sender, TextChangedEventArgs e)
 		{
 			ViewModel.Search();
 		}
 
+		/// <summary>
+		/// Xử lí sự kiện khi nhấn nút Search
+		/// </summary>
+		/// <param name="sender"></param>
+		/// <param name="e"></param>
 		private void searchButton_Click(object sender, RoutedEventArgs e)
 		{
 			ViewModel.Search();
 		}
 
+		/// <summary>
+		/// Xử lí sự kiện update thông tin bệnh nhân
+		/// </summary>
+		/// <param name="sender"></param>
+		/// <param name="e"></param>
 		private void updatePatient(object sender, RoutedEventArgs e)
 		{
 			var success = ViewModel.Update();
@@ -84,6 +115,11 @@ namespace ClinicManagementSystem.Views.StaffView
 			Notify(notify);
 		}
 
+		/// <summary>
+		/// Xử lí sự kiện xóa thông tin bệnh nhân
+		/// </summary>
+		/// <param name="sender"></param>
+		/// <param name="e"></param>
 		private async void deletePatient(object sender, RoutedEventArgs e)
 		{
 			var confirmContentDialog = new ContentDialog
@@ -115,6 +151,10 @@ namespace ClinicManagementSystem.Views.StaffView
 		}
 
 
+		/// <summary>
+		/// Hiển thị thông báo
+		/// </summary>
+		/// <param name="notify"></param>
 		private async void Notify(string notify)
 		{
 			await new ContentDialog()
@@ -126,11 +166,21 @@ namespace ClinicManagementSystem.Views.StaffView
 			}.ShowAsync();
 		}
 
+		/// <summary>
+		/// Xử lí sự kiện khi nhấn nút Cancel
+		/// </summary>
+		/// <param name="sender"></param>
+		/// <param name="e"></param>
 		private void cancelEdit(object sender, RoutedEventArgs e)
 		{
 			ViewModel.LoadData();
 		}
 
+		/// <summary>
+		/// Xử lí sự kiện khi chọn bệnh nhân
+		/// </summary>
+		/// <param name="sender"></param>
+		/// <param name="e"></param>
 		private void Patient_SelectionChanged(object sender, SelectionChangedEventArgs e)
 		{
 			var patientEdit = itemsComboBox.SelectedItem as Patient;
@@ -151,6 +201,11 @@ namespace ClinicManagementSystem.Views.StaffView
 			}
 		}
 
+		/// <summary>
+		/// Xử lí sự kiện khi chọn giới tính
+		/// </summary>
+		/// <param name="sender"></param>
+		/// <param name="e"></param>
 		private void setGender(object sender, RoutedEventArgs e)
 		{
 			if (sender is MenuFlyoutItem menuItem)

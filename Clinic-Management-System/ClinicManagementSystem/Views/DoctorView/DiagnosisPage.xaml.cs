@@ -14,7 +14,11 @@ namespace ClinicManagementSystem.Views.DoctorView
             this.DataContext = new DiagnosisViewModel();
         }
 
-        protected override void OnNavigatedTo(NavigationEventArgs e)
+		/// <summary>
+		/// Load dữ liệu khi điều hướng trang
+		/// </summary>
+		/// <param name="e"></param>
+		protected override void OnNavigatedTo(NavigationEventArgs e)
         {
             base.OnNavigatedTo(e);
 
@@ -24,7 +28,12 @@ namespace ClinicManagementSystem.Views.DoctorView
             }
         }
 
-        private void BackButton_Click(object sender, Microsoft.UI.Xaml.RoutedEventArgs e)
+		/// <summary>
+		/// Xử lý sự kiện khi nhấn nút Back
+		/// </summary>
+		/// <param name="sender"></param>
+		/// <param name="e"></param>
+		private void BackButton_Click(object sender, Microsoft.UI.Xaml.RoutedEventArgs e)
         {
             // Điều hướng trở về DoctorPage
             if (Frame.CanGoBack)
@@ -33,7 +42,12 @@ namespace ClinicManagementSystem.Views.DoctorView
             }
         }
 
-        private void SelectMedicinesButton_Click(object sender, Microsoft.UI.Xaml.RoutedEventArgs e)
+		/// <summary>
+		/// Xử lí sự kiện khi nhấn nút chọn thuốc
+		/// </summary>
+		/// <param name="sender"></param>
+		/// <param name="e"></param>
+		private void SelectMedicinesButton_Click(object sender, Microsoft.UI.Xaml.RoutedEventArgs e)
         {
             // Navigate to the medicine selection page
             var medicineSelectionPage = new MedicineSelectionPage();
@@ -41,7 +55,12 @@ namespace ClinicManagementSystem.Views.DoctorView
             Frame.Navigate(typeof(MedicineSelectionPage), null, null);
         }
 
-        private void OnMedicineSelectionConfirmed(object sender, ObservableCollection<MedicineSelection> selectedMedicines)
+		/// <summary>
+		/// Xử lý sự kiện khi xác nhận chọn thuốc
+		/// </summary>
+		/// <param name="sender"></param>
+		/// <param name="selectedMedicines"></param>
+		private void OnMedicineSelectionConfirmed(object sender, ObservableCollection<MedicineSelection> selectedMedicines)
         {
             var viewModel = (DiagnosisViewModel)this.DataContext;
             viewModel.UpdateSelectedMedicines(selectedMedicines);
