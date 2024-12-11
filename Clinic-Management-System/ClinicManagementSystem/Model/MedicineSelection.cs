@@ -8,7 +8,7 @@ namespace ClinicManagementSystem.Model
         private Medicine _medicine;
         private bool _isSelected;
         private int _selectedQuantity;
-        private string _selectedDosage;
+        private int _selectedDosage;
 
         public Medicine Medicine
         {
@@ -28,7 +28,7 @@ namespace ClinicManagementSystem.Model
             set => SetProperty(ref _selectedQuantity, value);
         }
 
-        public string SelectedDosage
+        public int SelectedDosage
         {
             get => _selectedDosage;
             set => SetProperty(ref _selectedDosage, value);
