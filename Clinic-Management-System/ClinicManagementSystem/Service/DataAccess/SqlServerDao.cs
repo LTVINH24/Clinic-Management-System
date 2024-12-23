@@ -501,7 +501,7 @@ namespace ClinicManagementSystem.Service.DataAccess
                 command.ExecuteNonQuery();
             }
         }
-        List<MedicineStatistic> GetMedicineStatistic(DateTime startDate, DateTime endDate)
+       public List<MedicineStatistic> GetMedicineStatistic(DateTime startDate, DateTime endDate)
         {
             var result =new List<MedicineStatistic>();
             return result;
