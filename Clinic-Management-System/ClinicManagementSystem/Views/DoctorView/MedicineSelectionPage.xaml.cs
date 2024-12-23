@@ -25,19 +25,9 @@ namespace ClinicManagementSystem.Views.DoctorView
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
             base.OnNavigatedTo(e);
-
             if (e.Parameter is ObservableCollection<MedicineSelection> selectedMedicines)
             {
-                foreach (var medicine in selectedMedicines)
-                {
-                    var availableMedicine = ViewModel.AvailableMedicines.FirstOrDefault(m => m.Medicine.Id == medicine.Medicine.Id);
-                    if (availableMedicine != null)
-                    {
-                        availableMedicine.IsSelected = true;
-                        availableMedicine.SelectedQuantity = medicine.SelectedQuantity;
-                        availableMedicine.SelectedDosage = medicine.SelectedDosage;
-                    }
-                }
+                ViewModel.InitializeWithSelectedMedicines(selectedMedicines);
             }
         }
 
@@ -52,74 +42,60 @@ namespace ClinicManagementSystem.Views.DoctorView
 
         private void ConfirmButton_Click(object sender, RoutedEventArgs e)
         {
-            var selectedMedicines = ViewModel.AvailableMedicines.Where(m => m.IsSelected).ToList();
+            var selectedMedicines = new ObservableCollection<MedicineSelection>(
+                ViewModel.AvailableMedicines.Where(m => m.IsSelected)
+            );
+
+            if (ValidateSelections(selectedMedicines))
+            {
+                // Lưu vào static storage trước
+                ViewModel.SaveSelectedMedicines();
+                
+                // Sau đó thông báo cho DiagnosisPage
+                MedicineSelectionConfirmed?.Invoke(this, selectedMedicines);
+                
+                System.Diagnostics.Debug.WriteLine($"Confirmed selection of {selectedMedicines.Count} medicines");
+                
+                if (Frame.CanGoBack)
+                {
+                    Frame.GoBack();
+                }
+            }
+        }
+
+        private bool ValidateSelections(ObservableCollection<MedicineSelection> selectedMedicines)
+        {
             int totalAmount = 0;
 
             foreach (var medicineSelection in selectedMedicines)
             {
                 if (medicineSelection.SelectedQuantity <= 0)
                 {
-                    // Notify the user that the selected quantity is invalid
                     ShowMessage("Selected quantity must be greater than zero.");
-                    return;
+                    return false;
                 }
 
                 if (medicineSelection.SelectedDosage <= 0)
                 {
-                    // Notify the user that the selected quantity is invalid
                     ShowMessage("Selected dosage must be greater than zero.");
-                    return;
+                    return false;
                 }
 
                 if (medicineSelection.SelectedQuantity > medicineSelection.Medicine.Quantity)
                 {
                     // Notify the user that the selected quantity exceeds the available quantity
                     ShowMessage($"Selected quantity for {medicineSelection.Medicine.Name} exceeds available quantity.");
-                    return;
+                    return false;
                 }
                 
                 if (medicineSelection.SelectedDosage > medicineSelection.SelectedQuantity)
                 {
-                    // Notify the user that the selected quantity exceeds the available quantity
                     ShowMessage($"Selected dosage for {medicineSelection.Medicine.Name} must not greater than selected quantity.");
-                    return;
+                    return false;
                 }
-
-                if (!ViewModel.SelectedMedicines.Any(m => m.Medicine.Id == medicineSelection.Medicine.Id))
-                {
-                    ViewModel.SelectedMedicines.Add(medicineSelection);
-                }
-
-                // Calculate the total amount
-                totalAmount += medicineSelection.Medicine.Price * medicineSelection.SelectedQuantity;
             }
 
-            // Update the medicine quantities
-            var dao = new SqlServerDao();
-            dao.UpdateMedicineQuantities(selectedMedicines);
-
-            //// Create a new prescription
-            //var prescription = new Prescription
-            //{
-            //    Time = DateTime.Now,
-            //    MedicineId = selectedMedicines.First().Medicine.Id,
-            //    Quantity = selectedMedicines.First().SelectedQuantity,
-            //    Dosage = selectedMedicines.First().SelectedDosage,
-            //    MedicalExaminationFormId = GetCurrentMedicalRecordId() // Assuming this is the same as MedicalRecordId
-            //};
-
-            //// Save the prescription in the database
-            //dao.SavePrescription(prescription);
-
-            //// Insert the bill in the database
-            //int prescriptionId = GetCurrentPrescriptionId();
-            //dao.InsertBill(prescriptionId, totalAmount);
-
-            // Trigger the event to send selected medicines back to DiagnosisPage
-            MedicineSelectionConfirmed?.Invoke(this, new ObservableCollection<MedicineSelection>(ViewModel.SelectedMedicines));
-
-            // Navigate back to DiagnosisPage
-            Frame.GoBack();
+            return true;
         }
 
         private async void ShowMessage(string message)

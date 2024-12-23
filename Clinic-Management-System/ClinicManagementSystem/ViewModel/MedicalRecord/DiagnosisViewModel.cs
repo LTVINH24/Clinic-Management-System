@@ -1,6 +1,7 @@
 ﻿using ClinicManagementSystem.Command;
 using ClinicManagementSystem.Model;
 using ClinicManagementSystem.Service.DataAccess;
+using System;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Windows.Input;
@@ -10,6 +11,7 @@ namespace ClinicManagementSystem.ViewModel
     public class DiagnosisViewModel : BaseViewModel
     {
         private readonly SqlServerDao _dataAccess;
+        private ObservableCollection<MedicineSelection> _selectedMedicines;
 
         public MedicalExaminationForm MedicalExaminationForm { get; private set; }
         public MedicalRecord MedicalRecord { get; private set; }
@@ -28,15 +30,23 @@ namespace ClinicManagementSystem.ViewModel
             }
         }
 
-        public ObservableCollection<MedicineSelection> SelectedMedicines { get; set; }
+        public ObservableCollection<MedicineSelection> SelectedMedicines
+        {
+            get => _selectedMedicines;
+            set => SetProperty(ref _selectedMedicines, value);
+        }
+
         public ICommand SaveCommand { get; }
         public ICommand SaveMedicinesCommand { get; }
+        public ICommand NavigateToMedicineSelectionCommand { get; }
+        public event EventHandler<ObservableCollection<MedicineSelection>> RequestNavigateToMedicineSelection;
 
         public DiagnosisViewModel()
         {
             _dataAccess = new SqlServerDao();
             SelectedMedicines = new ObservableCollection<MedicineSelection>();
             SaveCommand = new RelayCommand(SaveDiagnosis);
+            NavigateToMedicineSelectionCommand = new RelayCommand(NavigateToMedicineSelection);
         }
 
 		/// <summary>
@@ -62,6 +72,19 @@ namespace ClinicManagementSystem.ViewModel
             {
                 MedicalRecord = _dataAccess.CreateMedicalRecordFromForm(MedicalExaminationForm);
             }
+
+            // Load medicines from static storage
+            System.Diagnostics.Debug.WriteLine($"Before loading: LastSelectedMedicines has {MedicineSelectionViewModel.LastSelectedMedicines.Count} items");
+            
+            SelectedMedicines.Clear();
+            foreach (var medicine in MedicineSelectionViewModel.LastSelectedMedicines)
+            {
+                SelectedMedicines.Add(medicine);
+                System.Diagnostics.Debug.WriteLine($"Added medicine: {medicine.Medicine.Name}");
+            }
+            
+            System.Diagnostics.Debug.WriteLine($"After loading: SelectedMedicines has {SelectedMedicines.Count} items");
+            OnPropertyChanged(nameof(SelectedMedicines));
         }
 
 		/// <summary>
@@ -77,35 +100,36 @@ namespace ClinicManagementSystem.ViewModel
         }
 
 		/// <summary>
-		/// Thêm thuốc được chọn vào danh sách thuốc đã chọn
+		/// Cập nhật danh sách thuốc được chọn từ MedicineSelectionPage
 		/// </summary>
-		/// <param name="medicineSelection"></param>
-		public void AddSelectedMedicine(MedicineSelection medicineSelection)
+		/// <param name="medicines"></param>
+		public void UpdateSelectedMedicines(ObservableCollection<MedicineSelection> medicines)
         {
-            var existingMedicine = SelectedMedicines.FirstOrDefault(m => m.Medicine.Id == medicineSelection.Medicine.Id);
-            if (existingMedicine != null)
-            {
-                existingMedicine.SelectedQuantity = medicineSelection.SelectedQuantity;
-                existingMedicine.SelectedDosage = medicineSelection.SelectedDosage;
-            }
-            else
-            {
-                SelectedMedicines.Add(medicineSelection);
-            }
-        }
+            if (medicines == null) return;
 
-		/// <summary>
-		/// Cập nhật danh sách thuốc đã chọn
-		/// </summary>
-		/// <param name="selectedMedicines"></param>
-		public void UpdateSelectedMedicines(ObservableCollection<MedicineSelection> selectedMedicines)
-        {
+            System.Diagnostics.Debug.WriteLine($"UpdateSelectedMedicines called with {medicines.Count} medicines");
+            
             SelectedMedicines.Clear();
-            foreach (var medicine in selectedMedicines)
+            foreach (var medicine in medicines)
             {
                 SelectedMedicines.Add(medicine);
+                System.Diagnostics.Debug.WriteLine($"Added medicine: {medicine.Medicine.Name}");
             }
+
+            // Cập nhật LastSelectedMedicines
+            MedicineSelectionViewModel.LastSelectedMedicines.Clear();
+            foreach (var medicine in medicines)
+            {
+                MedicineSelectionViewModel.LastSelectedMedicines.Add(medicine);
+            }
+            
+            System.Diagnostics.Debug.WriteLine($"Updated LastSelectedMedicines, now has {MedicineSelectionViewModel.LastSelectedMedicines.Count} items");
             OnPropertyChanged(nameof(SelectedMedicines));
+        }
+
+        private void NavigateToMedicineSelection()
+        {
+            RequestNavigateToMedicineSelection?.Invoke(this, SelectedMedicines);
         }
     }
 }

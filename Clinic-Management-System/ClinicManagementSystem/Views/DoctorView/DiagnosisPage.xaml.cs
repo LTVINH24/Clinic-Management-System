@@ -8,10 +8,14 @@ namespace ClinicManagementSystem.Views.DoctorView
 {
     public sealed partial class DiagnosisPage : Page
     {
+        private DiagnosisViewModel ViewModel => (DiagnosisViewModel)DataContext;
+
         public DiagnosisPage()
         {
             this.InitializeComponent();
-            this.DataContext = new DiagnosisViewModel();
+            var viewModel = new DiagnosisViewModel();
+            viewModel.RequestNavigateToMedicineSelection += OnRequestNavigateToMedicineSelection;
+            this.DataContext = viewModel;
         }
 
 		/// <summary>
@@ -21,10 +25,9 @@ namespace ClinicManagementSystem.Views.DoctorView
 		protected override void OnNavigatedTo(NavigationEventArgs e)
         {
             base.OnNavigatedTo(e);
-
             if (e.Parameter is MedicalExaminationForm selectedForm)
             {
-                ((DiagnosisViewModel)this.DataContext).LoadData(selectedForm.Id);
+                ViewModel.LoadData(selectedForm.Id);
             }
         }
 
@@ -35,7 +38,6 @@ namespace ClinicManagementSystem.Views.DoctorView
 		/// <param name="e"></param>
 		private void BackButton_Click(object sender, Microsoft.UI.Xaml.RoutedEventArgs e)
         {
-            // Điều hướng trở về DoctorPage
             if (Frame.CanGoBack)
             {
                 Frame.GoBack();
@@ -62,8 +64,16 @@ namespace ClinicManagementSystem.Views.DoctorView
 		/// <param name="selectedMedicines"></param>
 		private void OnMedicineSelectionConfirmed(object sender, ObservableCollection<MedicineSelection> selectedMedicines)
         {
-            var viewModel = (DiagnosisViewModel)this.DataContext;
-            viewModel.UpdateSelectedMedicines(selectedMedicines);
+            ViewModel.UpdateSelectedMedicines(selectedMedicines);
+        }
+
+        private void OnRequestNavigateToMedicineSelection(object sender, ObservableCollection<MedicineSelection> selectedMedicines)
+        {
+            var medicineSelectionPage = new MedicineSelectionPage();
+            medicineSelectionPage.MedicineSelectionConfirmed += OnMedicineSelectionConfirmed;
+            Frame.Navigate(typeof(MedicineSelectionPage), ViewModel.SelectedMedicines);
         }
     }
 }
+
+
