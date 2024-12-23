@@ -155,17 +155,18 @@
                     </StackPanel>
                 </Grid>
 
-                <!-- Tổng tiền -->
+                <!-- Sau ListView hiển thị danh sách thuốc -->
                 <StackPanel Orientation="Horizontal" 
                             HorizontalAlignment="Right" 
-                            Margin="0,10,0,20">
+                            Margin="0,10,0,0">
                     <TextBlock Text="Total Amount: " 
-                               FontWeight="SemiBold" 
-                               FontSize="16"/>
-                    <TextBlock Text="{Binding TotalAmount}"
+                               FontWeight="SemiBold"
+                               VerticalAlignment="Center"
+                               Margin="0,0,5,0"/>
+                    <TextBlock Text="{Binding FormattedTotalAmount}"
                                FontWeight="Bold"
-                               FontSize="16"
-                               Foreground="{ThemeResource SystemAccentColor}"/>
+                               Foreground="{ThemeResource SystemAccentColor}"
+                               VerticalAlignment="Center"/>
                 </StackPanel>
 
                 <!-- Nút chọn thuốc -->

@@ -12,6 +12,7 @@ namespace ClinicManagementSystem.ViewModel
     {
         private readonly SqlServerDao _dataAccess;
         private ObservableCollection<MedicineSelection> _selectedMedicines;
+        private decimal _totalAmount;
 
         public MedicalExaminationForm MedicalExaminationForm { get; private set; }
         public MedicalRecord MedicalRecord { get; private set; }
@@ -35,6 +36,20 @@ namespace ClinicManagementSystem.ViewModel
             get => _selectedMedicines;
             set => SetProperty(ref _selectedMedicines, value);
         }
+
+        public decimal TotalAmount
+        {
+            get => _totalAmount;
+            private set
+            {
+                if (SetProperty(ref _totalAmount, value))
+                {
+                    OnPropertyChanged(nameof(FormattedTotalAmount));
+                }
+            }
+        }
+
+        public string FormattedTotalAmount => $"{TotalAmount:N0} VND";
 
         public ICommand SaveCommand { get; }
         public ICommand SaveMedicinesCommand { get; }
@@ -83,7 +98,12 @@ namespace ClinicManagementSystem.ViewModel
                 System.Diagnostics.Debug.WriteLine($"Added medicine: {medicine.Medicine.Name}");
             }
             
+            // Tính tổng tiền sau khi load danh sách thuốc
+            CalculateTotalAmount();
+            
             System.Diagnostics.Debug.WriteLine($"After loading: SelectedMedicines has {SelectedMedicines.Count} items");
+            System.Diagnostics.Debug.WriteLine($"Total amount: {FormattedTotalAmount}");
+            
             OnPropertyChanged(nameof(SelectedMedicines));
         }
 
@@ -113,7 +133,7 @@ namespace ClinicManagementSystem.ViewModel
             foreach (var medicine in medicines)
             {
                 SelectedMedicines.Add(medicine);
-                System.Diagnostics.Debug.WriteLine($"Added medicine: {medicine.Medicine.Name}");
+                System.Diagnostics.Debug.WriteLine($"Added medicine: {medicine.Medicine.Name} - Quantity: {medicine.SelectedQuantity} - Price: {medicine.Medicine.Price}");
             }
 
             // Cập nhật LastSelectedMedicines
@@ -123,6 +143,9 @@ namespace ClinicManagementSystem.ViewModel
                 MedicineSelectionViewModel.LastSelectedMedicines.Add(medicine);
             }
             
+            // Tính tổng tiền sau khi cập nhật danh sách thuốc
+            CalculateTotalAmount();
+            
             System.Diagnostics.Debug.WriteLine($"Updated LastSelectedMedicines, now has {MedicineSelectionViewModel.LastSelectedMedicines.Count} items");
             OnPropertyChanged(nameof(SelectedMedicines));
         }
@@ -130,6 +153,12 @@ namespace ClinicManagementSystem.ViewModel
         private void NavigateToMedicineSelection()
         {
             RequestNavigateToMedicineSelection?.Invoke(this, SelectedMedicines);
+        }
+
+        private void CalculateTotalAmount()
+        {
+            TotalAmount = SelectedMedicines.Sum(m => m.Medicine.Price * m.SelectedQuantity);
+            System.Diagnostics.Debug.WriteLine($"CalculateTotalAmount called. Total: {FormattedTotalAmount}");
         }
     }
 }
