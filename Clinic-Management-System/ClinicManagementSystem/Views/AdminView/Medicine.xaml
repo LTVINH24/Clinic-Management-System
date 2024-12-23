@@ -105,7 +105,7 @@
                 </Grid.ColumnDefinitions>
                 <TextBox  Width="300" Margin="10" Header="Name" Grid.Row="0" Grid.Column="0" Text="{x:Bind ViewModel.MedicineEdit.Name,Mode=TwoWay}"></TextBox>
                 <TextBox  Width="300" Margin="10" Header="Price" Grid.Row="0" Grid.Column="1" Text="{x:Bind ViewModel.MedicineEdit.Price,Mode=TwoWay}"></TextBox>
-                <TextBox  Width="300" Margin="10" Header="Quantity" Grid.Row="1" Grid.Column="0" Text="{x:Bind ViewModel.MedicineEdit.Quantity,Mode=TwoWay}"></TextBox>
+                <TextBox  Width="300" Margin="10" Header="Quantity" Grid.Row="1" Grid.Column="0" Text="{x:Bind ViewModel.MedicineEdit.QuantityImport,Mode=TwoWay}"></TextBox>
                 <TextBox  Width="300" Margin="10" Header="Manufacturer" Grid.Row="1" Grid.Column="1" Text="{x:Bind ViewModel.MedicineEdit.Manufacturer,Mode=TwoWay}"></TextBox>
                 <CalendarDatePicker Margin="10" Width="300" Grid.Row="2" Grid.Column="0"   PlaceholderText="Pick a date" Header="EXP Date"   Date="{x:Bind ViewModel.MedicineEdit.ExpDate,Mode=TwoWay}"/>
                 <CalendarDatePicker Margin="10" Width="300"  Grid.Row="2" Grid.Column="1"  PlaceholderText="Pick a date" Header="MFG Date"   Date="{x:Bind ViewModel.MedicineEdit.MfgDate,Mode=TwoWay}"/>

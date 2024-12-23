@@ -14,8 +14,9 @@ namespace ClinicManagementSystem.Model
 		public string Manufacturer { get; set; }
 		public int Price { get; set; }
 		public int Quantity { get; set; }       // Số lượng thuốc còn lại trong kho
-		public int QuantityUsed { get; set; }   // Số lượng thuốc được kê đơn
+		public int QuantityImport { get; set; }   // Số lượng thuốc được kê đơn
 		public string Dosage { get; set; }      // Liều dùng (số viên/ngày hoặc ghi chú khác)
+		public DateTimeOffset DateImport { get; set; } = DateTimeOffset.Now;
 		public DateTimeOffset ExpDate { get; set; } = DateTimeOffset.Now;
 		public DateTimeOffset MfgDate { get; set; } = DateTimeOffset.Now;
 

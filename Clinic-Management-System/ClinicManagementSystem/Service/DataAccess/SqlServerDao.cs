@@ -423,13 +423,14 @@ namespace ClinicManagementSystem.Service.DataAccess
             string connectionString = GetConnectionString();
             SqlConnection connection = new SqlConnection(connectionString);
             connection.Open();
-            string query = $"insert into Medicine(name,manufacturer,price,quantity,ExpDate,MfgDate) values(@name,@manufacturer,@price,@quantity,@ExpDate,@MfgDate)";
+            string query = $"insert into Medicine(name,manufacturer,price,quantity, quantityimport,ExpDate,MfgDate) values(@name,@manufacturer,@price,@quantity,@quantityimport,@ExpDate,@MfgDate)";
             var command = new SqlCommand(query, connection);
             AddParameters(command,
                 ("@name", medicine.Name),
                 ("@manufacturer", medicine.Manufacturer),
                 ("@price", medicine.Price),
-                ("@quantity", medicine.Quantity),
+                ("@quantity", medicine.QuantityImport),
+                ("@quantityimport", medicine.QuantityImport),
                 ("@ExpDate", medicine.ExpDate),
                 ("@MfgDate", medicine.MfgDate));
             int count = command.ExecuteNonQuery();
@@ -500,12 +501,17 @@ namespace ClinicManagementSystem.Service.DataAccess
                 command.ExecuteNonQuery();
             }
         }
-
-		/// <summary>
-		/// Lấy danh sách thuốc còn trong kho
-		/// </summary>
-		/// <returns>Danh sách thuốc</returns>
-		public List<Medicine> GetAvailableMedicines()
+        List<MedicineStatistic> GetMedicineStatistic(DateTime startDate, DateTime endDate)
+        {
+            var result =new List<MedicineStatistic>();
+            return result;
+        }
+        /// <summary>
+        /// Lấy danh sách thuốc còn trong kho
+        /// </summary>
+        /// <returns>Danh sách thuốc</returns>
+        /// 
+        public List<Medicine> GetAvailableMedicines()
         {
             var medicines = new List<Medicine>();
             using (var connection = new SqlConnection(GetConnectionString()))

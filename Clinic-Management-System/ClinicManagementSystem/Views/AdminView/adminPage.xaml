@@ -32,6 +32,19 @@
                 </NavigationViewItem>
                 <NavigationViewItem Content="List Account" Icon="People" ToolTipService.ToolTip="List Account" Tag="listAccount"/>
                 <NavigationViewItem Content="Medicine" Icon="Shop" ToolTipService.ToolTip="Medicine" Tag="Medicine"/>
+                <NavigationViewItem Content="Report" ToolTipService.ToolTip="Report" Tag="reportMedicineAdmin">
+                    <NavigationViewItem.Icon>
+                        <FontIcon Glyph="&#xE9D2;" />
+                        <!-- Biểu tượng Report -->
+                    </NavigationViewItem.Icon>
+                    <NavigationViewItem.MenuItems>
+                        <NavigationViewItem Content="Medicine" ToolTipService.ToolTip="Medicine" Tag="reportMedicineAdmin">
+                            <NavigationViewItem.Icon>
+                                <FontIcon Glyph="&#xE77B;" />
+                            </NavigationViewItem.Icon>
+                        </NavigationViewItem>
+                    </NavigationViewItem.MenuItems>
+                </NavigationViewItem>
 
             </NavigationView.MenuItems>
             <Frame x:Name="contentFrame" Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"/>

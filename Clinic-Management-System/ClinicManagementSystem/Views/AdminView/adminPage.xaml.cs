@@ -61,6 +61,9 @@ namespace ClinicManagementSystem.Views
                     case "Medicine":
                         contentFrame.Navigate(typeof(Medicine));
                         break;
+                    case "reportMedicineAdmin":
+                        contentFrame.Navigate(typeof(reportMedicineAdmin));
+                        break;
                     default:
 						break;
 				}

@@ -74,6 +74,7 @@ namespace ClinicManagementSystem.Service.DataAccess
 		bool CreateMedicine(Medicine medicine);
 		bool UpdateMedicine(Medicine medicine);
 		bool DeleteMedicine(Medicine medicine);
+		List<MedicineStatistic> GetMedicineStatistic(DateTime startDate, DateTime endDate);
 		//========================================================================================
 
 		//========================================Specialty=======================================
