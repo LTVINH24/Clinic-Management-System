@@ -602,7 +602,17 @@ namespace ClinicManagementSystem.Service.DataAccess
             SqlConnection connection = new SqlConnection(connectionString);
             connection.Open();
 
-            string sortString = "ORDER BY ";
+            var whereClause = "WHERE 1=1";
+			if (!string.IsNullOrEmpty(keyword))
+			{
+                whereClause += @" AND (
+                    p.name LIKE @Keyword OR
+                    m.symptom LIKE @Keyword OR
+                    d.name LIKE @Keyword
+                )";
+			}
+
+			string sortString = "ORDER BY ";
             bool useDefault = true;
 
             foreach (var item in sortOptions)
@@ -626,7 +636,6 @@ namespace ClinicManagementSystem.Service.DataAccess
                 sortString += "ID ";
             }
 			
-			var whereClause = "WHERE symptom like @Keyword";
 			if (startDate.HasValue)
 			{
 				whereClause += " AND CAST(time AS DATE) >= @StartDate";
@@ -635,15 +644,6 @@ namespace ClinicManagementSystem.Service.DataAccess
 			{
 				whereClause += " AND CAST(time AS DATE) <= @EndDate";
 			}
-
-
-			//var sql = $"""
-			//	SELECT count(*) over() as Total, id, patientId, staffId, time, symptom, doctorId, visitType
-			//	FROM MedicalExaminationForm
-			//	{whereClause}
-			//	{sortString}
-			//	OFFSET @Skip ROWS FETCH NEXT @Take ROWS ONLY;
-			//	""";
 
 			var sql = $@"
                 SELECT count(*) over() as Total, 
@@ -1119,6 +1119,17 @@ namespace ClinicManagementSystem.Service.DataAccess
             SqlConnection connection = new SqlConnection(connectionString);
             connection.Open();
 
+            var whereClause = "WHERE 1=1";
+            if (!string.IsNullOrEmpty(keyword))
+            {
+                whereClause += @" AND (
+                    name LIKE @Keyword OR 
+                    residentId LIKE @Keyword OR 
+                    email LIKE @Keyword OR 
+                    address LIKE @Keyword
+                )";
+            }
+
             string sortString = "ORDER BY ";
             bool useDefault = true;
             foreach (var item in sortOptions)
@@ -1145,7 +1156,7 @@ namespace ClinicManagementSystem.Service.DataAccess
             var sql = $"""
                 SELECT count(*) over() as Total, id, name, residentId, email, gender, birthday, address
                 FROM Patient
-                WHERE Name like @Keyword
+                {whereClause}
                 {sortString}
                 OFFSET @Skip ROWS FETCH NEXT @Take ROWS ONLY;
                 """;
