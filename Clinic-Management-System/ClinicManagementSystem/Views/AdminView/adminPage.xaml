@@ -27,24 +27,25 @@
                 <NavigationViewItem Content="Add" Icon="Add" ToolTipService.ToolTip="Add" Tag="homeAdmin">
                     <NavigationViewItem.MenuItems>
                         <NavigationViewItem Content="Add Account" Icon="People" ToolTipService.ToolTip="Add Account" Tag="addAccount"/>
+                        <NavigationViewItem Content="Add Medicine" ToolTipService.ToolTip="Add Medicine" Tag="addMedicine"/>
+
                         <!--<NavigationViewItem Content="Add Medicine" Icon="Add" ToolTipService.ToolTip="Add" Tag=""/>-->
                     </NavigationViewItem.MenuItems>
                 </NavigationViewItem>
                 <NavigationViewItem Content="List Account" Icon="People" ToolTipService.ToolTip="List Account" Tag="listAccount"/>
                 <NavigationViewItem Content="Medicine" Icon="Shop" ToolTipService.ToolTip="Medicine" Tag="Medicine"/>
-                <NavigationViewItem Content="Report" ToolTipService.ToolTip="Report" Tag="reportMedicineAdmin">
+                <NavigationViewItem Content="Report"  ToolTipService.ToolTip="Report" Tag="reportMedicineAdmin" >
                     <NavigationViewItem.Icon>
-                        <FontIcon Glyph="&#xE9D2;" />
-                        <!-- Biểu tượng Report -->
+                        <FontIcon Glyph="&#xE9F9;" FontFamily="Segoe MDL2 Assets"/>
                     </NavigationViewItem.Icon>
                     <NavigationViewItem.MenuItems>
-                        <NavigationViewItem Content="Medicine" ToolTipService.ToolTip="Medicine" Tag="reportMedicineAdmin">
-                            <NavigationViewItem.Icon>
-                                <FontIcon Glyph="&#xE77B;" />
-                            </NavigationViewItem.Icon>
-                        </NavigationViewItem>
+                        <NavigationViewItem Content="Report Medicine" ToolTipService.ToolTip="Report Medicine" Tag="reportMedicineAdmin"/>
+                        <NavigationViewItem Content="Patient Visits" ToolTipService.ToolTip="Patient Visits" Tag="reportPatientVisitsAdmin"/>
+                        <NavigationViewItem Content="Report Bill" ToolTipService.ToolTip="Report Bill" Tag="reportBillAdmin"/>
+
                     </NavigationViewItem.MenuItems>
                 </NavigationViewItem>
+
 
             </NavigationView.MenuItems>
             <Frame x:Name="contentFrame" Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"/>

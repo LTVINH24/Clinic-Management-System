@@ -52,7 +52,10 @@ namespace ClinicManagementSystem.Views
 					case "addAccount":
 						contentFrame.Navigate(typeof(addAccount));
 						break;
-					case "homeAdmin":
+                    case "addMedicine":
+                        contentFrame.Navigate(typeof(addMedicine));
+                        break;
+                    case "homeAdmin":
 						contentFrame.Navigate(typeof(homeAdmin));
 						break;
                     case "listAccount":
@@ -63,6 +66,12 @@ namespace ClinicManagementSystem.Views
                         break;
                     case "reportMedicineAdmin":
                         contentFrame.Navigate(typeof(reportMedicineAdmin));
+                        break;
+                    case "reportPatientVisitsAdmin":
+                        contentFrame.Navigate(typeof(reportPatientVisitsAdmin));
+                        break;
+                    case "reportBillAdmin":
+                        contentFrame.Navigate(typeof(reportBillAdmin));
                         break;
                     default:
 						break;

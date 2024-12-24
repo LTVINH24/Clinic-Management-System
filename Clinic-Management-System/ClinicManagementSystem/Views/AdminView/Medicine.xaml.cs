@@ -86,14 +86,14 @@ namespace ClinicManagementSystem.Views.AdminView
 		/// </summary>
 		/// <param name="sender"></param>
 		/// <param name="e"></param>
-		private void Edit_Click(object sender, RoutedEventArgs e)
-        {
-            SaveBtn.Visibility = Visibility.Visible;
-            AddBtn.Visibility = Visibility.Collapsed;
-            var button =sender as Button;
-            editMedicine = button?.DataContext as ClinicManagementSystem.Model.Medicine;
-            ViewModel.EditMedicine(editMedicine);
-        }
+		//private void Edit_Click(object sender, RoutedEventArgs e)
+  //      {
+  //          SaveBtn.Visibility = Visibility.Visible;
+  //          AddBtn.Visibility = Visibility.Collapsed;
+  //          var button =sender as Button;
+  //          editMedicine = button?.DataContext as ClinicManagementSystem.Model.Medicine;
+  //          ViewModel.EditMedicine(editMedicine);
+  //      }
 
 		/// <summary>
 		/// Xử lí sự kiện khi nhấn nút delete
@@ -121,49 +121,49 @@ namespace ClinicManagementSystem.Views.AdminView
 		/// </summary>
 		/// <param name="sender"></param>
 		/// <param name="e"></param>
-		private void addMedicine(object sender, RoutedEventArgs e)
-        {
-            bool success = ViewModel.AddMedicine();
-            if (success)
-            {
-                Notify("Add medicine successfully");
-            }
-            else
-            {
-                Notify("Add medicine failed");
-            }
+		//private void addMedicine(object sender, RoutedEventArgs e)
+  //      {
+  //          bool success = ViewModel.AddMedicine();
+  //          if (success)
+  //          {
+  //              Notify("Add medicine successfully");
+  //          }
+  //          else
+  //          {
+  //              Notify("Add medicine failed");
+  //          }
             
-        }
+  //      }
 
 		/// <summary>
 		/// Xử lí sự kiện khi nhấn nút save
 		/// </summary>
 		/// <param name="sender"></param>
 		/// <param name="e"></param>
-		private void saveMedicine(object sender, RoutedEventArgs e)
-        {
-            bool succes = ViewModel.UpdateMedicine();
-            if (succes)
-            {
-                Notify("Update medicine successfully");
-            }
-            else
-            {
-                Notify("Update medicine failed");
-            }
-        }
+		//private void saveMedicine(object sender, RoutedEventArgs e)
+  //      {
+  //          bool succes = ViewModel.UpdateMedicine();
+  //          if (succes)
+  //          {
+  //              Notify("Update medicine successfully");
+  //          }
+  //          else
+  //          {
+  //              Notify("Update medicine failed");
+  //          }
+  //      }
 
 		/// <summary>
 		/// Xử lí sự kiện khi nhấn nút cancel
 		/// </summary>
 		/// <param name="sender"></param>
 		/// <param name="e"></param>
-		private void cancelMedicine(object sender, RoutedEventArgs e)
-        {
-            SaveBtn.Visibility = Visibility.Collapsed;
-            AddBtn.Visibility = Visibility.Visible;
-            ViewModel.CancelMedicine();
-        }
+		//private void cancelMedicine(object sender, RoutedEventArgs e)
+  //      {
+  //          SaveBtn.Visibility = Visibility.Collapsed;
+  //          AddBtn.Visibility = Visibility.Visible;
+  //          ViewModel.CancelMedicine();
+  //      }
 
 		/// <summary>
 		/// Hiển thị thông báo

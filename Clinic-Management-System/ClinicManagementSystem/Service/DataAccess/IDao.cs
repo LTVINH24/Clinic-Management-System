@@ -1,4 +1,5 @@
 ﻿using ClinicManagementSystem.Model;
+using ClinicManagementSystem.Model.Statistic;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -66,6 +67,7 @@ namespace ClinicManagementSystem.Service.DataAccess
 		bool UpdateMedicalExaminationForm(MedicalExaminationForm form);
 
 		bool DeleteMedicalExaminationForm(MedicalExaminationForm form);
+		public List<MedicalExaminationStatistic> GetMedicalExaminationStatisticsByDate(DateTimeOffset startDate, DateTimeOffset endDate);
 		//========================================================================================
 
 
@@ -74,7 +76,7 @@ namespace ClinicManagementSystem.Service.DataAccess
 		bool CreateMedicine(Medicine medicine);
 		bool UpdateMedicine(Medicine medicine);
 		bool DeleteMedicine(Medicine medicine);
-		List<MedicineStatistic> GetMedicineStatistic(DateTime startDate, DateTime endDate);
+		List<MedicineStatistic> GetMedicineStatistic(DateTimeOffset startDate, DateTimeOffset endDate, int n, string sortString);
 		//========================================================================================
 
 		//========================================Specialty=======================================
@@ -97,7 +99,10 @@ namespace ClinicManagementSystem.Service.DataAccess
 		bool UpdatePatient(Patient patient);
 
 		bool DeletePatient(Patient patient);
-		//========================================================================================
+        //========================================================================================
 
+
+        //=========================================Bill==========================================
+        public List<BillStatistic> GetBillStatistic(DateTimeOffset startDate, DateTimeOffset endDate);
     }
 }

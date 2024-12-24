@@ -15,14 +15,17 @@ namespace ClinicManagementSystem.ViewModel
 	public class MedicineViewModel : INotifyPropertyChanged
 	{
 		IDao _dao;
+		private int OldQuantityImport = 0;
 		private ObservableCollection<Medicine> _medicines;
 		public ObservableCollection<Medicine> Medicines
 		{
 			get => _medicines ??= new ObservableCollection<Medicine>();
 			set => _medicines = value;
 		}
-		public Medicine MedicineEdit { get; set; } = new Medicine();
-		public int CurrentPage { get; set; }
+		public Medicine MedicineNew { get; set; } = new Medicine();
+        public Medicine MedicineEdit { get; set; } = new Medicine();
+
+        public int CurrentPage { get; set; }
 		public int TotalPages { get; set; }
 		public int TotalItems { get; set; } = 0;
 		public int RowsPerPage { get; set; }
@@ -151,6 +154,8 @@ namespace ClinicManagementSystem.ViewModel
 		/// <returns>True nếu cập nhật thành công, False nếu cập nhật thất bại</returns>
 		public bool UpdateMedicine()
 		{
+			int newQuantity = MedicineEdit.QuantityImport - OldQuantityImport;
+			MedicineEdit.Quantity += newQuantity;
 			bool success = _dao.UpdateMedicine(MedicineEdit);
 			LoadMedicines();
 			return success;
@@ -163,7 +168,7 @@ namespace ClinicManagementSystem.ViewModel
 		/// <returns>True nếu thêm thành công, False nếu thêm thất bại</returns>
 		public bool AddMedicine()
 		{
-			bool success = _dao.CreateMedicine(MedicineEdit);
+			bool success = _dao.CreateMedicine(MedicineNew);
 			LoadMedicines();
 			return success;
 
@@ -176,7 +181,8 @@ namespace ClinicManagementSystem.ViewModel
 		public void EditMedicine(Medicine medicine)
 		{
 			MedicineEdit = medicine;
-		}
+			OldQuantityImport = medicine.QuantityImport;
+        }
 
 		/// <summary>
 		/// Xóa thuốc
@@ -195,7 +201,7 @@ namespace ClinicManagementSystem.ViewModel
 		/// </summary>
 		public void CancelMedicine()
 		{
-			MedicineEdit = new Medicine();
+			MedicineNew = new Medicine();
 		}
 	}
 }

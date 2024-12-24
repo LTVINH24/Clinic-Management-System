@@ -27,11 +27,9 @@
                         <TextBlock Width="80" Margin="20" Text="{x:Bind Id}" ></TextBlock>
                         <TextBlock Width="150" Margin="20" Text="{x:Bind Name}" ></TextBlock>
                         <TextBlock Width="100" Margin="20" Text="{x:Bind Quantity}" ></TextBlock>
+                        <TextBlock Width="100" Margin="20" Text="{x:Bind QuantityImport}" ></TextBlock>
                         <TextBlock Width="100" Margin="20" Text="{x:Bind Price}" ></TextBlock>
                         <TextBlock Width="300" Margin="20" Text="{x:Bind Manufacturer}" ></TextBlock>
-                        <Button Click="Edit_Click" Background="Transparent" BorderBrush="Transparent">
-                            <FontIcon Glyph="&#xE70F;" />
-                        </Button>
                         <Button Margin="40,0,0,0" Click="Delete_Click" Background="Transparent" BorderBrush="Transparent">
                             <FontIcon Glyph="&#xE74D;" />
                         </Button>
@@ -53,7 +51,9 @@
         <StackPanel Grid.Row="0" Margin ="35,0,0,0"  Orientation="Horizontal" HorizontalAlignment="Left">
             <TextBlock FontWeight="Bold" FontSize="20" Width="120">ID</TextBlock>
             <TextBlock FontWeight="Bold" FontSize="20"  Width="190">Name</TextBlock>
-            <TextBlock FontWeight="Bold" FontSize="20"  Width="140">Quantity</TextBlock>
+            <TextBlock FontWeight="Bold" FontSize="20"  Width="140">Remain</TextBlock>
+            <TextBlock FontWeight="Bold" FontSize="20"  Width="140">Import</TextBlock>
+
             <TextBlock FontWeight="Bold" FontSize="20"  Width="140">Price</TextBlock>
             <TextBlock FontWeight="Bold" FontSize="20"  Width="340">Manufacturer</TextBlock>
             <TextBox HorizontalAlignment="Stretch" PlaceholderText="Search" TextChanged="searchTextbox_Click" Padding="10" CornerRadius="20" Name="keyword" Text="{x:Bind ViewModel.Keyword, 
@@ -89,32 +89,6 @@
             <Button  Click="nextButton_Click" >
                 <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xE76C;"/>
             </Button>
-        </StackPanel>
-        <StackPanel Background="{ThemeResource EditPanelBackground}" Grid.Row="3" Width="1000" BorderBrush="#b5b5e8" BorderThickness="2">
-            <Grid  HorizontalAlignment="Center">
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="*"/>
-                    <RowDefinition Height="*"/>
-                    <RowDefinition Height="*"/>
-                    <RowDefinition Height="Auto"/>
-
-                </Grid.RowDefinitions>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*"/>
-                    <ColumnDefinition Width="*"/>
-                </Grid.ColumnDefinitions>
-                <TextBox  Width="300" Margin="10" Header="Name" Grid.Row="0" Grid.Column="0" Text="{x:Bind ViewModel.MedicineEdit.Name,Mode=TwoWay}"></TextBox>
-                <TextBox  Width="300" Margin="10" Header="Price" Grid.Row="0" Grid.Column="1" Text="{x:Bind ViewModel.MedicineEdit.Price,Mode=TwoWay}"></TextBox>
-                <TextBox  Width="300" Margin="10" Header="Quantity" Grid.Row="1" Grid.Column="0" Text="{x:Bind ViewModel.MedicineEdit.QuantityImport,Mode=TwoWay}"></TextBox>
-                <TextBox  Width="300" Margin="10" Header="Manufacturer" Grid.Row="1" Grid.Column="1" Text="{x:Bind ViewModel.MedicineEdit.Manufacturer,Mode=TwoWay}"></TextBox>
-                <CalendarDatePicker Margin="10" Width="300" Grid.Row="2" Grid.Column="0"   PlaceholderText="Pick a date" Header="EXP Date"   Date="{x:Bind ViewModel.MedicineEdit.ExpDate,Mode=TwoWay}"/>
-                <CalendarDatePicker Margin="10" Width="300"  Grid.Row="2" Grid.Column="1"  PlaceholderText="Pick a date" Header="MFG Date"   Date="{x:Bind ViewModel.MedicineEdit.MfgDate,Mode=TwoWay}"/>
-                <StackPanel  Grid.Row="3" Grid.ColumnSpan="2" Orientation="Horizontal" HorizontalAlignment="Center">
-                    <Button Click="addMedicine" x:Name="AddBtn" Margin="20" Width="80" Background="Blue"  Foreground="White">Add</Button>
-                    <Button Click="saveMedicine" x:Name="SaveBtn" Visibility="Collapsed" Background="Blue" Foreground="White" Margin="20" Width="80">Save</Button>
-                    <Button Click="cancelMedicine" Margin="20" Width="80">Cancel</Button>
-                </StackPanel>
-            </Grid>
         </StackPanel>
     </Grid>
 </Page>

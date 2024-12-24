@@ -4,12 +4,34 @@
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:local="using:ClinicManagementSystem.Views.AdminView"
+    
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:vm="using:ClinicManagementSystem.ViewModel.Statistic"
+    xmlns:oxy="using:OxyPlot"
     mc:Ignorable="d"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
-
-    <Grid>
-
+    <Grid >
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="100"/>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <Grid Grid.Row="1" Grid.Column="0">
+                <oxy:PlotView Model="{Binding ChartModel}" />
+            </Grid>
+            <Grid Grid.Row="0" Grid.Column="0">
+                <oxy:PlotView Model="{Binding ChartModelMoney}" />
+            </Grid>
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Grid.Row="2" Grid.Column="0">
+                <CalendarDatePicker  x:Name="StartDate" PlaceholderText="Choose Date" Header="StartDate" Date="{x:Bind ViewModel.startDate,Mode=TwoWay}" Foreground="{ThemeResource ApplicationForegroundThemeBrush}"/>
+                <CalendarDatePicker Margin="20,0,20,0" x:Name="EndDate"   PlaceholderText="Choose Date" Header="EndDate" Date="{x:Bind ViewModel.endDate, Mode=TwoWay}" Foreground="{ThemeResource ApplicationForegroundThemeBrush}"/>
+                <Button Margin="0,24,0,0" Click="viewStatistic">View Statistic</Button>
+            </StackPanel>
+        </Grid>
     </Grid>
 </Page>
