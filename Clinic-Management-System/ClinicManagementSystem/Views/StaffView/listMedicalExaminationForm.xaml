@@ -35,10 +35,12 @@
                 <Border BorderThickness="1" BorderBrush="#b5b5e8">
                     <StackPanel Orientation="Horizontal">
                         <TextBlock Width="50" Margin="20" Text="{x:Bind Id}" ></TextBlock>
-                        <TextBlock Width="100" Margin="20" Text="{x:Bind PatientId}" ></TextBlock>
+                        <!--<TextBlock Width="100" Margin="20" Text="{x:Bind PatientId}" ></TextBlock>-->
+                        <TextBlock Width="150" Margin="20" Text="{x:Bind PatientName}" />
                         <TextBlock Width="50" Margin="20" Text="{x:Bind StaffId}" ></TextBlock>
                         <TextBlock Width="200" Margin="20" Text="{x:Bind Time, Converter={StaticResource DateTimeConverter}}" TextWrapping="Wrap"></TextBlock>
-                        <TextBlock Width="100" Margin="20" Text="{x:Bind DoctorId}" ></TextBlock>
+                        <!--<TextBlock Width="100" Margin="20" Text="{x:Bind DoctorId}" ></TextBlock>-->
+                        <TextBlock Width="100" Margin="20" Text="{x:Bind DoctorName}" />
                         <ScrollViewer MaxHeight="80" VerticalScrollMode="Enabled" HorizontalScrollMode="Disabled" Margin="20" Width="120">
                             <TextBlock  Text="{x:Bind Symptoms}" TextWrapping="Wrap" ></TextBlock>
                         </ScrollViewer>
@@ -93,11 +95,11 @@
             </StackPanel>
 
             <StackPanel Margin ="35,0,0,20"  Orientation="Horizontal" HorizontalAlignment="Left">
-                <TextBlock FontWeight="Bold" FontSize="20" Width="80">ID</TextBlock>
-                <TextBlock FontWeight="Bold" FontSize="20"  Width="140">Patient ID</TextBlock>
+                <TextBlock FontWeight="Bold" FontSize="20" Width="100">ID</TextBlock>
+                <TextBlock FontWeight="Bold" FontSize="20"  Width="180">Patient</TextBlock>
                 <TextBlock FontWeight="Bold" FontSize="20"  Width="140">Staff ID</TextBlock>
                 <TextBlock FontWeight="Bold" FontSize="20"  Width="180">Time</TextBlock>
-                <TextBlock FontWeight="Bold" FontSize="20"  Width="150">Doctor ID</TextBlock>
+                <TextBlock FontWeight="Bold" FontSize="20"  Width="160">Doctor</TextBlock>
                 <TextBlock FontWeight="Bold" FontSize="20"  Width="160">Symptoms</TextBlock>
                 <TextBlock FontWeight="Bold" FontSize="20"  Width="140">Visit Type</TextBlock>
             </StackPanel>

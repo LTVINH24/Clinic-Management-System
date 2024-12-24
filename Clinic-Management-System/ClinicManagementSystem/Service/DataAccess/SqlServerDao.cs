@@ -637,13 +637,26 @@ namespace ClinicManagementSystem.Service.DataAccess
 			}
 
 
-			var sql = $"""
-				SELECT count(*) over() as Total, id, patientId, staffId, time, symptom, doctorId, visitType
-				FROM MedicalExaminationForm
-				{whereClause}
-				{sortString}
-				OFFSET @Skip ROWS FETCH NEXT @Take ROWS ONLY;
-				""";
+			//var sql = $"""
+			//	SELECT count(*) over() as Total, id, patientId, staffId, time, symptom, doctorId, visitType
+			//	FROM MedicalExaminationForm
+			//	{whereClause}
+			//	{sortString}
+			//	OFFSET @Skip ROWS FETCH NEXT @Take ROWS ONLY;
+			//	""";
+
+			var sql = $@"
+                SELECT count(*) over() as Total, 
+                       m.id, m.patientId, m.staffId, m.time, m.symptom, m.doctorId, m.visitType,
+                       p.name as PatientName,
+                       d.name as DoctorName
+                FROM MedicalExaminationForm m
+                JOIN Patient p ON m.patientId = p.id
+                JOIN EndUser d ON m.doctorId = d.id
+                {whereClause}
+                {sortString}
+                OFFSET @Skip ROWS FETCH NEXT @Take ROWS ONLY;
+            ";
 
 			var command = new SqlCommand(sql, connection);
 			AddParameters(command, ("@Skip", (page - 1) * rowsPerPage), ("@Take", rowsPerPage), ("@Keyword", $"%{keyword}%"));
@@ -670,16 +683,29 @@ namespace ClinicManagementSystem.Service.DataAccess
                     count = (int)reader["Total"];
                 }
 
-                var medicalExaminationForm = new MedicalExaminationForm();
-                medicalExaminationForm.Id = (int)reader["id"];
-                medicalExaminationForm.PatientId = (int)reader["patientId"];
-                medicalExaminationForm.StaffId = (int)reader["staffId"];
-                medicalExaminationForm.Time = (DateTime)reader["time"];
-                medicalExaminationForm.Symptoms = (string)reader["symptom"];
-                medicalExaminationForm.DoctorId = (int)reader["doctorId"];
-                medicalExaminationForm.VisitType = (string)reader["visitType"];
+				//var medicalExaminationForm = new MedicalExaminationForm();
+				//medicalExaminationForm.Id = (int)reader["id"];
+				//medicalExaminationForm.PatientId = (int)reader["patientId"];
+				//medicalExaminationForm.StaffId = (int)reader["staffId"];
+				//medicalExaminationForm.Time = (DateTime)reader["time"];
+				//medicalExaminationForm.Symptoms = (string)reader["symptom"];
+				//medicalExaminationForm.DoctorId = (int)reader["doctorId"];
+				//medicalExaminationForm.VisitType = (string)reader["visitType"];
 
-                result.Add(medicalExaminationForm);
+				var medicalExaminationForm = new MedicalExaminationForm
+				{
+					Id = (int)reader["id"],
+					PatientId = (int)reader["patientId"],
+					PatientName = reader["PatientName"].ToString(),
+					StaffId = (int)reader["staffId"],
+					Time = (DateTime)reader["time"],
+					Symptoms = (string)reader["symptom"],
+					DoctorId = (int)reader["doctorId"],
+					DoctorName = reader["DoctorName"].ToString(),
+					VisitType = (string)reader["visitType"]
+				};
+
+				result.Add(medicalExaminationForm);
             }
             connection.Close();
             return new Tuple<List<MedicalExaminationForm>, int>(result, count);
