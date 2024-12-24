@@ -52,9 +52,6 @@ namespace ClinicManagementSystem.Views
 					case "addAccount":
 						contentFrame.Navigate(typeof(addAccount));
 						break;
-                    case "addMedicine":
-                        contentFrame.Navigate(typeof(addMedicine));
-                        break;
                     case "homeAdmin":
 						contentFrame.Navigate(typeof(homeAdmin));
 						break;

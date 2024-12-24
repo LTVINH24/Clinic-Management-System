@@ -38,13 +38,13 @@ namespace ClinicManagementSystem.Service.DataAccess
 		bool UpdateUser(User info);
 
 		bool DeleteUser(User user);
-		
+		bool LockUser(int id,string status);
 		public List<Specialty> GetSpecialty();
 		Tuple<List<Medicine>, int> GetMedicines(
 		 int page, int rowsPerPage,
 		 string keyword,
-		 Dictionary<string, SortType> sortOptions
-		);
+		 Dictionary<string, SortType> sortOptions, int daysRemaining
+        );
 		//========================================================================================
 
 

@@ -27,8 +27,6 @@
                 <NavigationViewItem Content="Add" Icon="Add" ToolTipService.ToolTip="Add" Tag="homeAdmin">
                     <NavigationViewItem.MenuItems>
                         <NavigationViewItem Content="Add Account" Icon="People" ToolTipService.ToolTip="Add Account" Tag="addAccount"/>
-                        <NavigationViewItem Content="Add Medicine" ToolTipService.ToolTip="Add Medicine" Tag="addMedicine"/>
-
                         <!--<NavigationViewItem Content="Add Medicine" Icon="Add" ToolTipService.ToolTip="Add" Tag=""/>-->
                     </NavigationViewItem.MenuItems>
                 </NavigationViewItem>

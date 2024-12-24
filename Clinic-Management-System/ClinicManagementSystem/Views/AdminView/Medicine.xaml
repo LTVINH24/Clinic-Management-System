@@ -10,36 +10,31 @@
     mc:Ignorable="d"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
     <Page.Resources>
-        <ResourceDictionary>
-            <ResourceDictionary.ThemeDictionaries>
-                <ResourceDictionary x:Key="Light">
-                    <SolidColorBrush x:Key="EditPanelBackground" Color="Pink" />
-                </ResourceDictionary>
-                <ResourceDictionary x:Key="Dark">
-                    <SolidColorBrush x:Key="EditPanelBackground" Color="Transparent" />
-                </ResourceDictionary>
-            </ResourceDictionary.ThemeDictionaries>
-
-
-            <DataTemplate x:Key="HorizontalMedicine" x:DataType="localmodel:Medicine">
-                <Border BorderThickness="1" BorderBrush="#b5b5e8">
-                    <StackPanel Orientation="Horizontal">
-                        <TextBlock Width="80" Margin="20" Text="{x:Bind Id}" ></TextBlock>
-                        <TextBlock Width="150" Margin="20" Text="{x:Bind Name}" ></TextBlock>
-                        <TextBlock Width="100" Margin="20" Text="{x:Bind Quantity}" ></TextBlock>
-                        <TextBlock Width="100" Margin="20" Text="{x:Bind QuantityImport}" ></TextBlock>
-                        <TextBlock Width="100" Margin="20" Text="{x:Bind Price}" ></TextBlock>
-                        <TextBlock Width="300" Margin="20" Text="{x:Bind Manufacturer}" ></TextBlock>
-                        <Button Margin="40,0,0,0" Click="Delete_Click" Background="Transparent" BorderBrush="Transparent">
-                            <FontIcon Glyph="&#xE74D;" />
-                        </Button>
-                    </StackPanel>
-                </Border>
-            </DataTemplate>
-        </ResourceDictionary>
+        <DataTemplate x:Key="HorizontalMedicine" x:DataType="localmodel:Medicine">
+            <Border BorderThickness="1" BorderBrush="#b5b5e8">
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Width="80" Margin="20" Text="{x:Bind Id}" />
+                    <TextBlock Width="150" Margin="20" Text="{x:Bind Name}" />
+                    <TextBlock Width="100" Margin="20" Text="{x:Bind Quantity}" />
+                    <TextBlock Width="100" Margin="20" Text="{x:Bind QuantityImport}" />
+                    <TextBlock Width="100" Margin="20" Text="{x:Bind Price}" />
+                    <TextBlock Width="300" Margin="20" Text="{x:Bind Manufacturer}" />
+                    <Button Click="Edit_Click" Background="Transparent" BorderBrush="Transparent">
+                        <FontIcon Glyph="&#xE70F;" />
+                    </Button>
+                    <Button Margin="40,0,0,0" Click="Delete_Click" Background="Transparent" BorderBrush="Transparent">
+                        <FontIcon Glyph="&#xE74D;" />
+                    </Button>
+                </StackPanel>
+            </Border>
+        </DataTemplate>
     </Page.Resources>
-    <Grid  Padding="10">
+
+    <Grid Padding="10">
+        
+
         <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
             <RowDefinition Height="Auto"/>
@@ -48,47 +43,95 @@
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
-        <StackPanel Grid.Row="0" Margin ="35,0,0,0"  Orientation="Horizontal" HorizontalAlignment="Left">
-            <TextBlock FontWeight="Bold" FontSize="20" Width="120">ID</TextBlock>
-            <TextBlock FontWeight="Bold" FontSize="20"  Width="190">Name</TextBlock>
-            <TextBlock FontWeight="Bold" FontSize="20"  Width="140">Remain</TextBlock>
-            <TextBlock FontWeight="Bold" FontSize="20"  Width="140">Import</TextBlock>
+        <Popup  x:Name="EditPopup" IsOpen="False" HorizontalAlignment="Center" VerticalAlignment="Center">
+            <Border Background="White" BorderBrush="Gray" BorderThickness="1" Padding="20">
+                <StackPanel Width="400">
+                    <TextBlock FontWeight="Bold" FontSize="20" Text="Medicine" Margin="0,0,0,10"/>
+                    <TextBox Header="Name" Text="{x:Bind ViewModel.MedicineEdit.Name, Mode=TwoWay}" Margin="0,0,0,10"/>
+                    <TextBox Header="Price" Text="{x:Bind ViewModel.MedicineEdit.Price, Mode=TwoWay}" Margin="0,0,0,10"/>
+                    <TextBox Header="Quantity Import" Text="{x:Bind ViewModel.MedicineEdit.QuantityImport, Mode=TwoWay}" Margin="0,0,0,10"/>
+                    <TextBox Header="Manufacturer" Text="{x:Bind ViewModel.MedicineEdit.Manufacturer, Mode=TwoWay}" Margin="0,0,0,10"/>
+                    <CalendarDatePicker Header="Import Date" Date="{x:Bind ViewModel.MedicineEdit.DateImport, Mode=OneWay}" Margin="0,0,0,10"/>
 
-            <TextBlock FontWeight="Bold" FontSize="20"  Width="140">Price</TextBlock>
-            <TextBlock FontWeight="Bold" FontSize="20"  Width="340">Manufacturer</TextBlock>
-            <TextBox HorizontalAlignment="Stretch" PlaceholderText="Search" TextChanged="searchTextbox_Click" Padding="10" CornerRadius="20" Name="keyword" Text="{x:Bind ViewModel.Keyword, 
-                        Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Width="200"/>
+                    <CalendarDatePicker Header="EXP Date" Date="{x:Bind ViewModel.MedicineEdit.ExpDate, Mode=TwoWay}" Margin="0,0,0,10"/>
+                    <CalendarDatePicker Header="MFG Date" Date="{x:Bind ViewModel.MedicineEdit.MfgDate, Mode=TwoWay}" Margin="0,0,0,10"/>
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                        <Button Click="UpdateMedicine_Click" Content="Update" Margin="5"/>
+                        <Button Click="ClosePopup_Click" Content="Cancel" Margin="5"/>
+                    </StackPanel>
+                </StackPanel>
+            </Border>
+        </Popup>
+        <StackPanel Grid.Row="0" Orientation="Horizontal" HorizontalAlignment="Stretch" VerticalAlignment="Center">
+            <TextBox Margin="20,0,0,20" HorizontalAlignment="Left" PlaceholderText="Search" TextChanged="searchTextbox_Click" Padding="10" CornerRadius="20" Name="keyword" Text="{x:Bind ViewModel.Keyword, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Width="500"/>
+            <StackPanel Margin="40,0,0,0" Orientation="Vertical" HorizontalAlignment="Right">
+                <TextBlock TextAlignment="Center" FontWeight="Bold" FontSize="16">Remaining shelf life</TextBlock>
+                <StackPanel Orientation="Horizontal">
+                    <RadioButton x:Name="RadioButton10Days" Content="10 Days" Checked="RadioButton_Checked"/>
+                    <RadioButton x:Name="RadioButton20Days" Content="20 Days" Checked="RadioButton_Checked"/>
+                    <RadioButton x:Name="RadioButton30Days" Content="30 Days" Checked="RadioButton_Checked"/>
+                    <Button Click="clearFilter">Clear filter</Button>
+                </StackPanel>
+            </StackPanel>
         </StackPanel>
-       
 
-        <ListView Grid.Row="1"  Name="itemsComboBox" Margin="0,10,0,0"                
-           ItemsSource="{Binding Medicines, Mode=TwoWay}"
-           ItemTemplate="{StaticResource HorizontalMedicine}">
-        </ListView>
-        <StackPanel Margin="0,0,0,20" Grid.Row="2"    Orientation="Horizontal" VerticalAlignment="Bottom" HorizontalAlignment="Center">
-            <Button  Click="previousButton_Click" >
+        <StackPanel Grid.Row="1" Margin="35,0,0,0" Orientation="Horizontal" HorizontalAlignment="Left">
+            <TextBlock FontWeight="Bold" FontSize="20" Width="120">ID</TextBlock>
+            <TextBlock FontWeight="Bold" FontSize="20" Width="190">Name</TextBlock>
+            <TextBlock FontWeight="Bold" FontSize="20" Width="140">Remain</TextBlock>
+            <TextBlock FontWeight="Bold" FontSize="20" Width="140">Import</TextBlock>
+            <TextBlock FontWeight="Bold" FontSize="20" Width="140">Price</TextBlock>
+            <TextBlock FontWeight="Bold" FontSize="20" Width="340">Manufacturer</TextBlock>
+        </StackPanel>
+
+        <ListView Grid.Row="2" Name="itemsComboBox" ItemsSource="{Binding Medicines, Mode=TwoWay}" ItemTemplate="{StaticResource HorizontalMedicine}"/>
+
+        <StackPanel Margin="0,0,0,10" Grid.Row="3" Orientation="Horizontal" VerticalAlignment="Bottom" HorizontalAlignment="Center">
+            <Button Click="previousButton_Click">
                 <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xE76B;"/>
             </Button>
             <StackPanel Orientation="Vertical">
-                <TextBlock TextAlignment="Center" Width="60" FontSize="16" >
-                       <Run Text="{x:Bind ViewModel.SelectedPageInfoItem.Page ,Mode=OneWay}"/> of <Run Text="{x:Bind ViewModel.SelectedPageInfoItem.Total, Mode=OneWay}"/>
+                <TextBlock TextAlignment="Center" Width="60" FontSize="16">
+                <Run Text="{x:Bind ViewModel.SelectedPageInfoItem.Page, Mode=OneWay}"/> of <Run Text="{x:Bind ViewModel.SelectedPageInfoItem.Total, Mode=OneWay}"/>
                 </TextBlock>
-                <ComboBox ItemsSource="{x:Bind ViewModel.PageInfos, Mode=OneWay}"
-                            SelectedItem="{x:Bind ViewModel.SelectedPageInfoItem, Mode=TwoWay}"
-                            SelectionChanged="pagesComboBox_SelectionChanged"
-                            Margin="5" Name="pagesComboBox" Width="100" Height="30">
+                <ComboBox ItemsSource="{x:Bind ViewModel.PageInfos, Mode=OneWay}" SelectedItem="{x:Bind ViewModel.SelectedPageInfoItem, Mode=TwoWay}" SelectionChanged="pagesComboBox_SelectionChanged" Margin="5" Name="pagesComboBox" Width="100" Height="30">
                     <ComboBox.ItemTemplate>
                         <DataTemplate x:DataType="localmodel:PageInfo">
-                            <TextBlock >
-                                 <Run Text="{x:Bind Page,Mode=OneWay}"/>/<Run Text="{x:Bind Total, Mode=OneWay}"/>
+                            <TextBlock>
+                            <Run Text="{x:Bind Page, Mode=OneWay}"/>/<Run Text="{x:Bind Total, Mode=OneWay}"/>
                             </TextBlock>
                         </DataTemplate>
                     </ComboBox.ItemTemplate>
                 </ComboBox>
             </StackPanel>
-            <Button  Click="nextButton_Click" >
+            <Button Click="nextButton_Click">
                 <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xE76C;"/>
             </Button>
+        </StackPanel>
+
+        <StackPanel Background="Pink" Grid.Row="4" Width="1000" BorderBrush="#b5b5e8" BorderThickness="2">
+            <Grid HorizontalAlignment="Center">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <TextBox Width="300" Margin="5" Header="Name" Grid.Row="0" Grid.Column="0" Text="{x:Bind ViewModel.MedicineNew.Name, Mode=TwoWay}"/>
+                <TextBox Width="300" Margin="5" Header="Price" Grid.Row="0" Grid.Column="1" Text="{x:Bind ViewModel.MedicineNew.Price, Mode=TwoWay}"/>
+                <TextBox Width="300" Margin="5" Header="Quantity" Grid.Row="1" Grid.Column="0" Text="{x:Bind ViewModel.MedicineNew.QuantityImport, Mode=TwoWay}"/>
+                <TextBox Width="300" Margin="5" Header="Manufacturer" Grid.Row="1" Grid.Column="1" Text="{x:Bind ViewModel.MedicineNew.Manufacturer, Mode=TwoWay}"/>
+                <CalendarDatePicker Margin="5" Width="300" Grid.Row="2" Grid.Column="0" PlaceholderText="Pick a date" Header="EXP Date" Date="{x:Bind ViewModel.MedicineNew.ExpDate, Mode=TwoWay}"/>
+                <CalendarDatePicker Margin="5" Width="300" Grid.Row="2" Grid.Column="1" PlaceholderText="Pick a date" Header="MFG Date" Date="{x:Bind ViewModel.MedicineNew.MfgDate, Mode=TwoWay}"/>
+                <StackPanel Grid.Row="3" Grid.ColumnSpan="2" Orientation="Horizontal" HorizontalAlignment="Center">
+                    <Button Click="addMedicine" x:Name="AddBtn" Margin="20,5,20,5" Width="80" Background="Blue" Foreground="White">Add</Button>
+                    <Button Click="cancelMedicine" Margin="20,5,20,5" Width="80">Cancel</Button>
+                </StackPanel>
+            </Grid>
         </StackPanel>
     </Grid>
 </Page>

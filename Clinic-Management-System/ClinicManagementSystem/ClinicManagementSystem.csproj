@@ -17,7 +17,6 @@
   <ItemGroup>
     <None Remove="Assets\doctor.png" />
     <None Remove="Assets\hopital.png" />
-    <None Remove="Views\AdminView\addMedicine.xaml" />
     <None Remove="Views\AdminView\reportBillAdmin.xaml" />
     <None Remove="Views\AdminView\reportMedicineAdmin.xaml" />
     <None Remove="Views\AdminView\reportPatientVisitsAdmin.xaml" />
@@ -58,11 +57,6 @@
   -->
   <ItemGroup Condition="'$(DisableMsixProjectCapabilityAddedByProject)'!='true' and '$(EnableMsixTooling)'=='true'">
     <ProjectCapability Include="Msix" />
-  </ItemGroup>
-  <ItemGroup>
-    <Page Update="Views\AdminView\addMedicine.xaml">
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
   </ItemGroup>
   <ItemGroup>
     <Page Update="Views\AdminView\reportBillAdmin.xaml">

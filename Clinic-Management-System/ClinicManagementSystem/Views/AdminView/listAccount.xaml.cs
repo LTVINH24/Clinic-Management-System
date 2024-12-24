@@ -4,6 +4,7 @@ using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Controls.Primitives;
 using Microsoft.UI.Xaml.Data;
+using Microsoft.UI.Xaml.Documents;
 using Microsoft.UI.Xaml.Input;
 using Microsoft.UI.Xaml.Media;
 using Microsoft.UI.Xaml.Navigation;
@@ -193,6 +194,24 @@ namespace ClinicManagementSystem.Views.AdminView
             if(sender is MenuFlyoutItem menuItem)
             {
                 ViewModel.UserEdit.role = menuItem.Text;
+            }
+        }
+
+        private void Lock(object sender, RoutedEventArgs e)
+        {
+            var button = sender as Button;
+            var user = button?.DataContext as User;
+            var fontIcon = button?.DataContext as FontIcon;
+            if (user.status == "locked")
+            {
+               
+                ViewModel.LockUser(user.id, "active");
+                ViewModel.LoadData();
+            }
+            else if(user.status =="active")
+            {
+                ViewModel.LockUser(user.id, "locked");
+                ViewModel.LoadData();
             }
         }
     }

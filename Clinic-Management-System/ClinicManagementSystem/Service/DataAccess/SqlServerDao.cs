@@ -49,7 +49,7 @@ namespace ClinicManagementSystem.Service.DataAccess
             var connectionString = GetConnectionString();
             SqlConnection connection = new SqlConnection(connectionString);
             connection.Open();
-            string query = $"SELECT id,name, role,password,phone,birthday,gender,address FROM EndUser WHERE username = @Username";
+            string query = $"SELECT id,name, role,password,phone,birthday,gender,address,status FROM EndUser WHERE username = @Username";
             var command = new SqlCommand(query, connection);
             command.Parameters.AddWithValue("@Username", username);
             var reader = command.ExecuteReader();
@@ -58,6 +58,7 @@ namespace ClinicManagementSystem.Service.DataAccess
             string role = "";
             string hassPassword = "";
             string phone = "";
+            string status = "";
             DateTime birthday;
             string gender;
             string address;
@@ -72,8 +73,10 @@ namespace ClinicManagementSystem.Service.DataAccess
                 birthday = (DateTime)reader["birthday"];
                 gender = reader["gender"].ToString();
                 address = reader["address"].ToString();
+                status = reader["status"].ToString();
+
                 connection.Close();
-                if (Password.VerifyPassword(password, hassPassword))
+                if (Password.VerifyPassword(password, hassPassword)&&status!="locked")
                 {
                     return (id, name, role, phone, gender, address);
                 }
@@ -146,7 +149,7 @@ namespace ClinicManagementSystem.Service.DataAccess
 
 
             var sql = $"""
-            SELECT count(*) over() as Total, id, name, role, username,password,phone,birthday,address,gender
+            SELECT count(*) over() as Total, id, name, role, username,phone,birthday,address,gender,status
             FROM EndUser
             WHERE Name like @Keyword
             {sortString} 
@@ -169,9 +172,9 @@ namespace ClinicManagementSystem.Service.DataAccess
                 user.gender = (string)reader["gender"];
                 user.role = (string)reader["role"];
                 user.birthday = (DateTime)reader["birthday"];
-                user.password = (string)reader["password"];
                 user.address = (string)reader["address"];
                 user.phone = (string)reader["phone"];
+                user.status = (string)reader["status"];
                 result.Add(user);
             }
             connection.Close();
@@ -310,16 +313,30 @@ namespace ClinicManagementSystem.Service.DataAccess
             connection.Close();
             return result > 0;
         }
-		//=============================================================================================
+		public bool LockUser(int id,string status)
+        {
+            var connectionString = GetConnectionString();
+            SqlConnection connection = new SqlConnection( connectionString);
+            connection.Open();
+            string query = "update EndUser set status = @status where id=@id";
+            var command = new SqlCommand(query, connection);
+            AddParameters(command, ("@status", status), ("@id", id));
+            var result = command.ExecuteNonQuery();
+            connection.Close();
+            return result > 0;
+
+        }
+
+        //=============================================================================================
 
 
 
-		//================================================Specialty========================================
-		/// <summary>
-		/// Lấy danh sách chuyên khoa
-		/// </summary>
-		/// <returns>Danh sách khoa</returns>
-		public List<Specialty> GetSpecialty()
+        //================================================Specialty========================================
+        /// <summary>
+        /// Lấy danh sách chuyên khoa
+        /// </summary>
+        /// <returns>Danh sách khoa</returns>
+        public List<Specialty> GetSpecialty()
         {
             var specialties = new List<Specialty>();
             var connectionString = GetConnectionString();
@@ -354,8 +371,13 @@ namespace ClinicManagementSystem.Service.DataAccess
 		public Tuple<List<Medicine>, int> GetMedicines(
                 int page, int rowsPerPage,
                 string keyword,
-                Dictionary<string, SortType> sortOptions)
+                Dictionary<string, SortType> sortOptions, int daysRemaining)
         {
+            string filter = "";
+            if(daysRemaining > 0)
+            {
+                filter = "AND DATEDIFF(day, GETDATE(), ExpDate) <= @DaysRemaining";
+            }    
             var result = new List<Medicine>();
             var connectionString = GetConnectionString();
             SqlConnection connection = new SqlConnection(connectionString);
@@ -384,14 +406,18 @@ namespace ClinicManagementSystem.Service.DataAccess
 
 
             var sql = $"""
-            SELECT count(*) over() as Total, id, name, manufacturer, price,quantity,quantityimport
+            SELECT count(*) over() as Total, id, name, manufacturer, price,quantity,quantityimport,expdate,mfgdate,dateimport
             FROM Medicine
-            WHERE Name like @Keyword and isDeleted != 'true'
+            WHERE Name like @Keyword and isDeleted != 'true' {filter}
             {sortString} 
             OFFSET @Skip ROWS FETCH NEXT @Take ROWS ONLY;        
         """;
             var command = new SqlCommand(sql, connection);
             AddParameters(command, ("@Skip", (page - 1) * rowsPerPage), ("@Take", rowsPerPage), ("@Keyword", $"%{keyword}%"));
+            if (daysRemaining > 0)
+            {
+                AddParameters(command, ("@DaysRemaining", daysRemaining));
+            }
             var reader = command.ExecuteReader();
             int count = -1;
             while (reader.Read())
@@ -407,6 +433,11 @@ namespace ClinicManagementSystem.Service.DataAccess
                 medicine.Price = (int)reader["price"];
                 medicine.Quantity = (int)reader["quantity"];
                 medicine.QuantityImport = (int)reader["quantityimport"];
+                medicine.ExpDate = (DateTime)reader["expdate"];
+                medicine.MfgDate = (DateTime)reader["mfgdate"];
+                medicine.DateImport =(DateTime)reader["dateimport"];
+
+
 
                 result.Add(medicine);
             }
