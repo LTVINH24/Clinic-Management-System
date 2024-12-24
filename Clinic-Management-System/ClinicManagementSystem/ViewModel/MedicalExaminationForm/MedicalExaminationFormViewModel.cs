@@ -26,6 +26,27 @@ namespace ClinicManagementSystem.ViewModel
 		public int TotalItems { get; set; } = 0;
 		public int RowsPerPage { get; set; }
 		public string Keyword { get; set; } = "";
+		private DateTimeOffset? _startDate;
+		public DateTimeOffset? StartDate
+		{
+			get => _startDate;
+			set
+			{
+				_startDate = value;
+				LoadData();
+			}
+		}
+
+		private DateTimeOffset? _endDate;
+		public DateTimeOffset? EndDate
+		{
+			get => _endDate;
+			set
+			{
+				_endDate = value;
+				LoadData();
+			}
+		}
 		public PageInfo SelectedPageInfoItem { get; set; } = new PageInfo();
 		public MedicalExaminationForm FormEdit { get; set; }
 		public ObservableCollection<PageInfo> PageInfos
@@ -49,6 +70,7 @@ namespace ClinicManagementSystem.ViewModel
 
 		public event PropertyChangedEventHandler PropertyChanged;
 
+		
 		public MedicalExaminationFormViewModel()
 		{
 			RowsPerPage = 10;
@@ -126,7 +148,16 @@ namespace ClinicManagementSystem.ViewModel
 		/// </summary>
 		public void LoadData()
 		{
-			var (items, count) = _dao.GetMedicalExaminationForm(CurrentPage, RowsPerPage, Keyword, _sortOptions);
+			
+
+			var (items, count) = _dao.GetMedicalExaminationForms(
+				CurrentPage, 
+				RowsPerPage, 
+				Keyword,
+				StartDate,
+				EndDate,
+				_sortOptions
+			);
 
 			MedicalExaminationForms.Clear();
 

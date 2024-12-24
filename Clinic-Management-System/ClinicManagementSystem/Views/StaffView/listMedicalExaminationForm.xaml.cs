@@ -218,5 +218,12 @@ namespace ClinicManagementSystem.Views.StaffView
 				ViewModel.FormEdit.VisitType = menuItem.Text;
 			}
 		}
+
+		private void ClearFilter_Click(object sender, RoutedEventArgs e)
+		{
+			ViewModel.StartDate = null;
+			ViewModel.EndDate = null;
+			ViewModel.LoadData();
+		}
 	}	
 }

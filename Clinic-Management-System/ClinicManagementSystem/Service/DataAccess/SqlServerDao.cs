@@ -586,12 +586,16 @@ namespace ClinicManagementSystem.Service.DataAccess
 		/// <param name="rowsPerPage"></param>
 		/// <param name="keyword"></param>
 		/// <param name="sortOptions"></param>
+		/// <param name="startDate"></param>
+		/// <param name="endDate"></param>
 		/// <returns>Danh sách phiếu khám bệnh và số lượng phiếu khám bệnh</returns>
-		public Tuple<List<MedicalExaminationForm>, int> GetMedicalExaminationForm(
+		public Tuple<List<MedicalExaminationForm>, int> GetMedicalExaminationForms(
             int page,
             int rowsPerPage,
             string keyword,
-            Dictionary<string, SortType> sortOptions)
+            DateTimeOffset? startDate,
+			DateTimeOffset? endDate,
+			Dictionary<string, SortType> sortOptions)
         {
             var result = new List<MedicalExaminationForm>();
             var connectionString = GetConnectionString();
@@ -621,18 +625,42 @@ namespace ClinicManagementSystem.Service.DataAccess
             {
                 sortString += "ID ";
             }
+			
+			var whereClause = "WHERE symptom like @Keyword";
+			if (startDate.HasValue)
+			{
+				whereClause += " AND CAST(time AS DATE) >= @StartDate";
+			}
+			if (endDate.HasValue)
+			{
+				whereClause += " AND CAST(time AS DATE) <= @EndDate";
+			}
 
-            var sql = $"""
+
+			var sql = $"""
 				SELECT count(*) over() as Total, id, patientId, staffId, time, symptom, doctorId, visitType
 				FROM MedicalExaminationForm
-				WHERE symptom like @Keyword
+				{whereClause}
 				{sortString}
 				OFFSET @Skip ROWS FETCH NEXT @Take ROWS ONLY;
 				""";
 
-            var command = new SqlCommand(sql, connection);
-            AddParameters(command, ("@Skip", (page - 1) * rowsPerPage), ("@Take", rowsPerPage), ("@Keyword", $"%{keyword}%"));
-            var reader = command.ExecuteReader();
+			var command = new SqlCommand(sql, connection);
+			AddParameters(command, ("@Skip", (page - 1) * rowsPerPage), ("@Take", rowsPerPage), ("@Keyword", $"%{keyword}%"));
+
+			if (startDate.HasValue)
+			{
+				var localStartDate = startDate.Value.LocalDateTime.Date;
+				AddParameters(command, ("@StartDate", localStartDate));
+			}
+			if (endDate.HasValue)
+			{
+				var localEndDate = endDate.Value.LocalDateTime.Date;
+				AddParameters(command, ("@EndDate", localEndDate));
+			}
+
+
+			var reader = command.ExecuteReader();
             int count = -1;
 
             while (reader.Read())
@@ -729,8 +757,7 @@ namespace ClinicManagementSystem.Service.DataAccess
             SqlConnection connection = new SqlConnection(connectionString);
             connection.Open();
 
-            DateTime currentDate = DateTime.Now;
-            string formatDate = currentDate.ToString("yyyy-MM-dd");
+            medicalExaminationForm.Time = DateTimeOffset.Now;
             int id = UserSessionService.Instance.LoggedInUserId;
 
 
@@ -742,7 +769,7 @@ namespace ClinicManagementSystem.Service.DataAccess
                 ("@PatientId", patientId),
                 ("@StaffId", id),
                 ("@DoctorId", medicalExaminationForm.DoctorId),
-                ("@Time", formatDate),
+                ("@Time", medicalExaminationForm.Time),
                 ("@Symptom", medicalExaminationForm.Symptoms),
                 ("@VisitType", medicalExaminationForm.VisitType));
 
@@ -774,7 +801,7 @@ namespace ClinicManagementSystem.Service.DataAccess
                             Id = reader.GetInt32(reader.GetOrdinal("id")),
                             PatientId = reader.GetInt32(reader.GetOrdinal("patientId")),
                             StaffId = reader.GetInt32(reader.GetOrdinal("staffId")),
-                            Time = reader.GetDateTime(reader.GetOrdinal("time")),
+                            Time = DateTimeOffset.Parse(reader.GetDateTime(3).ToString()),
                             Symptoms = reader.IsDBNull(reader.GetOrdinal("symptom")) ? (string)null : reader.GetString(reader.GetOrdinal("symptom")),
                             DoctorId = reader.GetInt32(reader.GetOrdinal("doctorId"))
                         };
@@ -795,7 +822,7 @@ namespace ClinicManagementSystem.Service.DataAccess
             SqlConnection connection = new SqlConnection(connectionString);
             connection.Open();
 
-			var time = DateTime.Now;
+			form.Time = DateTimeOffset.Now;
 			var sql = "update MedicalExaminationForm set " +
 				"patientId=@patientId, " +
 				"doctorId=@doctorId, " +
@@ -809,7 +836,7 @@ namespace ClinicManagementSystem.Service.DataAccess
 				("@Id", form.Id),
 				("@patientId", form.PatientId),
 				("@doctorId", form.DoctorId),
-				("@time", form.Time),
+				("@time", form.Time.Value),
 				("@symptom", form.Symptoms),
                 ("@visitType", form.VisitType));
 
