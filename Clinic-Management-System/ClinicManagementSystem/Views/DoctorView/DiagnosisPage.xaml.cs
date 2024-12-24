@@ -1,5 +1,6 @@
 ﻿using ClinicManagementSystem.Model;
 using ClinicManagementSystem.ViewModel;
+using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Navigation;
 using System.Collections.ObjectModel;
@@ -32,12 +33,30 @@ namespace ClinicManagementSystem.Views.DoctorView
         }
 
 		/// <summary>
+		/// Xử lý sự kiện khi nhấn nút Save
+		/// </summary>
+		/// <param name="sender"></param>
+		/// <param name="e"></param>
+		private void SaveButton_Click(object sender, RoutedEventArgs e)
+        {
+            // Lưu chẩn đoán
+            ViewModel.SaveDiagnosis();
+            
+            // Quay về trang trước
+            if (Frame.CanGoBack)
+            {
+                Frame.GoBack();
+            }
+        }
+
+		/// <summary>
 		/// Xử lý sự kiện khi nhấn nút Back
 		/// </summary>
 		/// <param name="sender"></param>
 		/// <param name="e"></param>
-		private void BackButton_Click(object sender, Microsoft.UI.Xaml.RoutedEventArgs e)
+		private void BackButton_Click(object sender, RoutedEventArgs e)
         {
+            // Chỉ quay về trang trước
             if (Frame.CanGoBack)
             {
                 Frame.GoBack();
@@ -51,10 +70,15 @@ namespace ClinicManagementSystem.Views.DoctorView
 		/// <param name="e"></param>
 		private void SelectMedicinesButton_Click(object sender, Microsoft.UI.Xaml.RoutedEventArgs e)
         {
-            // Navigate to the medicine selection page
+            // Lưu chẩn đoán
+            ViewModel.SaveDiagnosis();
+
+            // Truyền formId khi navigate
             var medicineSelectionPage = new MedicineSelectionPage();
             medicineSelectionPage.MedicineSelectionConfirmed += OnMedicineSelectionConfirmed;
-            Frame.Navigate(typeof(MedicineSelectionPage), null, null);
+            
+            // Truyền formId qua parameter
+            Frame.Navigate(typeof(MedicineSelectionPage), ViewModel.MedicalExaminationForm.Id);
         }
 
 		/// <summary>

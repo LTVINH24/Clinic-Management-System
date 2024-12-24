@@ -3,6 +3,8 @@ using ClinicManagementSystem.Service.DataAccess;
 using ClinicManagementSystem.Model;
 using System.ComponentModel;
 using System.Linq;
+using System.Collections.Generic;
+using System;
 
 namespace ClinicManagementSystem.ViewModel
 {
@@ -24,21 +26,39 @@ namespace ClinicManagementSystem.ViewModel
             }
         }
 
-        private static ObservableCollection<MedicineSelection> _lastSelectedMedicines;
-        public static ObservableCollection<MedicineSelection> LastSelectedMedicines
+        private static Dictionary<int, ObservableCollection<MedicineSelection>> _medicineSelectionsByFormId 
+            = new Dictionary<int, ObservableCollection<MedicineSelection>>();
+
+        private int _currentFormId;
+
+        private string _searchText;
+        private ObservableCollection<MedicineSelection> _filteredMedicines;
+
+        public string SearchText
         {
-            get => _lastSelectedMedicines ?? (_lastSelectedMedicines = new ObservableCollection<MedicineSelection>());
-            set => _lastSelectedMedicines = value;
+            get => _searchText;
+            set
+            {
+                if (SetProperty(ref _searchText, value))
+                {
+                    FilterMedicines();
+                }
+            }
         }
 
-        public ObservableCollection<MedicineSelection> SelectedMedicines { get; set; }
+        public ObservableCollection<MedicineSelection> FilteredMedicines
+        {
+            get => _filteredMedicines;
+            private set => SetProperty(ref _filteredMedicines, value);
+        }
 
         public MedicineSelectionViewModel()
         {
             _dataAccess = new SqlServerDao();
             AvailableMedicines = new ObservableCollection<MedicineSelection>();
-            SelectedMedicines = new ObservableCollection<MedicineSelection>();
+            _currentFormId = -1;
             LoadAvailableMedicines();
+            FilteredMedicines = new ObservableCollection<MedicineSelection>(AvailableMedicines);
         }
 
 		/// <summary>
@@ -73,9 +93,12 @@ namespace ClinicManagementSystem.ViewModel
 
         public void LoadFromLastSelection()
         {
-            if (LastSelectedMedicines == null || !LastSelectedMedicines.Any()) return;
+            if (_currentFormId == -1) return;
 
-            foreach (var medicine in LastSelectedMedicines)
+            var formMedicines = GetMedicineSelectionsForForm(_currentFormId);
+            if (formMedicines == null || !formMedicines.Any()) return;
+
+            foreach (var medicine in formMedicines)
             {
                 var availableMedicine = AvailableMedicines
                     .FirstOrDefault(m => m.Medicine.Id == medicine.Medicine.Id);
@@ -86,18 +109,61 @@ namespace ClinicManagementSystem.ViewModel
                     availableMedicine.SelectedDosage = medicine.SelectedDosage;
                 }
             }
-            System.Diagnostics.Debug.WriteLine($"Loaded {LastSelectedMedicines.Count} medicines from static storage");
+            System.Diagnostics.Debug.WriteLine($"Loaded {formMedicines.Count} medicines for form {_currentFormId}");
         }
 
         public void SaveSelectedMedicines()
         {
+            if (_currentFormId == -1) return;
+
             var selectedMedicines = AvailableMedicines.Where(m => m.IsSelected).ToList();
-            LastSelectedMedicines.Clear();
+            ClearMedicineSelectionsForForm(_currentFormId);
+            var formMedicines = GetMedicineSelectionsForForm(_currentFormId);
+            
             foreach (var medicine in selectedMedicines)
             {
-                LastSelectedMedicines.Add(medicine);
+                formMedicines.Add(medicine);
             }
-            System.Diagnostics.Debug.WriteLine($"Saved {LastSelectedMedicines.Count} medicines to static storage");
+            
+            System.Diagnostics.Debug.WriteLine($"Saved {selectedMedicines.Count} medicines for form {_currentFormId}");
+        }
+
+        public void InitializeWithFormId(int formId)
+        {
+            _currentFormId = formId;
+        }
+
+        public static ObservableCollection<MedicineSelection> GetMedicineSelectionsForForm(int formId)
+        {
+            if (!_medicineSelectionsByFormId.ContainsKey(formId))
+            {
+                _medicineSelectionsByFormId[formId] = new ObservableCollection<MedicineSelection>();
+            }
+            return _medicineSelectionsByFormId[formId];
+        }
+
+        public static void ClearMedicineSelectionsForForm(int formId)
+        {
+            if (_medicineSelectionsByFormId.ContainsKey(formId))
+            {
+                _medicineSelectionsByFormId[formId].Clear();
+            }
+        }
+
+        private void FilterMedicines()
+        {
+            if (string.IsNullOrWhiteSpace(SearchText))
+            {
+                FilteredMedicines = new ObservableCollection<MedicineSelection>(AvailableMedicines);
+            }
+            else
+            {
+                var filtered = AvailableMedicines.Where(m => 
+                    m.Medicine.Name.Contains(SearchText, StringComparison.OrdinalIgnoreCase));
+                FilteredMedicines = new ObservableCollection<MedicineSelection>(filtered);
+            }
+            
+            System.Diagnostics.Debug.WriteLine($"Filtered medicines count: {FilteredMedicines.Count}");
         }
     }
 }

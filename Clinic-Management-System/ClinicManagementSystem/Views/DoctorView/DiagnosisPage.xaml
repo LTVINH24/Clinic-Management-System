@@ -178,14 +178,16 @@
 
             <!-- Nút lưu và quay lại -->
             <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Center" Spacing="20" Margin="0,20,0,0">
-                <Button Content="Save" Command="{Binding SaveCommand}" 
-                    Style="{StaticResource AccentButtonStyle}" 
-                    HorizontalAlignment="Center" 
-                    Width="100"/>
-                <Button Content="Back" Click="BackButton_Click" 
-                    Style="{StaticResource DefaultButtonStyle}" 
-                    HorizontalAlignment="Center" 
-                    Width="100"/>
+                <Button Content="Save" 
+                        Click="SaveButton_Click"
+                        Style="{StaticResource AccentButtonStyle}" 
+                        HorizontalAlignment="Center" 
+                        Width="100"/>
+                <Button Content="Back" 
+                        Click="BackButton_Click"
+                        Style="{StaticResource DefaultButtonStyle}" 
+                        HorizontalAlignment="Center" 
+                        Width="100"/>
             </StackPanel>
         </Grid>
     </ScrollViewer>

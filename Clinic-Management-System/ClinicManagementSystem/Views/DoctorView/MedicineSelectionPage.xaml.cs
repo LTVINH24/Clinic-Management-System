@@ -25,9 +25,18 @@ namespace ClinicManagementSystem.Views.DoctorView
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
             base.OnNavigatedTo(e);
-            if (e.Parameter is ObservableCollection<MedicineSelection> selectedMedicines)
+            
+            if (e.Parameter is int formId)
             {
-                ViewModel.InitializeWithSelectedMedicines(selectedMedicines);
+                // Khởi tạo ViewModel với formId
+                var viewModel = new MedicineSelectionViewModel();
+                viewModel.InitializeWithFormId(formId);
+                this.DataContext = viewModel;
+                
+                // Load dữ liệu từ lần chọn trước
+                viewModel.LoadFromLastSelection();
+                
+                System.Diagnostics.Debug.WriteLine($"Initialized MedicineSelectionPage with formId: {formId}");
             }
         }
 
@@ -48,10 +57,10 @@ namespace ClinicManagementSystem.Views.DoctorView
 
             if (ValidateSelections(selectedMedicines))
             {
-                // Lưu vào static storage trước
+                // Lưu danh sách thuốc đã chọn
                 ViewModel.SaveSelectedMedicines();
                 
-                // Sau đó thông báo cho DiagnosisPage
+                // Thông báo cho DiagnosisPage
                 MedicineSelectionConfirmed?.Invoke(this, selectedMedicines);
                 
                 System.Diagnostics.Debug.WriteLine($"Confirmed selection of {selectedMedicines.Count} medicines");
@@ -125,5 +134,13 @@ namespace ClinicManagementSystem.Views.DoctorView
         //    // This is just a placeholder implementation
         //    return 1;
         //}
+
+        private void AutoSuggestBox_TextChanged(AutoSuggestBox sender, AutoSuggestBoxTextChangedEventArgs args)
+        {
+            if (args.Reason == AutoSuggestionBoxTextChangeReason.UserInput)
+            {
+                ViewModel.SearchText = sender.Text;
+            }
+        }
     }
 }

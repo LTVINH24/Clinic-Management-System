@@ -38,15 +38,27 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
 
         <!-- Title -->
-        <TextBlock Grid.Row="0" FontSize="24" FontWeight="Bold" Text="Medicine Selection" HorizontalAlignment="Center" Margin="0,10" />
+        <TextBlock Grid.Row="0" FontSize="24" FontWeight="Bold" Text="Medicine Selection" 
+                   HorizontalAlignment="Center" Margin="0,10" />
+
+        <!-- Search Box -->
+        <AutoSuggestBox Grid.Row="1" 
+                        PlaceholderText="Search medicines by name..."
+                        QueryIcon="Find"
+                        Width="300"
+                        Margin="0,10,0,20"
+                        HorizontalAlignment="Left"
+                        Text="{Binding SearchText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                        TextChanged="AutoSuggestBox_TextChanged"/>
 
         <!-- Header Grid -->
-        <Grid Grid.Row="1">
+        <Grid Grid.Row="2">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="0.5*" />
                 <ColumnDefinition Width="3*" />
@@ -73,7 +85,10 @@
         </Grid>
 
         <!-- ListView -->
-        <ListView Grid.Row="2" ItemsSource="{Binding AvailableMedicines}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+        <ListView Grid.Row="3" 
+                  ItemsSource="{Binding FilteredMedicines}" 
+                  HorizontalAlignment="Stretch" 
+                  VerticalAlignment="Stretch">
             <ListView.ItemTemplate>
                 <DataTemplate>
                     <Grid>
@@ -108,7 +123,7 @@
         </ListView>
 
         <!-- Footer -->
-        <StackPanel Grid.Row="3" Orientation="Horizontal" HorizontalAlignment="Right">
+        <StackPanel Grid.Row="4" Orientation="Horizontal" HorizontalAlignment="Right">
             <Button Content="Back" Click="BackButton_Click" />
             <Button Content="Confirm" Click="ConfirmButton_Click" />
         </StackPanel>

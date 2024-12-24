@@ -88,15 +88,15 @@ namespace ClinicManagementSystem.ViewModel
                 MedicalRecord = _dataAccess.CreateMedicalRecordFromForm(MedicalExaminationForm);
             }
 
-            // Load medicines from static storage
-            System.Diagnostics.Debug.WriteLine($"Before loading: LastSelectedMedicines has {MedicineSelectionViewModel.LastSelectedMedicines.Count} items");
-            
+            // Load medicines for this specific form
             SelectedMedicines.Clear();
-            foreach (var medicine in MedicineSelectionViewModel.LastSelectedMedicines)
+            var formMedicines = MedicineSelectionViewModel.GetMedicineSelectionsForForm(medicalExaminationFormId);
+            foreach (var medicine in formMedicines)
             {
                 SelectedMedicines.Add(medicine);
-                System.Diagnostics.Debug.WriteLine($"Added medicine: {medicine.Medicine.Name}");
             }
+            
+            System.Diagnostics.Debug.WriteLine($"Loaded {SelectedMedicines.Count} medicines for form {medicalExaminationFormId}");
             
             // Tính tổng tiền sau khi load danh sách thuốc
             CalculateTotalAmount();
@@ -110,7 +110,7 @@ namespace ClinicManagementSystem.ViewModel
 		/// <summary>
 		/// Lưu thông tin chẩn đoán 
 		/// </summary>
-		private void SaveDiagnosis()
+		public void SaveDiagnosis()
         {
             if (MedicalRecord != null)
             {
@@ -125,28 +125,19 @@ namespace ClinicManagementSystem.ViewModel
 		/// <param name="medicines"></param>
 		public void UpdateSelectedMedicines(ObservableCollection<MedicineSelection> medicines)
         {
-            if (medicines == null) return;
+            if (medicines == null || MedicalExaminationForm == null) return;
 
-            System.Diagnostics.Debug.WriteLine($"UpdateSelectedMedicines called with {medicines.Count} medicines");
+            // Lấy danh sách thuốc theo formId
+            var formMedicines = MedicineSelectionViewModel.GetMedicineSelectionsForForm(MedicalExaminationForm.Id);
             
             SelectedMedicines.Clear();
-            foreach (var medicine in medicines)
+            foreach (var medicine in formMedicines)
             {
                 SelectedMedicines.Add(medicine);
-                System.Diagnostics.Debug.WriteLine($"Added medicine: {medicine.Medicine.Name} - Quantity: {medicine.SelectedQuantity} - Price: {medicine.Medicine.Price}");
-            }
-
-            // Cập nhật LastSelectedMedicines
-            MedicineSelectionViewModel.LastSelectedMedicines.Clear();
-            foreach (var medicine in medicines)
-            {
-                MedicineSelectionViewModel.LastSelectedMedicines.Add(medicine);
+                System.Diagnostics.Debug.WriteLine($"Added medicine: {medicine.Medicine.Name}");
             }
             
-            // Tính tổng tiền sau khi cập nhật danh sách thuốc
             CalculateTotalAmount();
-            
-            System.Diagnostics.Debug.WriteLine($"Updated LastSelectedMedicines, now has {MedicineSelectionViewModel.LastSelectedMedicines.Count} items");
             OnPropertyChanged(nameof(SelectedMedicines));
         }
 
