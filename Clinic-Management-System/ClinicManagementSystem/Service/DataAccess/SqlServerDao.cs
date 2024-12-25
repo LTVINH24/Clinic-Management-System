@@ -683,15 +683,6 @@ namespace ClinicManagementSystem.Service.DataAccess
                     count = (int)reader["Total"];
                 }
 
-				//var medicalExaminationForm = new MedicalExaminationForm();
-				//medicalExaminationForm.Id = (int)reader["id"];
-				//medicalExaminationForm.PatientId = (int)reader["patientId"];
-				//medicalExaminationForm.StaffId = (int)reader["staffId"];
-				//medicalExaminationForm.Time = (DateTime)reader["time"];
-				//medicalExaminationForm.Symptoms = (string)reader["symptom"];
-				//medicalExaminationForm.DoctorId = (int)reader["doctorId"];
-				//medicalExaminationForm.VisitType = (string)reader["visitType"];
-
 				var medicalExaminationForm = new MedicalExaminationForm
 				{
 					Id = (int)reader["id"],
