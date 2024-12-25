@@ -18,9 +18,9 @@
     <ScrollViewer VerticalScrollBarVisibility="Auto">
         <Grid Padding="20">
             <Grid.RowDefinitions>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="*"/>
-                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>  <!-- Header -->
+                <RowDefinition Height="*"/>     <!-- Content -->
+                <RowDefinition Height="Auto"/>  <!-- Buttons -->
             </Grid.RowDefinitions>
 
             <!-- Header -->
@@ -30,163 +30,181 @@
                        Foreground="{ThemeResource SystemAccentColor}"
                        Margin="0,0,0,20"/>
 
-            <!-- Nội dung thông tin và chẩn đoán -->
-            <StackPanel Grid.Row="1" Spacing="15">
-                <!-- Thông tin bệnh nhân -->
-                <TextBlock Text="Patient Information" FontSize="18" FontWeight="SemiBold" Margin="20,0,0,10"/>
-                <StackPanel Orientation="Horizontal" Spacing="10">
-                    <TextBlock Text="Name:" FontWeight="SemiBold" Foreground="Gray"/>
-                    <TextBlock Text="{Binding Patient.Name}" FontWeight="Normal"/>
+            <!-- Content Grid -->
+            <Grid Grid.Row="1">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>     <!-- Left column -->
+                    <ColumnDefinition Width="Auto"/>  <!-- Separator -->
+                    <ColumnDefinition Width="*"/>     <!-- Right column -->
+                </Grid.ColumnDefinitions>
+
+                <!-- Left Column - Patient & Examination Info -->
+                <StackPanel Grid.Column="0" Spacing="15">
+                    <!-- Thông tin bệnh nhân -->
+                    <TextBlock Text="Patient Information" FontSize="18" FontWeight="SemiBold" Margin="0,0,0,10"/>
+                    <StackPanel Orientation="Horizontal" Spacing="10">
+                        <TextBlock Text="Name:" FontWeight="SemiBold" Foreground="Gray"/>
+                        <TextBlock Text="{Binding Patient.Name}" FontWeight="Normal"/>
+                    </StackPanel>
+
+                    <StackPanel Orientation="Horizontal" Spacing="10">
+                        <TextBlock Text="Date of Birth:" FontWeight="SemiBold" Foreground="Gray"/>
+                        <TextBlock Text="{Binding Patient.DoB}" FontWeight="Normal"/>
+                    </StackPanel>
+
+                    <StackPanel Orientation="Horizontal" Spacing="10">
+                        <TextBlock Text="Gender:" FontWeight="SemiBold" Foreground="Gray"/>
+                        <TextBlock Text="{Binding Patient.Gender}" FontWeight="Normal"/>
+                    </StackPanel>
+
+                    <!-- Đường thẳng ngang -->
+                    <Rectangle Height="1" Fill="Gray" HorizontalAlignment="Stretch" Margin="0,10,0,10"/>
+
+                    <!-- Thông tin phiếu khám -->
+                    <TextBlock Text="Examination Information" FontSize="18" FontWeight="SemiBold" Margin="0,0,0,10"/>
+                    <StackPanel Orientation="Horizontal" Spacing="10">
+                        <TextBlock Text="Examination ID:" FontWeight="SemiBold" Foreground="Gray"/>
+                        <TextBlock Text="{Binding MedicalExaminationForm.Id}" FontWeight="Normal"/>
+                    </StackPanel>
+
+                    <StackPanel Orientation="Horizontal" Spacing="10">
+                        <TextBlock Text="Time:" FontWeight="SemiBold" Foreground="Gray"/>
+                        <TextBlock Text="{Binding MedicalExaminationForm.Time}" FontWeight="Normal"/>
+                    </StackPanel>
+
+                    <StackPanel Orientation="Horizontal" Spacing="10">
+                        <TextBlock Text="Symptom:" FontWeight="SemiBold" Foreground="Gray"/>
+                        <TextBlock Text="{Binding MedicalExaminationForm.Symptoms}" FontWeight="Normal" TextWrapping="Wrap"/>
+                    </StackPanel>
+
+                    <!-- Đường thẳng ngang -->
+                    <Rectangle Height="1" Fill="Gray" HorizontalAlignment="Stretch" Margin="0,10,0,10"/>
+
+                    <!-- Nhập liệu chẩn đoán -->
+                    <TextBlock Text="Diagnosis:" FontSize="18" FontWeight="SemiBold" Margin="0,0,0,10"/>
+                    <TextBox Text="{Binding MedicalRecord.Diagnosis, Mode=TwoWay}" 
+                             AcceptsReturn="True" 
+                             Height="100" 
+                             PlaceholderText="Enter diagnosis details" 
+                             Padding="10"
+                             BorderBrush="{ThemeResource SystemAccentColor}"
+                             BorderThickness="1"/>
                 </StackPanel>
 
-                <StackPanel Orientation="Horizontal" Spacing="10">
-                    <TextBlock Text="Date of Birth:" FontWeight="SemiBold" Foreground="Gray"/>
-                    <TextBlock Text="{Binding Patient.DoB}" FontWeight="Normal"/>
-                </StackPanel>
+                <!-- Separator -->
+                <Rectangle Grid.Column="1" 
+                           Width="1" 
+                           Fill="Gray" 
+                           Margin="20,0"/>
 
-                <StackPanel Orientation="Horizontal" Spacing="10">
-                    <TextBlock Text="Gender:" FontWeight="SemiBold" Foreground="Gray"/>
-                    <TextBlock Text="{Binding Patient.Gender}" FontWeight="Normal"/>
-                </StackPanel>
-
-                <!-- Đường thẳng ngang -->
-                <Rectangle Height="1" Fill="Gray" HorizontalAlignment="Stretch" Margin="0,10,0,10"/>
-
-                <!-- Thông tin phiếu khám -->
-                <TextBlock Text="Examination Information" FontSize="18" FontWeight="SemiBold" Margin="20,0,0,10"/>
-                <StackPanel Orientation="Horizontal" Spacing="10">
-                    <TextBlock Text="Examination ID:" FontWeight="SemiBold" Foreground="Gray"/>
-                    <TextBlock Text="{Binding MedicalExaminationForm.Id}" FontWeight="Normal"/>
-                </StackPanel>
-
-                <StackPanel Orientation="Horizontal" Spacing="10">
-                    <TextBlock Text="Time:" FontWeight="SemiBold" Foreground="Gray"/>
-                    <TextBlock Text="{Binding MedicalExaminationForm.Time}" FontWeight="Normal"/>
-                </StackPanel>
-
-                <StackPanel Orientation="Horizontal" Spacing="10">
-                    <TextBlock Text="Symptom:" FontWeight="SemiBold" Foreground="Gray"/>
-                    <TextBlock Text="{Binding MedicalExaminationForm.Symptoms}" FontWeight="Normal" TextWrapping="Wrap"/>
-                </StackPanel>
-
-                <!-- Đường thẳng ngang -->
-                <Rectangle Height="1" Fill="Gray" HorizontalAlignment="Stretch" Margin="0,10,0,10"/>
-
-                <!-- Nhập liệu chẩn đoán -->
-                <TextBlock Text="Diagnosis:" FontSize="18" FontWeight="SemiBold" Margin="20,0,0,10"/>
-                <TextBox Text="{Binding MedicalRecord.Diagnosis, Mode=TwoWay}" 
-                         AcceptsReturn="True" 
-                         Height="100" 
-                         PlaceholderText="Enter diagnosis details" 
-                         Padding="10"
-                         BorderBrush="{ThemeResource SystemAccentColor}"
-                         BorderThickness="1"/>
-
-                <!-- Đường thẳng ngang -->
-                <Rectangle Height="1" Fill="Gray" HorizontalAlignment="Stretch" Margin="0,10,0,10"/>
-
-                <!-- Danh sách thuốc -->
-                <Grid>
-                    <!-- Danh sách thuốc khi có dữ liệu -->
-                    <StackPanel Visibility="{x:Bind ViewModel.SelectedMedicines.Count, Mode=OneWay, Converter={StaticResource VisibilityConverter}}">
-                        <TextBlock Text="Selected Medicines" 
-                                  FontSize="18" 
-                                  FontWeight="SemiBold" 
-                                  Margin="0,20,0,5"/>
-                        
-                        <ListView x:Name="SelectedMedicinesListView" 
-                                  ItemsSource="{Binding SelectedMedicines}"
-                                  BorderBrush="{ThemeResource SystemAccentColor}"
-                                  BorderThickness="1"
-                                  Margin="0,0,0,10"
-                                  MinHeight="100">
-                            <ListView.HeaderTemplate>
-                                <DataTemplate>
-                                    <Grid Margin="5">
-                                        <Grid.ColumnDefinitions>
-                                            <ColumnDefinition Width="2*"/>
-                                            <ColumnDefinition Width="*"/>
-                                            <ColumnDefinition Width="*"/>
-                                        </Grid.ColumnDefinitions>
-                                        
-                                        <TextBlock Grid.Column="0" Text="Medicine Name" FontWeight="Bold" Margin="5"/>
-                                        <TextBlock Grid.Column="1" Text="Quantity" FontWeight="Bold" Margin="5"/>
-                                        <TextBlock Grid.Column="2" Text="Dosage" FontWeight="Bold" Margin="5"/>
-                                    </Grid>
-                                </DataTemplate>
-                            </ListView.HeaderTemplate>
+                <!-- Right Column - Medicines -->
+                <StackPanel Grid.Column="2" Spacing="15">
+                    <!-- Danh sách thuốc -->
+                    <Grid>
+                        <!-- Danh sách thuốc khi có dữ liệu -->
+                        <StackPanel Visibility="{x:Bind ViewModel.SelectedMedicines.Count, Mode=OneWay, Converter={StaticResource VisibilityConverter}}">
+                            <TextBlock Text="Selected Medicines" 
+                                      FontSize="18" 
+                                      FontWeight="SemiBold" 
+                                      Margin="0,0,0,10"/>
                             
-                            <ListView.ItemTemplate>
-                                <DataTemplate>
-                                    <Grid Margin="5">
-                                        <Grid.ColumnDefinitions>
-                                            <ColumnDefinition Width="2*"/>
-                                            <ColumnDefinition Width="*"/>
-                                            <ColumnDefinition Width="*"/>
-                                        </Grid.ColumnDefinitions>
-                                        
-                                        <TextBlock Grid.Column="0" 
-                                                  Text="{Binding Medicine.Name}" 
-                                                  TextWrapping="Wrap"
-                                                  Margin="5"/>
-                                        
-                                        <TextBlock Grid.Column="1" 
-                                                  Text="{Binding SelectedQuantity}"
-                                                  Margin="5"/>
-                                        
-                                        <TextBlock Grid.Column="2" 
-                                                  Text="{Binding SelectedDosage}"
-                                                  Margin="5"/>
-                                    </Grid>
-                                </DataTemplate>
-                            </ListView.ItemTemplate>
-                        </ListView>
+                            <ListView ItemsSource="{Binding SelectedMedicines}"
+                                      BorderBrush="{ThemeResource SystemAccentColor}"
+                                      BorderThickness="1"
+                                      Margin="0,0,0,10"
+                                      MinHeight="100">
+                                <ListView.HeaderTemplate>
+                                    <DataTemplate>
+                                        <Grid>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="2*"/>
+                                                <ColumnDefinition Width="*"/>
+                                                <ColumnDefinition Width="*"/>
+                                            </Grid.ColumnDefinitions>
+                                            
+                                            <TextBlock Grid.Column="0" Text="Medicine Name" FontWeight="Bold" Margin="5"/>
+                                            <TextBlock Grid.Column="1" Text="Quantity" FontWeight="Bold" Margin="5"/>
+                                            <TextBlock Grid.Column="2" Text="Dosage" FontWeight="Bold" Margin="5"/>
+                                        </Grid>
+                                    </DataTemplate>
+                                </ListView.HeaderTemplate>
+                                
+                                <ListView.ItemTemplate>
+                                    <DataTemplate>
+                                        <Grid>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="2*"/>
+                                                <ColumnDefinition Width="*"/>
+                                                <ColumnDefinition Width="*"/>
+                                            </Grid.ColumnDefinitions>
+                                            
+                                            <TextBlock Grid.Column="0" 
+                                                      Text="{Binding Medicine.Name}" 
+                                                      TextWrapping="Wrap"
+                                                      Margin="5"/>
+                                            
+                                            <TextBlock Grid.Column="1" 
+                                                      Text="{Binding SelectedQuantity}"
+                                                      Margin="5"/>
+                                            
+                                            <TextBlock Grid.Column="2" 
+                                                      Text="{Binding SelectedDosage}"
+                                                      Margin="5"/>
+                                        </Grid>
+                                    </DataTemplate>
+                                </ListView.ItemTemplate>
+                            </ListView>
+                        </StackPanel>
+
+                        <!-- Hiển thị khi không có thuốc -->
+                        <StackPanel Visibility="{x:Bind ViewModel.SelectedMedicines.Count, Mode=OneWay, Converter={StaticResource VisibilityConverter}, ConverterParameter=Zero}"
+                                    HorizontalAlignment="Center" 
+                                    VerticalAlignment="Center"
+                                    Margin="0,10">
+                            <TextBlock Text="No medicines selected" 
+                                       Foreground="Gray" 
+                                       FontStyle="Italic"
+                                       HorizontalAlignment="Center"/>
+                        </StackPanel>
+                    </Grid>
+
+                    <!-- Tổng tiền -->
+                    <StackPanel Orientation="Horizontal" 
+                                HorizontalAlignment="Right" 
+                                Margin="0,10,0,0">
+                        <TextBlock Text="Total Amount: " 
+                                   FontWeight="SemiBold"
+                                   VerticalAlignment="Center"
+                                   Margin="0,0,5,0"/>
+                        <TextBlock Text="{Binding FormattedTotalAmount}"
+                                   FontWeight="Bold"
+                                   Foreground="{ThemeResource SystemAccentColor}"
+                                   VerticalAlignment="Center"/>
                     </StackPanel>
 
-                    <!-- Hiển thị khi không có thuốc -->
-                    <StackPanel Visibility="{x:Bind ViewModel.SelectedMedicines.Count, Mode=OneWay, Converter={StaticResource VisibilityConverter}, ConverterParameter=Zero}"
-                                HorizontalAlignment="Center" 
-                                VerticalAlignment="Center"
-                                Margin="0,10">
-                        <TextBlock Text="No medicines selected" 
-                                   Foreground="Gray" 
-                                   FontStyle="Italic"
-                                   HorizontalAlignment="Center"/>
-                    </StackPanel>
-                </Grid>
-
-                <!-- Sau ListView hiển thị danh sách thuốc -->
-                <StackPanel Orientation="Horizontal" 
-                            HorizontalAlignment="Right" 
-                            Margin="0,10,0,0">
-                    <TextBlock Text="Total Amount: " 
-                               FontWeight="SemiBold"
-                               VerticalAlignment="Center"
-                               Margin="0,0,5,0"/>
-                    <TextBlock Text="{Binding FormattedTotalAmount}"
-                               FontWeight="Bold"
-                               Foreground="{ThemeResource SystemAccentColor}"
-                               VerticalAlignment="Center"/>
+                    <!-- Nút chọn thuốc -->
+                    <Button Content="Select Medicines" 
+                            Click="SelectMedicinesButton_Click" 
+                            Style="{StaticResource AccentButtonStyle}" 
+                            HorizontalAlignment="Center" 
+                            Width="150" 
+                            Margin="0,20,0,0"/>
                 </StackPanel>
+            </Grid>
 
-                <!-- Nút chọn thuốc -->
-                <Button Content="Select Medicines" Click="SelectMedicinesButton_Click" 
-                    Style="{StaticResource AccentButtonStyle}" 
-                    HorizontalAlignment="Center" 
-                    Width="150" Margin="0,20,0,0"/>
-            </StackPanel>
-
-            <!-- Nút lưu và quay lại -->
-            <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Center" Spacing="20" Margin="0,20,0,0">
+            <!-- Bottom Buttons -->
+            <StackPanel Grid.Row="2" 
+                        Orientation="Horizontal" 
+                        HorizontalAlignment="Center" 
+                        Spacing="20" 
+                        Margin="0,20,0,0">
                 <Button Content="Save" 
                         Click="SaveButton_Click"
                         Style="{StaticResource AccentButtonStyle}" 
-                        HorizontalAlignment="Center" 
                         Width="100"/>
                 <Button Content="Back" 
                         Click="BackButton_Click"
                         Style="{StaticResource DefaultButtonStyle}" 
-                        HorizontalAlignment="Center" 
                         Width="100"/>
             </StackPanel>
         </Grid>

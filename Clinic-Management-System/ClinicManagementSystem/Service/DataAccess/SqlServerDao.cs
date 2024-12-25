@@ -552,31 +552,50 @@ namespace ClinicManagementSystem.Service.DataAccess
 		public List<MedicalExaminationForm> GetMedicalExaminationForms()
         {
             var forms = new List<MedicalExaminationForm>();
-
-            using (var connection = new SqlConnection(_connectionString))
+            var connectionString = GetConnectionString();
+            using (var connection = new SqlConnection(connectionString))
             {
                 connection.Open();
-                var command = new SqlCommand("SELECT Id, PatientId, StaffId, Time, Symptom, DoctorId FROM MedicalExaminationForm", connection);
-
-                using (var reader = command.ExecuteReader())
+                using (var command = new SqlCommand())
                 {
-                    while (reader.Read())
-                    {
-                        var form = new MedicalExaminationForm
-                        {
-                            Id = reader.GetInt32(0),                                                    // Id
-                            PatientId = reader.GetInt32(1),                                             // PatientId
-                            StaffId = reader.GetInt32(2),                                               // StaffId
-                            Time = reader.GetDateTime(3),                                               // Time
-                            Symptoms = reader.IsDBNull(4) ? string.Empty : reader.GetString(4),          // Symptom
-                            DoctorId = reader.GetInt32(5)                                               // DoctorId
-                        };
+                    command.Connection = connection;
+                    command.CommandText = @"
+                        SELECT f.id, f.patientId, f.staffId, f.doctorId, f.time, 
+                               f.symptom, f.visitType, f.isExaminated,
+                               p.name, p.email, p.residentId, p.address, p.birthday, p.gender
+                        FROM MedicalExaminationForm f
+                        INNER JOIN Patient p ON f.patientId = p.id
+                        ORDER BY f.time DESC";
 
-                        forms.Add(form);
+                    using (var reader = command.ExecuteReader())
+                    {
+                        while (reader.Read())
+                        {
+                            forms.Add(new MedicalExaminationForm
+                            {
+                                Id = reader.GetInt32(0),
+                                PatientId = reader.GetInt32(1),
+                                StaffId = reader.GetInt32(2),
+                                DoctorId = reader.GetInt32(3),
+                                Time = reader.GetDateTime(4),
+                                Symptoms = reader.GetString(5),
+                                VisitType = reader.GetString(6),
+                                IsExaminated = reader.GetString(7),
+                                Patient = new Patient
+                                {
+                                    Id = reader.GetInt32(1), // PatientId
+                                    Name = reader.GetString(8),
+                                    Email = reader.GetString(9),
+                                    ResidentId = reader.GetString(10),
+                                    Address = reader.GetString(11),
+                                    DoB = reader.GetDateTime(12),
+                                    Gender = reader.GetString(13)
+                                }
+                            });
+                        }
                     }
                 }
             }
-
             return forms;
         }
 		/// <summary>

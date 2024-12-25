@@ -13,12 +13,15 @@ namespace ClinicManagementSystem.Model
 	public class MedicalExaminationForm : INotifyPropertyChanged
 	{
 		public int Id { get; set; }
-		public int PatientId { get; set; }  
-		public int StaffId { get; set; }    
-		public int DoctorId { get; set; }  
+		public int PatientId { get; set; }
+		public int StaffId { get; set; }
+		public int DoctorId { get; set; }
 		public DateTimeOffset? Time { get; set; }
 		public string Symptoms { get; set; }
 		public string VisitType { get; set; }
+		public string IsExaminated { get; set; }
+
+		public Patient Patient { get; set; }
 
 		public event PropertyChangedEventHandler PropertyChanged;
 	}
