@@ -1,6 +1,7 @@
 ﻿using ClinicManagementSystem.Model;
 using ClinicManagementSystem.ViewModel;
 using Microsoft.Data.SqlClient;
+using Microsoft.Extensions.Configuration;
 using Microsoft.UI.Xaml;
 using System;
 using System.Collections.Generic;
@@ -33,6 +34,12 @@ namespace ClinicManagementSystem.Service.DataAccess
         }
         private readonly string _connectionString = GetConnectionString();
 
+  //      private readonly string _connectionString;
+		//public SqlServerDao()
+  //      {
+  //          _connectionString = ConfigurationManager.AppSetting
+  //              .GetConnectionString("DefaultConnection");
+		//}
 
 
 		//==============================================Helper===========================================
@@ -1121,7 +1128,9 @@ namespace ClinicManagementSystem.Service.DataAccess
                 )";
             }
 
-            string sortString = "ORDER BY ";
+            //whereClause += " AND (pr.NextMedicationDate IS NULL OR pr.NextMedicationDate > @CurrentDate)";
+
+			string sortString = "ORDER BY ";
             bool useDefault = true;
             foreach (var item in sortOptions)
             {
@@ -1145,15 +1154,22 @@ namespace ClinicManagementSystem.Service.DataAccess
             }
 
             var sql = $"""
-                SELECT count(*) over() as Total, id, name, residentId, email, gender, birthday, address
-                FROM Patient
+                SELECT count(*) over() as Total, p.id, p.name, p.residentId, p.email, p.gender, p.birthday, p.address, pr.NextExaminationDate
+                FROM Patient p
+                LEFT JOIN MedicalExaminationForm m ON p.id = m.patientId
+                LEFT JOIN Prescription pr ON m.id = pr.medicalExaminationFormId
                 {whereClause}
                 {sortString}
                 OFFSET @Skip ROWS FETCH NEXT @Take ROWS ONLY;
                 """;
 
             var command = new SqlCommand(sql, connection);
-            AddParameters(command, ("@Skip", (page - 1) * rowsPerPage), ("@Take", rowsPerPage), ("@Keyword", $"%{keyword}%"));
+            AddParameters(command, 
+                ("@Skip", (page - 1) * rowsPerPage), 
+                ("@Take", rowsPerPage), 
+                ("@Keyword", $"%{keyword}%"),
+                ("@CurrentDate", DateTime.Now.Date));
+
             var reader = command.ExecuteReader();
             int count = -1;
 
@@ -1171,6 +1187,7 @@ namespace ClinicManagementSystem.Service.DataAccess
                 patient.Gender = (string)reader["gender"];
                 patient.DoB = (DateTime)reader["birthday"];
                 patient.Address = (string)reader["address"];
+                patient.NextExaminationDate = reader["NextExaminationDate"] == DBNull.Value ? null : (DateTime?)reader["NextExaminationDate"];
                 result.Add(patient);
             }
 

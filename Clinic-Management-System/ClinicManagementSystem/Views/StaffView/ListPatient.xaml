@@ -26,23 +26,26 @@
             <DataTemplate x:Key="HorizontalUser" x:DataType="localmodel:Patient">
                 <Border BorderThickness="1" BorderBrush="#b5b5e8">
                     <StackPanel Orientation="Horizontal">
-                        <TextBlock Width="60" Margin="20" Text="{x:Bind Id}" ></TextBlock>
-                        <TextBlock Width="150" Margin="20" Text="{x:Bind Name}" ></TextBlock>
-                        <TextBlock Width="140" Margin="20" Text="{x:Bind ResidentId}" ></TextBlock>
-                        <TextBlock Width="140" Margin="20" Text="{x:Bind DoB, Converter={StaticResource DateTimeOffsetToDateConverters}}" ></TextBlock>
-                        <ScrollViewer Width="140" MaxHeight="80" VerticalScrollMode="Enabled" Margin="20" >
+                        <TextBlock Width="40" Margin="20" Text="{x:Bind Id}" ></TextBlock>
+                        <TextBlock Width="120" TextWrapping="Wrap" Margin="20" Text="{x:Bind Name}" ></TextBlock>
+                        <TextBlock Width="100" Margin="20" Text="{x:Bind ResidentId}" ></TextBlock>
+                        <TextBlock Width="120" Margin="20" Text="{x:Bind DoB, Converter={StaticResource DateTimeOffsetToDateConverters}}" ></TextBlock>
+                        <ScrollViewer Width="180" MaxHeight="80" VerticalScrollMode="Enabled" Margin="20" >
                             <TextBlock Text="{x:Bind Email}" TextWrapping="Wrap"></TextBlock>
                         </ScrollViewer>
-
-                        <TextBlock Width="100" Margin="20" Text="{x:Bind Gender}" ></TextBlock>
-                        <ScrollViewer MaxHeight="80" VerticalScrollMode="Enabled" HorizontalScrollMode="Disabled" Margin="20" Width="180">
+                        <TextBlock Width="70" Margin="20" Text="{x:Bind Gender}" ></TextBlock>
+                        <ScrollViewer MaxHeight="80" VerticalScrollMode="Enabled" HorizontalScrollMode="Disabled" Margin="20" Width="150">
                             <TextBlock Text="{x:Bind Address}" TextWrapping="Wrap" ></TextBlock>
                         </ScrollViewer>
-                        <Button Click="Edit_Click" Background="Transparent" BorderBrush="Transparent">
+                        <TextBlock Width="120" Margin="20" Text="{x:Bind NextExaminationDate, Converter={StaticResource DateTimeOffsetToDateConverters}}" ></TextBlock>
+                        <Button Click="Edit_Click" Background="Transparent" BorderBrush="Transparent" ToolTipService.ToolTip="Edit">
                             <FontIcon Glyph="&#xE70F;" />
                         </Button>
-                        <Button Margin="5,0,0,0" Click="deletePatient" Background="Transparent" BorderBrush="Transparent">
+                        <Button Margin="5,0,0,0" Click="Delete_Click" Background="Transparent" BorderBrush="Transparent" ToolTipService.ToolTip="Delete">
                             <FontIcon Glyph="&#xE74D;" />
+                        </Button>
+                        <Button Margin="5,0,0,0" Click="SendMail_Click" Background="Transparent" BorderBrush="Transparent" ToolTipService.ToolTip="Send Mail" Visibility="{x:Bind ShowMailButton(), Mode=OneWay}">
+                            <FontIcon Glyph="&#xE715;" />
                         </Button>
                     </StackPanel>
                 </Border>
@@ -101,13 +104,14 @@
             </StackPanel>
 
             <StackPanel Margin ="35,0,0,20"  Orientation="Horizontal" HorizontalAlignment="Left">
-                <TextBlock FontWeight="Bold" FontSize="20"  Width="110">ID</TextBlock>
-                <TextBlock FontWeight="Bold" FontSize="20"  Width="170">Name</TextBlock>
-                <TextBlock FontWeight="Bold" FontSize="20"  Width="180">ResidentID</TextBlock>
-                <TextBlock FontWeight="Bold" FontSize="20"  Width="200">Date of Birth</TextBlock>
-                <TextBlock FontWeight="Bold" FontSize="20"  Width="160">Email</TextBlock>
-                <TextBlock FontWeight="Bold" FontSize="20"  Width="140">Gender</TextBlock>
+                <TextBlock FontWeight="Bold" FontSize="20"  Width="90">ID</TextBlock>
+                <TextBlock FontWeight="Bold" FontSize="20"  Width="140">Name</TextBlock>
+                <TextBlock FontWeight="Bold" FontSize="20"  Width="140">ResidentID</TextBlock>
+                <TextBlock FontWeight="Bold" FontSize="20"  Width="180">Date of Birth</TextBlock>
+                <TextBlock FontWeight="Bold" FontSize="20"  Width="200">Email</TextBlock>
+                <TextBlock FontWeight="Bold" FontSize="20"  Width="120">Gender</TextBlock>
                 <TextBlock FontWeight="Bold" FontSize="20"  Width="160">Address</TextBlock>
+                <TextBlock FontWeight="Bold" FontSize="20"  Width="160">Follow-up Date</TextBlock>
                 <TextBlock FontWeight="Bold" FontSize="20"  Width="140"></TextBlock>
             </StackPanel>
             <ListView Name="itemsComboBox" Margin="0,10,0,0"

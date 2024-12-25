@@ -1,4 +1,5 @@
 ﻿using ClinicManagementSystem.Model;
+using ClinicManagementSystem.Service;
 using ClinicManagementSystem.ViewModel;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
@@ -12,6 +13,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
+using System.Threading.Tasks;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
 
@@ -101,7 +103,7 @@ namespace ClinicManagementSystem.Views.StaffView
 		/// </summary>
 		/// <param name="sender"></param>
 		/// <param name="e"></param>
-		private void updatePatient(object sender, RoutedEventArgs e)
+		private async void updatePatient(object sender, RoutedEventArgs e)
 		{
 			var success = ViewModel.Update();
 			ViewModel.LoadData();
@@ -115,7 +117,7 @@ namespace ClinicManagementSystem.Views.StaffView
 				notify = "Update failed";
 			}
 			EditPopup.IsOpen = false;
-			Notify(notify);
+			await Notify(notify);
 		}
 
 		/// <summary>
@@ -123,7 +125,7 @@ namespace ClinicManagementSystem.Views.StaffView
 		/// </summary>
 		/// <param name="sender"></param>
 		/// <param name="e"></param>
-		private async void deletePatient(object sender, RoutedEventArgs e)
+		private async void Delete_Click(object sender, RoutedEventArgs e)
 		{
 			var confirmContentDialog = new ContentDialog
 			{
@@ -149,7 +151,7 @@ namespace ClinicManagementSystem.Views.StaffView
 				{
 					notify = "Delete failed";
 				}
-				Notify(notify);
+				await Notify(notify);
 			}
 		}
 
@@ -158,7 +160,7 @@ namespace ClinicManagementSystem.Views.StaffView
 		/// Hiển thị thông báo
 		/// </summary>
 		/// <param name="notify"></param>
-		private async void Notify(string notify)
+		private async Task Notify(string notify)
 		{
 			await new ContentDialog()
 			{
@@ -195,5 +197,49 @@ namespace ClinicManagementSystem.Views.StaffView
 			ViewModel.Edit(editPatient);
 			EditPopup.IsOpen = true;
 		}
+
+		private async void SendMail_Click(object sender, RoutedEventArgs e)
+		{
+			try
+			{
+				var button = sender as Button;
+				var patient = button.DataContext as Patient;
+
+				if (string.IsNullOrEmpty(patient.Email))
+				{
+					await Notify("Patient does not have an email address!");
+					return;
+				}
+
+				var emailService = new EmailService();
+				string subject = "Nhắc lịch tái khám";
+				string body = $@"
+				<html>
+					<body>
+						<h3>Kính gửi {patient.Name},</h3>
+						<p>Chúng tôi gửi thông tin về lịch tái khám của bạn:</p>
+						<ul>
+							<li>Họ tên: {patient.Name}</li>
+							<li>Ngày sinh: {patient.DoB:dd/MM/yyyy}</li>
+							<li>Địa chỉ: {patient.Address}</li>
+							<li><b>Ngày tái khám: {patient.NextExaminationDate:dd/MM/yyyy}</b></li>
+						</ul>
+						<p>Vui lòng kiểm tra và phản hồi nếu có bất kỳ thắc mắc nào.</p>
+						<br/>
+						<p>Trân trọng,</p>
+						<p>Phòng khám VTV</p>
+					</body>
+				</html>";
+
+				await emailService.SendEmailAsync(patient.Email, subject, body);
+				await Notify("Email has been sent successfully!");
+			}
+			catch (Exception ex)
+			{
+				await Notify($"Error sending email: {ex.Message}");
+			}
+		}
+
+		
 	}
 }

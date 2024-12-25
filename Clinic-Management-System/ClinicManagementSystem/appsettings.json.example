@@ -1,0 +1,9 @@
+{
+  "EmailSettings": {
+    "FromEmail": "your-email@gmail.com",
+    "Password": "your-app-password",
+    "SmtpServer": "smtp.gmail.com",
+    "Port": 587,
+    "DisplayName": "Your Display Name"
+  }
+}
