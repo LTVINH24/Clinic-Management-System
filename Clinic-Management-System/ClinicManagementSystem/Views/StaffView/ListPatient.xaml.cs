@@ -202,6 +202,9 @@ namespace ClinicManagementSystem.Views.StaffView
 		{
 			try
 			{
+				LoadingRing.IsActive = true;
+				LoadingPanel.Visibility = Visibility.Visible;
+
 				var button = sender as Button;
 				var patient = button.DataContext as Patient;
 
@@ -238,8 +241,18 @@ namespace ClinicManagementSystem.Views.StaffView
 			{
 				await Notify($"Error sending email: {ex.Message}");
 			}
+			finally
+			{
+				LoadingRing.IsActive = false;
+				LoadingPanel.Visibility = Visibility.Collapsed;
+			}
 		}
 
-		
-	}
+		private void ClearFilter_Click(object sender, RoutedEventArgs e)
+		{
+			ViewModel.StartDateFollowUp = null;
+			ViewModel.EndDateFollowUp = null;
+			ViewModel.LoadData();
+		}
+    }
 }

@@ -103,6 +103,27 @@
                 </Button>
             </StackPanel>
 
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Spacing="10" Margin="0,10,0,10">
+                <CalendarDatePicker 
+                    Header="From date"
+                    PlaceholderText="Choose start date" 
+                    Date="{x:Bind ViewModel.StartDateFollowUp, Mode=TwoWay}"
+                    Width="200"
+                    Foreground="{ThemeResource ApplicationForegroundThemeBrush}"/>
+
+                            <CalendarDatePicker 
+                    Header="To date"
+                    PlaceholderText="Choose end date"
+                    Date="{x:Bind ViewModel.EndDateFollowUp, Mode=TwoWay}"
+                    Width="200"
+                    Foreground="{ThemeResource ApplicationForegroundThemeBrush}"/>
+
+                <Button 
+                    Content="Clear filter"
+                    Click="ClearFilter_Click"
+                    VerticalAlignment="Bottom"/>
+            </StackPanel>
+
             <StackPanel Margin ="35,0,0,20"  Orientation="Horizontal" HorizontalAlignment="Left">
                 <TextBlock FontWeight="Bold" FontSize="20"  Width="90">ID</TextBlock>
                 <TextBlock FontWeight="Bold" FontSize="20"  Width="140">Name</TextBlock>
@@ -131,7 +152,7 @@
                 <ComboBox ItemsSource="{Binding Pageinfos, Mode=OneWay}"
                     SelectedItem="{x:Bind ViewModel.SelectedPageInfoItem, Mode=TwoWay}"
                     SelectionChanged="pagesComboBox_SelectionChanged"
-                    Margin="5" Name="pagesComboBox" Width="100" Height="30">
+                    Margin="5,0,5,20" Name="pagesComboBox" Width="100" Height="30">
                     <ComboBox.ItemTemplate>
                         <DataTemplate x:DataType="localmodel:PageInfo">
                             <TextBlock >
@@ -145,6 +166,19 @@
             <Button  Click="nextButton_Click" >
                 <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xE76C;"/>
             </Button>
+        </StackPanel>
+
+        <StackPanel x:Name="LoadingPanel" 
+            Visibility="Collapsed"
+            VerticalAlignment="Center" 
+            HorizontalAlignment="Center">
+            <ProgressRing x:Name="LoadingRing" 
+                  IsActive="False"
+                  Width="50" 
+                  Height="50"/>
+            <TextBlock Text="Sending email..." 
+              Margin="0,10,0,0"
+              HorizontalAlignment="Center"/>
         </StackPanel>
 
     </Grid>

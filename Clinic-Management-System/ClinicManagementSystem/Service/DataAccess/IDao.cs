@@ -68,6 +68,8 @@ namespace ClinicManagementSystem.Service.DataAccess
 		bool UpdateMedicalExaminationForm(MedicalExaminationForm form);
 
 		bool DeleteMedicalExaminationForm(MedicalExaminationForm form);
+
+		public MedicalExaminationFormDetail GetMedicalExaminationFormDetail(int formId);
 		//========================================================================================
 
 
@@ -93,6 +95,8 @@ namespace ClinicManagementSystem.Service.DataAccess
 			int page,
 			int rowsPerPage,
 			string keyword,
+			DateTimeOffset? startDate,
+			DateTimeOffset? endDate,
 			Dictionary<string, SortType> sortOptions
 		);
 

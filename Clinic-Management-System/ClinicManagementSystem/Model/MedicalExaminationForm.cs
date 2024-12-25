@@ -1,9 +1,11 @@
-﻿using System;
+﻿using Microsoft.UI.Xaml;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 
 namespace ClinicManagementSystem.Model
 {
@@ -21,6 +23,12 @@ namespace ClinicManagementSystem.Model
 		public DateTimeOffset? Time { get; set; }
 		public string Symptoms { get; set; }
 		public string VisitType { get; set; }
+		public string Status { get; set; }
+	
+		public Visibility ShowSendMailButton()
+		{
+			return Status == "Examined" ? Visibility.Visible : Visibility.Collapsed;
+		}
 
 		public event PropertyChangedEventHandler PropertyChanged;
 	}
