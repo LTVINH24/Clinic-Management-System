@@ -21,7 +21,7 @@
     <None Remove="Views\AdminView\reportMedicineAdmin.xaml" />
     <None Remove="Views\AdminView\reportPatientVisitsAdmin.xaml" />
     <None Remove="Views\DoctorView\DocumentPage.xaml" />
-    <None Remove="Views\StaffView\HomePage.xaml" />
+    <None Remove="Views\HomePage.xaml" />
     <None Remove="Views\StaffView\ListPatient.xaml" />
     <None Remove="Views\AdminView\Medicine.xaml" />
     <None Remove="Views\StaffView\MedicalExaminationFormDetail.xaml" />
@@ -59,6 +59,11 @@
     <ProjectCapability Include="Msix" />
   </ItemGroup>
   <ItemGroup>
+    <Page Update="Views\HomePage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+  </ItemGroup>
+  <ItemGroup>
     <Page Update="Views\AdminView\reportBillAdmin.xaml">
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -80,12 +85,6 @@
   </ItemGroup>
   <ItemGroup>
     <Page Update="Views\StaffView\MedicalExaminationFormDetail.xaml">
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-  </ItemGroup>
-  
-  <ItemGroup>
-    <Page Update="Views\StaffView\HomePage.xaml">
       <Generator>MSBuild:Compile</Generator>
     </Page>
   </ItemGroup>

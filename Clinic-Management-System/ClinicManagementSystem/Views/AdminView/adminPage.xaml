@@ -22,7 +22,7 @@
             IsTabStop="False"
             SelectionChanged="NavigationView_SelectionChanged">
             <NavigationView.MenuItems>
-                <NavigationViewItem Content="Home" Icon="Home" ToolTipService.ToolTip="Home" Tag="homeAdmin"/>
+                <NavigationViewItem Content="Home" Icon="Home" ToolTipService.ToolTip="Home" Tag="HomePage"/>
                 <!--<NavigationViewItem Content="Add Account" Icon="Add" ToolTipService.ToolTip="Add Account" Tag="addAccount"/>-->
                 <NavigationViewItem Content="Add" Icon="Add" ToolTipService.ToolTip="Add" Tag="homeAdmin">
                     <NavigationViewItem.MenuItems>

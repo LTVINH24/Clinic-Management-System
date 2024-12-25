@@ -45,6 +45,7 @@ namespace ClinicManagementSystem.Service.DataAccess
 		 string keyword,
 		 Dictionary<string, SortType> sortOptions, int daysRemaining
         );
+		User GetUserById(int userId);
 		//========================================================================================
 
 

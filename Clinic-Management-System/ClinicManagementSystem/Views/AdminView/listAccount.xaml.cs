@@ -109,21 +109,7 @@ namespace ClinicManagementSystem.Views.AdminView
 		/// </summary>
 		/// <param name="sender"></param>
 		/// <param name="e"></param>
-		private void update_editUser(object sender, RoutedEventArgs e)
-        {
-            var success=ViewModel.Update();
-            ViewModel.LoadData();
-            string notify="";
-            if (success)
-            {
-                notify = "Updated successfully";
-            }
-            else
-            {
-                notify = "Update failed";
-            }
-            Notify(notify);
-        }
+		
 
 		/// <summary>
 		/// Xử lí sự kiện khi chọn button delete

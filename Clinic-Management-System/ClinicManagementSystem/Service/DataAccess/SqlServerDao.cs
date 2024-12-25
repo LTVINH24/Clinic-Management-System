@@ -3,6 +3,7 @@ using ClinicManagementSystem.Model.Statistic;
 using ClinicManagementSystem.ViewModel;
 using Microsoft.Data.SqlClient;
 using Microsoft.UI.Xaml;
+using OxyPlot;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -269,19 +270,27 @@ namespace ClinicManagementSystem.Service.DataAccess
             var connectionString = GetConnectionString();
             SqlConnection connection = new SqlConnection(connectionString);
             connection.Open();
-            var sql = "update EndUser set name=@name, role=@role,username=@username,password=@password,phone=@phone,birthday=@birthday,address=@address,gender=@gender where id=@id";
+            string passwordString = "";
+            if (info.password != null && info.password!="")
+            {
+                passwordString = "password=@password, ";
+            } 
+                
+
+            var sql = $"""update EndUser set name=@name, {passwordString}phone=@phone,birthday=@birthday,address=@address,gender=@gender where id=@id""";
             var command = new SqlCommand(sql, connection);
             AddParameters(command,
                 ("@id", info.id),
                 ("@name", info.name),
-                ("@role", info.role),
-                ("@username", info.username),
-                ("@password", info.password),
                 ("@phone", info.phone),
                 ("@birthday", info.birthday),
                 ("@address", info.address),
                 ("@gender", info.gender)
                 );
+            if (info.password != null && info.password != "")
+            {
+                AddParameters(command, ("@password", info.password));
+            }
             int count = command.ExecuteNonQuery();
             bool success = count == 1;
             connection.Close();
@@ -355,20 +364,46 @@ namespace ClinicManagementSystem.Service.DataAccess
             connection.Close();
             return specialties;
         }
-		//=============================================================================================
+        public User GetUserById(int userId)
+        {
+            User user = new User();
+            string connectionString = GetConnectionString();
+            SqlConnection connection = new SqlConnection(connectionString);
+            connection.Open();
+            string query = $"""
+                select id, name,phone,address,gender,birthday
+                from EndUser
+                where id = @id
+                """;
+            var command = new SqlCommand(query, connection);
+            AddParameters(command,("@id",userId));
+            var reader = command.ExecuteReader();
+            while(reader.Read())
+            {
+                user.id = (int)reader["id"];
+               user.name = (string)reader["name"];
+                user.phone = (string)reader["phone"];
+                user.address = (string)reader["address"];
+                user.gender = (string)reader["gender"];
+                user.birthday = (DateTime)reader["birthday"];
+            }
+            connection.Close();
+            return user;
+        }
+        //=============================================================================================
 
 
 
-		//================================================Medicine========================================
-		/// <summary>
-		/// Lấy danh sách thuốc
-		/// </summary>
-		/// <param name="page"></param>
-		/// <param name="rowsPerPage"></param>
-		/// <param name="keyword"></param>
-		/// <param name="sortOptions"></param>
-		/// <returns>Danh sách thuốc và số lượng thuốc</returns>
-		public Tuple<List<Medicine>, int> GetMedicines(
+        //================================================Medicine========================================
+        /// <summary>
+        /// Lấy danh sách thuốc
+        /// </summary>
+        /// <param name="page"></param>
+        /// <param name="rowsPerPage"></param>
+        /// <param name="keyword"></param>
+        /// <param name="sortOptions"></param>
+        /// <returns>Danh sách thuốc và số lượng thuốc</returns>
+        public Tuple<List<Medicine>, int> GetMedicines(
                 int page, int rowsPerPage,
                 string keyword,
                 Dictionary<string, SortType> sortOptions, int daysRemaining)
