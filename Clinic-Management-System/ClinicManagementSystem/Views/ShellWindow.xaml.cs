@@ -13,6 +13,7 @@ using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
+using Windows.Storage;
 
 // To learn more about WinUI, the WinUI project structure,
 // and more about our project templates, see: http://aka.ms/winui-project-info.
@@ -34,9 +35,11 @@ namespace ClinicManagementSystem.Views
 		{
 			Current = this;
 			this.InitializeComponent();
-
+			ThemeService.Instance.SetTheme(this, ThemeService.Instance.GetCurrentTheme());
+			
 			var fullNamespace = $"{GetType().Namespace}.{name}";
 			var type = Type.GetType(fullNamespace);
+			
 			content.Navigate(type);
 
 			this.Title = "Clinic Management System";

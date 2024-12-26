@@ -36,19 +36,6 @@ namespace ClinicManagementSystem
         public App()
         {
             this.InitializeComponent();
-            
-            //// Load theme setting
-            //var localSettings = ApplicationData.Current.LocalSettings;
-            //var savedTheme = localSettings.Values["AppTheme"] as string ?? "Light";
-            
-            //if (savedTheme == "Dark")
-            //{
-            //    this.RequestedTheme = ApplicationTheme.Dark;
-            //}
-            //else 
-            //{
-            //    this.RequestedTheme = ApplicationTheme.Light;
-            //}
         }
 
         /// <summary>
@@ -59,6 +46,7 @@ namespace ClinicManagementSystem
         {
             ServiceFactory.Register(typeof(IDao), typeof(SqlServerDao));
             m_window = new MainWindow();
+            ThemeService.Instance.SetTheme(m_window, ThemeService.Instance.GetCurrentTheme());
             m_window.Activate();
         }
 

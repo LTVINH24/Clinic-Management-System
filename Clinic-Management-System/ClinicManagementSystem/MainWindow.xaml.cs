@@ -17,6 +17,8 @@ using System.Text;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
 using Windows.Networking.Vpn;
+using Windows.Storage;
+using ClinicManagementSystem.Service;
 
 // To learn more about WinUI, the WinUI project structure,
 // and more about our project templates, see: http://aka.ms/winui-project-info.
@@ -31,6 +33,7 @@ namespace ClinicManagementSystem
         public MainWindow()
         {
             this.InitializeComponent();
+            ThemeService.Instance.SetTheme(this, ThemeService.Instance.GetCurrentTheme());
             viewModel.LoginCompleted += OnLoginCompleted;
             this.Title = "Clinic Management System";
 
@@ -74,11 +77,8 @@ namespace ClinicManagementSystem
                 string namePage = $"{isSuccess}Page";
                 namePage = namePage.Replace(" ", "");
 
-
                 var screen = new ShellWindow(namePage);
                 screen.Activate();
-
-
 
                 viewModel.LoginCompleted -= OnLoginCompleted;
                 this.Close();
