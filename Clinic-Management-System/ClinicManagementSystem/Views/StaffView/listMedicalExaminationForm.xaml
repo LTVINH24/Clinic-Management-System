@@ -24,31 +24,60 @@
                     <SolidColorBrush x:Key="EditPanelBackground" Color="Transparent" />
                 </ResourceDictionary>
             </ResourceDictionary.ThemeDictionaries>
+
             <converter:DateTimeConverter x:Key="DateTimeConverter"/>
-
-
-
 
             <DataTemplate x:Key="HorizontalUser" x:DataType="localmodel:MedicalExaminationForm">
                 <Border BorderThickness="1" BorderBrush="#b5b5e8">
                     <StackPanel Orientation="Horizontal">
-                        <TextBlock Width="50" Margin="20" Text="{x:Bind Id}" ></TextBlock>
-                        <TextBlock Width="50" Margin="20" Text="{x:Bind StaffId}" ></TextBlock>
-                        <TextBlock Width="150" Margin="20" Text="{x:Bind PatientName}" TextWrapping="Wrap" />
-                        <TextBlock Width="140" Margin="20" Text="{x:Bind Time, Converter={StaticResource DateTimeConverter}}" TextWrapping="Wrap"></TextBlock>
-                        <TextBlock Width="140" Margin="20" Text="{x:Bind DoctorName}" TextWrapping="Wrap"/>
-                        <ScrollViewer Height="40" VerticalScrollMode="Enabled" HorizontalScrollMode="Disabled" Margin="20" Width="120">
-                            <TextBlock  Text="{x:Bind Symptoms}" TextWrapping="Wrap" ></TextBlock>
+                        <TextBlock Margin="20" 
+                            Width="50" 
+                            Text="{x:Bind Id}" />
+                        <TextBlock Margin="20" 
+                            Width="50" 
+                            Text="{x:Bind StaffId}" />
+                        <TextBlock Margin="20" 
+                            Width="150" 
+                            Text="{x:Bind PatientName}" 
+                            TextWrapping="Wrap" />
+                        <TextBlock Margin="20" 
+                            Width="140" 
+                            Text="{x:Bind Time, Converter={StaticResource DateTimeConverter}}" 
+                            TextWrapping="Wrap" />
+                        <TextBlock Margin="20" 
+                            Width="140" 
+                            Text="{x:Bind DoctorName}" 
+                            TextWrapping="Wrap" />
+                        <ScrollViewer Margin="20" 
+                            Width="120" Height="40" 
+                            VerticalScrollMode="Enabled" HorizontalScrollMode="Disabled" >
+                            <TextBlock  Text="{x:Bind Symptoms}" TextWrapping="Wrap" />
                         </ScrollViewer>
-                        <TextBlock Width="80" Margin="20" Text="{x:Bind VisitType}" ></TextBlock>
-                        <TextBlock Width="110" Margin="20" Text="{x:Bind Status}" ></TextBlock>
-                        <Button Click="Edit_Click" Background="Transparent" BorderBrush="Transparent">
+                        <TextBlock Margin="20" 
+                            Width="80" 
+                            Text="{x:Bind VisitType}" />
+                        <TextBlock Margin="20" 
+                            Width="110" 
+                            Text="{x:Bind Status}" />
+                        <Button Click="Edit_Click" 
+                            Background="Transparent" 
+                            BorderBrush="Transparent"
+                            ToolTipService.ToolTip="Edit">
                             <FontIcon Glyph="&#xE70F;" />
                         </Button>
-                        <Button Margin="5,0,0,0" Click="deleteMedicalExaminationForm" Background="Transparent" BorderBrush="Transparent">
+                        <Button Margin="5,0,0,0" 
+                            Click="deleteMedicalExaminationForm" 
+                            Background="Transparent" 
+                            BorderBrush="Transparent"
+                                ToolTipService.ToolTip="Delete">
                             <FontIcon Glyph="&#xE74D;" />
                         </Button>
-                        <Button Margin="5,0,0,0" Click="SendResult_Click" Background="Transparent" BorderBrush="Transparent" Visibility="{x:Bind ShowSendMailButton(), Mode=OneWay}">
+                        <Button Margin="5,0,0,0" 
+                            Click="SendResult_Click" 
+                            Background="Transparent" 
+                            BorderBrush="Transparent" 
+                            Visibility="{x:Bind ShowSendMailButton(), Mode=OneWay}"
+                            ToolTipService.ToolTip="Send Mail">
                             <FontIcon Glyph="&#xE715;" />
                         </Button>
                     </StackPanel>
@@ -67,139 +96,190 @@
             <RowDefinition Height="70" />
         </Grid.RowDefinitions>
 
-        <Popup  x:Name="EditPopup" IsOpen="False" HorizontalAlignment="Center" VerticalAlignment="Center" VerticalOffset="200" HorizontalOffset="-100">
-            <Border Background="{ThemeResource ApplicationPageBackgroundThemeBrush}" BorderBrush="Gray" BorderThickness="1" Padding="20">
-                <StackPanel Width="400">
-                    <TextBox  Header="Patient ID" IsReadOnly="True" Text="{x:Bind ViewModel.FormEdit.PatientId, Mode=TwoWay}"></TextBox>
-                    <TextBox  Margin="0,10,0,0" Header="Staff ID" IsReadOnly="True" Text="{x:Bind ViewModel.FormEdit.StaffId, Mode=TwoWay}"></TextBox>
-                    <TextBox  Margin="0,10,0,0"  Header="Doctor ID" IsReadOnly="True" Text="{x:Bind ViewModel.FormEdit.DoctorId, Mode=TwoWay}"></TextBox>
-                    <StackPanel Margin="0,10,0,0" VerticalAlignment="Center">
-                        <TextBlock>Visit Type</TextBlock>
-                        <DropDownButton Height="32" Width="120" Name="VisitTypeEditDropDown" Margin="0,8,0,0" Content="{x:Bind ViewModel.FormEdit.VisitType, Mode=TwoWay}">
-                            <DropDownButton.Flyout>
-                                <MenuFlyout Placement="Bottom">
-                                    <MenuFlyoutItem Text="New" Click="setVisitType"/>
-                                    <MenuFlyoutItem Text="Follow-up" Click="setVisitType"/>
-                                </MenuFlyout>
-                            </DropDownButton.Flyout>
-                        </DropDownButton>
+        <Popup x:Name="EditPopup" IsOpen="False">
+            <Border Background="{ThemeResource ApplicationPageBackgroundThemeBrush}" 
+                    BorderBrush="Gray" 
+                    BorderThickness="1"
+                    Translation="0,0,32">
+                <Border.Shadow>
+                    <ThemeShadow />
+                </Border.Shadow>
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+
+                    
+                    <Border x:Name="DragArea" 
+                            Background="{ThemeResource SystemAccentColor}" 
+                            Height="32" 
+                            PointerPressed="DragArea_PointerPressed"
+                            PointerMoved="DragArea_PointerMoved"
+                            PointerReleased="DragArea_PointerReleased">
+                        <Grid>
+                            <TextBlock Text="Edit Medical Examination Form" 
+                                     Foreground="{ThemeResource ApplicationPageBackgroundThemeBrush}" 
+                                     VerticalAlignment="Center"
+                                     HorizontalAlignment="Left"
+                                     Margin="10,0,0,0"/>
+                            
+                            <Rectangle x:Name="HoverOverlay" 
+                                     Fill="White" 
+                                     Opacity="0">
+                                <ToolTipService.ToolTip>
+                                    <TextBlock Text="Drag to move" />
+                                </ToolTipService.ToolTip>
+                            </Rectangle>
+                        </Grid>
+                    </Border>
+
+                    <StackPanel Grid.Row="1" 
+                                Width="400" 
+                                Padding="20">
+                        <TextBox Header="Patient ID" 
+                                 IsReadOnly="True" 
+                                 Text="{x:Bind ViewModel.FormEdit.PatientId, Mode=TwoWay}" />
+                        <TextBox Margin="0,10,0,0" 
+                                 Header="Staff ID" 
+                                 IsReadOnly="True" 
+                                 Text="{x:Bind ViewModel.FormEdit.StaffId, Mode=TwoWay}" />
+                        <TextBox Margin="0,10,0,0" 
+                                 Header="Doctor ID" 
+                                 IsReadOnly="True" 
+                                 Text="{x:Bind ViewModel.FormEdit.DoctorId, Mode=TwoWay}" />
+                        <StackPanel Margin="0,10,0,0" VerticalAlignment="Center">
+                            <TextBlock>Visit Type</TextBlock>
+                            <DropDownButton Margin="0,8,0,0" 
+                                            Height="32" Width="120" 
+                                            Name="VisitTypeEditDropDown"  
+                                            Content="{x:Bind ViewModel.FormEdit.VisitType, Mode=TwoWay}">
+                                <DropDownButton.Flyout>
+                                    <MenuFlyout Placement="Bottom">
+                                        <MenuFlyoutItem Text="New" Click="setVisitType"/>
+                                        <MenuFlyoutItem Text="Follow-up" Click="setVisitType"/>
+                                    </MenuFlyout>
+                                </DropDownButton.Flyout>
+                            </DropDownButton>
+                        </StackPanel>
+                        <TextBox Margin="0,10,0,0" 
+                                 Header="Symptoms" 
+                                 Text="{x:Bind ViewModel.FormEdit.Symptoms, Mode=TwoWay}" 
+                                 TextWrapping="Wrap" />
+                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                            <Button Click="updateMedicalExaminationForm" 
+                                    Content="Update" 
+                                    Margin="5" />
+                            <Button Click="ClosePopup_Click" 
+                                    Content="Cancel" 
+                                    Margin="5" />
+                        </StackPanel>
                     </StackPanel>
-                    <TextBox  Margin="0,10,0,0" Header="Symptoms" Text="{x:Bind ViewModel.FormEdit.Symptoms, Mode=TwoWay}" TextWrapping="Wrap"></TextBox>
-                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
-                        <Button Click="updateMedicalExaminationForm" Content="Update" Margin="5"/>
-                        <Button Click="ClosePopup_Click" Content="Cancel" Margin="5"/>
-                    </StackPanel>
-                </StackPanel>
+                </Grid>
             </Border>
         </Popup>
 
 
-        <ScrollViewer></ScrollViewer>
-            <TextBlock
-                Grid.Row="0"
-                Text="List Medical Examination Form" 
-                FontSize="24" FontWeight="Bold" 
-                Margin="10,0,0,0" Padding="20,20,0,0"/>
+        
+        <TextBlock Grid.Row="0"
+            Text="List Medical Examination Form" 
+            FontSize="24" FontWeight="Bold" 
+            Margin="10,0,0,0" Padding="20,20,0,0"/>
 
-            <StackPanel
-                Grid.Row="1"
-                Margin="0,10,0,10" 
-                Orientation="Horizontal" HorizontalAlignment="Center">
-                <TextBox 
-                    PlaceholderText="Search by Patient Name, Doctor Name, Symptoms" 
-                    TextChanged="searchTextbox_Click" 
-                    Padding="10" CornerRadius="20" 
-                    Name="keyword" Text="{x:Bind ViewModel.Keyword, 
-                    Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
-                    Width="480"/>
-                <Button 
-                    CornerRadius="100" 
-                    Padding="10" Margin="20,0,0,0" 
-                    Click="searchButton_Click">
-                    <FontIcon 
-                        FontSize="12" FontFamily="Segoe MDL2 Assets" 
-                        Glyph="&#xE721;"/>
-                </Button>
-            </StackPanel>
+        <StackPanel Grid.Row="1"
+            Margin="0,10,0,10" 
+            Orientation="Horizontal" HorizontalAlignment="Center">
+            <TextBox PlaceholderText="Search by Patient Name, Doctor Name, Symptoms" 
+                TextChanged="searchTextbox_Click" 
+                Padding="10" CornerRadius="20" 
+                Name="keyword" 
+                Text="{x:Bind ViewModel.Keyword, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+                Width="480"/>
+            <Button Click="searchButton_Click"
+                CornerRadius="100" 
+                Padding="10" Margin="20,0,0,0">
+                <FontIcon FontSize="12" FontFamily="Segoe MDL2 Assets" 
+                    Glyph="&#xE721;"/>
+            </Button>
+        </StackPanel>
 
-            <StackPanel
-                Grid.Row="2"
-                Orientation="Horizontal" HorizontalAlignment="Center" 
-                Spacing="10" Margin="0,10,0,10">
-                <CalendarDatePicker 
-                    Header="From date"
-                    PlaceholderText="Choose start date follow-up" 
-                    Date="{x:Bind ViewModel.StartDate, Mode=TwoWay}"
-                    Width="220"
-                    Foreground="{ThemeResource ApplicationForegroundThemeBrush}"/>
+        <StackPanel Grid.Row="2"
+            Orientation="Horizontal" HorizontalAlignment="Center" 
+            Spacing="10" Margin="0,10,0,10">
+            <CalendarDatePicker Header="From date"
+                PlaceholderText="Choose start date follow-up" 
+                Date="{x:Bind ViewModel.StartDate, Mode=TwoWay}"
+                Width="220"
+                Foreground="{ThemeResource ApplicationForegroundThemeBrush}"/>
 
-                <CalendarDatePicker 
-                    Header="To date"
-                    PlaceholderText="Choose end date follow-up"
-                    Date="{x:Bind ViewModel.EndDate, Mode=TwoWay}"
-                    Width="220"
-                    Foreground="{ThemeResource ApplicationForegroundThemeBrush}"/>
+            <CalendarDatePicker Header="To date"
+                PlaceholderText="Choose end date follow-up"
+                Date="{x:Bind ViewModel.EndDate, Mode=TwoWay}"
+                Width="220"
+                Foreground="{ThemeResource ApplicationForegroundThemeBrush}"/>
 
-                <Button 
-                    Content="Clear filter"
-                    Click="ClearFilter_Click"
-                    VerticalAlignment="Bottom"/>
-            </StackPanel>
+            <Button Click="ClearFilter_Click"
+                Content="Clear filter"
+                VerticalAlignment="Bottom"/>
+        </StackPanel>
 
         
             
-            <StackPanel 
-                Grid.Row="3"
-                Margin ="35,0,0,20"  
-                Orientation="Horizontal" HorizontalAlignment="Left">
-                <TextBlock FontWeight="Bold" FontSize="20" Width="70">ID</TextBlock>
-                <TextBlock FontWeight="Bold" FontSize="20"  Width="120">Staff ID</TextBlock>
-                <TextBlock FontWeight="Bold" FontSize="20"  Width="200">Patient</TextBlock>
-                <TextBlock FontWeight="Bold" FontSize="20"  Width="180">Time</TextBlock>
-                <TextBlock FontWeight="Bold" FontSize="20"  Width="140">Doctor</TextBlock>
-                <TextBlock FontWeight="Bold" FontSize="20"  Width="160">Symptoms</TextBlock>
-                <TextBlock FontWeight="Bold" FontSize="20"  Width="140">Visit Type</TextBlock>
-                <TextBlock FontWeight="Bold" FontSize="20"  Width="140">Status</TextBlock>
-                <TextBlock FontWeight="Bold" FontSize="20"  Width="140"></TextBlock>
-            </StackPanel>
+        <StackPanel Grid.Row="3"
+            Margin ="35,0,0,20"  
+            Orientation="Horizontal" HorizontalAlignment="Left">
+            <TextBlock FontWeight="Bold" FontSize="20" Width="70">ID</TextBlock>
+            <TextBlock FontWeight="Bold" FontSize="20" Width="120">Staff ID</TextBlock>
+            <TextBlock FontWeight="Bold" FontSize="20" Width="200">Patient</TextBlock>
+            <TextBlock FontWeight="Bold" FontSize="20" Width="180">Time</TextBlock>
+            <TextBlock FontWeight="Bold" FontSize="20" Width="140">Doctor</TextBlock>
+            <TextBlock FontWeight="Bold" FontSize="20" Width="160">Symptoms</TextBlock>
+            <TextBlock FontWeight="Bold" FontSize="20" Width="140">Visit Type</TextBlock>
+            <TextBlock FontWeight="Bold" FontSize="20" Width="140">Status</TextBlock>
+            <TextBlock FontWeight="Bold" FontSize="20" Width="140"></TextBlock>
+        </StackPanel>
 
-            <ScrollViewer 
-                Grid.Row="4"
-                VerticalScrollMode="Auto" VerticalScrollBarVisibility="Auto">
-                <ListView Name="itemsComboBox" Margin="0,10,0,0"
+        <ScrollViewer Grid.Row="4"
+            VerticalScrollMode="Auto" VerticalScrollBarVisibility="Auto">
+            <ListView Name="itemsComboBox" 
+                    Margin="0,10,0,0"
                     ItemsSource="{Binding MedicalExaminationForms, Mode=TwoWay}"
                     ItemTemplate="{StaticResource HorizontalUser}">
-                </ListView>
-            </ScrollViewer>
-        
+            </ListView>
+        </ScrollViewer>
 
-        <StackPanel 
-            Margin="0"  
-            Grid.Row="5"  
+
+        <StackPanel Grid.Row="5"
             Orientation="Horizontal" 
             VerticalAlignment="Bottom" HorizontalAlignment="Center">
-            <Button  Click="previousButton_Click" >
+            <Button Click="previousButton_Click" >
                 <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xE76B;"/>
             </Button>
             <StackPanel Orientation="Vertical">
-                <TextBlock TextAlignment="Center" Width="60" FontSize="16" >
-                    <Run Text="{x:Bind ViewModel.SelectedPageInfoItem.Page ,Mode=OneWay}"/> of <Run Text="{x:Bind ViewModel.SelectedPageInfoItem.Total, Mode=OneWay}"/>
+                <TextBlock TextAlignment="Center" 
+                           Width="60" 
+                           FontSize="16">
+                    <Run Text="{x:Bind ViewModel.SelectedPageInfoItem.Page ,Mode=OneWay}"/> of 
+                    <Run Text="{x:Bind ViewModel.SelectedPageInfoItem.Total, Mode=OneWay}"/>
                 </TextBlock>
                 <ComboBox ItemsSource="{Binding PageInfos, Mode=OneWay}"
                     SelectedItem="{x:Bind ViewModel.SelectedPageInfoItem, Mode=TwoWay}"
+                    Name="pagesComboBox"
                     SelectionChanged="pagesComboBox_SelectionChanged"
-                    Margin="5,0,5,20" Name="pagesComboBox" Width="100" Height="30">        
+                    Margin="5,0,5,20"  
+                    Width="100" Height="30">        
                     <ComboBox.ItemTemplate>
                         <DataTemplate x:DataType="localmodel:PageInfo">
                             <TextBlock >
-                                <Run Text="{x:Bind Page,Mode=OneWay}"/>/<Run Text="{x:Bind Total, Mode=OneWay}"/>
+                                <Run Text="{x:Bind Page,Mode=OneWay}"/>/
+                                <Run Text="{x:Bind Total, Mode=OneWay}"/>
                             </TextBlock>
                         </DataTemplate>
                     </ComboBox.ItemTemplate>
                 </ComboBox>
             </StackPanel>
 
-            <Button  Click="nextButton_Click" >
+            <Button Click="nextButton_Click" >
                 <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xE76C;"/>
             </Button>
         </StackPanel>

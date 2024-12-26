@@ -10,20 +10,16 @@
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
     <Grid Margin="20">
-
         <StackPanel>
             <TextBlock Text="Settings" 
                      Style="{StaticResource TitleLargeTextBlockStyle}"
-                     FontSize="28"
-                     FontWeight="SemiBold"
+                     FontSize="28" FontWeight="SemiBold"
                      Margin="0,0,0,32"/>
 
             <Border Background="{ThemeResource CardBackgroundFillColorDefaultBrush}"
-                    BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}"
-                    BorderThickness="1"
+                    BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}" BorderThickness="1"
                     CornerRadius="8"
-                    Padding="24"
-                    Margin="0,0,0,16">
+                    Margin="0,0,0,16"  Padding="24">
 
                 <StackPanel Spacing="16">
                     <TextBlock Text="Appearance" 
@@ -31,8 +27,7 @@
                              FontWeight="SemiBold"/>
 
                     <StackPanel Orientation="Horizontal" Spacing="24">
-                        <TextBlock Text="Theme:" 
-                                 VerticalAlignment="Center"/>
+                        <TextBlock Text="Theme:" VerticalAlignment="Center"/>
 
                         <RadioButton x:Name="LightTheme" 
                                     Content="Light" 
