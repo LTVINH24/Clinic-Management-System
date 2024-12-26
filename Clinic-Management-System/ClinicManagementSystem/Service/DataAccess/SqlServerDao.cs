@@ -2,6 +2,7 @@
 using ClinicManagementSystem.Model.Statistic;
 using ClinicManagementSystem.ViewModel;
 using Microsoft.Data.SqlClient;
+using Microsoft.Extensions.Configuration;
 using Microsoft.UI.Xaml;
 using OxyPlot;
 using System;
@@ -35,6 +36,12 @@ namespace ClinicManagementSystem.Service.DataAccess
         }
         private readonly string _connectionString = GetConnectionString();
 
+  //      private readonly string _connectionString;
+		//public SqlServerDao()
+  //      {
+  //          _connectionString = ConfigurationManager.AppSetting
+  //              .GetConnectionString("DefaultConnection");
+		//}
 
 
 		//==============================================Helper===========================================
@@ -812,7 +819,7 @@ namespace ClinicManagementSystem.Service.DataAccess
 
 			var sql = $@"
                 SELECT count(*) over() as Total, 
-                       m.id, m.patientId, m.staffId, m.time, m.symptom, m.doctorId, m.visitType,
+                       m.id, m.patientId, m.staffId, m.time, m.symptom, m.doctorId, m.visitType, m.isExaminated as status,
                        p.name as PatientName,
                        d.name as DoctorName
                 FROM MedicalExaminationForm m
@@ -858,7 +865,8 @@ namespace ClinicManagementSystem.Service.DataAccess
 					Symptoms = (string)reader["symptom"],
 					DoctorId = (int)reader["doctorId"],
 					DoctorName = reader["DoctorName"].ToString(),
-					VisitType = (string)reader["visitType"]
+					VisitType = (string)reader["visitType"],
+					Status = (string)reader["status"] == "True" ? "Examined" : "Not examined"
 				};
 
 				result.Add(medicalExaminationForm);
@@ -866,6 +874,62 @@ namespace ClinicManagementSystem.Service.DataAccess
             connection.Close();
             return new Tuple<List<MedicalExaminationForm>, int>(result, count);
         }
+
+		public MedicalExaminationFormDetail GetMedicalExaminationFormDetail(int formId)
+        {
+            var connectionString = GetConnectionString();
+            SqlConnection connection = new SqlConnection(connectionString);
+            connection.Open();
+
+			var query = @"
+                SELECT m.*, p.Name as PatientName, p.Email, p.Birthday, p.Gender,
+                       u.Name as DoctorName, mr.Diagnosis,
+                       pr.NextExaminationDate,
+                       med.Name as MedicineName, pd.Dosage, pd.Quantity
+                FROM MedicalExaminationForm m
+                JOIN Patient p ON m.PatientId = p.Id 
+                JOIN EndUser u ON m.DoctorId = u.Id
+                LEFT JOIN MedicalRecord mr ON m.Id = mr.MedicalExaminationFormId
+                LEFT JOIN Prescription pr ON m.Id = pr.MedicalExaminationFormId
+                LEFT JOIN PrescriptionDetail pd ON pr.Id = pd.PrescriptionId
+                LEFT JOIN Medicine med ON pd.MedicineId = med.Id
+                WHERE m.Id = @FormId";
+
+			var command = new SqlCommand(query, connection);
+			command.Parameters.AddWithValue("@FormId", formId);
+
+			var result = new MedicalExaminationFormDetail();
+			var medicines = new List<PrescriptionMedicine>();
+
+            var reader = command.ExecuteReader();
+			while (reader.Read())
+			{
+                result.Id = (int)reader["Id"];
+                result.PatientName = reader["PatientName"].ToString();
+                result.PatientEmail = reader["Email"].ToString();
+                result.DoctorName = reader["DoctorName"].ToString();
+                result.Time = reader.GetDateTime(reader.GetOrdinal("Time"));
+                result.Symptoms = reader["Symptom"].ToString();
+                result.Diagnosis = reader["Diagnosis"]?.ToString();
+                result.NextExaminationDate = reader["NextExaminationDate"] != DBNull.Value
+                    ? Convert.ToDateTime(reader["NextExaminationDate"])
+                    : null;
+
+                if (!reader.IsDBNull(reader.GetOrdinal("MedicineName")))
+				{
+					medicines.Add(new PrescriptionMedicine
+					{
+						MedicineName = reader["MedicineName"].ToString(),
+						Dosage = (int)reader["Dosage"],
+						Quantity = (int)reader["Quantity"]
+					});
+				}
+			}
+
+			result.Medicines = medicines;
+			return result;
+		}
+
         public List<MedicalExaminationStatistic> GetMedicalExaminationStatisticsByDate(DateTimeOffset startDate, DateTimeOffset endDate)
         {
             var result = new List<MedicalExaminationStatistic>();
@@ -891,6 +955,7 @@ namespace ClinicManagementSystem.Service.DataAccess
             connection.Close();
             return result;
         }
+        
         /// <summary>
         /// Thêm bệnh nhân
         /// </summary>
@@ -1292,7 +1357,9 @@ namespace ClinicManagementSystem.Service.DataAccess
 		public Tuple<List<Patient>, int> GetPatients(
             int page, int rowsPerPage,
             string keyword,
-            Dictionary<string, SortType> sortOptions
+			DateTimeOffset? startDate,
+			DateTimeOffset? endDate,
+			Dictionary<string, SortType> sortOptions
         )
         {
             var result = new List<Patient>();
@@ -1311,7 +1378,9 @@ namespace ClinicManagementSystem.Service.DataAccess
                 )";
             }
 
-            string sortString = "ORDER BY ";
+            //whereClause += " AND (pr.NextMedicationDate IS NULL OR pr.NextMedicationDate > @CurrentDate)";
+
+			string sortString = "ORDER BY ";
             bool useDefault = true;
             foreach (var item in sortOptions)
             {
@@ -1334,17 +1403,44 @@ namespace ClinicManagementSystem.Service.DataAccess
                 sortString += "ID ";
             }
 
-            var sql = $"""
-                SELECT count(*) over() as Total, id, name, residentId, email, gender, birthday, address
-                FROM Patient
+			if (startDate.HasValue)
+			{
+				whereClause += " AND CAST(pr.NextExaminationDate AS DATE) >= @StartDate";
+			}
+			if (endDate.HasValue)
+			{
+				whereClause += " AND CAST(pr.NextExaminationDate AS DATE) <= @EndDate";
+			}
+
+			var sql = $"""
+                SELECT count(*) over() as Total, p.id, p.name, p.residentId, p.email, p.gender, p.birthday, p.address, pr.NextExaminationDate
+                FROM Patient p
+                LEFT JOIN MedicalExaminationForm m ON p.id = m.patientId
+                LEFT JOIN Prescription pr ON m.id = pr.medicalExaminationFormId
                 {whereClause}
                 {sortString}
                 OFFSET @Skip ROWS FETCH NEXT @Take ROWS ONLY;
                 """;
 
             var command = new SqlCommand(sql, connection);
-            AddParameters(command, ("@Skip", (page - 1) * rowsPerPage), ("@Take", rowsPerPage), ("@Keyword", $"%{keyword}%"));
-            var reader = command.ExecuteReader();
+            AddParameters(command, 
+                ("@Skip", (page - 1) * rowsPerPage), 
+                ("@Take", rowsPerPage), 
+                ("@Keyword", $"%{keyword}%"),
+                ("@CurrentDate", DateTime.Now.Date));
+
+			if (startDate.HasValue)
+			{
+				var localStartDate = startDate.Value.LocalDateTime.Date;
+				AddParameters(command, ("@StartDate", localStartDate));
+			}
+			if (endDate.HasValue)
+			{
+				var localEndDate = endDate.Value.LocalDateTime.Date;
+				AddParameters(command, ("@EndDate", localEndDate));
+			}
+
+			var reader = command.ExecuteReader();
             int count = -1;
 
             while (reader.Read())
@@ -1361,6 +1457,7 @@ namespace ClinicManagementSystem.Service.DataAccess
                 patient.Gender = (string)reader["gender"];
                 patient.DoB = (DateTime)reader["birthday"];
                 patient.Address = (string)reader["address"];
+                patient.NextExaminationDate = reader["NextExaminationDate"] == DBNull.Value ? null : (DateTime?)reader["NextExaminationDate"];
                 result.Add(patient);
             }
 

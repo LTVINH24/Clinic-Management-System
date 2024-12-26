@@ -17,7 +17,7 @@ namespace ClinicManagementSystem.ViewModel
 {
 	public class MedicalExaminationFormViewModel : INotifyPropertyChanged
 	{
-		IDao _dao;
+		public IDao _dao;
 
 		private ObservableCollection<MedicalExaminationForm> _medicalExaminationForms;
 		private ObservableCollection<PageInfo> _pageinfos;

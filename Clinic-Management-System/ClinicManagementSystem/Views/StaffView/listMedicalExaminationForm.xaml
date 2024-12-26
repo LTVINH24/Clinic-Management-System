@@ -34,18 +34,22 @@
                     <StackPanel Orientation="Horizontal">
                         <TextBlock Width="50" Margin="20" Text="{x:Bind Id}" ></TextBlock>
                         <TextBlock Width="50" Margin="20" Text="{x:Bind StaffId}" ></TextBlock>
-                        <TextBlock Width="150" Margin="20" Text="{x:Bind PatientName}" />
+                        <TextBlock Width="150" Margin="20" Text="{x:Bind PatientName}" TextWrapping="Wrap" />
                         <TextBlock Width="180" Margin="20" Text="{x:Bind Time, Converter={StaticResource DateTimeConverter}}" TextWrapping="Wrap"></TextBlock>
                         <TextBlock Width="100" Margin="20" Text="{x:Bind DoctorName}" />
                         <ScrollViewer MaxHeight="80" VerticalScrollMode="Enabled" HorizontalScrollMode="Disabled" Margin="20" Width="120">
                             <TextBlock  Text="{x:Bind Symptoms}" TextWrapping="Wrap" ></TextBlock>
                         </ScrollViewer>
-                        <TextBlock Width="110" Margin="20" Text="{x:Bind VisitType}" ></TextBlock>
+                        <TextBlock Width="80" Margin="20" Text="{x:Bind VisitType}" ></TextBlock>
+                        <TextBlock Width="110" Margin="20" Text="{x:Bind Status}" ></TextBlock>
                         <Button Click="Edit_Click" Background="Transparent" BorderBrush="Transparent">
                             <FontIcon Glyph="&#xE70F;" />
                         </Button>
                         <Button Margin="5,0,0,0" Click="deleteMedicalExaminationForm" Background="Transparent" BorderBrush="Transparent">
                             <FontIcon Glyph="&#xE74D;" />
+                        </Button>
+                        <Button Margin="5,0,0,0" Click="SendResult_Click" Background="Transparent" BorderBrush="Transparent" Visibility="{x:Bind ShowSendMailButton(), Mode=OneWay}">
+                            <FontIcon Glyph="&#xE715;" />
                         </Button>
                     </StackPanel>
                 </Border>
@@ -103,14 +107,14 @@
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Spacing="10" Margin="0,10,0,10">
                 <CalendarDatePicker 
                     Header="From date"
-                    PlaceholderText="Choose start date" 
+                    PlaceholderText="Choose start date follow-up" 
                     Date="{x:Bind ViewModel.StartDate, Mode=TwoWay}"
                     Width="200"
                     Foreground="{ThemeResource ApplicationForegroundThemeBrush}"/>
 
                 <CalendarDatePicker 
                     Header="To date"
-                    PlaceholderText="Choose end date"
+                    PlaceholderText="Choose end date follow-up"
                     Date="{x:Bind ViewModel.EndDate, Mode=TwoWay}"
                     Width="200"
                     Foreground="{ThemeResource ApplicationForegroundThemeBrush}"/>
@@ -129,6 +133,7 @@
                 <TextBlock FontWeight="Bold" FontSize="20"  Width="140">Doctor</TextBlock>
                 <TextBlock FontWeight="Bold" FontSize="20"  Width="160">Symptoms</TextBlock>
                 <TextBlock FontWeight="Bold" FontSize="20"  Width="140">Visit Type</TextBlock>
+                <TextBlock FontWeight="Bold" FontSize="20"  Width="140">Status</TextBlock>
                 <TextBlock FontWeight="Bold" FontSize="20"  Width="140"></TextBlock>
             </StackPanel>
 
@@ -151,7 +156,7 @@
                 <ComboBox ItemsSource="{Binding PageInfos, Mode=OneWay}"
                     SelectedItem="{x:Bind ViewModel.SelectedPageInfoItem, Mode=TwoWay}"
                     SelectionChanged="pagesComboBox_SelectionChanged"
-                    Margin="5" Name="pagesComboBox" Width="100" Height="30">        
+                    Margin="5,0,5,20" Name="pagesComboBox" Width="100" Height="30">        
                     <ComboBox.ItemTemplate>
                         <DataTemplate x:DataType="localmodel:PageInfo">
                             <TextBlock >
@@ -167,6 +172,18 @@
             </Button>
         </StackPanel>
 
+        <StackPanel x:Name="LoadingPanel" 
+                    Visibility="Collapsed"
+                    VerticalAlignment="Center" 
+                    HorizontalAlignment="Center">
+            <ProgressRing x:Name="LoadingRing" 
+                          IsActive="False"
+                          Width="50" 
+                          Height="50"/>
+            <TextBlock Text="Sending email..." 
+                      Margin="0,10,0,0"
+                      HorizontalAlignment="Center"/>
+        </StackPanel>
     </Grid>
 
 

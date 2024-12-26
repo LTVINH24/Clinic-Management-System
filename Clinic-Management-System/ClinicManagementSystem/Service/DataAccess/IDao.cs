@@ -70,6 +70,9 @@ namespace ClinicManagementSystem.Service.DataAccess
 		bool UpdateMedicalExaminationForm(MedicalExaminationForm form);
 
 		bool DeleteMedicalExaminationForm(MedicalExaminationForm form);
+
+		public MedicalExaminationFormDetail GetMedicalExaminationFormDetail(int formId);
+		
 		public List<MedicalExaminationStatistic> GetMedicalExaminationStatisticsByDate(DateTimeOffset startDate, DateTimeOffset endDate);
 		//========================================================================================
 
@@ -97,6 +100,8 @@ namespace ClinicManagementSystem.Service.DataAccess
 			int page,
 			int rowsPerPage,
 			string keyword,
+			DateTimeOffset? startDate,
+			DateTimeOffset? endDate,
 			Dictionary<string, SortType> sortOptions
 		);
 

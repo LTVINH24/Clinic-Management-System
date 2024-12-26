@@ -25,7 +25,6 @@ namespace ClinicManagementSystem.ViewModel
 		public string Keyword { get; set; } = "";
 		public PageInfo SelectedPageInfoItem { get; set; } = new PageInfo();
 		public Patient PatientEdit { get; set; }
-
 		public ObservableCollection<PageInfo> PageInfos
 		{
 			get => _pageinfos ??= new ObservableCollection<PageInfo>();
@@ -34,7 +33,6 @@ namespace ClinicManagementSystem.ViewModel
 				_pageinfos = value;
 			}
 		}
-
 		public ObservableCollection<Patient> Patients
 		{
 			get => _patients ??= new ObservableCollection<Patient>();
@@ -45,6 +43,27 @@ namespace ClinicManagementSystem.ViewModel
 		}
 
 		private Dictionary<string, SortType> _sortOptions = new();
+		private DateTimeOffset? _startDateFollowUp;
+		public DateTimeOffset? StartDateFollowUp
+		{
+			get => _startDateFollowUp;
+			set
+			{
+				_startDateFollowUp = value;
+				LoadData();
+			}
+		}
+
+		private DateTimeOffset? _endDateFollowUp;
+		public DateTimeOffset? EndDateFollowUp
+		{
+			get => _endDateFollowUp;
+			set
+			{
+				_endDateFollowUp = value;
+				LoadData();
+			}
+		}
 
 		public event PropertyChangedEventHandler PropertyChanged;
 
@@ -104,7 +123,13 @@ namespace ClinicManagementSystem.ViewModel
 		/// </summary>
 		public void LoadData()
 		{
-			var (items, count) = _dao.GetPatients(CurrentPage, RowsPerPage, Keyword, _sortOptions);
+			var (items, count) = _dao.GetPatients(
+				CurrentPage, 
+				RowsPerPage, 
+				Keyword, 
+				StartDateFollowUp,
+				EndDateFollowUp,
+				_sortOptions);
 
 			Patients.Clear();
 

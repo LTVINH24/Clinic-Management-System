@@ -1,4 +1,5 @@
 ﻿
+using Microsoft.UI.Xaml;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -20,8 +21,14 @@ namespace ClinicManagementSystem.Model
 		public string Address { get; set; }
 		public DateTimeOffset? DoB { get; set; } = null;
 		public string Gender { get; set; }
+		public DateTime? NextExaminationDate { get; set; }
 
-		//public ICollection<MedicalExaminationForm> MedicalExaminationForms { get; set; }
+		public Visibility ShowMailButton()  
+		{
+			return (NextExaminationDate != null && NextExaminationDate > DateTime.Now)
+				   ? Visibility.Visible
+				   : Visibility.Collapsed;
+		}
 
 		public event PropertyChangedEventHandler PropertyChanged;
 	}
