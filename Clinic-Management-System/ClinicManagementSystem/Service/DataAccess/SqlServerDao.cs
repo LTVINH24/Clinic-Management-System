@@ -1033,8 +1033,10 @@ namespace ClinicManagementSystem.Service.DataAccess
             int id = UserSessionService.Instance.LoggedInUserId;
 
 
-            var command = new SqlCommand("INSERT INTO MedicalExaminationForm (PatientId, StaffId, DoctorId, Time, Symptom, VisitType) VALUES (@PatientId, @StaffId, @DoctorId, @Time, @Symptom, @VisitType)", connection);
+            var command = new SqlCommand("INSERT INTO MedicalExaminationForm (PatientId, StaffId, DoctorId, Time, Symptom, VisitType, IsExaminated) " +
+                "VALUES (@PatientId, @StaffId, @DoctorId, @Time, @Symptom, @VisitType, @IsExaminated)", connection);
 
+            
 
 
             AddParameters(command,
@@ -1043,7 +1045,8 @@ namespace ClinicManagementSystem.Service.DataAccess
                 ("@DoctorId", medicalExaminationForm.DoctorId),
                 ("@Time", medicalExaminationForm.Time),
                 ("@Symptom", medicalExaminationForm.Symptoms),
-                ("@VisitType", medicalExaminationForm.VisitType));
+                ("@VisitType", medicalExaminationForm.VisitType),
+                ("@IsExaminated", "False"));
 
             int result = command.ExecuteNonQuery();
 
@@ -1413,16 +1416,21 @@ namespace ClinicManagementSystem.Service.DataAccess
 			}
 
 			var sql = $"""
-                SELECT count(*) over() as Total, p.id, p.name, p.residentId, p.email, p.gender, p.birthday, p.address, pr.NextExaminationDate
+                SELECT count(*) over() as Total, p.id, p.name, p.residentId, p.email, p.gender, p.birthday, p.address,
+                       (
+                           SELECT TOP 1 pr2.NextExaminationDate
+                           FROM MedicalExaminationForm m2 
+                           LEFT JOIN Prescription pr2 ON m2.id = pr2.medicalExaminationFormId
+                           WHERE m2.patientId = p.id
+                           ORDER BY pr2.NextExaminationDate DESC
+                       ) as NextExaminationDate
                 FROM Patient p
-                LEFT JOIN MedicalExaminationForm m ON p.id = m.patientId
-                LEFT JOIN Prescription pr ON m.id = pr.medicalExaminationFormId
                 {whereClause}
                 {sortString}
                 OFFSET @Skip ROWS FETCH NEXT @Take ROWS ONLY;
                 """;
 
-            var command = new SqlCommand(sql, connection);
+			var command = new SqlCommand(sql, connection);
             AddParameters(command, 
                 ("@Skip", (page - 1) * rowsPerPage), 
                 ("@Take", rowsPerPage), 

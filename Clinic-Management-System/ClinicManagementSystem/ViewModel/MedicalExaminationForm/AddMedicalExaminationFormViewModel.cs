@@ -148,6 +148,8 @@ namespace ClinicManagementSystem.ViewModel
 
 			if (isExist)
 			{
+				Patient.Id = patientId;
+				bool patientUpdated = _dao.UpdatePatient(Patient);
 				bool examinationSaved = _dao.AddMedicalExaminationForm(patientId, MedicalExaminationForm);
 				if (examinationSaved)
 				{

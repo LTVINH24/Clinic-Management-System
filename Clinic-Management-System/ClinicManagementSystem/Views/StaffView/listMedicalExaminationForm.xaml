@@ -35,9 +35,9 @@
                         <TextBlock Width="50" Margin="20" Text="{x:Bind Id}" ></TextBlock>
                         <TextBlock Width="50" Margin="20" Text="{x:Bind StaffId}" ></TextBlock>
                         <TextBlock Width="150" Margin="20" Text="{x:Bind PatientName}" TextWrapping="Wrap" />
-                        <TextBlock Width="180" Margin="20" Text="{x:Bind Time, Converter={StaticResource DateTimeConverter}}" TextWrapping="Wrap"></TextBlock>
-                        <TextBlock Width="100" Margin="20" Text="{x:Bind DoctorName}" />
-                        <ScrollViewer MaxHeight="80" VerticalScrollMode="Enabled" HorizontalScrollMode="Disabled" Margin="20" Width="120">
+                        <TextBlock Width="140" Margin="20" Text="{x:Bind Time, Converter={StaticResource DateTimeConverter}}" TextWrapping="Wrap"></TextBlock>
+                        <TextBlock Width="140" Margin="20" Text="{x:Bind DoctorName}" TextWrapping="Wrap"/>
+                        <ScrollViewer Height="40" VerticalScrollMode="Enabled" HorizontalScrollMode="Disabled" Margin="20" Width="120">
                             <TextBlock  Text="{x:Bind Symptoms}" TextWrapping="Wrap" ></TextBlock>
                         </ScrollViewer>
                         <TextBlock Width="80" Margin="20" Text="{x:Bind VisitType}" ></TextBlock>
@@ -59,12 +59,16 @@
 
     <Grid VerticalAlignment="Stretch">
         <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
-            <RowDefinition Height="70"/>
+            <RowDefinition Height="70" />
         </Grid.RowDefinitions>
-        <Grid.ColumnDefinitions>
+        <!--<Grid.ColumnDefinitions>
             <ColumnDefinition Width="*"/>
-        </Grid.ColumnDefinitions>
+        </Grid.ColumnDefinitions>-->
 
         <Popup  x:Name="EditPopup" IsOpen="False" HorizontalAlignment="Center" VerticalAlignment="Center" VerticalOffset="-50" HorizontalOffset="-100">
             <Border Background="White" BorderBrush="Gray" BorderThickness="1" Padding="20">
@@ -93,30 +97,50 @@
         </Popup>
 
 
-        <StackPanel>
-            <TextBlock Text="List Medical Examination Form" FontSize="24" FontWeight="Bold" Margin="10,0,0,0" Padding="20,20,0,0"/>
+        <ScrollViewer></ScrollViewer>
+            <TextBlock
+                Grid.Row="0"
+                Text="List Medical Examination Form" 
+                FontSize="24" FontWeight="Bold" 
+                Margin="10,0,0,0" Padding="20,20,0,0"/>
 
-            <StackPanel Margin="0,10,0,10" Orientation="Horizontal" HorizontalAlignment="Center">
-                <TextBox PlaceholderText="Search by Patient Name, Doctor Name, Symptoms" TextChanged="searchTextbox_Click" Padding="10" CornerRadius="20" Name="keyword" Text="{x:Bind ViewModel.Keyword, 
-                    Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Width="460"/>
-                <Button CornerRadius="100" Padding="10" Margin="20,0,0,0" Click="searchButton_Click">
-                    <FontIcon FontSize="12" FontFamily="Segoe MDL2 Assets" Glyph="&#xE721;"/>
+            <StackPanel
+                Grid.Row="1"
+                Margin="0,10,0,10" 
+                Orientation="Horizontal" HorizontalAlignment="Center">
+                <TextBox 
+                    PlaceholderText="Search by Patient Name, Doctor Name, Symptoms" 
+                    TextChanged="searchTextbox_Click" 
+                    Padding="10" CornerRadius="20" 
+                    Name="keyword" Text="{x:Bind ViewModel.Keyword, 
+                    Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+                    Width="480"/>
+                <Button 
+                    CornerRadius="100" 
+                    Padding="10" Margin="20,0,0,0" 
+                    Click="searchButton_Click">
+                    <FontIcon 
+                        FontSize="12" FontFamily="Segoe MDL2 Assets" 
+                        Glyph="&#xE721;"/>
                 </Button>
             </StackPanel>
 
-            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Spacing="10" Margin="0,10,0,10">
+            <StackPanel
+                Grid.Row="2"
+                Orientation="Horizontal" HorizontalAlignment="Center" 
+                Spacing="10" Margin="0,10,0,10">
                 <CalendarDatePicker 
                     Header="From date"
                     PlaceholderText="Choose start date follow-up" 
                     Date="{x:Bind ViewModel.StartDate, Mode=TwoWay}"
-                    Width="200"
+                    Width="220"
                     Foreground="{ThemeResource ApplicationForegroundThemeBrush}"/>
 
                 <CalendarDatePicker 
                     Header="To date"
                     PlaceholderText="Choose end date follow-up"
                     Date="{x:Bind ViewModel.EndDate, Mode=TwoWay}"
-                    Width="200"
+                    Width="220"
                     Foreground="{ThemeResource ApplicationForegroundThemeBrush}"/>
 
                 <Button 
@@ -125,7 +149,12 @@
                     VerticalAlignment="Bottom"/>
             </StackPanel>
 
-            <StackPanel Margin ="35,0,0,20"  Orientation="Horizontal" HorizontalAlignment="Left">
+        
+            
+            <StackPanel 
+                Grid.Row="3"
+                Margin ="35,0,0,20"  
+                Orientation="Horizontal" HorizontalAlignment="Left">
                 <TextBlock FontWeight="Bold" FontSize="20" Width="70">ID</TextBlock>
                 <TextBlock FontWeight="Bold" FontSize="20"  Width="120">Staff ID</TextBlock>
                 <TextBlock FontWeight="Bold" FontSize="20"  Width="200">Patient</TextBlock>
@@ -137,15 +166,21 @@
                 <TextBlock FontWeight="Bold" FontSize="20"  Width="140"></TextBlock>
             </StackPanel>
 
-            <ListView Name="itemsComboBox" Margin="0,10,0,0"
-                ItemsSource="{Binding MedicalExaminationForms, Mode=TwoWay}"
-                ItemTemplate="{StaticResource HorizontalUser}">
-            </ListView>
+            <ScrollViewer 
+                Grid.Row="4"
+                VerticalScrollMode="Auto" VerticalScrollBarVisibility="Auto">
+                <ListView Name="itemsComboBox" Margin="0,10,0,0"
+                    ItemsSource="{Binding MedicalExaminationForms, Mode=TwoWay}"
+                    ItemTemplate="{StaticResource HorizontalUser}">
+                </ListView>
+            </ScrollViewer>
+        
 
-
-        </StackPanel>
-
-        <StackPanel Margin="0"  Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" Orientation="Horizontal" VerticalAlignment="Bottom" HorizontalAlignment="Center">
+        <StackPanel 
+            Margin="0"  
+            Grid.Row="5"  
+            Orientation="Horizontal" 
+            VerticalAlignment="Bottom" HorizontalAlignment="Center">
             <Button  Click="previousButton_Click" >
                 <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xE76B;"/>
             </Button>
