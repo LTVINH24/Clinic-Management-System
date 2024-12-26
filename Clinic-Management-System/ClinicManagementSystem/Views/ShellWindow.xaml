@@ -11,4 +11,5 @@
     <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
         <Frame x:Name="content"/>
     </Grid>
+    
 </Window>

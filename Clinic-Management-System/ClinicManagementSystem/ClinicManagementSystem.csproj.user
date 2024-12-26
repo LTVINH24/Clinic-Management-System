@@ -20,6 +20,9 @@
     <None Update="Package.appxmanifest">
       <SubType>Designer</SubType>
     </None>
+    <Page Update="Views\StaffView\StaffHomePage.xaml">
+      <SubType>Designer</SubType>
+    </Page>
     <Page Update="Views\HomePage.xaml">
       <SubType>Designer</SubType>
     </Page>
@@ -82,10 +85,10 @@
     <Page Update="Views\StaffView\AddMedicalExaminationForm.xaml">
       <SubType>Designer</SubType>
     </Page>
-    <Page Update="Views\StaffView\listMedicalExaminationForm.xaml">
+    <Page Update="Views\StaffView\ListMedicalExaminationForm.xaml">
       <SubType>Designer</SubType>
     </Page>
-    <Page Update="Views\StaffView\staffPage.xaml">
+    <Page Update="Views\StaffView\StaffPage.xaml">
       <SubType>Designer</SubType>
     </Page>
   </ItemGroup>

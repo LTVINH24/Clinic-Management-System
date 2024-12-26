@@ -31,6 +31,7 @@ namespace ClinicManagementSystem.Views
 			nvSample.Loaded += (s, e) =>
 			{
 				nvSample.IsPaneOpen = false;
+				contentFrame.Navigate(typeof(StaffHomePage));
 			};
 		}
 
@@ -48,6 +49,9 @@ namespace ClinicManagementSystem.Views
 				
 				switch (selectedTag)
 				{
+					case "StaffPage":
+						contentFrame.Navigate(typeof(StaffHomePage));
+						break;
 					case "HomePage":
 						contentFrame.Navigate(typeof(HomePage));
 						break;

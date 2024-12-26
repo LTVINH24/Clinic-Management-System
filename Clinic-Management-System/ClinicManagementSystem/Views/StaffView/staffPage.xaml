@@ -9,42 +9,40 @@
     mc:Ignorable="d"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
-    <ScrollView VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto">
-        <Grid>
-            <Grid.RowDefinitions>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="*"/>
-            </Grid.RowDefinitions>
+    <NavigationView x:Name="nvSample" 
+                    Background="#b5b5e8"
+                    IsPaneOpen="False"
+                    PaneDisplayMode="Left"
+                    IsTabStop="False"
+                    IsSettingsVisible="True"
+                    SelectionChanged="NavigationView_SelectionChanged">
+        <NavigationView.MenuItems>
+            <NavigationViewItem Content="Home" 
+                               Icon="Home" 
+                               ToolTipService.ToolTip="Home" 
+                               Tag="StaffPage"/>
+            <NavigationViewItem Content="Account" 
+                               Icon="Contact" 
+                               ToolTipService.ToolTip="Account" 
+                               Tag="HomePage"/>
+            <NavigationViewItem Content="Patient" 
+                               Icon="People" 
+                               ToolTipService.ToolTip="Patient" 
+                               Tag="ListPatient"/>
+            <NavigationViewItem Content="Medical Examination Form" 
+                               Icon="Document" 
+                               ToolTipService.ToolTip="Medical Examination Form" 
+                               Tag="MedicalExaminationForm"/>
+            <NavigationViewItem Content="Add" 
+                               Icon="Add" 
+                               ToolTipService.ToolTip="Add" 
+                               Tag="AddMedicalExaminationForm"/>
+        </NavigationView.MenuItems>
 
-            <NavigationView Grid.Row="1"  
-                            x:Name="nvSample" 
-                            Background="#b5b5e8"
-                            IsPaneOpen="False"
-                            PaneDisplayMode="Left"
-                            IsTabStop="False"
-                            SelectionChanged="NavigationView_SelectionChanged">
-                <NavigationView.MenuItems>
-                    <NavigationViewItem Content="Home" 
-                                        Icon="Home" 
-                                        ToolTipService.ToolTip="Home" 
-                                        Tag="HomePage"/>
-                    <NavigationViewItem Content="Patient" 
-                                        Icon="People" 
-                                        ToolTipService.ToolTip="Patient" 
-                                        Tag="ListPatient"/>
-                    <NavigationViewItem Content="Medical Examination Form" 
-                                        Icon="Document" 
-                                        ToolTipService.ToolTip="Medical Examination Form" 
-                                        Tag="MedicalExaminationForm"/>
-                    <NavigationViewItem Content="Add" 
-                                        Icon="Add" 
-                                        ToolTipService.ToolTip="Add" 
-                                        Tag="AddMedicalExaminationForm"/>
-                </NavigationView.MenuItems>
-                <Frame x:Name="contentFrame" 
-                       Content="Staff Page" 
-                       Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"/>
-            </NavigationView>
-        </Grid>
-    </ScrollView>
+        <ScrollViewer VerticalScrollBarVisibility="Auto" 
+                     HorizontalScrollBarVisibility="Auto">
+            <Frame x:Name="contentFrame"
+                   Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"/>
+        </ScrollViewer>
+    </NavigationView>
 </Page>
