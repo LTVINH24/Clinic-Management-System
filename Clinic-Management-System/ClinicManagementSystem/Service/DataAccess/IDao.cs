@@ -1,4 +1,5 @@
 ﻿using ClinicManagementSystem.Model;
+using ClinicManagementSystem.Model.Statistic;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -37,13 +38,14 @@ namespace ClinicManagementSystem.Service.DataAccess
 		bool UpdateUser(User info);
 
 		bool DeleteUser(User user);
-		
+		bool LockUser(int id,string status);
 		public List<Specialty> GetSpecialty();
 		Tuple<List<Medicine>, int> GetMedicines(
 		 int page, int rowsPerPage,
 		 string keyword,
-		 Dictionary<string, SortType> sortOptions
-		);
+		 Dictionary<string, SortType> sortOptions, int daysRemaining
+        );
+		User GetUserById(int userId);
 		//========================================================================================
 
 
@@ -70,6 +72,8 @@ namespace ClinicManagementSystem.Service.DataAccess
 		bool DeleteMedicalExaminationForm(MedicalExaminationForm form);
 
 		public MedicalExaminationFormDetail GetMedicalExaminationFormDetail(int formId);
+		
+		public List<MedicalExaminationStatistic> GetMedicalExaminationStatisticsByDate(DateTimeOffset startDate, DateTimeOffset endDate);
 		//========================================================================================
 
 
@@ -78,7 +82,8 @@ namespace ClinicManagementSystem.Service.DataAccess
 		bool CreateMedicine(Medicine medicine);
 		bool UpdateMedicine(Medicine medicine);
 		bool DeleteMedicine(Medicine medicine);
-		List<MedicineStatistic> GetMedicineStatistic(DateTime startDate, DateTime endDate);
+		List<MedicineStatistic> GetTopMedicineStatistic(DateTimeOffset startDate, DateTimeOffset endDate, int n, string sortString);
+		List<MedicineStatistic> GetMedicineStatistic(DateTimeOffset startDate, DateTimeOffset endDate);
 		//========================================================================================
 
 		//========================================Specialty=======================================
@@ -103,7 +108,10 @@ namespace ClinicManagementSystem.Service.DataAccess
 		bool UpdatePatient(Patient patient);
 
 		bool DeletePatient(Patient patient);
-		//========================================================================================
+        //========================================================================================
 
+
+        //=========================================Bill==========================================
+        public List<BillStatistic> GetBillStatistic(DateTimeOffset startDate, DateTimeOffset endDate);
     }
 }

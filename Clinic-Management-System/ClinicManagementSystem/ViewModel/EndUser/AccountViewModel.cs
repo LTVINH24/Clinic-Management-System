@@ -187,7 +187,11 @@ namespace ClinicManagementSystem.ViewModel.EndUser
 			newPassword = "";
 			return sucess;
 		}
-
+		public bool LockUser(int id,string status)
+		{
+			bool result = _dao.LockUser(id, status);
+			return result;
+		}
 		/// <summary>
 		/// Xóa User
 		/// </summary>

@@ -64,10 +64,6 @@ namespace ClinicManagementSystem.Views.AdminView
             ViewModel.GoToPreviousPage();
         }
 
-        private void medicineList_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-
-        }
 
 		/// <summary>
 		/// Xử lí sự kiện khi nhấn nút trang sau
@@ -81,26 +77,25 @@ namespace ClinicManagementSystem.Views.AdminView
 
         public ClinicManagementSystem.Model.Medicine editMedicine { get; set; }
 
-		/// <summary>
-		/// Xử lí sự kiện khi nhấn nút edit
-		/// </summary>
-		/// <param name="sender"></param>
-		/// <param name="e"></param>
-		private void Edit_Click(object sender, RoutedEventArgs e)
+        /// <summary>
+        /// Xử lí sự kiện khi nhấn nút edit
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void Edit_Click(object sender, RoutedEventArgs e)
         {
-            SaveBtn.Visibility = Visibility.Visible;
-            AddBtn.Visibility = Visibility.Collapsed;
-            var button =sender as Button;
+            var button = sender as Button;
             editMedicine = button?.DataContext as ClinicManagementSystem.Model.Medicine;
             ViewModel.EditMedicine(editMedicine);
+            EditPopup.IsOpen = true;
         }
 
-		/// <summary>
-		/// Xử lí sự kiện khi nhấn nút delete
-		/// </summary>
-		/// <param name="sender"></param>
-		/// <param name="e"></param>
-		private void Delete_Click(object sender, RoutedEventArgs e)
+        /// <summary>
+        /// Xử lí sự kiện khi nhấn nút delete
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void Delete_Click(object sender, RoutedEventArgs e)
         {
             var button = sender as Button;
             var deleteMedicine = button?.DataContext as ClinicManagementSystem.Model.Medicine;
@@ -116,12 +111,12 @@ namespace ClinicManagementSystem.Views.AdminView
 
         }
 
-		/// <summary>
-		/// Xử lí sự kiện khi nhấn nút add
-		/// </summary>
-		/// <param name="sender"></param>
-		/// <param name="e"></param>
-		private void addMedicine(object sender, RoutedEventArgs e)
+        /// <summary>
+        /// Xử lí sự kiện khi nhấn nút add
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void addMedicine(object sender, RoutedEventArgs e)
         {
             bool success = ViewModel.AddMedicine();
             if (success)
@@ -132,44 +127,24 @@ namespace ClinicManagementSystem.Views.AdminView
             {
                 Notify("Add medicine failed");
             }
-            
+
         }
 
-		/// <summary>
-		/// Xử lí sự kiện khi nhấn nút save
-		/// </summary>
-		/// <param name="sender"></param>
-		/// <param name="e"></param>
-		private void saveMedicine(object sender, RoutedEventArgs e)
+        /// <summary>
+        /// Xử lí sự kiện khi nhấn nút cancel
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void cancelMedicine(object sender, RoutedEventArgs e)
         {
-            bool succes = ViewModel.UpdateMedicine();
-            if (succes)
-            {
-                Notify("Update medicine successfully");
-            }
-            else
-            {
-                Notify("Update medicine failed");
-            }
-        }
-
-		/// <summary>
-		/// Xử lí sự kiện khi nhấn nút cancel
-		/// </summary>
-		/// <param name="sender"></param>
-		/// <param name="e"></param>
-		private void cancelMedicine(object sender, RoutedEventArgs e)
-        {
-            SaveBtn.Visibility = Visibility.Collapsed;
-            AddBtn.Visibility = Visibility.Visible;
             ViewModel.CancelMedicine();
         }
 
-		/// <summary>
-		/// Hiển thị thông báo
-		/// </summary>
-		/// <param name="notify"></param>
-		private async void Notify(string notify)
+        /// <summary>
+        /// Hiển thị thông báo
+        /// </summary>
+        /// <param name="notify"></param>
+        private async void Notify(string notify)
         {
             await new ContentDialog()
             {
@@ -188,6 +163,60 @@ namespace ClinicManagementSystem.Views.AdminView
 		private void searchTextbox_Click(object sender, TextChangedEventArgs e)
         {
             ViewModel.Search();
+        }
+
+        private void RadioButton_Checked(object sender, RoutedEventArgs e)
+        {
+            if(RadioButton10Days.IsChecked == true)
+            {
+                ViewModel.LoadMedicines(10);
+            }
+            else if(RadioButton20Days.IsChecked == true)
+            {
+                ViewModel.LoadMedicines(20);
+
+
+            }
+            else if (RadioButton30Days.IsChecked == true)
+            {
+                ViewModel.LoadMedicines(30);
+
+            }
+            else
+            {
+                ViewModel.LoadMedicines(0);
+
+            }
+        }
+
+        private void clearFilter(object sender, RoutedEventArgs e)
+        {
+            RadioButton10Days.IsChecked = false;
+            RadioButton20Days.IsChecked = false;
+            RadioButton30Days.IsChecked = false;
+            ViewModel.LoadMedicines(0);
+
+
+        }
+
+        private void UpdateMedicine_Click(object sender, RoutedEventArgs e)
+        {
+            bool succes = ViewModel.UpdateMedicine();
+            if (succes)
+            {
+                Notify("Update medicine successfully");
+            }
+            else
+            {
+                Notify("Update medicine failed");
+            }
+            EditPopup.IsOpen = false;
+
+        }
+
+        private void ClosePopup_Click(object sender, RoutedEventArgs e)
+        {
+            EditPopup.IsOpen = false;
         }
     }
 }

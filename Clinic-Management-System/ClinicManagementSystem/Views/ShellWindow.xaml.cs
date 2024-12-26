@@ -23,8 +23,15 @@ namespace ClinicManagementSystem.Views
 	/// </summary>
 	public sealed partial class ShellWindow : Window
 	{
-		public ShellWindow(string name)
+        private static ShellWindow _current;
+        public static ShellWindow Current
+        {
+            get => _current;
+            private set => _current = value;
+        }
+        public ShellWindow(string name)
 		{
+			Current = this;
 			this.InitializeComponent();
 
 			var fullNamespace = $"{GetType().Namespace}.{name}";
@@ -41,11 +48,21 @@ namespace ClinicManagementSystem.Views
 		/// <param name="args"></param>
 		private void Window_Closed(object sender, WindowEventArgs args)
 		{
+			Current = null;
 			var screen = new MainWindow();
 			screen.Activate();
 
 			this.Close();
 		}
+        public IntPtr GetWindowHandle()
+        {
+            return WinRT.Interop.WindowNative.GetWindowHandle(this);
+        }
 
-	}
+        public XamlRoot GetXamlRoot()
+        {
+            return Content.XamlRoot;
+        }
+
+    }
 }

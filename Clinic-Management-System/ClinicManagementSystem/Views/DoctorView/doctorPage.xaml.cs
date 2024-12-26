@@ -49,6 +49,9 @@ namespace ClinicManagementSystem.Views
 
 				switch (selectedTag)
 				{
+                    case "HomePage":
+                        contentFrame.Navigate(typeof(HomePage), contentFrame);
+                        break;
                     case "MedicalExaminationPage":
                         contentFrame.Navigate(typeof(MedicalExaminationPage), contentFrame);
                         break;
