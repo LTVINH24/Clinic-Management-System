@@ -4,19 +4,21 @@ using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Navigation;
 using System.Collections.ObjectModel;
+using System;
+using ClinicManagementSystem.Helper;
 
 namespace ClinicManagementSystem.Views.DoctorView
 {
     public sealed partial class DiagnosisPage : Page
     {
-        private DiagnosisViewModel ViewModel => (DiagnosisViewModel)DataContext;
+        public DiagnosisViewModel ViewModel { get; }
 
         public DiagnosisPage()
         {
             this.InitializeComponent();
-            var viewModel = new DiagnosisViewModel();
-            viewModel.RequestNavigateToMedicineSelection += OnRequestNavigateToMedicineSelection;
-            this.DataContext = viewModel;
+            ViewModel = new DiagnosisViewModel();
+            ViewModel.NavigationFrame = this.Frame;
+            this.DataContext = ViewModel;
         }
 
 		/// <summary>
@@ -39,13 +41,23 @@ namespace ClinicManagementSystem.Views.DoctorView
 		/// <param name="e"></param>
 		private void SaveButton_Click(object sender, RoutedEventArgs e)
         {
-            // Lưu chẩn đoán
-            ViewModel.SaveDiagnosis();
-            
-            // Quay về trang trước
-            if (Frame.CanGoBack)
+            try
             {
-                Frame.GoBack();
+                // Lưu chẩn đoán và đơn thuốc
+                bool success = ViewModel.SaveDiagnosisAndPrescription();
+                
+                if (success)
+                {
+                    // Quay về trang trước
+                    if (Frame.CanGoBack)
+                    {
+                        Frame.GoBack();
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                _ = DialogHelper.ShowMessage("Lỗi", ex.Message, this.Content.XamlRoot);
             }
         }
 
@@ -97,7 +109,14 @@ namespace ClinicManagementSystem.Views.DoctorView
             medicineSelectionPage.MedicineSelectionConfirmed += OnMedicineSelectionConfirmed;
             Frame.Navigate(typeof(MedicineSelectionPage), ViewModel.SelectedMedicines);
         }
+
+        private void TextBox_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            var textBox = sender as TextBox;
+            if (textBox != null)
+            {
+                ViewModel.Diagnosis = textBox.Text;
+            }
+        }
     }
 }
-
-

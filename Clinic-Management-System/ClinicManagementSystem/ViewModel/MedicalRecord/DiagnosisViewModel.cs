@@ -5,6 +5,8 @@ using System;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Windows.Input;
+using Microsoft.UI.Xaml.Controls;
+using ClinicManagementSystem.Helper;
 
 namespace ClinicManagementSystem.ViewModel
 {
@@ -13,10 +15,13 @@ namespace ClinicManagementSystem.ViewModel
         private readonly SqlServerDao _dataAccess;
         private ObservableCollection<MedicineSelection> _selectedMedicines;
         private decimal _totalAmount;
+        private bool _canSave;
+        private bool _isSaved;
 
         public MedicalExaminationForm MedicalExaminationForm { get; private set; }
         public MedicalRecord MedicalRecord { get; private set; }
         public Patient Patient { get; private set; }
+        public Frame NavigationFrame { get; set; }
 
         public string Diagnosis
         {
@@ -27,6 +32,8 @@ namespace ClinicManagementSystem.ViewModel
                 {
                     MedicalRecord.Diagnosis = value;
                     OnPropertyChanged();
+                    System.Diagnostics.Debug.WriteLine($"Diagnosis changed to: {value}");
+                    ValidateSaveButton();
                 }
             }
         }
@@ -34,7 +41,20 @@ namespace ClinicManagementSystem.ViewModel
         public ObservableCollection<MedicineSelection> SelectedMedicines
         {
             get => _selectedMedicines;
-            set => SetProperty(ref _selectedMedicines, value);
+            set
+            {
+                if (SetProperty(ref _selectedMedicines, value))
+                {
+                    if (_selectedMedicines != null)
+                    {
+                        _selectedMedicines.CollectionChanged += (s, e) =>
+                        {
+                            ValidateSaveButton();
+                            CalculateTotalAmount();
+                        };
+                    }
+                }
+            }
         }
 
         public decimal TotalAmount
@@ -56,12 +76,42 @@ namespace ClinicManagementSystem.ViewModel
         public ICommand NavigateToMedicineSelectionCommand { get; }
         public event EventHandler<ObservableCollection<MedicineSelection>> RequestNavigateToMedicineSelection;
 
+        public bool CanSave
+        {
+            get => _canSave && !IsSaved;
+            set
+            {
+                if (SetProperty(ref _canSave, value))
+                {
+                    OnPropertyChanged();
+                }
+            }
+        }
+
+        public bool IsSaved
+        {
+            get => _isSaved;
+            set
+            {
+                if (SetProperty(ref _isSaved, value))
+                {
+                    // Thông báo UI cập nhật trạng thái của tất cả các controls
+                    OnPropertyChanged(nameof(CanEditDiagnosis));
+                    OnPropertyChanged(nameof(CanSelectMedicines));
+                    OnPropertyChanged(nameof(CanSave));
+                }
+            }
+        }
+
+        public bool CanEditDiagnosis => !IsSaved;
+        public bool CanSelectMedicines => !IsSaved;
+
         public DiagnosisViewModel()
         {
             _dataAccess = new SqlServerDao();
             SelectedMedicines = new ObservableCollection<MedicineSelection>();
-            SaveCommand = new RelayCommand(SaveDiagnosis);
-            NavigateToMedicineSelectionCommand = new RelayCommand(NavigateToMedicineSelection);
+            CanSave = false;
+            IsSaved = false;
         }
 
 		/// <summary>
@@ -72,6 +122,16 @@ namespace ClinicManagementSystem.ViewModel
         {
             // Load MedicalExaminationForm data
             MedicalExaminationForm = _dataAccess.GetMedicalExaminationFormById(medicalExaminationFormId);
+
+            // Kiểm tra trạng thái đã khám
+            if (MedicalExaminationForm?.IsExaminated == "true")
+            {
+                IsSaved = true; // Điều này sẽ kích hoạt việc khóa các controls
+            }
+            else
+            {
+                IsSaved = false; // Cho phép chỉnh sửa nếu chưa khám
+            }
 
             // Load Patient data
             if (MedicalExaminationForm != null)
@@ -96,13 +156,8 @@ namespace ClinicManagementSystem.ViewModel
                 SelectedMedicines.Add(medicine);
             }
             
-            System.Diagnostics.Debug.WriteLine($"Loaded {SelectedMedicines.Count} medicines for form {medicalExaminationFormId}");
-            
             // Tính tổng tiền sau khi load danh sách thuốc
             CalculateTotalAmount();
-            
-            System.Diagnostics.Debug.WriteLine($"After loading: SelectedMedicines has {SelectedMedicines.Count} items");
-            System.Diagnostics.Debug.WriteLine($"Total amount: {FormattedTotalAmount}");
             
             OnPropertyChanged(nameof(SelectedMedicines));
         }
@@ -150,6 +205,59 @@ namespace ClinicManagementSystem.ViewModel
         {
             TotalAmount = SelectedMedicines.Sum(m => m.Medicine.Price * m.SelectedQuantity);
             System.Diagnostics.Debug.WriteLine($"CalculateTotalAmount called. Total: {FormattedTotalAmount}");
+        }
+
+        private void ValidateSaveButton()
+        {
+            bool canSave = !string.IsNullOrWhiteSpace(MedicalRecord?.Diagnosis);
+            System.Diagnostics.Debug.WriteLine($"ValidateSaveButton called: {canSave}");
+            CanSave = canSave;
+        }
+
+        public void OnDiagnosisChanged()
+        {
+            ValidateSaveButton();
+        }
+
+        public void OnMedicinesChanged()
+        {
+            ValidateSaveButton();
+        }
+
+        public void LoadExaminationForm(MedicalExaminationForm form)
+        {
+            MedicalExaminationForm = form;
+            
+            // Kiểm tra trạng thái đã khám
+            if (form.IsExaminated?.ToLower() == "true")
+            {
+                IsSaved = true; // Điều này sẽ tự động khóa các controls thông qua binding
+            }
+            
+            // Load dữ liệu
+            LoadData(form.Id);
+        }
+
+        public bool SaveDiagnosisAndPrescription()
+        {
+            // 1. Lưu chẩn đoán
+            SaveDiagnosis();
+
+            // 2. Lưu đơn thuốc
+            bool prescriptionSaved = _dataAccess.SavePrescription(
+                MedicalExaminationForm.Id,
+                SelectedMedicines.ToList()
+            );
+
+            if (!prescriptionSaved)
+            {
+                throw new Exception("Không thể lưu đơn thuốc!");
+            }
+
+            // 3. Cập nhật trạng thái đã lưu
+            IsSaved = true;
+
+            return true;
         }
     }
 }

@@ -7,6 +7,7 @@ using System.Linq;
 using System.Collections.ObjectModel;
 using System;
 using ClinicManagementSystem.Service.DataAccess;
+using ClinicManagementSystem.Helper;
 
 namespace ClinicManagementSystem.Views.DoctorView
 {
@@ -107,17 +108,9 @@ namespace ClinicManagementSystem.Views.DoctorView
             return true;
         }
 
-        private async void ShowMessage(string message)
+        private void ShowMessage(string message)
         {
-            var dialog = new ContentDialog
-            {
-                Title = "Invalid Selection",
-                Content = message,
-                CloseButtonText = "OK",
-                XamlRoot = this.Content.XamlRoot
-            };
-
-            await dialog.ShowAsync();
+            _ = DialogHelper.ShowMessage("Invalid Selection", message, this.Content.XamlRoot);
         }
 
         //private int GetCurrentMedicalRecordId()

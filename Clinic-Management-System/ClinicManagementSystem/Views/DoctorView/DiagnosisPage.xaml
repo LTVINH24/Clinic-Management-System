@@ -82,7 +82,9 @@
 
                     <!-- Nhập liệu chẩn đoán -->
                     <TextBlock Text="Diagnosis:" FontSize="18" FontWeight="SemiBold" Margin="0,0,0,10"/>
-                    <TextBox Text="{Binding MedicalRecord.Diagnosis, Mode=TwoWay}" 
+                    <TextBox Text="{x:Bind ViewModel.Diagnosis, Mode=TwoWay}" 
+                             TextChanged="TextBox_TextChanged"
+                             IsEnabled="{x:Bind ViewModel.CanEditDiagnosis, Mode=OneWay}"
                              AcceptsReturn="True" 
                              Height="100" 
                              PlaceholderText="Enter diagnosis details" 
@@ -184,7 +186,8 @@
 
                     <!-- Nút chọn thuốc -->
                     <Button Content="Select Medicines" 
-                            Click="SelectMedicinesButton_Click" 
+                            Click="SelectMedicinesButton_Click"
+                            IsEnabled="{x:Bind ViewModel.CanSelectMedicines, Mode=OneWay}"
                             Style="{StaticResource AccentButtonStyle}" 
                             HorizontalAlignment="Center" 
                             Width="150" 
@@ -200,6 +203,7 @@
                         Margin="0,20,0,0">
                 <Button Content="Save" 
                         Click="SaveButton_Click"
+                        IsEnabled="{x:Bind ViewModel.CanSave, Mode=OneWay}"
                         Style="{StaticResource AccentButtonStyle}" 
                         Width="100"/>
                 <Button Content="Back" 
