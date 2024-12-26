@@ -572,6 +572,7 @@ namespace ClinicManagementSystem.Service.DataAccess
             }
         }
         public List<MedicineStatistic> GetTopMedicineStatistic(DateTimeOffset startDate, DateTimeOffset endDate, int n, string sortString)
+
         {
             var result = new List<MedicineStatistic>();
             using (var connection = new SqlConnection(GetConnectionString()))
