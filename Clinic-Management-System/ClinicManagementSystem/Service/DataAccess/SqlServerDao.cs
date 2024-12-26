@@ -571,7 +571,7 @@ namespace ClinicManagementSystem.Service.DataAccess
                 command.ExecuteNonQuery();
             }
         }
-        public List<MedicineStatistic> GetMedicineStatistic(DateTimeOffset startDate, DateTimeOffset endDate, int n, string sortString)
+        public List<MedicineStatistic> GetTopMedicineStatistic(DateTimeOffset startDate, DateTimeOffset endDate, int n, string sortString)
         {
             var result = new List<MedicineStatistic>();
             using (var connection = new SqlConnection(GetConnectionString()))
@@ -619,6 +619,56 @@ namespace ClinicManagementSystem.Service.DataAccess
             }
 
             return result;
+        }
+        public List<MedicineStatistic> GetMedicineStatistic(DateTimeOffset startDate, DateTimeOffset endDate)
+        {
+            var result = new List<MedicineStatistic>();
+            using (var connection = new SqlConnection(GetConnectionString()))
+            {
+                try
+                {
+                    connection.Open();
+
+                    string query = $"""
+                    SELECT 
+                    CAST(p.time AS DATE) as Date,
+                    m.name as MedicineName, 
+                    ISNULL(SUM(pd.quantity), 0) as QuantitySold, 
+                    ISNULL(SUM(pd.quantity * m.price), 0) as MoneySold
+                    FROM Medicine m 
+                    JOIN PrescriptionDetail pd ON m.id = pd.medicineId
+                    JOIN Prescription p ON pd.prescriptionId = p.id
+                    JOIN Bill b ON p.id = b.prescriptionId
+                    WHERE p.time BETWEEN @startDate AND @endDate
+                    GROUP BY CAST(p.time AS DATE), m.id, m.name
+                    ORDER BY Date DESC
+                 """;
+                    using (var command = new SqlCommand(query, connection))
+                    {
+                        AddParameters(command, ("@startDate", startDate), ("@endDate", endDate));
+
+                        using (var reader = command.ExecuteReader())
+                        {
+                            while (reader.Read())
+                            {
+                                result.Add(new MedicineStatistic
+                                {
+                                    Date = Convert.ToDateTime(reader["Date"]),
+                                    MedicineName = reader["MedicineName"].ToString(),
+                                    QuantitySold = Convert.ToInt32(reader["QuantitySold"]),
+                                    Money = Convert.ToInt32(reader["MoneySold"])
+                                });
+                            }
+                        }
+                    }
+                }
+                catch (Exception ex)
+                {
+                    System.Diagnostics.Debug.WriteLine($"Error in GetMedicineStatistic: {ex.Message}");
+                    throw;
+                }
+                return result;
+            }
         }
         /// <summary>
         /// Lấy danh sách thuốc còn trong kho

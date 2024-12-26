@@ -39,5 +39,10 @@ namespace ClinicManagementSystem.Views.AdminView
             ViewModel.LoadData();
             ViewModel.UpdateChart();
         }
+
+        private void ExportExcel(object sender, RoutedEventArgs e)
+        {
+            ViewModel.MedicineExportToExcel();
+        }
     }
 }

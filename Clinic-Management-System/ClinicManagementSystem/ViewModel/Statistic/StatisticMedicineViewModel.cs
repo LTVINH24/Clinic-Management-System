@@ -1,13 +1,25 @@
 ﻿using System;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.IO;
+using System.Linq;
 using ClinicManagementSystem.Model;
 using ClinicManagementSystem.Service;
 using ClinicManagementSystem.Service.DataAccess;
 using ClinicManagementSystem.Views.AdminView;
+using OfficeOpenXml;
 using OxyPlot;
 using OxyPlot.Axes;
 using OxyPlot.Series;
+using System.Windows.Forms;
+using Windows.ApplicationModel.VoiceCommands;
+using Windows.Storage.Pickers;
+using System.Collections.Generic;
+using Microsoft.UI.Xaml.Controls;
+using Microsoft.UI.Xaml;
+using Windows.Storage;
+using ClinicManagementSystem.Views;
+
 
 
 
@@ -21,6 +33,12 @@ namespace ClinicManagementSystem.ViewModel.Statistic
         public PlotModel ChartModelMoney { get; private set; }
         public DateTimeOffset startDate { get; set; }
         public DateTimeOffset endDate { get; set; }
+        private ObservableCollection<MedicineStatistic> _medicinestatisticcommon;
+        public ObservableCollection<MedicineStatistic> MedicinesStatisticCommom
+        {
+            get => _medicinestatisticcommon ??= new ObservableCollection<MedicineStatistic>();
+            set => _medicinestatisticcommon = value;
+        }
         private ObservableCollection<MedicineStatistic> _medicinestatistic;
         public ObservableCollection<MedicineStatistic> MedicinesStatistic
         {
@@ -43,14 +61,14 @@ namespace ClinicManagementSystem.ViewModel.Statistic
         }
         public void LoadData()
         { 
-            var items = _dao.GetMedicineStatistic(startDate, endDate, 10, "QuantitySold");
+            var items = _dao.GetTopMedicineStatistic(startDate, endDate, 10, "QuantitySold");
             MedicinesStatistic.Clear();
             foreach (var item in items)
             {
                 MedicinesStatistic.Add(item);
             }
 
-            var itemsMoney = _dao.GetMedicineStatistic(startDate, endDate, 10, "MoneySold");
+            var itemsMoney = _dao.GetTopMedicineStatistic(startDate, endDate, 10, "MoneySold");
             MedicinesStatisticMoney.Clear();
             foreach (var item in itemsMoney)
             {
@@ -106,6 +124,91 @@ namespace ClinicManagementSystem.ViewModel.Statistic
             modelMoney.Series.Add(seriesMoney);
             ChartModel = model;
             ChartModelMoney=modelMoney;
+        }
+        private void LoadDataToExportExcel()
+        {
+            var items = _dao.GetMedicineStatistic(startDate, endDate);
+            foreach (var item in items)
+            {
+                MedicinesStatisticCommom.Add(item);
+            }
+        }
+        public async void MedicineExportToExcel()
+        {
+            
+            LoadDataToExportExcel();
+
+            ExcelPackage.LicenseContext = OfficeOpenXml.LicenseContext.NonCommercial;
+
+            using (var package = new ExcelPackage())
+            {
+                var worksheet = package.Workbook.Worksheets.Add("Medicine Statistic");
+                worksheet.Cells[1, 1].Value = "From " + startDate.ToString("dd/MM/yyyy") + " to " + endDate.ToString("dd/MM/yyyy");
+                using (var range = worksheet.Cells[1, 1, 1, 4])
+                {
+                    range.Merge = true;
+                    range.Style.Font.Bold = true;
+                    range.Style.HorizontalAlignment = OfficeOpenXml.Style.ExcelHorizontalAlignment.Center;
+                }
+
+                worksheet.Cells[3, 1].Value = "Date";
+                worksheet.Cells[3, 2].Value = "Medicine name";
+                worksheet.Cells[3, 3].Value = "Quantity sold";
+                worksheet.Cells[3, 4].Value = "Revenue";
+                using (var range = worksheet.Cells[3, 1, 3, 4])
+                {
+                    range.Style.Font.Bold = true;
+                    range.Style.Fill.PatternType = OfficeOpenXml.Style.ExcelFillStyle.Solid;
+                    range.Style.Fill.BackgroundColor.SetColor(System.Drawing.Color.LightGray);
+                }
+                int row = 4;
+                for (DateTime date = startDate.Date; date <= endDate.Date; date = date.AddDays(1))
+                {
+                    decimal dailyTotal = 0;
+                    var dateData = MedicinesStatisticCommom.Where(x => x.Date.Date == date);
+
+                    worksheet.Cells[row, 1].Value = date.ToString("dd/MM/yyyy");
+                    worksheet.Cells[row, 1].Style.Font.Bold = true;
+
+                    if (dateData.Any())
+                    {
+                        foreach (var item in dateData)
+                        {
+                            worksheet.Cells[row, 2].Value = item.MedicineName;
+                            worksheet.Cells[row, 3].Value = item.QuantitySold;
+                            worksheet.Cells[row, 4].Value = item.Money;
+                            dailyTotal += item.Money;
+                            row++;
+                        }
+                    }
+                    row++;
+                    worksheet.Cells[row, 1].Value = "Daily Total:";
+                    worksheet.Cells[row, 4].Value = dailyTotal;
+                    worksheet.Cells[row, 1, row, 4].Style.Font.Bold = true;
+                    worksheet.Cells[row, 1, row, 4].Style.Fill.PatternType = OfficeOpenXml.Style.ExcelFillStyle.Solid;
+                    worksheet.Cells[row, 1, row, 4].Style.Fill.BackgroundColor.SetColor(System.Drawing.Color.LightYellow);
+
+                    row++;
+                }
+                worksheet.Cells[1, 1, row - 1, 4].AutoFitColumns();
+
+                var savePicker = new FileSavePicker();
+                savePicker.SuggestedStartLocation = PickerLocationId.DocumentsLibrary;
+                savePicker.FileTypeChoices.Add("Excel Files", new List<string>() { ".xlsx" });
+                savePicker.SuggestedFileName = $"Medicine_Statistics_{startDate:yyyyMMdd}-{endDate:yyyyMMdd}";
+
+                var hwnd = ShellWindow.Current.GetWindowHandle();
+                WinRT.Interop.InitializeWithWindow.Initialize(savePicker, hwnd);
+
+                StorageFile file = await savePicker.PickSaveFileAsync();
+                if (file != null)
+                {
+                    using (var stream = await file.OpenStreamForWriteAsync())
+                    {
+                        package.SaveAs(stream);
+                    }
+                }
+            }
         }
         public event PropertyChangedEventHandler PropertyChanged;
 

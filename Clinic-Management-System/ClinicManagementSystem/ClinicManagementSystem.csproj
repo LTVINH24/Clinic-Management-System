@@ -40,6 +40,7 @@
   <ItemGroup>
     <PackageReference Include="BCrypt.Net-Next" Version="4.0.3" />
     <PackageReference Include="CommunityToolkit.WinUI.Converters" Version="8.1.240916" />
+    <PackageReference Include="EPPlus" Version="7.5.2" />
     <PackageReference Include="Google.Apis.Drive.v3" Version="1.68.0.3608" />
     <PackageReference Include="H.OxyPlot.WinUI" Version="0.9.30" />
     <PackageReference Include="Microsoft.Data.SqlClient" Version="5.2.2" />

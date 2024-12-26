@@ -77,7 +77,8 @@ namespace ClinicManagementSystem.Service.DataAccess
 		bool CreateMedicine(Medicine medicine);
 		bool UpdateMedicine(Medicine medicine);
 		bool DeleteMedicine(Medicine medicine);
-		List<MedicineStatistic> GetMedicineStatistic(DateTimeOffset startDate, DateTimeOffset endDate, int n, string sortString);
+		List<MedicineStatistic> GetTopMedicineStatistic(DateTimeOffset startDate, DateTimeOffset endDate, int n, string sortString);
+		List<MedicineStatistic> GetMedicineStatistic(DateTimeOffset startDate, DateTimeOffset endDate);
 		//========================================================================================
 
 		//========================================Specialty=======================================
