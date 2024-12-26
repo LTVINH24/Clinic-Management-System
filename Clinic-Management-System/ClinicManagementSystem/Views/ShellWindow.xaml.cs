@@ -1,4 +1,5 @@
-﻿using Microsoft.UI.Xaml;
+﻿using ClinicManagementSystem.Service;
+using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Controls.Primitives;
 using Microsoft.UI.Xaml.Data;
@@ -49,10 +50,18 @@ namespace ClinicManagementSystem.Views
 		private void Window_Closed(object sender, WindowEventArgs args)
 		{
 			Current = null;
-			var screen = new MainWindow();
-			screen.Activate();
+			
+			if (UserSessionService.Instance.GetLoggedInUserId() != 0)
+			{
+				var localSettings = Windows.Storage.ApplicationData.Current.LocalSettings;
+				bool isRemember = localSettings.Values.ContainsKey("username") &&
+						   localSettings.Values.ContainsKey("password");
 
-			this.Close();
+				UserSessionService.Instance.ClearSession(true);
+			}
+			
+			var loginWindow = new MainWindow();
+			loginWindow.Activate();
 		}
         public IntPtr GetWindowHandle()
         {

@@ -66,9 +66,6 @@
             <RowDefinition Height="*" />
             <RowDefinition Height="70" />
         </Grid.RowDefinitions>
-        <!--<Grid.ColumnDefinitions>
-            <ColumnDefinition Width="*"/>
-        </Grid.ColumnDefinitions>-->
 
         <Popup  x:Name="EditPopup" IsOpen="False" HorizontalAlignment="Center" VerticalAlignment="Center" VerticalOffset="-50" HorizontalOffset="-100">
             <Border Background="White" BorderBrush="Gray" BorderThickness="1" Padding="20">

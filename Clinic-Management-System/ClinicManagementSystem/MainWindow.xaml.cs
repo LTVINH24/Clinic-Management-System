@@ -53,13 +53,14 @@ namespace ClinicManagementSystem
 		/// <param name="e"></param>
 		public void Login_Click(object sender, RoutedEventArgs e)
         {
+            bool isRemember = rememberPassword.IsChecked ?? false;
+            viewModel.Authentication(viewModel.UserLogin, isRemember);
 
-
-            if ( rememberPassword.IsChecked==true)
-            {
-                viewModel.Authentication(viewModel.UserLogin,true);
-            }
-             viewModel.Authentication(viewModel.UserLogin,false);
+            // if (rememberPassword.IsChecked == true)
+            // {
+            //     viewModel.Authentication(viewModel.UserLogin, true);
+            // }
+            // viewModel.Authentication(viewModel.UserLogin, false);
         }
 
 		/// <summary>

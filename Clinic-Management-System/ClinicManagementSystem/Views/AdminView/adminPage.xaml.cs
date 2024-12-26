@@ -76,7 +76,7 @@ namespace ClinicManagementSystem.Views
 			}
 			else
 			{
-				contentFrame.Navigate(typeof(settingAdmin));
+				contentFrame.Navigate(typeof(SettingsPage));
 			}
 		}
 	}

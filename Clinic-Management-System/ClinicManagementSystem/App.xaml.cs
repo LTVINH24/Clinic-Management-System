@@ -17,6 +17,7 @@ using Windows.ApplicationModel;
 using Windows.ApplicationModel.Activation;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
+using Windows.Storage;
 
 // To learn more about WinUI, the WinUI project structure,
 // and more about our project templates, see: http://aka.ms/winui-project-info.
@@ -35,6 +36,19 @@ namespace ClinicManagementSystem
         public App()
         {
             this.InitializeComponent();
+            
+            //// Load theme setting
+            //var localSettings = ApplicationData.Current.LocalSettings;
+            //var savedTheme = localSettings.Values["AppTheme"] as string ?? "Light";
+            
+            //if (savedTheme == "Dark")
+            //{
+            //    this.RequestedTheme = ApplicationTheme.Dark;
+            //}
+            //else 
+            //{
+            //    this.RequestedTheme = ApplicationTheme.Light;
+            //}
         }
 
         /// <summary>

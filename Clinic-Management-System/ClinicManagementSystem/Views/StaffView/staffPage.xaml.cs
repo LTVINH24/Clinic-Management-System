@@ -68,10 +68,6 @@ namespace ClinicManagementSystem.Views
 			{
 				contentFrame.Navigate(typeof(SettingsPage));
 			}
-			//else
-			//{
-			//	contentFrame.Navigate(typeof(SettingsPage));
-			//}
 		}
 	}
 }
