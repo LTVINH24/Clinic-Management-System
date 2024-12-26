@@ -7,10 +7,80 @@
     xmlns:local="using:ClinicManagementSystem.Views.AdminView"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:localmodel="using:ClinicManagementSystem.Model"
     mc:Ignorable="d"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
-
     <Grid>
-        <TextBlock>Home admin</TextBlock>
+        <Grid Padding="60,60,60,60">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="100"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="150"/>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+            <TextBlock FontSize="24" FontWeight="Bold" Grid.ColumnSpan="2" VerticalAlignment="Top" Margin="20"  HorizontalAlignment="Center" Grid.Row="0" >Your infomation</TextBlock>
+            <Grid Grid.Column="0" Grid.Row="1" Padding="40,0,40,0">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="50"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="50"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="50"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+                <TextBox x:Name="NameUser" Grid.Row="0" Header="New name" PlaceholderText="Name" Text="{x:Bind viewModel.user.name, Mode=TwoWay}"/>
+                <TextBox x:Name="PhoneUser" Grid.Row="2" Header="New phone" PlaceholderText="Phone" Text="{x:Bind viewModel.user.phone, Mode=TwoWay}"/>
+                <TextBox x:Name="AddressUser" Grid.Row="4" Header="New address" PlaceholderText="Adress" Text="{x:Bind viewModel.user.address, Mode=TwoWay}"/>
+            </Grid>
+            <Grid Grid.Column="1"  Grid.Row="1"  Padding="40,0,40,0">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="50"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="50"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="50"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+                <StackPanel Grid.Row="0"  VerticalAlignment="Center">
+                    <TextBlock>Gender</TextBlock>
+                    <DropDownButton Tag="" Height="32" Width="100" x:Name="GenderDropDown" Margin="0,8,0,0"  Content="{x:Bind viewModel.user.gender,Mode=TwoWay}">
+                        <DropDownButton.Flyout>
+                            <MenuFlyout Placement="Bottom">
+
+                                <MenuFlyoutItem Text="Male"  Click="GenderMenuFlyoutItem_Click"/>
+                                <MenuFlyoutItem Text="Female" Click="GenderMenuFlyoutItem_Click"/>
+                                <MenuFlyoutItem Text="Other" Click="GenderMenuFlyoutItem_Click"/>
+                            </MenuFlyout>
+                        </DropDownButton.Flyout>
+                    </DropDownButton>
+                </StackPanel>
+                <Grid Grid.Row="2">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+                    <CalendarDatePicker x:Name="BirthDayUser" Grid.Column="0"  PlaceholderText="Pick a date" Header="Birthday" Date="{x:Bind viewModel.user.birthday,Mode=TwoWay}" Foreground="{ThemeResource ApplicationForegroundThemeBrush}"/>
+
+                </Grid>
+                <PasswordBox x:Name="PasswordUser" Grid.Row="4"  Header="New password" PlaceholderText="Password" PasswordChar="*" Password="{x:Bind viewModel.user.password, Mode=TwoWay}"/>
+            </Grid>
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center"  Grid.ColumnSpan="2" Grid.Row="2">
+                <Button Margin="20" Width="200" Click="Update_Click" Background="#b5b5e8" FontSize="18"  HorizontalAlignment="Center"  VerticalAlignment="Bottom" >Update</Button>
+            </StackPanel>
+        </Grid>
     </Grid>
 </Page>

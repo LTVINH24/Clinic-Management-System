@@ -29,6 +29,8 @@
         <!--#FFB5B5E8-->
             
             <NavigationView.MenuItems>
+                <NavigationViewItem Content="Home" Icon="Home" ToolTipService.ToolTip="Home" Tag="HomePage"/>
+
                 <NavigationViewItem Content="Medical Examinations" Icon="Document" ToolTipService.ToolTip="Medical Examinations" Tag="MedicalExaminationPage"/>
                 <NavigationViewItem Content="Documents" Icon="Document" ToolTipService.ToolTip="" Tag="DocumentPage"/>
                 

@@ -1,7 +1,9 @@
 ﻿using ClinicManagementSystem.Model;
+using ClinicManagementSystem.Model.Statistic;
 using ClinicManagementSystem.ViewModel;
 using Microsoft.Data.SqlClient;
 using Microsoft.UI.Xaml;
+using OxyPlot;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -48,7 +50,7 @@ namespace ClinicManagementSystem.Service.DataAccess
             var connectionString = GetConnectionString();
             SqlConnection connection = new SqlConnection(connectionString);
             connection.Open();
-            string query = $"SELECT id,name, role,password,phone,birthday,gender,address FROM EndUser WHERE username = @Username";
+            string query = $"SELECT id,name, role,password,phone,birthday,gender,address,status FROM EndUser WHERE username = @Username";
             var command = new SqlCommand(query, connection);
             command.Parameters.AddWithValue("@Username", username);
             var reader = command.ExecuteReader();
@@ -57,6 +59,7 @@ namespace ClinicManagementSystem.Service.DataAccess
             string role = "";
             string hassPassword = "";
             string phone = "";
+            string status = "";
             DateTime birthday;
             string gender;
             string address;
@@ -71,8 +74,10 @@ namespace ClinicManagementSystem.Service.DataAccess
                 birthday = (DateTime)reader["birthday"];
                 gender = reader["gender"].ToString();
                 address = reader["address"].ToString();
+                status = reader["status"].ToString();
+
                 connection.Close();
-                if (Password.VerifyPassword(password, hassPassword))
+                if (Password.VerifyPassword(password, hassPassword)&&status!="locked")
                 {
                     return (id, name, role, phone, gender, address);
                 }
@@ -145,7 +150,7 @@ namespace ClinicManagementSystem.Service.DataAccess
 
 
             var sql = $"""
-            SELECT count(*) over() as Total, id, name, role, username,password,phone,birthday,address,gender
+            SELECT count(*) over() as Total, id, name, role, username,phone,birthday,address,gender,status
             FROM EndUser
             WHERE Name like @Keyword
             {sortString} 
@@ -168,9 +173,9 @@ namespace ClinicManagementSystem.Service.DataAccess
                 user.gender = (string)reader["gender"];
                 user.role = (string)reader["role"];
                 user.birthday = (DateTime)reader["birthday"];
-                user.password = (string)reader["password"];
                 user.address = (string)reader["address"];
                 user.phone = (string)reader["phone"];
+                user.status = (string)reader["status"];
                 result.Add(user);
             }
             connection.Close();
@@ -265,19 +270,27 @@ namespace ClinicManagementSystem.Service.DataAccess
             var connectionString = GetConnectionString();
             SqlConnection connection = new SqlConnection(connectionString);
             connection.Open();
-            var sql = "update EndUser set name=@name, role=@role,username=@username,password=@password,phone=@phone,birthday=@birthday,address=@address,gender=@gender where id=@id";
+            string passwordString = "";
+            if (info.password != null && info.password!="")
+            {
+                passwordString = "password=@password, ";
+            } 
+                
+
+            var sql = $"""update EndUser set name=@name, {passwordString}phone=@phone,birthday=@birthday,address=@address,gender=@gender where id=@id""";
             var command = new SqlCommand(sql, connection);
             AddParameters(command,
                 ("@id", info.id),
                 ("@name", info.name),
-                ("@role", info.role),
-                ("@username", info.username),
-                ("@password", info.password),
                 ("@phone", info.phone),
                 ("@birthday", info.birthday),
                 ("@address", info.address),
                 ("@gender", info.gender)
                 );
+            if (info.password != null && info.password != "")
+            {
+                AddParameters(command, ("@password", info.password));
+            }
             int count = command.ExecuteNonQuery();
             bool success = count == 1;
             connection.Close();
@@ -309,16 +322,30 @@ namespace ClinicManagementSystem.Service.DataAccess
             connection.Close();
             return result > 0;
         }
-		//=============================================================================================
+		public bool LockUser(int id,string status)
+        {
+            var connectionString = GetConnectionString();
+            SqlConnection connection = new SqlConnection( connectionString);
+            connection.Open();
+            string query = "update EndUser set status = @status where id=@id";
+            var command = new SqlCommand(query, connection);
+            AddParameters(command, ("@status", status), ("@id", id));
+            var result = command.ExecuteNonQuery();
+            connection.Close();
+            return result > 0;
+
+        }
+
+        //=============================================================================================
 
 
 
-		//================================================Specialty========================================
-		/// <summary>
-		/// Lấy danh sách chuyên khoa
-		/// </summary>
-		/// <returns>Danh sách khoa</returns>
-		public List<Specialty> GetSpecialty()
+        //================================================Specialty========================================
+        /// <summary>
+        /// Lấy danh sách chuyên khoa
+        /// </summary>
+        /// <returns>Danh sách khoa</returns>
+        public List<Specialty> GetSpecialty()
         {
             var specialties = new List<Specialty>();
             var connectionString = GetConnectionString();
@@ -337,24 +364,55 @@ namespace ClinicManagementSystem.Service.DataAccess
             connection.Close();
             return specialties;
         }
-		//=============================================================================================
+        public User GetUserById(int userId)
+        {
+            User user = new User();
+            string connectionString = GetConnectionString();
+            SqlConnection connection = new SqlConnection(connectionString);
+            connection.Open();
+            string query = $"""
+                select id, name,phone,address,gender,birthday
+                from EndUser
+                where id = @id
+                """;
+            var command = new SqlCommand(query, connection);
+            AddParameters(command,("@id",userId));
+            var reader = command.ExecuteReader();
+            while(reader.Read())
+            {
+                user.id = (int)reader["id"];
+               user.name = (string)reader["name"];
+                user.phone = (string)reader["phone"];
+                user.address = (string)reader["address"];
+                user.gender = (string)reader["gender"];
+                user.birthday = (DateTime)reader["birthday"];
+            }
+            connection.Close();
+            return user;
+        }
+        //=============================================================================================
 
 
 
-		//================================================Medicine========================================
-		/// <summary>
-		/// Lấy danh sách thuốc
-		/// </summary>
-		/// <param name="page"></param>
-		/// <param name="rowsPerPage"></param>
-		/// <param name="keyword"></param>
-		/// <param name="sortOptions"></param>
-		/// <returns>Danh sách thuốc và số lượng thuốc</returns>
-		public Tuple<List<Medicine>, int> GetMedicines(
+        //================================================Medicine========================================
+        /// <summary>
+        /// Lấy danh sách thuốc
+        /// </summary>
+        /// <param name="page"></param>
+        /// <param name="rowsPerPage"></param>
+        /// <param name="keyword"></param>
+        /// <param name="sortOptions"></param>
+        /// <returns>Danh sách thuốc và số lượng thuốc</returns>
+        public Tuple<List<Medicine>, int> GetMedicines(
                 int page, int rowsPerPage,
                 string keyword,
-                Dictionary<string, SortType> sortOptions)
+                Dictionary<string, SortType> sortOptions, int daysRemaining)
         {
+            string filter = "";
+            if(daysRemaining > 0)
+            {
+                filter = "AND DATEDIFF(day, GETDATE(), ExpDate) <= @DaysRemaining";
+            }    
             var result = new List<Medicine>();
             var connectionString = GetConnectionString();
             SqlConnection connection = new SqlConnection(connectionString);
@@ -383,14 +441,18 @@ namespace ClinicManagementSystem.Service.DataAccess
 
 
             var sql = $"""
-            SELECT count(*) over() as Total, id, name, manufacturer, price,quantity
+            SELECT count(*) over() as Total, id, name, manufacturer, price,quantity,quantityimport,expdate,mfgdate,dateimport
             FROM Medicine
-            WHERE Name like @Keyword
+            WHERE Name like @Keyword and isDeleted != 'true' {filter}
             {sortString} 
             OFFSET @Skip ROWS FETCH NEXT @Take ROWS ONLY;        
         """;
             var command = new SqlCommand(sql, connection);
             AddParameters(command, ("@Skip", (page - 1) * rowsPerPage), ("@Take", rowsPerPage), ("@Keyword", $"%{keyword}%"));
+            if (daysRemaining > 0)
+            {
+                AddParameters(command, ("@DaysRemaining", daysRemaining));
+            }
             var reader = command.ExecuteReader();
             int count = -1;
             while (reader.Read())
@@ -405,6 +467,13 @@ namespace ClinicManagementSystem.Service.DataAccess
                 medicine.Manufacturer = (string)reader["manufacturer"];
                 medicine.Price = (int)reader["price"];
                 medicine.Quantity = (int)reader["quantity"];
+                medicine.QuantityImport = (int)reader["quantityimport"];
+                medicine.ExpDate = (DateTime)reader["expdate"];
+                medicine.MfgDate = (DateTime)reader["mfgdate"];
+                medicine.DateImport =(DateTime)reader["dateimport"];
+
+
+
                 result.Add(medicine);
             }
             connection.Close();
@@ -423,7 +492,7 @@ namespace ClinicManagementSystem.Service.DataAccess
             string connectionString = GetConnectionString();
             SqlConnection connection = new SqlConnection(connectionString);
             connection.Open();
-            string query = $"insert into Medicine(name,manufacturer,price,quantity, quantityimport,ExpDate,MfgDate) values(@name,@manufacturer,@price,@quantity,@quantityimport,@ExpDate,@MfgDate)";
+            string query = $"insert into Medicine(name,manufacturer,price,quantity, quantityimport,DateImport ,ExpDate,MfgDate) values(@name,@manufacturer,@price,@quantity,@quantityimport,@DateImport,@ExpDate,@MfgDate)";
             var command = new SqlCommand(query, connection);
             AddParameters(command,
                 ("@name", medicine.Name),
@@ -432,7 +501,8 @@ namespace ClinicManagementSystem.Service.DataAccess
                 ("@quantity", medicine.QuantityImport),
                 ("@quantityimport", medicine.QuantityImport),
                 ("@ExpDate", medicine.ExpDate),
-                ("@MfgDate", medicine.MfgDate));
+                ("@MfgDate", medicine.MfgDate),
+                ("@DateImport",medicine.DateImport));
             int count = command.ExecuteNonQuery();
             connection.Close();
             return count == 1;
@@ -448,13 +518,14 @@ namespace ClinicManagementSystem.Service.DataAccess
             string connectionString = GetConnectionString();
             SqlConnection connection = new SqlConnection(connectionString);
             connection.Open();
-            string query = $"update Medicine set name=@name, manufacturer =@manufacturer, price =@price, quantity =@quantity, ExpDate =@expdate ,MfgDate =@mfgdate where id =@id";
+            string query = $"update Medicine set name=@name, manufacturer =@manufacturer, price =@price, quantity =@quantity, quantityimport=@quantityimport, ExpDate =@expdate ,MfgDate =@mfgdate where id =@id";
             var command = new SqlCommand(query, connection);
             AddParameters(command,
                 ("@name", medicine.Name),
                 ("@manufacturer", medicine.Manufacturer),
                 ("@price", medicine.Price),
                 ("@quantity", medicine.Quantity),
+                ("@quantityimport", medicine.QuantityImport),
                 ("@ExpDate", medicine.ExpDate),
                 ("@MfgDate", medicine.MfgDate),
                 ("@id", medicine.Id)
@@ -474,12 +545,11 @@ namespace ClinicManagementSystem.Service.DataAccess
             string connectionString = GetConnectionString();
             SqlConnection connection = new SqlConnection(connectionString);
             connection.Open();
-            string query = $"Delete from Medicine where id =@id";
+            string query = $"update Medicine set isDeleted = 'true' where id=@id";
             var command = new SqlCommand(query, connection);
             AddParameters(command,
                 ("@id", medicine.Id));
             int count = command.ExecuteNonQuery();
-
             connection.Close();
             return count > 0;
         }
@@ -501,10 +571,105 @@ namespace ClinicManagementSystem.Service.DataAccess
                 command.ExecuteNonQuery();
             }
         }
-       public List<MedicineStatistic> GetMedicineStatistic(DateTime startDate, DateTime endDate)
+        public List<MedicineStatistic> GetTopMedicineStatistic(DateTimeOffset startDate, DateTimeOffset endDate, int n, string sortString)
+
         {
-            var result =new List<MedicineStatistic>();
+            var result = new List<MedicineStatistic>();
+            using (var connection = new SqlConnection(GetConnectionString()))
+            {
+                try
+                {
+                    connection.Open();
+                    string query = $"""
+                    SELECT TOP(@n) 
+                    m.name as MedicineName, 
+                    ISNULL(SUM(pd.quantity), 0) as QuantitySold, 
+                    ISNULL(SUM(pd.quantity * m.price), 0) as MoneySold
+                FROM Medicine m 
+                JOIN PrescriptionDetail pd ON m.id = pd.medicineId
+                JOIN Prescription p ON pd.prescriptionId = p.id
+                JOIN Bill b ON p.id = b.prescriptionId
+                WHERE p.time BETWEEN @startDate AND @endDate
+                GROUP BY m.id, m.name
+                order by {sortString} desc
+                """;
+
+                    using (var command = new SqlCommand(query, connection))
+                    {
+                        AddParameters(command, ("@startDate", startDate), ("@endDate", endDate), ("@n", n));
+
+                        using (var reader = command.ExecuteReader())
+                        {
+                            while (reader.Read())
+                            {
+                                result.Add(new MedicineStatistic
+                                {
+                                    MedicineName = reader["MedicineName"].ToString(),
+                                    QuantitySold = Convert.ToInt32(reader["QuantitySold"]),
+                                    Money = Convert.ToInt32(reader["MoneySold"])
+                                });
+                            }
+                        }
+                    }
+                }
+                catch (Exception ex)
+                {
+                    System.Diagnostics.Debug.WriteLine($"Error in GetMedicineStatistic: {ex.Message}");
+                    throw;
+                }
+            }
+
             return result;
+        }
+        public List<MedicineStatistic> GetMedicineStatistic(DateTimeOffset startDate, DateTimeOffset endDate)
+        {
+            var result = new List<MedicineStatistic>();
+            using (var connection = new SqlConnection(GetConnectionString()))
+            {
+                try
+                {
+                    connection.Open();
+
+                    string query = $"""
+                    SELECT 
+                    CAST(p.time AS DATE) as Date,
+                    m.name as MedicineName, 
+                    ISNULL(SUM(pd.quantity), 0) as QuantitySold, 
+                    ISNULL(SUM(pd.quantity * m.price), 0) as MoneySold
+                    FROM Medicine m 
+                    JOIN PrescriptionDetail pd ON m.id = pd.medicineId
+                    JOIN Prescription p ON pd.prescriptionId = p.id
+                    JOIN Bill b ON p.id = b.prescriptionId
+                    WHERE p.time BETWEEN @startDate AND @endDate
+                    GROUP BY CAST(p.time AS DATE), m.id, m.name
+                    ORDER BY Date DESC
+                 """;
+                    using (var command = new SqlCommand(query, connection))
+                    {
+                        AddParameters(command, ("@startDate", startDate), ("@endDate", endDate));
+
+                        using (var reader = command.ExecuteReader())
+                        {
+                            while (reader.Read())
+                            {
+                                result.Add(new MedicineStatistic
+                                {
+                                    Date = Convert.ToDateTime(reader["Date"]),
+                                    MedicineName = reader["MedicineName"].ToString(),
+                                    QuantitySold = Convert.ToInt32(reader["QuantitySold"]),
+                                    Money = Convert.ToInt32(reader["MoneySold"])
+                                });
+                            }
+                        }
+                    }
+                }
+                catch (Exception ex)
+                {
+                    System.Diagnostics.Debug.WriteLine($"Error in GetMedicineStatistic: {ex.Message}");
+                    throw;
+                }
+                return result;
+            }
         }
         /// <summary>
         /// Lấy danh sách thuốc còn trong kho
@@ -655,6 +820,31 @@ namespace ClinicManagementSystem.Service.DataAccess
             }
             connection.Close();
             return new Tuple<List<MedicalExaminationForm>, int>(result, count);
+        }
+        public List<MedicalExaminationStatistic> GetMedicalExaminationStatisticsByDate(DateTimeOffset startDate, DateTimeOffset endDate)
+        {
+            var result = new List<MedicalExaminationStatistic>();
+            string connectionString = GetConnectionString();
+            SqlConnection connection = new SqlConnection(connectionString);
+            connection.Open();
+            string query = $"""
+                select CONVERT(date, m.time) as Date, count(*) as total
+                from MedicalExaminationForm m
+                where time between @startDate and @endDate
+                group by CONVERT(date, m.time)
+                """;
+            var command = new SqlCommand(query, connection);
+            AddParameters(command, ("@startDate", startDate), ("@endDate", endDate));
+            var reader = command.ExecuteReader();
+            while (reader.Read())
+            {
+                var MedicalExStatistic = new MedicalExaminationStatistic();
+                MedicalExStatistic.date =(DateTime) reader["Date"];
+                MedicalExStatistic.amount = (int)reader["total"];
+                result.Add(MedicalExStatistic);
+            }
+            connection.Close();
+            return result;
         }
         /// <summary>
         /// Thêm bệnh nhân
@@ -1299,5 +1489,34 @@ namespace ClinicManagementSystem.Service.DataAccess
         //    }
         //}
         //=========================================================================================================
+
+
+        //==========================================================Bill========================================
+        public List<BillStatistic> GetBillStatistic(DateTimeOffset startDate, DateTimeOffset endDate)
+        {
+            var result = new List<BillStatistic>();
+            string connectionString = GetConnectionString();
+            SqlConnection connection = new SqlConnection(connectionString);
+            connection.Open();
+            string query = $"""
+                select CONVERT(date, b.CreateDate) as Date,sum(b.totalAmount) as TotalAmount
+                from Bill b
+                where b.CreateDate between @startDate and @endDate
+                group by CONVERT(date, b.CreateDate)
+                """;
+            var command = new SqlCommand(query, connection);
+            AddParameters(command, ("@startDate", startDate), ("@endDate", endDate));
+            var reader = command.ExecuteReader();
+            while (reader.Read())
+            {
+                var BillStatistic = new BillStatistic();
+                BillStatistic.CreateDate = (DateTime)reader["Date"];
+                BillStatistic.TotalAmount = (int)reader["TotalAmount"];
+                result.Add(BillStatistic);
+            }
+            connection.Close();
+            return result;
+        }
+
     }
 }
