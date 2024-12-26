@@ -1,4 +1,5 @@
-﻿using ClinicManagementSystem.Model;
+﻿using ClinicManagementSystem.Helper;
+using ClinicManagementSystem.Model;
 using ClinicManagementSystem.Service;
 using ClinicManagementSystem.Service.DataAccess;
 using System;
@@ -183,14 +184,41 @@ namespace ClinicManagementSystem.ViewModel
 			LoadData();
 		}
 
+		public (bool, string) isValidDataUpdate()
+		{
+			IsValidData isValid = new IsValidData();
+
+			if (!isValid.IsValidName(PatientEdit.Name))
+				return (false, "Invalid name.");
+			if (!isValid.IsValidEmail(PatientEdit.Email))
+				return (false, "Invalid email.");
+			if (!isValid.IsValidResedentID(PatientEdit.ResidentId))
+				return (false, "Invalid Resident ID.");
+			if (!isValid.IsValidAddress(PatientEdit.Address))
+				return (false, "Invalid address.");
+			if (!isValid.IsValidDatePicker(PatientEdit.DoB))
+				return (false, "Invalid date of birth.");
+			if (!isValid.IsValidDescription(PatientEdit.Gender))
+				return (false, "Invalid gender.");
+
+			return (true, "Valid data.");
+		}
+
 		/// <summary>
 		/// Cập nhật thông tin bệnh nhân
 		/// </summary>
 		/// <returns>True nếu cập nhật thành công, False nếu cập nhật thất bại</returns>
-		public bool Update()
+		public (bool, string) Update()
 		{
+			var (isValid, message) = isValidDataUpdate();
+
+			if (!isValid)
+			{
+				return (false, message);
+			}
+
 			bool success = _dao.UpdatePatient(PatientEdit);
-			return success;
+			return (success, "success");
 		}
 
 		/// <summary>

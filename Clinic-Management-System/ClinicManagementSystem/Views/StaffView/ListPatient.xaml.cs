@@ -113,16 +113,16 @@ namespace ClinicManagementSystem.Views.StaffView
 		/// <param name="e"></param>
 		private async void updatePatient(object sender, RoutedEventArgs e)
 		{
-			var success = ViewModel.Update();
+			var (isSuccess, message) = ViewModel.Update();
 			ViewModel.LoadData();
 			string notify = "";
-			if (success)
+			if (isSuccess)
 			{
-				notify = "Updated successfully";
+				notify = "Updated successfully.";
 			}
 			else
 			{
-				notify = "Update failed";
+				notify = $"Update failed. {message}";
 			}
 			EditPopup.IsOpen = false;
 			await Notify(notify);
