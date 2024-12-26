@@ -33,6 +33,8 @@ namespace ClinicManagementSystem.Views.StaffView
 			this.InitializeComponent();
 		}
 
+		public ClinicManagementSystem.Model.Patient editPatient;
+
 		bool init = false;
 
 		/// <summary>
@@ -112,6 +114,7 @@ namespace ClinicManagementSystem.Views.StaffView
 			{
 				notify = "Update failed";
 			}
+			EditPopup.IsOpen = false;
 			Notify(notify);
 		}
 
@@ -165,41 +168,7 @@ namespace ClinicManagementSystem.Views.StaffView
 				CloseButtonText = "OK"
 			}.ShowAsync();
 		}
-
-		/// <summary>
-		/// Xử lí sự kiện khi nhấn nút Cancel
-		/// </summary>
-		/// <param name="sender"></param>
-		/// <param name="e"></param>
-		private void cancelEdit(object sender, RoutedEventArgs e)
-		{
-			ViewModel.LoadData();
-		}
-
-		/// <summary>
-		/// Xử lí sự kiện khi chọn bệnh nhân
-		/// </summary>
-		/// <param name="sender"></param>
-		/// <param name="e"></param>
-		private void Patient_SelectionChanged(object sender, SelectionChangedEventArgs e)
-		{
-			var patientEdit = itemsComboBox.SelectedItem as Patient;
-			ViewModel.Edit(patientEdit);
-
-			if (EditPanel.Visibility == Visibility.Visible && ViewModel.PatientEdit == patientEdit)
-			{
-				EditPanel.Visibility = Visibility.Collapsed;
-				itemsComboBox.SelectedItem = null;
-			}
-			else
-			{
-				if (patientEdit != null)
-				{
-					ViewModel.Edit(patientEdit);
-					EditPanel.Visibility = Visibility.Visible;
-				}
-			}
-		}
+		
 
 		/// <summary>
 		/// Xử lí sự kiện khi chọn giới tính
@@ -212,6 +181,19 @@ namespace ClinicManagementSystem.Views.StaffView
 			{
 				ViewModel.PatientEdit.Gender = menuItem.Text;
 			}
+		}
+
+		private void ClosePopup_Click(object sender, RoutedEventArgs e)
+		{
+			EditPopup.IsOpen = false;
+		}
+
+		private void Edit_Click(object sender, RoutedEventArgs e)
+		{
+			var button = sender as Button;
+			editPatient = button?.DataContext as Patient;
+			ViewModel.Edit(editPatient);
+			EditPopup.IsOpen = true;
 		}
 	}
 }

@@ -751,19 +751,33 @@ namespace ClinicManagementSystem.Service.DataAccess
 		/// <param name="rowsPerPage"></param>
 		/// <param name="keyword"></param>
 		/// <param name="sortOptions"></param>
+		/// <param name="startDate"></param>
+		/// <param name="endDate"></param>
 		/// <returns>Danh sách phiếu khám bệnh và số lượng phiếu khám bệnh</returns>
-		public Tuple<List<MedicalExaminationForm>, int> GetMedicalExaminationForm(
+		public Tuple<List<MedicalExaminationForm>, int> GetMedicalExaminationForms(
             int page,
             int rowsPerPage,
             string keyword,
-            Dictionary<string, SortType> sortOptions)
+            DateTimeOffset? startDate,
+			DateTimeOffset? endDate,
+			Dictionary<string, SortType> sortOptions)
         {
             var result = new List<MedicalExaminationForm>();
             var connectionString = GetConnectionString();
             SqlConnection connection = new SqlConnection(connectionString);
             connection.Open();
 
-            string sortString = "ORDER BY ";
+            var whereClause = "WHERE 1=1";
+			if (!string.IsNullOrEmpty(keyword))
+			{
+                whereClause += @" AND (
+                    p.name LIKE @Keyword OR
+                    m.symptom LIKE @Keyword OR
+                    d.name LIKE @Keyword
+                )";
+			}
+
+			string sortString = "ORDER BY ";
             bool useDefault = true;
 
             foreach (var item in sortOptions)
@@ -786,18 +800,45 @@ namespace ClinicManagementSystem.Service.DataAccess
             {
                 sortString += "ID ";
             }
+			
+			if (startDate.HasValue)
+			{
+				whereClause += " AND CAST(time AS DATE) >= @StartDate";
+			}
+			if (endDate.HasValue)
+			{
+				whereClause += " AND CAST(time AS DATE) <= @EndDate";
+			}
 
-            var sql = $"""
-				SELECT count(*) over() as Total, id, patientId, staffId, time, symptom, doctorId, visitType
-				FROM MedicalExaminationForm
-				WHERE symptom like @Keyword
-				{sortString}
-				OFFSET @Skip ROWS FETCH NEXT @Take ROWS ONLY;
-				""";
+			var sql = $@"
+                SELECT count(*) over() as Total, 
+                       m.id, m.patientId, m.staffId, m.time, m.symptom, m.doctorId, m.visitType,
+                       p.name as PatientName,
+                       d.name as DoctorName
+                FROM MedicalExaminationForm m
+                JOIN Patient p ON m.patientId = p.id
+                JOIN EndUser d ON m.doctorId = d.id
+                {whereClause}
+                {sortString}
+                OFFSET @Skip ROWS FETCH NEXT @Take ROWS ONLY;
+            ";
 
-            var command = new SqlCommand(sql, connection);
-            AddParameters(command, ("@Skip", (page - 1) * rowsPerPage), ("@Take", rowsPerPage), ("@Keyword", $"%{keyword}%"));
-            var reader = command.ExecuteReader();
+			var command = new SqlCommand(sql, connection);
+			AddParameters(command, ("@Skip", (page - 1) * rowsPerPage), ("@Take", rowsPerPage), ("@Keyword", $"%{keyword}%"));
+
+			if (startDate.HasValue)
+			{
+				var localStartDate = startDate.Value.LocalDateTime.Date;
+				AddParameters(command, ("@StartDate", localStartDate));
+			}
+			if (endDate.HasValue)
+			{
+				var localEndDate = endDate.Value.LocalDateTime.Date;
+				AddParameters(command, ("@EndDate", localEndDate));
+			}
+
+
+			var reader = command.ExecuteReader();
             int count = -1;
 
             while (reader.Read())
@@ -807,16 +848,20 @@ namespace ClinicManagementSystem.Service.DataAccess
                     count = (int)reader["Total"];
                 }
 
-                var medicalExaminationForm = new MedicalExaminationForm();
-                medicalExaminationForm.Id = (int)reader["id"];
-                medicalExaminationForm.PatientId = (int)reader["patientId"];
-                medicalExaminationForm.StaffId = (int)reader["staffId"];
-                medicalExaminationForm.Time = (DateTime)reader["time"];
-                medicalExaminationForm.Symptoms = (string)reader["symptom"];
-                medicalExaminationForm.DoctorId = (int)reader["doctorId"];
-                medicalExaminationForm.VisitType = (string)reader["visitType"];
+				var medicalExaminationForm = new MedicalExaminationForm
+				{
+					Id = (int)reader["id"],
+					PatientId = (int)reader["patientId"],
+					PatientName = reader["PatientName"].ToString(),
+					StaffId = (int)reader["staffId"],
+					Time = (DateTime)reader["time"],
+					Symptoms = (string)reader["symptom"],
+					DoctorId = (int)reader["doctorId"],
+					DoctorName = reader["DoctorName"].ToString(),
+					VisitType = (string)reader["visitType"]
+				};
 
-                result.Add(medicalExaminationForm);
+				result.Add(medicalExaminationForm);
             }
             connection.Close();
             return new Tuple<List<MedicalExaminationForm>, int>(result, count);
@@ -919,8 +964,7 @@ namespace ClinicManagementSystem.Service.DataAccess
             SqlConnection connection = new SqlConnection(connectionString);
             connection.Open();
 
-            DateTime currentDate = DateTime.Now;
-            string formatDate = currentDate.ToString("yyyy-MM-dd");
+            medicalExaminationForm.Time = DateTimeOffset.Now;
             int id = UserSessionService.Instance.LoggedInUserId;
 
 
@@ -932,7 +976,7 @@ namespace ClinicManagementSystem.Service.DataAccess
                 ("@PatientId", patientId),
                 ("@StaffId", id),
                 ("@DoctorId", medicalExaminationForm.DoctorId),
-                ("@Time", formatDate),
+                ("@Time", medicalExaminationForm.Time),
                 ("@Symptom", medicalExaminationForm.Symptoms),
                 ("@VisitType", medicalExaminationForm.VisitType));
 
@@ -964,7 +1008,7 @@ namespace ClinicManagementSystem.Service.DataAccess
                             Id = reader.GetInt32(reader.GetOrdinal("id")),
                             PatientId = reader.GetInt32(reader.GetOrdinal("patientId")),
                             StaffId = reader.GetInt32(reader.GetOrdinal("staffId")),
-                            Time = reader.GetDateTime(reader.GetOrdinal("time")),
+                            Time = DateTimeOffset.Parse(reader.GetDateTime(3).ToString()),
                             Symptoms = reader.IsDBNull(reader.GetOrdinal("symptom")) ? (string)null : reader.GetString(reader.GetOrdinal("symptom")),
                             DoctorId = reader.GetInt32(reader.GetOrdinal("doctorId"))
                         };
@@ -985,7 +1029,7 @@ namespace ClinicManagementSystem.Service.DataAccess
             SqlConnection connection = new SqlConnection(connectionString);
             connection.Open();
 
-			var time = DateTime.Now;
+			form.Time = DateTimeOffset.Now;
 			var sql = "update MedicalExaminationForm set " +
 				"patientId=@patientId, " +
 				"doctorId=@doctorId, " +
@@ -999,7 +1043,7 @@ namespace ClinicManagementSystem.Service.DataAccess
 				("@Id", form.Id),
 				("@patientId", form.PatientId),
 				("@doctorId", form.DoctorId),
-				("@time", form.Time),
+				("@time", form.Time.Value),
 				("@symptom", form.Symptoms),
                 ("@visitType", form.VisitType));
 
@@ -1256,6 +1300,17 @@ namespace ClinicManagementSystem.Service.DataAccess
             SqlConnection connection = new SqlConnection(connectionString);
             connection.Open();
 
+            var whereClause = "WHERE 1=1";
+            if (!string.IsNullOrEmpty(keyword))
+            {
+                whereClause += @" AND (
+                    name LIKE @Keyword OR 
+                    residentId LIKE @Keyword OR 
+                    email LIKE @Keyword OR 
+                    address LIKE @Keyword
+                )";
+            }
+
             string sortString = "ORDER BY ";
             bool useDefault = true;
             foreach (var item in sortOptions)
@@ -1282,7 +1337,7 @@ namespace ClinicManagementSystem.Service.DataAccess
             var sql = $"""
                 SELECT count(*) over() as Total, id, name, residentId, email, gender, birthday, address
                 FROM Patient
-                WHERE Name like @Keyword
+                {whereClause}
                 {sortString}
                 OFFSET @Skip ROWS FETCH NEXT @Take ROWS ONLY;
                 """;

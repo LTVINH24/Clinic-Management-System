@@ -33,6 +33,8 @@ namespace ClinicManagementSystem.Views.StaffView
 			this.InitializeComponent();
 		}
 
+		public ClinicManagementSystem.Model.MedicalExaminationForm editForm { get; set; }
+
 		/// <summary>
 		/// Xử lí sự kiện khi nhấn nút Next
 		/// </summary>
@@ -75,36 +77,6 @@ namespace ClinicManagementSystem.Views.StaffView
 		}
 
 		/// <summary>
-		/// Xử lí sự kiện khi chọn một Medical Examination Form
-		/// </summary>
-		/// <param name="sender"></param>
-		/// <param name="e"></param>
-		private void medicalExaminationFormList_SelectionChanged(object sender, SelectionChangedEventArgs e)
-		{
-			var formEdit = itemsComboBox.SelectedItem as MedicalExaminationForm;
-			ViewModel.Edit(formEdit);
-
-			if (EditPanel.Visibility == Visibility.Visible && ViewModel.FormEdit == formEdit)
-			{
-				EditPanel.Visibility = Visibility.Collapsed;
-				itemsComboBox.SelectedItem = null;
-			}
-			else
-			{
-				if (formEdit != null)
-				{
-					ViewModel.Edit(formEdit);
-					EditPanel.Visibility = Visibility.Visible;
-				}
-			}
-			//if(itemsComboBox.SelectedItem is MedicalExaminationForm selectedForm)
-			//{
-			//	Frame.Navigate(typeof(MedicalExaminationFormDetail), selectedForm);
-			//	ViewModel.Edit(selectedForm);
-			//}
-		}
-
-		/// <summary>
 		/// Xử lí sự kiện khi nhập vào ô tìm kiếm
 		/// </summary>
 		/// <param name="sender"></param>
@@ -142,6 +114,7 @@ namespace ClinicManagementSystem.Views.StaffView
 			{
 				notify = "Update failed.";
 			}
+			EditPopup.IsOpen = false;
 			Notify(notify);
 		}
 
@@ -176,19 +149,9 @@ namespace ClinicManagementSystem.Views.StaffView
 				{
 					notify = "Delete failed.";
 				}
+				EditPopup.IsOpen = false;
 				Notify(notify);
 			}
-		}
-
-		/// <summary>
-		/// Xử lí sự kiện khi nhấn nút Cancel
-		/// </summary>
-		/// <param name="sender"></param>
-		/// <param name="e"></param>
-		private void cancelEdit(object sender, RoutedEventArgs e)
-		{
-			
-			ViewModel.Cancel();
 		}
 
 		/// <summary>
@@ -217,6 +180,27 @@ namespace ClinicManagementSystem.Views.StaffView
 			{
 				ViewModel.FormEdit.VisitType = menuItem.Text;
 			}
+		}
+
+		private void ClearFilter_Click(object sender, RoutedEventArgs e)
+		{
+			ViewModel.StartDate = null;
+			ViewModel.EndDate = null;
+			ViewModel.LoadData();
+		}
+
+
+		private void ClosePopup_Click(object sender, RoutedEventArgs e)
+		{
+			EditPopup.IsOpen = false;
+		}
+
+		private void Edit_Click(object sender, RoutedEventArgs e)
+		{
+			var button = sender as Button;
+			editForm = button?.DataContext as MedicalExaminationForm;
+			ViewModel.Edit(editForm);
+			EditPopup.IsOpen = true;	
 		}
 	}	
 }

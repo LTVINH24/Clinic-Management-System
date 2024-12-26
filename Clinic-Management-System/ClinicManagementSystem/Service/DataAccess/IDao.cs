@@ -59,10 +59,12 @@ namespace ClinicManagementSystem.Service.DataAccess
 		//========================================MedicalExaminationForm==========================
 		bool AddMedicalExaminationForm(int patientId, MedicalExaminationForm medicalExaminationForm);
 
-		public Tuple<List<MedicalExaminationForm>, int> GetMedicalExaminationForm(
+		public Tuple<List<MedicalExaminationForm>, int> GetMedicalExaminationForms(
 			int page,
 			int rowsPerPage,
 			string keyword,
+			DateTimeOffset? startDate,
+			DateTimeOffset? endDate,
 			Dictionary<string, SortType> sortOptions);
 
 		bool UpdateMedicalExaminationForm(MedicalExaminationForm form);
