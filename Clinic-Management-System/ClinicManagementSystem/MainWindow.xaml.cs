@@ -19,6 +19,8 @@ using Windows.Foundation.Collections;
 using Windows.Networking.Vpn;
 using Windows.Storage;
 using ClinicManagementSystem.Service;
+using Microsoft.UI;
+using Microsoft.UI.Windowing;
 
 // To learn more about WinUI, the WinUI project structure,
 // and more about our project templates, see: http://aka.ms/winui-project-info.
@@ -36,6 +38,12 @@ namespace ClinicManagementSystem
             ThemeService.Instance.SetTheme(this, ThemeService.Instance.GetCurrentTheme());
             viewModel.LoginCompleted += OnLoginCompleted;
             this.Title = "Clinic Management System";
+            this.AppWindow.SetIcon("Assets/AppIcon.ico");
+
+			//IntPtr hWnd = WinRT.Interop.WindowNative.GetWindowHandle(this);
+   //         var windowId = Win32Interop.GetWindowIdFromWindow(hWnd);
+   //         var appWindow = AppWindow.GetFromWindowId(windowId);
+   //         appWindow.Maximize();
 
 		}
 		/// <summary>

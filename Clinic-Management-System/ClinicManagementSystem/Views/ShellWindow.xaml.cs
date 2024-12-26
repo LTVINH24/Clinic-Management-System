@@ -1,4 +1,6 @@
 ﻿using ClinicManagementSystem.Service;
+using Microsoft.UI;
+using Microsoft.UI.Windowing;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Controls.Primitives;
@@ -43,6 +45,8 @@ namespace ClinicManagementSystem.Views
 			content.Navigate(type);
 
 			this.Title = "Clinic Management System";
+			this.AppWindow.SetIcon("Assets/AppIcon.ico");
+
 		}
 
 		/// <summary>
