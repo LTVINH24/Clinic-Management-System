@@ -1,3 +1,4 @@
+using ClinicManagementSystem.ViewModel.EndUser;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Controls.Primitives;
@@ -23,9 +24,27 @@ namespace ClinicManagementSystem.Views.StaffView
 	/// </summary>
 	public sealed partial class StaffHomePage : Page
 	{
+		public StaffHomePageViewModel ViewModel { get; set; }
+
 		public StaffHomePage()
 		{
+			ViewModel = new StaffHomePageViewModel();
 			this.InitializeComponent();
+		}
+
+		private void NavigateToListMedicalExaminationForm(object sender, RoutedEventArgs e)
+		{
+			Frame.Navigate(typeof(ListMedicalExaminationForm));
+		}
+
+		private void NavigateToListPatient(object sender, RoutedEventArgs e)
+		{
+			Frame.Navigate(typeof(ListPatient));
+		}
+
+		private void NavigateToAddMedicalExaminationForm(object sender, RoutedEventArgs e)
+		{
+			Frame.Navigate(typeof(AddMedicalExaminationForm));
 		}
 	}
 }

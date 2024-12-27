@@ -74,6 +74,14 @@ namespace ClinicManagementSystem.Service.DataAccess
 		public MedicalExaminationFormDetail GetMedicalExaminationFormDetail(int formId);
 		
 		public List<MedicalExaminationStatistic> GetMedicalExaminationStatisticsByDate(DateTimeOffset startDate, DateTimeOffset endDate);
+
+		public int GetTodayMedicalExaminationFormsCount();
+
+		public int GetTotalPatientsCount();
+
+		public int GetTodayNewPatientsCount();
+
+		public int GetPendingFormsCount();
 		//========================================================================================
 
 

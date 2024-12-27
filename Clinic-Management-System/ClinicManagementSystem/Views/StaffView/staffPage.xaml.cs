@@ -32,7 +32,35 @@ namespace ClinicManagementSystem.Views
 			{
 				nvSample.IsPaneOpen = false;
 				contentFrame.Navigate(typeof(StaffHomePage));
+				nvSample.SelectedItem = nvSample.MenuItems.OfType<NavigationViewItem>()
+										.FirstOrDefault(x => x.Tag.ToString() == "StaffPage");
 			};
+
+			contentFrame.Navigated += ContentFrame_Navigated;
+		}
+
+		private void ContentFrame_Navigated(object sender, NavigationEventArgs e)
+		{
+			if (e.SourcePageType == typeof(StaffHomePage))
+			{
+				nvSample.SelectedItem = nvSample.MenuItems.OfType<NavigationViewItem>()
+										.FirstOrDefault(x => x.Tag.ToString() == "StaffPage");
+			}
+			else if (e.SourcePageType == typeof(ListMedicalExaminationForm))
+			{
+				nvSample.SelectedItem = nvSample.MenuItems.OfType<NavigationViewItem>()
+										.FirstOrDefault(x => x.Tag.ToString() == "MedicalExaminationForm");
+			}
+			else if (e.SourcePageType == typeof(AddMedicalExaminationForm))
+			{
+				nvSample.SelectedItem = nvSample.MenuItems.OfType<NavigationViewItem>()
+										.FirstOrDefault(x => x.Tag.ToString() == "AddMedicalExaminationForm");
+			}
+			else if (e.SourcePageType == typeof(ListPatient))
+			{
+				nvSample.SelectedItem = nvSample.MenuItems.OfType<NavigationViewItem>()
+										.FirstOrDefault(x => x.Tag.ToString() == "ListPatient");
+			}
 		}
 
 		/// <summary>
