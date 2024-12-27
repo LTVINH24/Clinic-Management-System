@@ -61,12 +61,12 @@
                                 ToolTipService.ToolTip="Edit">
                             <FontIcon Glyph="&#xE70F;" />
                         </Button>
-                        <Button Click="Delete_Click"
+                        <!--<Button Click="Delete_Click"
                                 Margin="5,0,0,0"  
                                 Background="Transparent" BorderBrush="Transparent" 
                                 ToolTipService.ToolTip="Delete">
                             <FontIcon Glyph="&#xE74D;" />
-                        </Button>
+                        </Button>-->
                         <Button Click="SendMail_Click"
                                 Margin="5,0,0,0"  
                                 Background="Transparent" BorderBrush="Transparent" 

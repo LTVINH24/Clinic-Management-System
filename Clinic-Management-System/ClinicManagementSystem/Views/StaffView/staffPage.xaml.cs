@@ -56,7 +56,7 @@ namespace ClinicManagementSystem.Views
 						contentFrame.Navigate(typeof(HomePage));
 						break;
 					case "MedicalExaminationForm":
-						contentFrame.Navigate(typeof(listMedicalExaminationForm));
+						contentFrame.Navigate(typeof(ListMedicalExaminationForm));
 						break;
 					case "AddMedicalExaminationForm":
 						contentFrame.Navigate(typeof(AddMedicalExaminationForm));

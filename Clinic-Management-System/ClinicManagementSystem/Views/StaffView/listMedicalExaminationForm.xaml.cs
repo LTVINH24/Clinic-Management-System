@@ -26,10 +26,10 @@ namespace ClinicManagementSystem.Views.StaffView
 	/// <summary>
 	/// An empty page that can be used on its own or navigated to within a Frame.
 	/// </summary>
-	public sealed partial class listMedicalExaminationForm : Page
+	public sealed partial class ListMedicalExaminationForm : Page
 	{
 		public MedicalExaminationFormViewModel ViewModel { get; set; }
-		public listMedicalExaminationForm()
+		public ListMedicalExaminationForm()
 		{
 			ViewModel = new MedicalExaminationFormViewModel();
 			this.DataContext = ViewModel;
@@ -68,7 +68,7 @@ namespace ClinicManagementSystem.Views.StaffView
 			ViewModel.GoToPreviousPage();
 		}
 
-		bool init = false;
+		// bool init = false;
 
 		/// <summary>
 		/// Xử lí sự kiện khi chọn trang
@@ -77,15 +77,19 @@ namespace ClinicManagementSystem.Views.StaffView
 		/// <param name="e"></param>
 		private void pagesComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
 		{
-			if (init == false)
-			{
-				init = true;
-				return;
-			}
+			//if (init == false)
+			//{
+			//	init = true;
+			//	return;
+			//}
 			if (pagesComboBox.SelectedIndex >= 0)
 			{
 				var item = pagesComboBox.SelectedItem as PageInfo;
-				ViewModel.GoToPage(item.Page);
+				//ViewModel.GoToPage(item.Page);
+				if (item != null)
+				{
+					ViewModel.GoToPage(item.Page);
+				}
 			}
 		}
 
