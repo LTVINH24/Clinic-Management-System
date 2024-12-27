@@ -49,7 +49,10 @@ namespace ClinicManagementSystem.ViewModel
 		/// </summary>
 		private void LoadExaminationForms()
 		{
-			var forms = _dataAccess.GetMedicalExaminationForms();
+            // Lấy danh sách phiếu khám chưa khám
+            var forms = _dataAccess.GetMedicalExaminationForms()
+                .Where(f => f.IsExaminated == "false")
+                .ToList();
 			ExaminationForms.Clear();
 
 			// Chỉ lấy các phần tử cho trang hiện tại

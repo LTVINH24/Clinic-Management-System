@@ -8,7 +8,7 @@ namespace ClinicManagementSystem.Converters
         public object Convert(object value, Type targetType, object parameter, string language)
         {
             string status = value as string;
-            return status?.ToLower() == "true" ? "Đã khám" : "Chưa khám";
+            return status?.ToLower() == "true" ? "Examined" : "Not examined";
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, string language)
