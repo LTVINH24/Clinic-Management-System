@@ -17,7 +17,7 @@ namespace ClinicManagementSystem.Model
 	public class PrescriptionMedicine
 	{
 		public string MedicineName { get; set; }
-		public int Dosage { get; set; }
+		public string Dosage { get; set; }
 		public int Quantity { get; set; }
 	}
 }

@@ -252,7 +252,7 @@
                     <Run Text="{x:Bind ViewModel.SelectedPageInfoItem.Page ,Mode=OneWay}"/> of 
                     <Run Text="{x:Bind ViewModel.SelectedPageInfoItem.Total, Mode=OneWay}"/>
                 </TextBlock>
-                <ComboBox ItemsSource="{Binding Pageinfos, Mode=OneWay}"
+                <ComboBox ItemsSource="{Binding PageInfos, Mode=OneWay}"
                     SelectedItem="{x:Bind ViewModel.SelectedPageInfoItem, Mode=TwoWay}"
                     SelectionChanged="pagesComboBox_SelectionChanged"
                     Margin="5,0,5,20" 
@@ -261,7 +261,7 @@
                     <ComboBox.ItemTemplate>
                         <DataTemplate x:DataType="localmodel:PageInfo">
                             <TextBlock >
-                                <Run Text="{x:Bind Page,Mode=OneWay}"/>/
+                                <Run Text="{x:Bind Page ,Mode=OneWay}"/>/
                                 <Run Text="{x:Bind Total, Mode=OneWay}"/>
                             </TextBlock>
                         </DataTemplate>
@@ -277,7 +277,8 @@
         <StackPanel x:Name="LoadingPanel" 
             Visibility="Collapsed"
             VerticalAlignment="Center" 
-            HorizontalAlignment="Center">
+            HorizontalAlignment="Center"
+            Grid.RowSpan="6">
             <ProgressRing x:Name="LoadingRing" 
                 IsActive="False"
                 Width="50" 

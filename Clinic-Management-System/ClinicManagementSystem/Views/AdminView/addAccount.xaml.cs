@@ -14,6 +14,7 @@ using Microsoft.UI.Xaml.Media;
 using Microsoft.UI.Xaml.Navigation;
 using ClinicManagementSystem.Helper;
 using ClinicManagementSystem.ViewModel.EndUser;
+using ClinicManagementSystem.Service;
 
 // To learn more about WinUI, the WinUI project structure,
 // and more about our project templates, see: http://aka.ms/winui-project-info.
@@ -156,13 +157,30 @@ namespace ClinicManagementSystem.Views.AdminView
 		/// <param name="notify"></param>
 		private async void Notify(string notify)
         {
-            await new ContentDialog()
+			var currentTheme = ThemeService.Instance.GetCurrentTheme();
+			ElementTheme dialogTheme;
+
+			switch (currentTheme)
+			{
+				case "Light":
+					dialogTheme = ElementTheme.Light;
+					break;
+				case "Dark":
+					dialogTheme = ElementTheme.Dark;
+					break;
+				default:
+					dialogTheme = ElementTheme.Default;
+					break;
+			}
+
+			await new ContentDialog()
             {
                 XamlRoot = this.Content.XamlRoot,
                 Title = "Notify",
                 Content = $"{notify}",
-                CloseButtonText = "OK"
-            }.ShowAsync();
+                CloseButtonText = "OK",
+				RequestedTheme = dialogTheme
+			}.ShowAsync();
         }
     }
 }

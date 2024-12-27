@@ -35,7 +35,6 @@ namespace ClinicManagementSystem.Views.StaffView
 			this.DataContext = ViewModel;
 			this.InitializeComponent();
 			
-			// Xử lý hover effect
 			DragArea.PointerEntered += (s, e) => {
 				HoverOverlay.Opacity = 0.1;
 			};

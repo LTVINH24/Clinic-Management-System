@@ -10,24 +10,36 @@
     mc:Ignorable="d"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
     <Page.Resources>
-        <DataTemplate x:Key="HorizontalMedicine" x:DataType="localmodel:Medicine">
-            <Border BorderThickness="1" BorderBrush="#b5b5e8">
-                <StackPanel Orientation="Horizontal">
-                    <TextBlock Width="80" Margin="20" Text="{x:Bind Id}" />
-                    <TextBlock Width="150" Margin="20" Text="{x:Bind Name}" />
-                    <TextBlock Width="100" Margin="20" Text="{x:Bind Quantity}" />
-                    <TextBlock Width="100" Margin="20" Text="{x:Bind QuantityImport}" />
-                    <TextBlock Width="100" Margin="20" Text="{x:Bind Price}" />
-                    <TextBlock Width="300" Margin="20" Text="{x:Bind Manufacturer}" />
-                    <Button Click="Edit_Click" Background="Transparent" BorderBrush="Transparent">
-                        <FontIcon Glyph="&#xE70F;" />
-                    </Button>
-                    <Button Margin="40,0,0,0" Click="Delete_Click" Background="Transparent" BorderBrush="Transparent">
-                        <FontIcon Glyph="&#xE74D;" />
-                    </Button>
-                </StackPanel>
-            </Border>
-        </DataTemplate>
+        <ResourceDictionary>
+            <ResourceDictionary.ThemeDictionaries>
+                <ResourceDictionary x:Key="Light">
+                    <SolidColorBrush x:Key="EditPanelBackground" Color="Pink" />
+                </ResourceDictionary>
+                <ResourceDictionary x:Key="Dark">
+                    <SolidColorBrush x:Key="EditPanelBackground" Color="Transparent" />
+                </ResourceDictionary>
+            </ResourceDictionary.ThemeDictionaries>
+        
+
+            <DataTemplate x:Key="HorizontalMedicine" x:DataType="localmodel:Medicine">
+                <Border BorderThickness="1" BorderBrush="#b5b5e8">
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Width="80" Margin="20" Text="{x:Bind Id}" />
+                        <TextBlock Width="150" Margin="20" Text="{x:Bind Name}" />
+                        <TextBlock Width="100" Margin="20" Text="{x:Bind Quantity}" />
+                        <TextBlock Width="100" Margin="20" Text="{x:Bind QuantityImport}" />
+                        <TextBlock Width="100" Margin="20" Text="{x:Bind Price}" />
+                        <TextBlock Width="300" Margin="20" Text="{x:Bind Manufacturer}" />
+                        <Button Click="Edit_Click" Background="Transparent" BorderBrush="Transparent">
+                            <FontIcon Glyph="&#xE70F;" />
+                        </Button>
+                        <Button Margin="40,0,0,0" Click="Delete_Click" Background="Transparent" BorderBrush="Transparent">
+                            <FontIcon Glyph="&#xE74D;" />
+                        </Button>
+                    </StackPanel>
+                </Border>
+            </DataTemplate>
+        </ResourceDictionary>
     </Page.Resources>
 
     <Grid Padding="10">
@@ -109,7 +121,7 @@
             </Button>
         </StackPanel>
 
-        <StackPanel Background="Pink" Grid.Row="4" Width="1000" BorderBrush="#b5b5e8" BorderThickness="2">
+        <StackPanel Background="{ThemeResource EditPanelBackground}" Grid.Row="4" Width="1000" BorderBrush="#b5b5e8" BorderThickness="2">
             <Grid HorizontalAlignment="Center">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="*"/>

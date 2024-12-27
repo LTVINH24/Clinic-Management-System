@@ -38,9 +38,6 @@
     <Page Update="Views\DoctorView\DocumentPage.xaml">
       <SubType>Designer</SubType>
     </Page>
-    <Page Update="Views\StaffView\MedicalExaminationFormDetail.xaml">
-      <SubType>Designer</SubType>
-    </Page>
     <Page Update="Views\StaffView\ListPatient.xaml">
       <SubType>Designer</SubType>
     </Page>
@@ -59,9 +56,6 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Update="Views\AdminView\listAccount.xaml">
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Update="Views\AdminView\settingAdmin.xaml">
       <SubType>Designer</SubType>
     </Page>
     <Page Update="Views\DoctorView\DiagnosisPage.xaml">
