@@ -9,10 +9,175 @@
     mc:Ignorable="d"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
-    <Grid>
-        <TextBlock Text="Staff Page" 
-          FontSize="32"
-          HorizontalAlignment="Center"
-          VerticalAlignment="Center"/>
+    <Grid Padding="24">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <Grid Height="120" Margin="-4,-24,-24,8">
+            <TextBlock Text="Staff Dashboard" 
+                     FontSize="28" 
+                     FontWeight="SemiBold"
+                     Style="{StaticResource TitleLargeTextBlockStyle}"
+                     VerticalAlignment="Center"
+                     />
+        </Grid>
+
+        <Grid Grid.Row="1" 
+              ColumnSpacing="24" 
+              RowSpacing="24">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition/>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
+
+            <Button Grid.Column="0" Grid.Row="0" 
+                    Click="NavigateToListMedicalExaminationForm"
+                    Background="#27E1E8"
+                    Height="300"
+                    HorizontalAlignment="Stretch"
+                    VerticalAlignment="Stretch">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+                    <FontIcon Glyph="&#xE95E;" 
+                             FontSize="40"
+                             Margin="0,0,0,12"/>
+                    <TextBlock Grid.Row="1"
+                             Text="{x:Bind ViewModel.TodayFormsCount, Mode=OneWay}" 
+                             FontSize="48"
+                             FontWeight="SemiBold"
+                             HorizontalAlignment="Center"/>
+                    <StackPanel Grid.Row="2" Spacing="4">
+                        <TextBlock Text="Medical Examination Forms"
+                                 FontSize="16"
+                                 TextWrapping="Wrap"
+                                 TextAlignment="Center"/>
+                        <TextBlock Text="Today's Forms" 
+                                 Opacity="0.7"
+                                 FontSize="12"/>
+                    </StackPanel>
+                </Grid>
+            </Button>
+
+            <Button Grid.Column="1" Grid.Row="0"
+                    Click="NavigateToListPatient"
+                    Background="#4CAF50"
+                    Height="300"
+                    HorizontalAlignment="Stretch"
+                    VerticalAlignment="Stretch">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+                    <FontIcon Glyph="&#xE77B;" 
+                             FontSize="40"
+                             Margin="0,0,0,12"/>
+                    <TextBlock Grid.Row="1"
+                             Text="{x:Bind ViewModel.TotalPatientCount, Mode=OneWay}"
+                             FontSize="48"
+                             FontWeight="SemiBold"
+                             HorizontalAlignment="Center"/>
+                    <StackPanel Grid.Row="2" Spacing="4">
+                        <TextBlock Text="Patient Management"
+                                 FontSize="16"
+                                 TextWrapping="Wrap"
+                                 TextAlignment="Center"/>
+                        <TextBlock Text="Total Patients" 
+                                 Opacity="0.7"
+                                 FontSize="12"/>
+                    </StackPanel>
+                </Grid>
+            </Button>
+
+            <Button Grid.Column="0" Grid.Row="1"
+                    Click="NavigateToAddMedicalExaminationForm"
+                    Background="#2196F3"
+                    Height="300"
+                    HorizontalAlignment="Stretch"
+                    VerticalAlignment="Stretch">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+                    <FontIcon Glyph="&#xE710;" 
+                             FontSize="48"
+                             Margin="0,0,0,12"/>
+                    <TextBlock Grid.Row="1"
+                             Text="New Examination Form"
+                             FontSize="16"
+                             TextWrapping="Wrap"
+                             TextAlignment="Center"/>
+                </Grid>
+            </Button>
+
+            <Grid Grid.Column="1" Grid.Row="1"
+                  Background="{ThemeResource CardBackgroundFillColorDefaultBrush}"
+                  BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}"
+                  BorderThickness="1"
+                  CornerRadius="8"
+                  Height="300"
+                  Padding="20">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+                
+                <TextBlock Text="Quick Statistics" 
+                         FontSize="20" 
+                         FontWeight="SemiBold"/>
+                
+                <StackPanel Grid.Row="1" 
+                          Spacing="16" 
+                          VerticalAlignment="Center">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <FontIcon Glyph="&#xE77B;" 
+                                 Foreground="#4CAF50"
+                                 FontSize="24"
+                                 Margin="0,0,12,0"/>
+                        <StackPanel Grid.Column="1">
+                            <TextBlock Text="{x:Bind ViewModel.TodayPatientCount, Mode=OneWay}"
+                                     FontSize="24"
+                                     FontWeight="SemiBold"/>
+                            <TextBlock Text="New Patients Today"
+                                     Opacity="0.7"/>
+                        </StackPanel>
+                    </Grid>
+
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <FontIcon Glyph="&#xE95E;"
+                                 Foreground="#FF9800"
+                                 FontSize="24"
+                                 Margin="0,0,12,0"/>
+                        <StackPanel Grid.Column="1">
+                            <TextBlock Text="{x:Bind ViewModel.PendingFormsCount, Mode=OneWay}"
+                                     FontSize="24"
+                                     FontWeight="SemiBold"/>
+                            <TextBlock Text="Pending Forms"
+                                     Opacity="0.7"/>
+                        </StackPanel>
+                    </Grid>
+                </StackPanel>
+            </Grid>
+        </Grid>
     </Grid>
 </Page>

@@ -959,13 +959,43 @@ namespace ClinicManagementSystem.Service.DataAccess
             connection.Close();
             return result;
         }
-        
-        /// <summary>
-        /// Thêm bệnh nhân
-        /// </summary>
-        /// <param name="patient"></param>
-        /// <returns>True và id bệnh nhân nếu tạo thành công, False và id bằng 0 nếu tạo thất bại</returns>
-        public (bool, int) AddPatient(Patient patient)
+
+		public int GetTodayMedicalExaminationFormsCount()
+		{
+			using (var connection = new SqlConnection(_connectionString))
+			{
+				connection.Open();
+				var command = new SqlCommand(@"
+                    SELECT COUNT(*) 
+                    FROM MedicalExaminationForm 
+                    WHERE CAST(Time AS DATE) = @Today", connection);
+
+				command.Parameters.AddWithValue("@today", DateTime.Now.Date);
+				return (int)command.ExecuteScalar();
+			}
+		}
+
+		public int GetPendingFormsCount()
+		{
+			using (var connection = new SqlConnection(_connectionString))
+			{
+				connection.Open();
+				var command = new SqlCommand(@"
+            SELECT COUNT(*) 
+            FROM MedicalExaminationForm mef
+            LEFT JOIN MedicalRecord mr ON mef.Id = mr.MedicalExaminationFormID
+            WHERE mr.Id IS NULL", connection);
+
+				return (int)command.ExecuteScalar();
+			}
+		}
+
+		/// <summary>
+		/// Thêm bệnh nhân
+		/// </summary>
+		/// <param name="patient"></param>
+		/// <returns>True và id bệnh nhân nếu tạo thành công, False và id bằng 0 nếu tạo thất bại</returns>
+		public (bool, int) AddPatient(Patient patient)
         {
             var connectionString = GetConnectionString();
             SqlConnection connection = new SqlConnection(connectionString);
@@ -1478,6 +1508,40 @@ namespace ClinicManagementSystem.Service.DataAccess
                 result, count
             );
         }
+
+		public int GetTotalPatientsCount()
+		{
+			using (var connection = new SqlConnection(_connectionString))
+			{
+				connection.Open();
+				var command = new SqlCommand("SELECT COUNT(*) FROM Patient", connection);
+				return (int)command.ExecuteScalar();
+			}
+		}
+
+		public int GetTodayNewPatientsCount()
+		{
+			using (var connection = new SqlConnection(_connectionString))
+			{
+				connection.Open();
+				var command = new SqlCommand(@"
+                    SELECT COUNT(DISTINCT p.Id)
+                    FROM Patient p
+                    JOIN MedicalExaminationForm mef ON p.Id = mef.PatientId
+                    WHERE CAST(mef.Time AS DATE) = @Today
+                    AND NOT EXISTS (
+                        SELECT 1 
+                        FROM MedicalExaminationForm mef2
+                        WHERE mef2.PatientId = p.Id
+                        AND CAST(mef2.Time AS DATE) < @Today
+                    )", connection);
+
+				command.Parameters.AddWithValue("@today", DateTime.Now.Date);
+
+				return (int)command.ExecuteScalar();
+			}
+		}
+
 		/// <summary>
 		/// Cập nhật thông tin bệnh nhân
 		/// </summary>

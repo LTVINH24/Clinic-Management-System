@@ -9,7 +9,7 @@
     mc:Ignorable="d"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
-    <Grid Padding="60,60,60,60">
+    <Grid Padding="60">
         
         <Grid.RowDefinitions>
             <RowDefinition Height="100"/>
@@ -21,11 +21,15 @@
             <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
 
-        <TextBlock Grid.Row="0" Grid.ColumnSpan="2"  
+        <!--<TextBlock Grid.Row="0" Grid.ColumnSpan="2"  
                    Margin="20"  
                    FontSize="24" FontWeight="Bold" 
-                   VerticalAlignment="Top" HorizontalAlignment="Center">Your infomation</TextBlock>
-        
+                   VerticalAlignment="Top" HorizontalAlignment="Center">Your infomation</TextBlock>-->
+        <TextBlock Text="My Account" 
+             Style="{StaticResource TitleLargeTextBlockStyle}"
+             FontSize="28" FontWeight="SemiBold"
+             Margin="-40,-40,0,32"/>
+
         <Grid Grid.Column="0" Grid.Row="1" 
               Padding="40,0,40,0">
             
