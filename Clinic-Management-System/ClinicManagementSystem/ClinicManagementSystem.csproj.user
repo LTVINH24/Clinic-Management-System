@@ -1,6 +1,15 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="Current" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <PropertyGroup />
+  <PropertyGroup>
+    <Source>D:\HCMUS\Jurch\Hk5 24-25\LẬP TRÌNH WINDOWS\Project\Clinic-Management-System\Clinic-Management-System\ClinicManagementSystem\Assets\AppIcon.png</Source>
+    <SmallTileSource>D:\HCMUS\Jurch\Hk5 24-25\LẬP TRÌNH WINDOWS\Project\Clinic-Management-System\Clinic-Management-System\ClinicManagementSystem\Assets\AppIcon.png</SmallTileSource>
+    <MediumTileSource>D:\HCMUS\Jurch\Hk5 24-25\LẬP TRÌNH WINDOWS\Project\Clinic-Management-System\Clinic-Management-System\ClinicManagementSystem\Assets\AppIcon.png</MediumTileSource>
+    <WideTileSource>D:\HCMUS\Jurch\Hk5 24-25\LẬP TRÌNH WINDOWS\Project\Clinic-Management-System\Clinic-Management-System\ClinicManagementSystem\Assets\AppIcon.png</WideTileSource>
+    <LargeTileSource>D:\HCMUS\Jurch\Hk5 24-25\LẬP TRÌNH WINDOWS\Project\Clinic-Management-System\Clinic-Management-System\ClinicManagementSystem\Assets\AppIcon.png</LargeTileSource>
+    <AppIconSource>D:\HCMUS\Jurch\Hk5 24-25\LẬP TRÌNH WINDOWS\Project\Clinic-Management-System\Clinic-Management-System\ClinicManagementSystem\Assets\AppIcon.png</AppIconSource>
+    <SplashScreenSource>D:\HCMUS\Jurch\Hk5 24-25\LẬP TRÌNH WINDOWS\Project\Clinic-Management-System\Clinic-Management-System\ClinicManagementSystem\Assets\AppIcon.png</SplashScreenSource>
+    <PackageLogoSource>D:\HCMUS\Jurch\Hk5 24-25\LẬP TRÌNH WINDOWS\Project\Clinic-Management-System\Clinic-Management-System\ClinicManagementSystem\Assets\AppIcon.png</PackageLogoSource>
+  </PropertyGroup>
   <ItemGroup>
     <None Update="App.xaml">
       <SubType>Designer</SubType>
@@ -11,6 +20,9 @@
     <None Update="Package.appxmanifest">
       <SubType>Designer</SubType>
     </None>
+    <Page Update="Views\StaffView\StaffHomePage.xaml">
+      <SubType>Designer</SubType>
+    </Page>
     <Page Update="Views\HomePage.xaml">
       <SubType>Designer</SubType>
     </Page>
@@ -24,9 +36,6 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Update="Views\DoctorView\DocumentPage.xaml">
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Update="Views\StaffView\MedicalExaminationFormDetail.xaml">
       <SubType>Designer</SubType>
     </Page>
     <Page Update="Views\StaffView\ListPatient.xaml">
@@ -47,9 +56,6 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Update="Views\AdminView\listAccount.xaml">
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Update="Views\AdminView\settingAdmin.xaml">
       <SubType>Designer</SubType>
     </Page>
     <Page Update="Views\DoctorView\DiagnosisPage.xaml">
@@ -73,10 +79,10 @@
     <Page Update="Views\StaffView\AddMedicalExaminationForm.xaml">
       <SubType>Designer</SubType>
     </Page>
-    <Page Update="Views\StaffView\listMedicalExaminationForm.xaml">
+    <Page Update="Views\StaffView\ListMedicalExaminationForm.xaml">
       <SubType>Designer</SubType>
     </Page>
-    <Page Update="Views\StaffView\staffPage.xaml">
+    <Page Update="Views\StaffView\StaffPage.xaml">
       <SubType>Designer</SubType>
     </Page>
   </ItemGroup>

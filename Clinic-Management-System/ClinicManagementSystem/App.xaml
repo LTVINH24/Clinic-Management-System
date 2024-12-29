@@ -11,6 +11,7 @@
                 <!-- Other merged dictionaries here -->
             </ResourceDictionary.MergedDictionaries>
             <!-- Other app resources here -->
+            <x:String x:Key="AppIcon">Assets/AppIcon.targetsize-256.png</x:String>
         </ResourceDictionary>
     </Application.Resources>
 </Application>

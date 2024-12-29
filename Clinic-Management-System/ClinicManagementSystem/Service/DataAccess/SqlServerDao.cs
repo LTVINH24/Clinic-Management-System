@@ -774,7 +774,7 @@ namespace ClinicManagementSystem.Service.DataAccess
             SqlConnection connection = new SqlConnection(connectionString);
             connection.Open();
 
-            var whereClause = "WHERE 1=1";
+            var whereClause = "WHERE m.staffId = @StaffId";
 			if (!string.IsNullOrEmpty(keyword))
 			{
                 whereClause += @" AND (
@@ -831,7 +831,11 @@ namespace ClinicManagementSystem.Service.DataAccess
             ";
 
 			var command = new SqlCommand(sql, connection);
-			AddParameters(command, ("@Skip", (page - 1) * rowsPerPage), ("@Take", rowsPerPage), ("@Keyword", $"%{keyword}%"));
+			AddParameters(command, 
+                ("@Skip", (page - 1) * rowsPerPage), 
+                ("@Take", rowsPerPage), 
+                ("@Keyword", $"%{keyword}%"), 
+                ("@StaffId", UserSessionService.Instance.LoggedInUserId));
 
 			if (startDate.HasValue)
 			{
@@ -920,7 +924,7 @@ namespace ClinicManagementSystem.Service.DataAccess
 					medicines.Add(new PrescriptionMedicine
 					{
 						MedicineName = reader["MedicineName"].ToString(),
-						Dosage = (int)reader["Dosage"],
+						Dosage = (string)reader["Dosage"],
 						Quantity = (int)reader["Quantity"]
 					});
 				}

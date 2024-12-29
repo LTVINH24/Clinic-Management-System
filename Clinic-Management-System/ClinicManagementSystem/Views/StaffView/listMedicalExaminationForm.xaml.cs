@@ -26,14 +26,22 @@ namespace ClinicManagementSystem.Views.StaffView
 	/// <summary>
 	/// An empty page that can be used on its own or navigated to within a Frame.
 	/// </summary>
-	public sealed partial class listMedicalExaminationForm : Page
+	public sealed partial class ListMedicalExaminationForm : Page
 	{
 		public MedicalExaminationFormViewModel ViewModel { get; set; }
-		public listMedicalExaminationForm()
+		public ListMedicalExaminationForm()
 		{
 			ViewModel = new MedicalExaminationFormViewModel();
 			this.DataContext = ViewModel;
 			this.InitializeComponent();
+			
+			DragArea.PointerEntered += (s, e) => {
+				HoverOverlay.Opacity = 0.1;
+			};
+			
+			DragArea.PointerExited += (s, e) => {
+				HoverOverlay.Opacity = 0;
+			};
 		}
 		IDao _dao;
 
@@ -60,7 +68,7 @@ namespace ClinicManagementSystem.Views.StaffView
 			ViewModel.GoToPreviousPage();
 		}
 
-		bool init = false;
+		// bool init = false;
 
 		/// <summary>
 		/// Xử lí sự kiện khi chọn trang
@@ -69,15 +77,19 @@ namespace ClinicManagementSystem.Views.StaffView
 		/// <param name="e"></param>
 		private void pagesComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
 		{
-			if (init == false)
-			{
-				init = true;
-				return;
-			}
+			//if (init == false)
+			//{
+			//	init = true;
+			//	return;
+			//}
 			if (pagesComboBox.SelectedIndex >= 0)
 			{
 				var item = pagesComboBox.SelectedItem as PageInfo;
-				ViewModel.GoToPage(item.Page);
+				//ViewModel.GoToPage(item.Page);
+				if (item != null)
+				{
+					ViewModel.GoToPage(item.Page);
+				}
 			}
 		}
 
@@ -108,16 +120,17 @@ namespace ClinicManagementSystem.Views.StaffView
 		/// <param name="e"></param>
 		private async void updateMedicalExaminationForm(object sender, RoutedEventArgs e)
 		{
-			var success = ViewModel.Update();
+			var (isSuccess, message) = ViewModel.Update();
 			ViewModel.LoadData();
 			string notify = "";
-			if (success)
+			if (isSuccess)
 			{
 				notify = "Updated successfully.";
+				
 			}
 			else
 			{
-				notify = "Update failed.";
+				notify = $"Update failed. {message}";
 			}
 			EditPopup.IsOpen = false;
 			await Notify(notify);
@@ -165,12 +178,29 @@ namespace ClinicManagementSystem.Views.StaffView
 		/// <param name="notify"></param>
 		private async Task Notify(string notify)
 		{
+			var currentTheme = ThemeService.Instance.GetCurrentTheme();
+			ElementTheme dialogTheme;
+
+			switch (currentTheme)
+			{
+				case "Light":
+					dialogTheme = ElementTheme.Light;
+					break;
+				case "Dark":
+					dialogTheme = ElementTheme.Dark;
+					break;
+				default:
+					dialogTheme = ElementTheme.Default;
+					break;
+			}
+
 			await new ContentDialog()
 			{
 				XamlRoot = this.Content.XamlRoot,
 				Title = "Notify",
 				Content = $"{notify}",
-				CloseButtonText = "OK"
+				CloseButtonText = "OK",
+				RequestedTheme = dialogTheme
 			}.ShowAsync();
 		}
 
@@ -265,6 +295,41 @@ namespace ClinicManagementSystem.Views.StaffView
 				LoadingRing.IsActive = false;
 				LoadingPanel.Visibility = Visibility.Collapsed;
 			}
+		}
+
+		private bool isDragging = false;
+		private Windows.Foundation.Point initialPosition;
+		private Windows.Foundation.Point popupPosition;
+
+		private void DragArea_PointerPressed(object sender, PointerRoutedEventArgs e)
+		{
+			isDragging = true;
+			var properties = e.GetCurrentPoint(null).Properties;
+			if (properties.IsLeftButtonPressed)
+			{
+				((UIElement)sender).CapturePointer(e.Pointer);
+				initialPosition = e.GetCurrentPoint(null).Position;
+				popupPosition = new Windows.Foundation.Point(EditPopup.HorizontalOffset, EditPopup.VerticalOffset);
+			}
+		}
+
+		private void DragArea_PointerMoved(object sender, PointerRoutedEventArgs e)
+		{
+			if (isDragging)
+			{
+				var currentPosition = e.GetCurrentPoint(null).Position;
+				var deltaX = currentPosition.X - initialPosition.X;
+				var deltaY = currentPosition.Y - initialPosition.Y;
+
+				EditPopup.HorizontalOffset = popupPosition.X + deltaX;
+				EditPopup.VerticalOffset = popupPosition.Y + deltaY;
+			}
+		}
+
+		private void DragArea_PointerReleased(object sender, PointerRoutedEventArgs e)
+		{
+			isDragging = false;
+			((UIElement)sender).ReleasePointerCapture(e.Pointer);
 		}
     }	
 }

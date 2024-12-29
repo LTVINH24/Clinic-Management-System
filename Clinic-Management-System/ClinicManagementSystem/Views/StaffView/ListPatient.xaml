@@ -21,30 +21,57 @@
                     <SolidColorBrush x:Key="EditPanelBackground" Color="Transparent" />
                 </ResourceDictionary>
             </ResourceDictionary.ThemeDictionaries>
+
             <converter:DateTimeOffsetToDateConverters x:Key="DateTimeOffsetToDateConverters"/>
 
             <DataTemplate x:Key="HorizontalUser" x:DataType="localmodel:Patient">
                 <Border BorderThickness="1" BorderBrush="#b5b5e8">
                     <StackPanel Orientation="Horizontal">
-                        <TextBlock Width="40" Margin="20" Text="{x:Bind Id}" ></TextBlock>
-                        <TextBlock Width="120" TextWrapping="Wrap" Margin="20" Text="{x:Bind Name}" ></TextBlock>
-                        <TextBlock Width="100" Margin="20" Text="{x:Bind ResidentId}" ></TextBlock>
-                        <TextBlock Width="120" Margin="20" Text="{x:Bind DoB, Converter={StaticResource DateTimeOffsetToDateConverters}}" ></TextBlock>
-                        <ScrollViewer Width="180" Height="40" VerticalScrollMode="Enabled" Margin="20" >
-                            <TextBlock Text="{x:Bind Email}" TextWrapping="Wrap"></TextBlock>
+                        <TextBlock Margin="20" 
+                                   Width="40" 
+                                   Text="{x:Bind Id}" />
+                        <TextBlock Margin="20"
+                                   Width="120" 
+                                   Text="{x:Bind Name}"
+                                   TextWrapping="Wrap" />
+                        <TextBlock Margin="20"
+                                   Width="100"  
+                                   Text="{x:Bind ResidentId}" />
+                        <TextBlock Margin="20"
+                                   Width="120"  
+                                   Text="{x:Bind DoB, Converter={StaticResource DateTimeOffsetToDateConverters}}" />
+                        <ScrollViewer Margin="20"
+                                      Width="180" Height="40" 
+                                      VerticalScrollMode="Enabled"  >
+                            <TextBlock Text="{x:Bind Email}" TextWrapping="Wrap" />
                         </ScrollViewer>
-                        <TextBlock Width="70" Margin="20" Text="{x:Bind Gender}" ></TextBlock>
-                        <ScrollViewer Height="40" VerticalScrollMode="Enabled" HorizontalScrollMode="Disabled" Margin="20" Width="150">
-                            <TextBlock Text="{x:Bind Address}" TextWrapping="Wrap" ></TextBlock>
+                        <TextBlock Margin="20"
+                                   Width="70"  
+                                   Text="{x:Bind Gender}" />
+                        <ScrollViewer Margin="20"
+                                      Height="40" Width="150"
+                                      VerticalScrollMode="Enabled" HorizontalScrollMode="Disabled">
+                            <TextBlock Text="{x:Bind Address}" TextWrapping="Wrap" />
                         </ScrollViewer>
-                        <TextBlock Width="120" Margin="20" Text="{x:Bind NextExaminationDate, Converter={StaticResource DateTimeOffsetToDateConverters}}" ></TextBlock>
-                        <Button Click="Edit_Click" Background="Transparent" BorderBrush="Transparent" ToolTipService.ToolTip="Edit">
+                        <TextBlock Margin="20"
+                                   Width="120"  
+                                   Text="{x:Bind NextExaminationDate, Converter={StaticResource DateTimeOffsetToDateConverters}}" />
+                        <Button Click="Edit_Click" 
+                                Background="Transparent" BorderBrush="Transparent" 
+                                ToolTipService.ToolTip="Edit">
                             <FontIcon Glyph="&#xE70F;" />
                         </Button>
-                        <Button Margin="5,0,0,0" Click="Delete_Click" Background="Transparent" BorderBrush="Transparent" ToolTipService.ToolTip="Delete">
+                        <!--<Button Click="Delete_Click"
+                                Margin="5,0,0,0"  
+                                Background="Transparent" BorderBrush="Transparent" 
+                                ToolTipService.ToolTip="Delete">
                             <FontIcon Glyph="&#xE74D;" />
-                        </Button>
-                        <Button Margin="5,0,0,0" Click="SendMail_Click" Background="Transparent" BorderBrush="Transparent" ToolTipService.ToolTip="Send Mail" Visibility="{x:Bind ShowMailButton(), Mode=OneWay}">
+                        </Button>-->
+                        <Button Click="SendMail_Click"
+                                Margin="5,0,0,0"  
+                                Background="Transparent" BorderBrush="Transparent" 
+                                ToolTipService.ToolTip="Send Mail" 
+                                Visibility="{x:Bind ShowMailButton(), Mode=OneWay}">
                             <FontIcon Glyph="&#xE715;" />
                         </Button>
                     </StackPanel>
@@ -53,8 +80,6 @@
         </ResourceDictionary>
     </Page.Resources>
 
-
-    
     <Grid VerticalAlignment="Stretch">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
@@ -64,127 +89,187 @@
             <RowDefinition Height="*" />
             <RowDefinition Height="70" />
         </Grid.RowDefinitions>
-        
-        <Popup x:Name="EditPopup" IsOpen="False" HorizontalAlignment="Center" VerticalAlignment="Center" VerticalOffset="-100" HorizontalOffset="-100">
-            <Border Background="White" BorderBrush="Gray" BorderThickness="1" Padding="20">
-                <StackPanel Width="400">
-                    <TextBox  Header="Name" Margin="0,10" Text="{x:Bind ViewModel.PatientEdit.Name,Mode=TwoWay}"></TextBox>
-                    <TextBox  Header="ResidentID" Text="{x:Bind ViewModel.PatientEdit.ResidentId,Mode=TwoWay}"></TextBox>
-                    <StackPanel Margin="0,10,0,0" VerticalAlignment="Center">
-                        <TextBlock>Gender</TextBlock>
-                        <DropDownButton Height="32" Width="100" Name="GenderEditDropDown" Margin="0,10,0,0" Content="{x:Bind ViewModel.PatientEdit.Gender,Mode=TwoWay}">
-                            <DropDownButton.Flyout>
-                                <MenuFlyout Placement="Bottom">
-                                    <MenuFlyoutItem Text="Male" Click="setGender" />
-                                    <MenuFlyoutItem Text="Female" Click="setGender"/>
-                                    <MenuFlyoutItem Text="Other" Click="setGender"/>
-                                </MenuFlyout>
-                            </DropDownButton.Flyout>
-                        </DropDownButton>
+
+        <Popup x:Name="EditPopup" IsOpen="False">
+            <Border 
+                Background="{ThemeResource ApplicationPageBackgroundThemeBrush}" 
+                BorderBrush="Gray" 
+                BorderThickness="1"
+                Translation="0,0,32">
+                <Border.Shadow>
+                    <ThemeShadow />
+                </Border.Shadow>
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+
+                    <Border x:Name="DragArea" 
+                            Background="{ThemeResource SystemAccentColor}" 
+                            Height="32" 
+                            PointerPressed="DragArea_PointerPressed"
+                            PointerMoved="DragArea_PointerMoved"
+                            PointerReleased="DragArea_PointerReleased">
+                        <Grid>
+                            <TextBlock Text="Edit Patient Information" 
+                                    Foreground="{ThemeResource ApplicationPageBackgroundThemeBrush}" 
+                                    VerticalAlignment="Center"
+                                    HorizontalAlignment="Left"
+                                    Margin="10,0,0,0"/>
+
+                            <Rectangle x:Name="HoverOverlay" 
+                                    Fill="White" 
+                                    Opacity="0">
+                                <ToolTipService.ToolTip>
+                                    <TextBlock Text="Drag to move"/>
+                                </ToolTipService.ToolTip>
+                            </Rectangle>
+                        </Grid>
+                    </Border>
+
+                    <StackPanel Grid.Row="1" 
+                                Width="400" 
+                                Padding="20">
+                        <TextBox Header="Name" 
+                                 Margin="0,10" 
+                                 Text="{x:Bind ViewModel.PatientEdit.Name,Mode=TwoWay}"/>
+                        <TextBox Header="ResidentID" 
+                                 Text="{x:Bind ViewModel.PatientEdit.ResidentId,Mode=TwoWay}"/>
+                        <StackPanel Margin="0,10,0,0" VerticalAlignment="Center">
+                            <TextBlock>Gender</TextBlock>
+                            <DropDownButton Name="GenderEditDropDown" 
+                                Height="32" Width="100" 
+                                Margin="0,10,0,0" 
+                                Content="{x:Bind ViewModel.PatientEdit.Gender,Mode=TwoWay}">
+                                <DropDownButton.Flyout>
+                                    <MenuFlyout Placement="Bottom">
+                                        <MenuFlyoutItem Text="Male" Click="setGender" />
+                                        <MenuFlyoutItem Text="Female" Click="setGender"/>
+                                        <MenuFlyoutItem Text="Other" Click="setGender"/>
+                                    </MenuFlyout>
+                                </DropDownButton.Flyout>
+                            </DropDownButton>
+                        </StackPanel>
+                        <CalendarDatePicker Grid.Row ="4" 
+                            Margin="0,10,0,0" 
+                            PlaceholderText="Pick a date" 
+                            Header="Date of Birth" 
+                            Date="{x:Bind ViewModel.PatientEdit.DoB,Mode=TwoWay}" 
+                            Foreground="{ThemeResource ApplicationForegroundThemeBrush}" />
+                        <TextBox Header="Email"
+                                 Margin="0,10,0,0"
+                                 Text="{x:Bind ViewModel.PatientEdit.Email,Mode=TwoWay}"/>
+                        <TextBox Header="Address"
+                                 Margin="0,10,0,0"
+                                 Text="{x:Bind ViewModel.PatientEdit.Address,Mode=TwoWay}"   
+                                 TextWrapping="Wrap"/>
+                        <StackPanel Margin="0,10,0,0"
+                            Orientation="Horizontal" HorizontalAlignment="Right">
+                            <Button Click="updatePatient" Content="Update" Margin="5,0"/>
+                            <Button Click="ClosePopup_Click" Content="Cancel"/>
+                        </StackPanel>
                     </StackPanel>
-                    <CalendarDatePicker Margin="0,10,0,0" Grid.Row ="4" PlaceholderText="Pick a date" Header="Date of Birth" Date="{x:Bind ViewModel.PatientEdit.DoB,Mode=TwoWay}" Foreground="{ThemeResource ApplicationForegroundThemeBrush}" />
-                    <TextBox Text="{x:Bind ViewModel.PatientEdit.Email,Mode=TwoWay}" Margin="0,10,0,0" Header="Email"></TextBox>
-                    <TextBox Text="{x:Bind ViewModel.PatientEdit.Address,Mode=TwoWay}" Margin="0,10,0,0"  Header="Address" TextWrapping="Wrap"></TextBox>
-                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
-                        <Button Click="updatePatient" Content="Update" Margin="5"/>
-                        <Button Click="ClosePopup_Click" Content="Cancel" Margin="5"/>
-                    </StackPanel>
-                </StackPanel>
+                </Grid>
             </Border>
         </Popup>
 
+        <TextBlock Grid.Row="0"
+            Text="List Patient" 
+            FontSize="24" FontWeight="Bold" 
+            Margin="10,0,0,0" Padding="20,20,0,0"/>
         
-            <TextBlock
-                Grid.Row="0"
-                Text="List Patient" 
-                FontSize="24" FontWeight="Bold" 
-                Margin="10,0,0,0" Padding="20,20,0,0"/>
+        <StackPanel Grid.Row="1"
+            Margin="0,10,0,10" 
+            Orientation="Horizontal" HorizontalAlignment="Center">
+        <TextBox Name="keyword" 
+                 Width="460"
+                 PlaceholderText="Search by Name, ResidentID, Email, Address" 
+                 TextChanged="searchTextbox_Click" 
+                 Padding="10" CornerRadius="20" 
+                 Text="{x:Bind ViewModel.Keyword, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+        <Button Click="searchButton_Click"
+                CornerRadius="100" 
+                Margin="20,0,0,0" Padding="10"  >
+                <FontIcon FontSize="12" FontFamily="Segoe MDL2 Assets" Glyph="&#xE721;"/>
+            </Button>
+        </StackPanel>
 
-            <StackPanel 
-                Grid.Row="1"
-                Margin="0,10,0,10" 
-                Orientation="Horizontal" HorizontalAlignment="Center">
-                <TextBox PlaceholderText="Search by Name, ResidentID, Email, Address" TextChanged="searchTextbox_Click" Padding="10" CornerRadius="20" Name="keyword" Text="{x:Bind ViewModel.Keyword, 
-                    Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Width="460"/>
-                <Button CornerRadius="100" Padding="10" Margin="20,0,0,0" Click="searchButton_Click">
-                    <FontIcon FontSize="12" FontFamily="Segoe MDL2 Assets" Glyph="&#xE721;"/>
-                </Button>
-            </StackPanel>
+        <StackPanel Grid.Row="2"
+            Orientation="Horizontal" HorizontalAlignment="Center" 
+            Spacing="10" Margin="0,10,0,10">
+            <CalendarDatePicker Header="From date"
+                                Width="200"
+                                PlaceholderText="Choose start date" 
+                                Date="{x:Bind ViewModel.StartDateFollowUp, Mode=TwoWay}"
+                                Foreground="{ThemeResource ApplicationForegroundThemeBrush}"/>
 
-            <StackPanel 
-                Grid.Row="2"
-                Orientation="Horizontal" HorizontalAlignment="Center" 
-                Spacing="10" Margin="0,10,0,10">
-                <CalendarDatePicker 
-                    Header="From date"
-                    PlaceholderText="Choose start date" 
-                    Date="{x:Bind ViewModel.StartDateFollowUp, Mode=TwoWay}"
-                    Width="200"
-                    Foreground="{ThemeResource ApplicationForegroundThemeBrush}"/>
+            <CalendarDatePicker Header="To date"
+                                Width="200"
+                                PlaceholderText="Choose end date"
+                                Date="{x:Bind ViewModel.EndDateFollowUp, Mode=TwoWay}"
+                                Foreground="{ThemeResource ApplicationForegroundThemeBrush}"/>
 
-                            <CalendarDatePicker 
-                    Header="To date"
-                    PlaceholderText="Choose end date"
-                    Date="{x:Bind ViewModel.EndDateFollowUp, Mode=TwoWay}"
-                    Width="200"
-                    Foreground="{ThemeResource ApplicationForegroundThemeBrush}"/>
+            <Button Click="ClearFilter_Click"
+                Content="Clear filter"
+                VerticalAlignment="Bottom"/>
+        </StackPanel>
 
-                <Button 
-                    Content="Clear filter"
-                    Click="ClearFilter_Click"
-                    VerticalAlignment="Bottom"/>
-            </StackPanel>
+        <StackPanel Grid.Row="3"
+            Margin ="35,0,0,20" 
+            Orientation="Horizontal" HorizontalAlignment="Left">
+            <TextBlock FontWeight="Bold" FontSize="20" Width="90">ID</TextBlock>
+            <TextBlock FontWeight="Bold" FontSize="20" Width="140">Name</TextBlock>
+            <TextBlock FontWeight="Bold" FontSize="20" Width="140">ResidentID</TextBlock>
+            <TextBlock FontWeight="Bold" FontSize="20" Width="180">Date of Birth</TextBlock>
+            <TextBlock FontWeight="Bold" FontSize="20" Width="200">Email</TextBlock>
+            <TextBlock FontWeight="Bold" FontSize="20" Width="120">Gender</TextBlock>
+            <TextBlock FontWeight="Bold" FontSize="20" Width="160">Address</TextBlock>
+            <TextBlock FontWeight="Bold" FontSize="20" Width="160">Follow-up Date</TextBlock>
+            <TextBlock FontWeight="Bold" FontSize="20" Width="140"></TextBlock>
+        </StackPanel>
 
-            <StackPanel 
-                Grid.Row="3"
-                Margin ="35,0,0,20"  Orientation="Horizontal" HorizontalAlignment="Left">
-                <TextBlock FontWeight="Bold" FontSize="20"  Width="90">ID</TextBlock>
-                <TextBlock FontWeight="Bold" FontSize="20"  Width="140">Name</TextBlock>
-                <TextBlock FontWeight="Bold" FontSize="20"  Width="140">ResidentID</TextBlock>
-                <TextBlock FontWeight="Bold" FontSize="20"  Width="180">Date of Birth</TextBlock>
-                <TextBlock FontWeight="Bold" FontSize="20"  Width="200">Email</TextBlock>
-                <TextBlock FontWeight="Bold" FontSize="20"  Width="120">Gender</TextBlock>
-                <TextBlock FontWeight="Bold" FontSize="20"  Width="160">Address</TextBlock>
-                <TextBlock FontWeight="Bold" FontSize="20"  Width="160">Follow-up Date</TextBlock>
-                <TextBlock FontWeight="Bold" FontSize="20"  Width="140"></TextBlock>
-            </StackPanel>
-
-        <ScrollViewer
-            Grid.Row="4"
+        <ScrollViewer Grid.Row="4"
             VerticalScrollMode="Auto" VerticalScrollBarVisibility="Auto">
-            <ListView Name="itemsComboBox" Margin="0,10,0,0"
-                ItemsSource="{Binding Patients, Mode=TwoWay}"
-                ItemTemplate="{StaticResource HorizontalUser}">
+            <ListView Name="itemsComboBox" 
+                      Margin="0,10,0,0"
+                      ItemsSource="{Binding Patients, Mode=TwoWay}"
+                      ItemTemplate="{StaticResource HorizontalUser}">
             </ListView>
         </ScrollViewer>
 
-        <StackPanel 
-            Grid.Row="5" 
+        <StackPanel Grid.Row="5" 
             Margin="0"  
             Orientation="Horizontal" 
             VerticalAlignment="Bottom" HorizontalAlignment="Center">
-            <Button  Click="previousButton_Click" >
+            <Button Click="previousButton_Click" >
                 <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xE76B;"/>
             </Button>
             <StackPanel Orientation="Vertical">
-                <TextBlock TextAlignment="Center" Width="60" FontSize="16" >
-                    <Run Text="{x:Bind ViewModel.SelectedPageInfoItem.Page ,Mode=OneWay}"/> of <Run Text="{x:Bind ViewModel.SelectedPageInfoItem.Total, Mode=OneWay}"/>
+                <TextBlock TextAlignment="Center" 
+                           Width="60" 
+                           FontSize="16" >
+                    <Run Text="{x:Bind ViewModel.SelectedPageInfoItem.Page ,Mode=OneWay}"/> of 
+                    <Run Text="{x:Bind ViewModel.SelectedPageInfoItem.Total, Mode=OneWay}"/>
                 </TextBlock>
-                <ComboBox ItemsSource="{Binding Pageinfos, Mode=OneWay}"
+                <ComboBox ItemsSource="{Binding PageInfos, Mode=OneWay}"
                     SelectedItem="{x:Bind ViewModel.SelectedPageInfoItem, Mode=TwoWay}"
                     SelectionChanged="pagesComboBox_SelectionChanged"
-                    Margin="5,0,5,20" Name="pagesComboBox" Width="100" Height="30">
+                    Margin="5,0,5,20" 
+                    Name="pagesComboBox" 
+                    Width="100" Height="30">
                     <ComboBox.ItemTemplate>
                         <DataTemplate x:DataType="localmodel:PageInfo">
                             <TextBlock >
-                                <Run Text="{x:Bind Page,Mode=OneWay}"/>/<Run Text="{x:Bind Total, Mode=OneWay}"/>
+                                <Run Text="{x:Bind Page ,Mode=OneWay}"/>/
+                                <Run Text="{x:Bind Total, Mode=OneWay}"/>
                             </TextBlock>
                         </DataTemplate>
                     </ComboBox.ItemTemplate>
                 </ComboBox>
             </StackPanel>
 
-            <Button  Click="nextButton_Click" >
+            <Button Click="nextButton_Click" >
                 <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xE76C;"/>
             </Button>
         </StackPanel>
@@ -192,15 +277,15 @@
         <StackPanel x:Name="LoadingPanel" 
             Visibility="Collapsed"
             VerticalAlignment="Center" 
-            HorizontalAlignment="Center">
+            HorizontalAlignment="Center"
+            Grid.RowSpan="6">
             <ProgressRing x:Name="LoadingRing" 
-                  IsActive="False"
-                  Width="50" 
-                  Height="50"/>
+                IsActive="False"
+                Width="50" 
+                Height="50"/>
             <TextBlock Text="Sending email..." 
-              Margin="0,10,0,0"
-              HorizontalAlignment="Center"/>
+                Margin="0,10,0,0"
+                HorizontalAlignment="Center"/>
         </StackPanel>
-
     </Grid>
 </Page>

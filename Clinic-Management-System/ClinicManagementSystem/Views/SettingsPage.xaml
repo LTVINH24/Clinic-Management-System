@@ -9,7 +9,65 @@
     mc:Ignorable="d"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
-    <Grid>
-        <TextBlock Text="Settings Page"/>
+    <Grid Margin="20">
+        <StackPanel>
+            <TextBlock Text="Settings" 
+                     Style="{StaticResource TitleLargeTextBlockStyle}"
+                     FontSize="28" FontWeight="SemiBold"
+                     Margin="0,0,0,32"/>
+
+            <Border Background="{ThemeResource CardBackgroundFillColorDefaultBrush}"
+                    BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}" BorderThickness="1"
+                    CornerRadius="8"
+                    Margin="0,0,0,16"  Padding="24">
+
+                <StackPanel Spacing="16">
+                    <TextBlock Text="Appearance" 
+                             Style="{StaticResource SubtitleTextBlockStyle}"
+                             FontWeight="SemiBold"/>
+
+                    <StackPanel Orientation="Horizontal" Spacing="24">
+                        <TextBlock Text="Theme:" VerticalAlignment="Center"/>
+
+                        <RadioButton x:Name="LightTheme" 
+                                    Content="Light" 
+                                    GroupName="ThemeGroup"
+                                    Checked="ThemeRadioButton_Checked"/>
+
+                        <RadioButton x:Name="DarkTheme" 
+                                    Content="Dark" 
+                                    GroupName="ThemeGroup"
+                                    Checked="ThemeRadioButton_Checked"/>
+                        
+                        <RadioButton x:Name="DefaultTheme" 
+                                    Content="Default" 
+                                    GroupName="ThemeGroup"
+                                    Checked="ThemeRadioButton_Checked"/>
+                    </StackPanel>
+                </StackPanel>
+            </Border>
+
+            <Border Background="{ThemeResource CardBackgroundFillColorDefaultBrush}"
+                    BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}"
+                    BorderThickness="1"
+                    CornerRadius="8"
+                    Padding="24">
+
+                <StackPanel Spacing="16">
+                    <TextBlock Text="Account" 
+                             Style="{StaticResource SubtitleTextBlockStyle}"
+                             FontWeight="SemiBold"/>
+
+                    <Button x:Name="LogoutButton"
+                            Click="LogoutButton_Click"
+                            Style="{StaticResource AccentButtonStyle}">
+                        <StackPanel Orientation="Horizontal" Spacing="8">
+                            <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xE7E8;"/>
+                            <TextBlock Text="Logout"/>
+                        </StackPanel>
+                    </Button>
+                </StackPanel>
+            </Border>
+        </StackPanel>
     </Grid>
 </Page>

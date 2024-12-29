@@ -17,6 +17,10 @@ using System.Text;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
 using Windows.Networking.Vpn;
+using Windows.Storage;
+using ClinicManagementSystem.Service;
+using Microsoft.UI;
+using Microsoft.UI.Windowing;
 
 // To learn more about WinUI, the WinUI project structure,
 // and more about our project templates, see: http://aka.ms/winui-project-info.
@@ -31,8 +35,15 @@ namespace ClinicManagementSystem
         public MainWindow()
         {
             this.InitializeComponent();
+            ThemeService.Instance.SetTheme(this, ThemeService.Instance.GetCurrentTheme());
             viewModel.LoginCompleted += OnLoginCompleted;
             this.Title = "Clinic Management System";
+            this.AppWindow.SetIcon("Assets/AppIcon.ico");
+
+			//IntPtr hWnd = WinRT.Interop.WindowNative.GetWindowHandle(this);
+   //         var windowId = Win32Interop.GetWindowIdFromWindow(hWnd);
+   //         var appWindow = AppWindow.GetFromWindowId(windowId);
+   //         appWindow.Maximize();
 
 		}
 		/// <summary>
@@ -53,13 +64,14 @@ namespace ClinicManagementSystem
 		/// <param name="e"></param>
 		public void Login_Click(object sender, RoutedEventArgs e)
         {
+            bool isRemember = rememberPassword.IsChecked ?? false;
+            viewModel.Authentication(viewModel.UserLogin, isRemember);
 
-
-            if ( rememberPassword.IsChecked==true)
-            {
-                viewModel.Authentication(viewModel.UserLogin,true);
-            }
-             viewModel.Authentication(viewModel.UserLogin,false);
+            // if (rememberPassword.IsChecked == true)
+            // {
+            //     viewModel.Authentication(viewModel.UserLogin, true);
+            // }
+            // viewModel.Authentication(viewModel.UserLogin, false);
         }
 
 		/// <summary>
@@ -73,11 +85,8 @@ namespace ClinicManagementSystem
                 string namePage = $"{isSuccess}Page";
                 namePage = namePage.Replace(" ", "");
 
-
                 var screen = new ShellWindow(namePage);
                 screen.Activate();
-
-
 
                 viewModel.LoginCompleted -= OnLoginCompleted;
                 this.Close();

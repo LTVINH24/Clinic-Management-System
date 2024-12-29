@@ -15,6 +15,7 @@
 	  <AllowUnsafeBlocks>True</AllowUnsafeBlocks>
   </PropertyGroup>
   <ItemGroup>
+    <None Remove="Assets\AppIcon.ico" />
     <None Remove="Assets\doctor.png" />
     <None Remove="Assets\hopital.png" />
     <None Remove="Views\AdminView\reportBillAdmin.xaml" />
@@ -24,7 +25,7 @@
     <None Remove="Views\HomePage.xaml" />
     <None Remove="Views\StaffView\ListPatient.xaml" />
     <None Remove="Views\AdminView\Medicine.xaml" />
-    <None Remove="Views\StaffView\MedicalExaminationFormDetail.xaml" />
+    <None Remove="Views\StaffView\StaffHomePage.xaml" />
   </ItemGroup>
 
   <ItemGroup>
@@ -33,7 +34,6 @@
     <Content Include="Assets\Square150x150Logo.scale-200.png" />
     <Content Include="Assets\Square44x44Logo.scale-200.png" />
     <Content Include="Assets\Square44x44Logo.targetsize-24_altform-unplated.png" />
-    <Content Include="Assets\StoreLogo.png" />
     <Content Include="Assets\Wide310x150Logo.scale-200.png" />
   </ItemGroup>
 
@@ -64,6 +64,11 @@
     <ProjectCapability Include="Msix" />
   </ItemGroup>
   <ItemGroup>
+    <Content Update="Assets\AppIcon.targetsize-256.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
     <Page Update="Views\HomePage.xaml">
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -85,11 +90,6 @@
   </ItemGroup>
   <ItemGroup>
     <Page Update="Views\DoctorView\DocumentPage.xaml">
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-  </ItemGroup>
-  <ItemGroup>
-    <Page Update="Views\StaffView\MedicalExaminationFormDetail.xaml">
       <Generator>MSBuild:Compile</Generator>
     </Page>
   </ItemGroup>
@@ -119,5 +119,9 @@
     <None Update="appsettings.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <Page Update="Views\StaffView\StaffHomePage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
   </ItemGroup>
+
 </Project>

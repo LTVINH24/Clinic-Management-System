@@ -8,13 +8,14 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d" Activated="Window_Activated">
 
-    <Border  CornerRadius="10" BorderThickness="1.5" BorderBrush="#43f196" Background="{ThemeResource ApplicationPageBackgroundThemeBrush}" HorizontalAlignment="Center" VerticalAlignment="Center" >
-        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
-            <Border BorderThickness="1" BorderBrush="#FF00008B" Background="#e9ecf1" Padding="80,60,80,60">
+    <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+    <Border  CornerRadius="10" BorderThickness="2.5" BorderBrush="#43f196" HorizontalAlignment="Center" VerticalAlignment="Center" >
+        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center" CornerRadius="10">
+            <Border BorderBrush="#FF00008B" Background="#e9ecf1" Padding="80,60,80,60">
                 <StackPanel >
                     <Image VerticalAlignment="Top" Source="Assets/logo.png" Width="100" Height="100"></Image>
                     <Image  Margin="0,30,0,20" Source="Assets/doctor.png" Width="200" Height="200"></Image>
-                    <TextBlock FontSize="20" FontStyle="Italic" TextAlignment="Center">Welcome to My Clinic</TextBlock>
+                    <TextBlock FontSize="20" FontStyle="Italic" TextAlignment="Center" Foreground="Black">Welcome to My Clinic</TextBlock>
                 </StackPanel>
             </Border>
             <StackPanel VerticalAlignment="Center" Margin="50,0,50,0" >
@@ -35,5 +36,5 @@
             </StackPanel>
         </StackPanel>
     </Border>
-
+</Grid>
 </Window>

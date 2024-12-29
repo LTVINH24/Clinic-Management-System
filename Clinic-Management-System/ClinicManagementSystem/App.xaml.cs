@@ -17,6 +17,7 @@ using Windows.ApplicationModel;
 using Windows.ApplicationModel.Activation;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
+using Windows.Storage;
 
 // To learn more about WinUI, the WinUI project structure,
 // and more about our project templates, see: http://aka.ms/winui-project-info.
@@ -45,6 +46,7 @@ namespace ClinicManagementSystem
         {
             ServiceFactory.Register(typeof(IDao), typeof(SqlServerDao));
             m_window = new MainWindow();
+            ThemeService.Instance.SetTheme(m_window, ThemeService.Instance.GetCurrentTheme());
             m_window.Activate();
         }
 

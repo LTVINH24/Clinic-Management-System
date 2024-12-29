@@ -10,27 +10,22 @@
     mc:Ignorable="d"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
-    <!--<Page.Resources>
-        <DataTemplate x:Key="ContactListViewTemplate"></DataTemplate>
-    </Page.Resources>-->
-
     <Page.Resources>
         <DataTemplate x:Key="VerticalEmployee" x:DataType="model:Doctor">
             <StackPanel Orientation="Vertical">
-                
                 <TextBlock >
                     <Run Text="ID: "/> 
-                    <Run Text="{x:Bind Id}" Foreground="Red"/>, 
-                        Name: <Run Text="{x:Bind name}" Foreground="Blue"/>,
-                        Specialty: <Run Text="{x:Bind SpecialtyName}" Foreground="Orange"/>,
-                        Room: <Run Text="{x:Bind Room}" Foreground="Green"/>
+                    <Run Text="{x:Bind Id}" Foreground="Red"/> | Name: 
+                    <Run Text="{x:Bind name}" Foreground="Blue"/> | Specialty: 
+                    <Run Text="{x:Bind SpecialtyName}" Foreground="Orange"/> | Room: 
+                    <Run Text="{x:Bind Room}" Foreground="Green"/>
                 </TextBlock>
             </StackPanel>
         </DataTemplate>
     </Page.Resources>
-    
 
-   
+
+
     <ScrollView VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto">
         <Grid Padding="20">
             <Grid.RowDefinitions>
@@ -50,18 +45,35 @@
             </Grid.ColumnDefinitions>
 
 
-            <TextBlock Text="Add Medical Examination Form" FontSize="24" FontWeight="Bold" Margin="10,0,0,10" Grid.Row="0"/>
+            <TextBlock Grid.Row="0"
+                       Text="Add Medical Examination Form" 
+                       FontSize="24" FontWeight="Bold" 
+                       Margin="10,0,0,10" />
 
-            <TextBox Header="Name" Grid.Row="1" Grid.Column="0" Text="{x:Bind viewModel.Patient.Name, Mode=TwoWay}"  Margin="10"/>
-            <TextBox Header="Email" Grid.Row="1" Grid.Column="1" Text="{x:Bind viewModel.Patient.Email, Mode=TwoWay}" Margin="10"/>
-            <TextBox Header="Resident ID" Grid.Row="2" Grid.Column="0" Text="{x:Bind viewModel.Patient.ResidentId, Mode=TwoWay}" Margin="10"/>
-            <TextBox Header="Address" Grid.Row="2" Grid.Column="1" Text="{x:Bind viewModel.Patient.Address, Mode=TwoWay}" Margin="10"/>
-            <CalendarDatePicker Margin="10" Grid.Row="3" Grid.Column="0" PlaceholderText="Pick a date" Header="Date of Birth" Date="{x:Bind viewModel.Patient.DoB, Mode=TwoWay}" Foreground="{ThemeResource ApplicationForegroundThemeBrush}"/>
+            <TextBox Grid.Row="1" Grid.Column="0"
+                     Margin="10"
+                     Header="Name"  
+                     Text="{x:Bind viewModel.Patient.Name, Mode=TwoWay}"  />
+            <TextBox Grid.Row="1" Grid.Column="1"
+                     Margin="10"
+                     Header="Email"  
+                     Text="{x:Bind viewModel.Patient.Email, Mode=TwoWay}" />
+            <TextBox Grid.Row="2" Grid.Column="0"
+                     Margin="10"
+                     Header="Resident ID"  
+                     Text="{x:Bind viewModel.Patient.ResidentId, Mode=TwoWay}" />
+            <TextBox Grid.Row="2" Grid.Column="1"
+                     Margin="10"
+                     Header="Address"  
+                     Text="{x:Bind viewModel.Patient.Address, Mode=TwoWay}" />
+            <CalendarDatePicker Grid.Row="3" Grid.Column="0"
+                                Margin="10"  
+                                PlaceholderText="Pick a date" 
+                                Header="Date of Birth" 
+                                Date="{x:Bind viewModel.Patient.DoB, Mode=TwoWay}" 
+                                Foreground="{ThemeResource ApplicationForegroundThemeBrush}" />
 
-            
-            
-            <StackPanel Grid.Row="3" Grid.Column="1" >
-
+            <StackPanel Grid.Row="3" Grid.Column="1">
                 <Grid>
                     <Grid.RowDefinitions>
                         <RowDefinition Height="*"/>
@@ -71,11 +83,13 @@
                         <ColumnDefinition Width="*"/>
                         <ColumnDefinition Width="*"/>
                     </Grid.ColumnDefinitions>
-                
 
                     <StackPanel Grid.Row="0" Grid.Column="0">
                         <TextBlock Text="Gender" Margin="10" />
-                        <DropDownButton Width="100" Height="35" Margin="10, 0 , 0 ,0" Name="GenderDropdown" Content="{x:Bind viewModel.Patient.Gender, Mode=TwoWay }">
+                        <DropDownButton Margin="10, 0, 0, 0"
+                                        Width="100" Height="35"  
+                                        Name="GenderDropdown" 
+                                        Content="{x:Bind viewModel.Patient.Gender, Mode=TwoWay }">
                             <DropDownButton.Flyout>
                                 <MenuFlyout Placement="Bottom">
                                     <MenuFlyoutItem Text="Male" Click="Set_Gender"/>
@@ -88,7 +102,10 @@
 
                     <StackPanel Grid.Row="0" Grid.Column="1">
                         <TextBlock Text="Visit Type" Margin="10" />
-                        <DropDownButton Width="110" Height="35" Margin="10, 0 , 0 ,0" Name="VisitTypeDropDown" Content="{x:Bind viewModel.MedicalExaminationForm.VisitType, Mode=TwoWay }">
+                        <DropDownButton Margin="10, 0, 0, 0"
+                                        Width="110" Height="35"  
+                                        Name="VisitTypeDropDown" 
+                                        Content="{x:Bind viewModel.MedicalExaminationForm.VisitType, Mode=TwoWay }">
                             <DropDownButton.Flyout>
                                 <MenuFlyout Placement="Bottom">
                                     <MenuFlyoutItem Text="New" Click="Set_VisitType"/>
@@ -98,15 +115,18 @@
                         </DropDownButton>
                     </StackPanel>
                 </Grid>
-                
             </StackPanel>
-            
-            
-            <TextBox Header="Symptoms" AcceptsReturn="True" Height="100" Grid.Row="4" Grid.ColumnSpan="2" Text="{x:Bind viewModel.MedicalExaminationForm.Symptoms, Mode=TwoWay}" Margin="10"/>
 
-            <StackPanel Grid.Row="5" Grid.Column="0" Grid.ColumnSpan="2">
+            <TextBox Grid.Row="4" Grid.ColumnSpan="2"
+                     Header="Symptoms" 
+                     AcceptsReturn="True" 
+                     Margin="10"
+                     Height="100"  
+                     Text="{x:Bind viewModel.MedicalExaminationForm.Symptoms, Mode=TwoWay}" />
+
+            <StackPanel Grid.Row="5" Grid.Column="0" 
+                        Grid.ColumnSpan="2">
                 <TextBlock Text="Choose Doctor" Margin="10"/>
-
                 <StackPanel Orientation="Horizontal">
                     <ListView Name="itemComboxBox"
                               ItemsSource="{Binding Doctors, Mode=TwoWay}"
@@ -117,49 +137,43 @@
                               Width="600"
                               MaxHeight="150"
                               Margin="10"
-                              BorderBrush="{ThemeResource ApplicationForegroundThemeBrush}"
-                              BorderThickness="2">
+                              BorderBrush="{ThemeResource ApplicationForegroundThemeBrush}" BorderThickness="2">
                     </ListView>
 
                     <StackPanel Width="200" Margin="20, 10, 10, 10">
-                        <!--<TextBlock Margin="8,8,8,4" Style="{ThemeResource BaseTextBlockStyle}">Filter by...</TextBlock>-->
-                        <TextBox x:Name="FilterByName" Width="auto" Header="Filter by Doctor Name" Margin="8"
-                                HorizontalAlignment="Left"
-                                Text="{x:Bind viewModel.DoctorNameFilter, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
-                        <TextBox x:Name="FilterBySpecialty" Width="auto" Header="Filter by Specialty Name" Margin="8"
-                                HorizontalAlignment="Left"
-                                Text="{x:Bind viewModel.SpecialtyFilter, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
-                        
+                        <TextBox x:Name="FilterByName" 
+                                 Width="auto"
+                                 Margin="8" 
+                                 Header="Filter by Doctor Name" 
+                                 HorizontalAlignment="Left"
+                                 Text="{x:Bind viewModel.DoctorNameFilter, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                        <TextBox x:Name="FilterBySpecialty"
+                                 Width="auto"  
+                                 Margin="8"
+                                 Header="Filter by Specialty Name"
+                                 HorizontalAlignment="Left"
+                                 Text="{x:Bind viewModel.SpecialtyFilter, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
                     </StackPanel>
                 </StackPanel>
-                
             </StackPanel>
 
-
-            <StackPanel Grid.Row="6" Grid.ColumnSpan="2" Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Center">
-                <Button 
+            <StackPanel Grid.Row="6" Grid.ColumnSpan="2" 
+                        Orientation="Horizontal" 
+                        VerticalAlignment="Center" HorizontalAlignment="Center">
+                <Button Click="Add_Button"
                     Content="Add" 
                     Margin="10" 
-                    Click="Add_Button"
-                    Background="#b5b5e8"
-                    FontWeight="SemiBold"
                     Width="100"
-                />
+                    Background="#b5b5e8"
+                    FontWeight="SemiBold"/>
 
-                <Button 
+                <Button Click="Cancel_Button"
                     Content="Cancel" 
                     Margin="10" 
-                    Click="Cancel_Button"
-                    Background="#b5b5e8"
-                    FontWeight="SemiBold"
                     Width="100"
-                />
+                    Background="#b5b5e8"
+                    FontWeight="SemiBold"/>
             </StackPanel>
-
-            
-
         </Grid>
     </ScrollView>
-
-
 </Page>

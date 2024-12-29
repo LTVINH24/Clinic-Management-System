@@ -148,8 +148,6 @@ namespace ClinicManagementSystem.ViewModel
 		/// </summary>
 		public void LoadData()
 		{
-			
-
 			var (items, count) = _dao.GetMedicalExaminationForms(
 				CurrentPage, 
 				RowsPerPage, 
@@ -211,14 +209,33 @@ namespace ClinicManagementSystem.ViewModel
 			LoadData();
 		}
 
+		public (bool, string) isValidDataUpdate()
+		{
+			IsValidData isValid = new IsValidData();
+
+			if(isValid.IsValidDescription(FormEdit.Symptoms) == false)
+			{
+				return (false, "Invalid symptoms.");
+			}
+
+			return (true, "Valid data.");
+		}
+
 		/// <summary>
 		/// Cập nhật phiếu khám bệnh
 		/// </summary>
 		/// <returns></returns>
-		public bool Update()
+		public (bool, string) Update()
 		{
+			var (isValid, message) = isValidDataUpdate();
+
+			if (!isValid)
+			{
+				return (false, message);
+			}
+
 			bool success = _dao.UpdateMedicalExaminationForm(FormEdit);
-			return success;
+			return (success, "Success");
 		}
 
 		/// <summary>

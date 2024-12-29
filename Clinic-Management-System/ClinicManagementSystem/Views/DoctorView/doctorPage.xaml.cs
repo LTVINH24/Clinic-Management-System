@@ -83,7 +83,7 @@ namespace ClinicManagementSystem.Views
 			}
 			else
 			{
-				//contentFrame.Navigate(typeof(SettingsPage));
+				contentFrame.Navigate(typeof(SettingsPage));
 			}
 		}
 	}

@@ -43,6 +43,12 @@ namespace ClinicManagementSystem.ViewModel
             {
                 if (isSavePassword) {
                     SavePassWord(userLogin);
+                    var localSettings = ApplicationData.Current.LocalSettings;
+                    localSettings.Values["RememberMe"] = true;
+                }
+                else {
+                    var localSettings = ApplicationData.Current.LocalSettings;
+                    localSettings.Values["RememberMe"] = false;
                 }
                 LoginCompleted?.Invoke(role);
                 UserSessionService.Instance.SetLoggedInUserId(id);

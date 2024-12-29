@@ -1,4 +1,7 @@
-﻿using Microsoft.UI.Xaml;
+﻿using ClinicManagementSystem.Service;
+using Microsoft.UI;
+using Microsoft.UI.Windowing;
+using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Controls.Primitives;
 using Microsoft.UI.Xaml.Data;
@@ -12,6 +15,7 @@ using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
+using Windows.Storage;
 
 // To learn more about WinUI, the WinUI project structure,
 // and more about our project templates, see: http://aka.ms/winui-project-info.
@@ -33,12 +37,16 @@ namespace ClinicManagementSystem.Views
 		{
 			Current = this;
 			this.InitializeComponent();
-
+			ThemeService.Instance.SetTheme(this, ThemeService.Instance.GetCurrentTheme());
+			
 			var fullNamespace = $"{GetType().Namespace}.{name}";
 			var type = Type.GetType(fullNamespace);
+			
 			content.Navigate(type);
 
 			this.Title = "Clinic Management System";
+			this.AppWindow.SetIcon("Assets/AppIcon.ico");
+
 		}
 
 		/// <summary>
@@ -49,10 +57,18 @@ namespace ClinicManagementSystem.Views
 		private void Window_Closed(object sender, WindowEventArgs args)
 		{
 			Current = null;
-			var screen = new MainWindow();
-			screen.Activate();
+			
+			if (UserSessionService.Instance.GetLoggedInUserId() != 0)
+			{
+				var localSettings = Windows.Storage.ApplicationData.Current.LocalSettings;
+				bool isRemember = localSettings.Values.ContainsKey("username") &&
+						   localSettings.Values.ContainsKey("password");
 
-			this.Close();
+				UserSessionService.Instance.ClearSession(true);
+			}
+			
+			var loginWindow = new MainWindow();
+			loginWindow.Activate();
 		}
         public IntPtr GetWindowHandle()
         {

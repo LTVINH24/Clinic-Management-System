@@ -33,6 +33,14 @@ namespace ClinicManagementSystem.Views.StaffView
 			ViewModel = new PatientViewModel();
 			this.DataContext = ViewModel;
 			this.InitializeComponent();
+
+			DragArea.PointerEntered += (s, e) => {
+				HoverOverlay.Opacity = 0.1;
+			};
+
+			DragArea.PointerExited += (s, e) => {
+				HoverOverlay.Opacity = 0;
+			};
 		}
 
 		public ClinicManagementSystem.Model.Patient editPatient;
@@ -66,15 +74,19 @@ namespace ClinicManagementSystem.Views.StaffView
 		/// <param name="e"></param>
 		private void pagesComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
 		{
-			if(init == false)
-			{
-				init = true;
-				return;
-			}
+			//if(init == false)
+			//{
+			//	init = true;
+			//	return;
+			//}
 			if(pagesComboBox.SelectedIndex >= 0)
 			{
 				var item = pagesComboBox.SelectedItem as PageInfo;
-				ViewModel.GoToPage(item.Page);
+				// ViewModel.GoToPage(item.Page);
+				if (item != null)
+				{
+					ViewModel.GoToPage(item.Page);
+				}
 			}
 		}
 
@@ -105,16 +117,16 @@ namespace ClinicManagementSystem.Views.StaffView
 		/// <param name="e"></param>
 		private async void updatePatient(object sender, RoutedEventArgs e)
 		{
-			var success = ViewModel.Update();
+			var (isSuccess, message) = ViewModel.Update();
 			ViewModel.LoadData();
 			string notify = "";
-			if (success)
+			if (isSuccess)
 			{
-				notify = "Updated successfully";
+				notify = "Updated successfully.";
 			}
 			else
 			{
-				notify = "Update failed";
+				notify = $"Update failed. {message}";
 			}
 			EditPopup.IsOpen = false;
 			await Notify(notify);
@@ -162,12 +174,29 @@ namespace ClinicManagementSystem.Views.StaffView
 		/// <param name="notify"></param>
 		private async Task Notify(string notify)
 		{
+			var currentTheme = ThemeService.Instance.GetCurrentTheme();
+			ElementTheme dialogTheme;
+
+			switch (currentTheme)
+			{
+				case "Light":
+					dialogTheme = ElementTheme.Light;
+					break;
+				case "Dark":
+					dialogTheme = ElementTheme.Dark;
+					break;
+				default:
+					dialogTheme = ElementTheme.Default;
+					break;
+			}
+
 			await new ContentDialog()
 			{
 				XamlRoot = this.Content.XamlRoot,
 				Title = "Notify",
 				Content = $"{notify}",
-				CloseButtonText = "OK"
+				CloseButtonText = "OK",
+				RequestedTheme = dialogTheme
 			}.ShowAsync();
 		}
 		
@@ -254,5 +283,40 @@ namespace ClinicManagementSystem.Views.StaffView
 			ViewModel.EndDateFollowUp = null;
 			ViewModel.LoadData();
 		}
-    }
+
+		private bool isDragging = false;
+		private Windows.Foundation.Point initialPosition;
+		private Windows.Foundation.Point popupPosition;
+
+		private void DragArea_PointerPressed(object sender, PointerRoutedEventArgs e)
+		{
+			isDragging = true;
+			var properties = e.GetCurrentPoint(null).Properties;
+			if (properties.IsLeftButtonPressed)
+			{
+				((UIElement)sender).CapturePointer(e.Pointer);
+				initialPosition = e.GetCurrentPoint(null).Position;
+				popupPosition = new Windows.Foundation.Point(EditPopup.HorizontalOffset, EditPopup.VerticalOffset);
+			}
+		}
+
+		private void DragArea_PointerMoved(object sender, PointerRoutedEventArgs e)
+		{
+			if (isDragging)
+			{
+				var currentPosition = e.GetCurrentPoint(null).Position;
+				var deltaX = currentPosition.X - initialPosition.X;
+				var deltaY = currentPosition.Y - initialPosition.Y;
+
+				EditPopup.HorizontalOffset = popupPosition.X + deltaX;
+				EditPopup.VerticalOffset = popupPosition.Y + deltaY;
+			}
+		}
+
+		private void DragArea_PointerReleased(object sender, PointerRoutedEventArgs e)
+		{
+			isDragging = false;
+			((UIElement)sender).ReleasePointerCapture(e.Pointer);
+		}
+	}
 }

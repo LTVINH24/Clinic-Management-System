@@ -15,6 +15,7 @@ using Microsoft.UI.Xaml.Navigation;
 using System.Collections;
 using Microsoft.IdentityModel.Protocols;
 using ClinicManagementSystem.ViewModel;
+using ClinicManagementSystem.Service;
 
 // To learn more about WinUI, the WinUI project structure,
 // and more about our project templates, see: http://aka.ms/winui-project-info.
@@ -81,6 +82,21 @@ namespace ClinicManagementSystem.Views.StaffView
 		private async void ViewModel_AddCompleted(bool isSuccess, int statusCode, string message)
 		{
 			string displayMessage;
+			var currentTheme = ThemeService.Instance.GetCurrentTheme();
+			ElementTheme dialogTheme;
+
+			switch (currentTheme)
+			{
+				case "Light":
+					dialogTheme = ElementTheme.Light;
+					break;
+				case "Dark":
+					dialogTheme = ElementTheme.Dark;
+					break;
+				default:
+					dialogTheme = ElementTheme.Default;
+					break;
+			}
 
 			if (statusCode == 200 || statusCode == 201)
 			{
@@ -100,7 +116,8 @@ namespace ClinicManagementSystem.Views.StaffView
 				Title = "Notification",
 				Content = message,
 				CloseButtonText = "OK",
-				XamlRoot = this.XamlRoot
+				XamlRoot = this.XamlRoot,
+				RequestedTheme = dialogTheme
 			};
 
 			if(isSuccess)
