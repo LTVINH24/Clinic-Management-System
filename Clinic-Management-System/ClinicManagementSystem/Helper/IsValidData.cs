@@ -109,5 +109,9 @@ namespace ClinicManagementSystem.Helper
 		{
 			return !string.IsNullOrWhiteSpace(description);
 		}
-	}
+        public bool IsValidEmpty(string text)
+        {
+            return !string.IsNullOrWhiteSpace(text);
+        }
+    }
 }

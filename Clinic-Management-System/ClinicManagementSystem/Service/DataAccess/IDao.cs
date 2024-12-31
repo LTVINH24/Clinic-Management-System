@@ -46,12 +46,13 @@ namespace ClinicManagementSystem.Service.DataAccess
 		 Dictionary<string, SortType> sortOptions, int daysRemaining
         );
 		User GetUserById(int userId);
-		//========================================================================================
+		public int GetTotalUsersCount();
+        //========================================================================================
 
 
 
-		//========================================Doctor==========================================
-		public List<Doctor> GetInforDoctor();
+        //========================================Doctor==========================================
+        public List<Doctor> GetInforDoctor();
 		//========================================================================================
 
 

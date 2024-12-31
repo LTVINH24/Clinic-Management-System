@@ -18,6 +18,7 @@
     <None Remove="Assets\AppIcon.ico" />
     <None Remove="Assets\doctor.png" />
     <None Remove="Assets\hopital.png" />
+    <None Remove="Views\AdminView\AdminHomePage.xaml" />
     <None Remove="Views\AdminView\reportBillAdmin.xaml" />
     <None Remove="Views\AdminView\reportMedicineAdmin.xaml" />
     <None Remove="Views\AdminView\reportPatientVisitsAdmin.xaml" />
@@ -119,6 +120,9 @@
     <None Update="appsettings.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <Page Update="Views\AdminView\AdminHomePage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Update="Views\StaffView\StaffHomePage.xaml">
       <Generator>MSBuild:Compile</Generator>
     </Page>

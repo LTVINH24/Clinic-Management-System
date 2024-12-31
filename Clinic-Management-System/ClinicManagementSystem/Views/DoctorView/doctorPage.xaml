@@ -50,7 +50,10 @@
                 </NavigationViewItem>
                 -->
             </NavigationView.MenuItems>
-            <Frame x:Name="contentFrame" Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"/>
+            <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto">
+                
+              <Frame x:Name="contentFrame" Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"/>
+            </ScrollViewer>
         </NavigationView>
     </Grid>
 </Page>

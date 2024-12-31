@@ -20,11 +20,6 @@
             <ColumnDefinition Width="*" />
             <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
-
-        <!--<TextBlock Grid.Row="0" Grid.ColumnSpan="2"  
-                   Margin="20"  
-                   FontSize="24" FontWeight="Bold" 
-                   VerticalAlignment="Top" HorizontalAlignment="Center">Your infomation</TextBlock>-->
         <TextBlock Text="My Account" 
              Style="{StaticResource TitleLargeTextBlockStyle}"
              FontSize="28" FontWeight="SemiBold"
@@ -65,7 +60,7 @@
 
         <Grid Grid.Row="1" Grid.Column="1" 
               Padding="40,0,40,0">
-            
+
             <Grid.RowDefinitions>
                 <RowDefinition Height="*"/>
                 <RowDefinition Height="50"/>
@@ -78,7 +73,7 @@
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*" />
             </Grid.ColumnDefinitions>
-            
+
             <StackPanel Grid.Row="0" VerticalAlignment="Center">
                 <TextBlock>Gender</TextBlock>
                 <DropDownButton x:Name="GenderDropDown" 
@@ -94,9 +89,9 @@
                     </DropDownButton.Flyout>
                 </DropDownButton>
             </StackPanel>
-            
+
             <Grid Grid.Row="2">
-                
+
                 <Grid.RowDefinitions>
                     <RowDefinition Height="*"/>
                 </Grid.RowDefinitions>
@@ -112,7 +107,7 @@
                                     Date="{x:Bind viewModel.user.birthday,Mode=TwoWay}" 
                                     Foreground="{ThemeResource ApplicationForegroundThemeBrush}"/>
             </Grid>
-            
+
             <PasswordBox Grid.Row="4" 
                          x:Name="PasswordUser"   
                          Header="New password" 
@@ -120,7 +115,6 @@
                          PasswordChar="*" 
                          Password="{x:Bind viewModel.user.password, Mode=TwoWay}"/>
         </Grid>
-
         <StackPanel Grid.Row="2" Grid.ColumnSpan="2"  
                     Orientation="Horizontal" 
                     HorizontalAlignment="Center">

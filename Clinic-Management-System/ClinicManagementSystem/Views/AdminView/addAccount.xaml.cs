@@ -127,17 +127,6 @@ namespace ClinicManagementSystem.Views.AdminView
                 Notify("A username must be at least 3 characters long and contain only letters, numbers, or underscores");
                 return false;
             }
-
-            //if (!valid.IsValidGender(GenderDropDown.Tag.ToString()))
-            //{
-            //    Notify("Please choose a gender");
-            //    return false;
-            //}
-            //if (!valid.IsValidDescription(RoleDropDown.Tag.ToString()))
-            //{
-            //    Notify("Please choose a gender");
-            //    return false;
-            //}
             if (!valid.IsValidDatePicker(BirthDayUser.Date))
             {
                 Notify("Please choose a valid birthday");

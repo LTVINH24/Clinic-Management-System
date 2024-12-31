@@ -34,6 +34,25 @@ namespace ClinicManagementSystem.ViewModel.Statistic
             LoadData();
             UpdateChart();
         }
+        private void UpdateChartTheme()
+        {
+            var currentTheme = ThemeService.Instance.GetCurrentTheme();
+            var backgroundColor = currentTheme == "Dark" ? OxyColor.FromRgb(32, 32, 32) :OxyColor.FromRgb(255, 255, 255);
+            var foregroundColor = currentTheme == "Dark" ? OxyColor.FromRgb(255, 255, 255) : OxyColor.FromRgb(0, 0, 0);
+
+            
+            ChartModel.Background = backgroundColor;
+            ChartModel.TextColor = foregroundColor;
+            ChartModel.PlotAreaBorderColor = foregroundColor;
+
+            foreach (var axis in ChartModel.Axes)
+            {
+                axis.TextColor = foregroundColor;
+                axis.TicklineColor = foregroundColor;
+                axis.TitleColor = foregroundColor;
+            }
+            ChartModel.InvalidatePlot(true);
+        }
         public void LoadData()
         {
             var items = _dao.GetBillStatistic(startDate, endDate);
@@ -77,7 +96,7 @@ namespace ClinicManagementSystem.ViewModel.Statistic
             }
             model.Series.Add(lineSeries);
             ChartModel = model;
-
+            UpdateChartTheme();
 
         }
         public event PropertyChangedEventHandler PropertyChanged;

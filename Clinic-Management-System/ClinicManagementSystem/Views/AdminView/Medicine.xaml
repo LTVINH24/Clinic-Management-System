@@ -56,7 +56,12 @@
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
         <Popup  x:Name="EditPopup" IsOpen="False" HorizontalAlignment="Center" VerticalAlignment="Center">
-            <Border Background="{ThemeResource ApplicationPageBackgroundThemeBrush}" BorderBrush="Gray" BorderThickness="1" Padding="20">
+            <Border Background="{ThemeResource ApplicationPageBackgroundThemeBrush}" BorderBrush="Gray"
+                    BorderThickness="1" Padding="20"
+                     PointerPressed="DragArea_PointerPressed"
+                     PointerMoved="DragArea_PointerMoved"
+                    PointerReleased="DragArea_PointerReleased"
+                    >
                 <StackPanel Width="400">
                     <TextBlock FontWeight="Bold" FontSize="20" Text="Medicine" Margin="0,0,0,10"/>
                     <TextBox Header="Name" Text="{x:Bind ViewModel.MedicineEdit.Name, Mode=TwoWay}" Margin="0,0,0,10"/>
@@ -133,12 +138,24 @@
                     <ColumnDefinition Width="*"/>
                     <ColumnDefinition Width="*"/>
                 </Grid.ColumnDefinitions>
-                <TextBox Width="300" Margin="5" Header="Name" Grid.Row="0" Grid.Column="0" Text="{x:Bind ViewModel.MedicineNew.Name, Mode=TwoWay}"/>
-                <TextBox Width="300" Margin="5" Header="Price" Grid.Row="0" Grid.Column="1" Text="{x:Bind ViewModel.MedicineNew.Price, Mode=TwoWay}"/>
-                <TextBox Width="300" Margin="5" Header="Quantity" Grid.Row="1" Grid.Column="0" Text="{x:Bind ViewModel.MedicineNew.QuantityImport, Mode=TwoWay}"/>
-                <TextBox Width="300" Margin="5" Header="Manufacturer" Grid.Row="1" Grid.Column="1" Text="{x:Bind ViewModel.MedicineNew.Manufacturer, Mode=TwoWay}"/>
-                <CalendarDatePicker Margin="5" Width="300" Grid.Row="2" Grid.Column="0" PlaceholderText="Pick a date" Header="EXP Date" Date="{x:Bind ViewModel.MedicineNew.ExpDate, Mode=TwoWay}"/>
-                <CalendarDatePicker Margin="5" Width="300" Grid.Row="2" Grid.Column="1" PlaceholderText="Pick a date" Header="MFG Date" Date="{x:Bind ViewModel.MedicineNew.MfgDate, Mode=TwoWay}"/>
+                <TextBox x:Name="NewMedicineName"  Width="300" Margin="5" Header="Name" Grid.Row="0" Grid.Column="0" Text="{x:Bind ViewModel.MedicineNew.Name, Mode=TwoWay}"/>
+                <NumberBox
+                 Width="300" Margin="5" Header="Price" Grid.Row="0" Grid.Column="1"
+                x:Name="NewMedicinePrice"
+                Value="{x:Bind ViewModel.MedicineNew.Price, Mode=TwoWay}"
+                SpinButtonPlacementMode="Inline"
+                SmallChange="10"
+                LargeChange="100" />
+                <NumberBox
+                Width="300" Margin="5" Header="Quantity" Grid.Row="1" Grid.Column="0" 
+                x:Name="NewMedicineQuantityImport"
+                Value="{x:Bind ViewModel.MedicineNew.QuantityImport, Mode=TwoWay}"
+                SpinButtonPlacementMode="Inline"
+                SmallChange="10"
+                LargeChange="100" />       
+                <TextBox x:Name="NewMedicineManufacturer" Width="300" Margin="5" Header="Manufacturer" Grid.Row="1" Grid.Column="1" Text="{x:Bind ViewModel.MedicineNew.Manufacturer, Mode=TwoWay}"/>
+                <CalendarDatePicker x:Name="NewMedicineExpDate" Margin="5" Width="300" Grid.Row="2" Grid.Column="0" PlaceholderText="Pick a date" Header="EXP Date" Date="{x:Bind ViewModel.MedicineNew.ExpDate, Mode=TwoWay}"/>
+                <CalendarDatePicker x:Name="NewMedicineMfgDate" Margin="5" Width="300" Grid.Row="2" Grid.Column="1" PlaceholderText="Pick a date" Header="MFG Date" Date="{x:Bind ViewModel.MedicineNew.MfgDate, Mode=TwoWay}"/>
                 <StackPanel Grid.Row="3" Grid.ColumnSpan="2" Orientation="Horizontal" HorizontalAlignment="Center">
                     <Button Click="addMedicine" x:Name="AddBtn" Margin="20,5,20,5" Width="80" Background="Blue" Foreground="White">Add</Button>
                     <Button Click="cancelMedicine" Margin="20,5,20,5" Width="80">Cancel</Button>

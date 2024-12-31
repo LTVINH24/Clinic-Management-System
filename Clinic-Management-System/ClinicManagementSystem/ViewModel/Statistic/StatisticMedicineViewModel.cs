@@ -76,6 +76,26 @@ namespace ClinicManagementSystem.ViewModel.Statistic
             }
 
         }
+        private void UpdateChartTheme(PlotModel ChartModel)
+        {
+            var currentTheme = ThemeService.Instance.GetCurrentTheme();
+            var backgroundColor = currentTheme == "Dark" ? OxyColor.FromRgb(32, 32, 32) : OxyColor.FromRgb(255, 255, 255);
+            var foregroundColor = currentTheme == "Dark" ? OxyColor.FromRgb(255, 255, 255) : OxyColor.FromRgb(0, 0, 0);
+
+
+            ChartModel.Background = backgroundColor;
+            ChartModel.TextColor = foregroundColor;
+            ChartModel.PlotAreaBorderColor = foregroundColor;
+            
+
+            foreach (var axis in ChartModel.Axes)
+            {
+                axis.TextColor = foregroundColor;
+                axis.TicklineColor = foregroundColor;
+                axis.TitleColor = foregroundColor;
+            }
+            ChartModel.InvalidatePlot(true);
+        }
         public void UpdateChart()
         {
             var modelMoney = new PlotModel { Title = "Highest drug revenue" };
@@ -124,6 +144,9 @@ namespace ClinicManagementSystem.ViewModel.Statistic
             modelMoney.Series.Add(seriesMoney);
             ChartModel = model;
             ChartModelMoney=modelMoney;
+            UpdateChartTheme(ChartModel);
+            UpdateChartTheme(ChartModelMoney);
+
         }
         private void LoadDataToExportExcel()
         {
@@ -133,6 +156,7 @@ namespace ClinicManagementSystem.ViewModel.Statistic
                 MedicinesStatisticCommom.Add(item);
             }
         }
+
         public async void MedicineExportToExcel()
         {
             

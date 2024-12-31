@@ -1,4 +1,5 @@
-﻿using ClinicManagementSystem.Model;
+﻿using ClinicManagementSystem.Helper;
+using ClinicManagementSystem.Model;
 using ClinicManagementSystem.Service;
 using ClinicManagementSystem.ViewModel;
 using Microsoft.UI.Xaml;
@@ -54,6 +55,7 @@ namespace ClinicManagementSystem.Views.AdminView
                 ViewModel.GoToPage(item.Page);
             }
         }
+
 
 		/// <summary>
 		/// Xử lí sự kiện khi nhấn nút trang trước
@@ -112,6 +114,31 @@ namespace ClinicManagementSystem.Views.AdminView
 
         }
 
+        private bool ValidData()
+        {
+            var valid = new IsValidData();
+            if (!valid.IsValidEmpty(NewMedicineName.Text))
+            {
+                Notify("Please enter a valid name");
+                return false;
+            }
+            if (NewMedicinePrice.Value<0)
+            {
+                Notify("Price >= 0");
+                return false;
+            }
+            if (!valid.IsValidEmpty(NewMedicineManufacturer.Text))
+            {
+                Notify("Please enter a valid manufacturer");
+                return false;
+            }
+            if (NewMedicineQuantityImport.Value<=0)
+            {
+                Notify("Quantity > 0");
+                return false;
+            }
+            return true;
+        }
         /// <summary>
         /// Xử lí sự kiện khi nhấn nút add
         /// </summary>
@@ -119,15 +146,18 @@ namespace ClinicManagementSystem.Views.AdminView
         /// <param name="e"></param>
         private void addMedicine(object sender, RoutedEventArgs e)
         {
-            bool success = ViewModel.AddMedicine();
-            if (success)
+            if(ValidData())
             {
-                Notify("Add medicine successfully");
-            }
-            else
-            {
-                Notify("Add medicine failed");
-            }
+                bool success = ViewModel.AddMedicine();
+                if (success)
+                {
+                    Notify("Add medicine successfully");
+                }
+                else
+                {
+                    Notify("Add medicine failed");
+                }
+            }    
 
         }
 
@@ -236,5 +266,40 @@ namespace ClinicManagementSystem.Views.AdminView
         {
             EditPopup.IsOpen = false;
         }
+        private bool isDragging = false;
+        private Windows.Foundation.Point initialPosition;
+        private Windows.Foundation.Point popupPosition;
+
+        private void DragArea_PointerPressed(object sender, PointerRoutedEventArgs e)
+        {
+            isDragging = true;
+            var properties = e.GetCurrentPoint(null).Properties;
+            if (properties.IsLeftButtonPressed)
+            {
+                ((UIElement)sender).CapturePointer(e.Pointer);
+                initialPosition = e.GetCurrentPoint(null).Position;
+                popupPosition = new Windows.Foundation.Point(EditPopup.HorizontalOffset, EditPopup.VerticalOffset);
+            }
+        }
+
+        private void DragArea_PointerMoved(object sender, PointerRoutedEventArgs e)
+        {
+            if (isDragging)
+            {
+                var currentPosition = e.GetCurrentPoint(null).Position;
+                var deltaX = currentPosition.X - initialPosition.X;
+                var deltaY = currentPosition.Y - initialPosition.Y;
+
+                EditPopup.HorizontalOffset = popupPosition.X + deltaX;
+                EditPopup.VerticalOffset = popupPosition.Y + deltaY;
+            }
+        }
+
+        private void DragArea_PointerReleased(object sender, PointerRoutedEventArgs e)
+        {
+            isDragging = false;
+            ((UIElement)sender).ReleasePointerCapture(e.Pointer);
+        }
+
     }
 }

@@ -26,7 +26,7 @@ namespace ClinicManagementSystem.Service.DataAccess
 		private static string GetConnectionString()
         {
             var connectionString = """
-                    Server = localhost,1433;
+                    Server = 10.14.172.119,1433;
                     Database = ClinicManagementSystemDatabase;
                     User Id = sa;
                     Password = SqlServer@123;
@@ -342,7 +342,15 @@ namespace ClinicManagementSystem.Service.DataAccess
             return result > 0;
 
         }
-
+        public int GetTotalUsersCount()
+        {
+            using (var connection = new SqlConnection(_connectionString))
+            {
+                connection.Open();
+                var command = new SqlCommand("SELECT COUNT(*) FROM EndUser", connection);
+                return (int)command.ExecuteScalar();
+            }
+        }
         //=============================================================================================
 
 

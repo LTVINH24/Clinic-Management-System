@@ -20,19 +20,16 @@
             IsPaneOpen="False"
             PaneDisplayMode="Left"
             IsTabStop="False"
+            IsSettingsVisible="True"
             SelectionChanged="NavigationView_SelectionChanged">
             <NavigationView.MenuItems>
-                <NavigationViewItem Content="Home" Icon="Home" ToolTipService.ToolTip="Home" Tag="HomePage"/>
+                <NavigationViewItem Content="Home" Icon="Home" ToolTipService.ToolTip="Home" Tag="AdminHomePage"/>
                 <!--<NavigationViewItem Content="Add Account" Icon="Add" ToolTipService.ToolTip="Add Account" Tag="addAccount"/>-->
-                <NavigationViewItem Content="Add" Icon="Add" ToolTipService.ToolTip="Add" Tag="homeAdmin">
-                    <NavigationViewItem.MenuItems>
-                        <NavigationViewItem Content="Add Account" Icon="People" ToolTipService.ToolTip="Add Account" Tag="addAccount"/>
-                        <!--<NavigationViewItem Content="Add Medicine" Icon="Add" ToolTipService.ToolTip="Add" Tag=""/>-->
-                    </NavigationViewItem.MenuItems>
+                <NavigationViewItem Content="Add Account" Icon="Add" ToolTipService.ToolTip="Add Account" Tag="addAccount">
                 </NavigationViewItem>
                 <NavigationViewItem Content="List Account" Icon="People" ToolTipService.ToolTip="List Account" Tag="listAccount"/>
                 <NavigationViewItem Content="Medicine" Icon="Shop" ToolTipService.ToolTip="Medicine" Tag="Medicine"/>
-                <NavigationViewItem Content="Report"  ToolTipService.ToolTip="Report" Tag="reportMedicineAdmin" >
+                <NavigationViewItem Content="Report"  ToolTipService.ToolTip="Report" Tag="report" >
                     <NavigationViewItem.Icon>
                         <FontIcon Glyph="&#xE9F9;" FontFamily="Segoe MDL2 Assets"/>
                     </NavigationViewItem.Icon>
@@ -46,7 +43,9 @@
 
 
             </NavigationView.MenuItems>
-            <Frame x:Name="contentFrame" Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"/>
+            <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto">
+                <Frame x:Name="contentFrame" Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"/>
+            </ScrollViewer>
         </NavigationView>
     </Grid>
 </Page>
