@@ -586,7 +586,7 @@ namespace ClinicManagementSystem.Service.DataAccess
                                 Medicine = medicine,
                                 IsSelected = true,
                                 SelectedQuantity = reader.GetInt32(7),    // prescribedQuantity
-                                SelectedDosage = reader.GetInt32(8)      // prescribedDosage
+                                SelectedDosage = reader.GetString(8)      // prescribedDosage
                             };
 
                             medicines.Add(medicineSelection);
@@ -1033,7 +1033,8 @@ namespace ClinicManagementSystem.Service.DataAccess
                             DoctorId = reader.GetInt32(reader.GetOrdinal("doctorId")),
                             MedicalExaminationFormID = reader.GetInt32(reader.GetOrdinal("MedicalExaminationFormID")),
                             Time = reader.GetDateTime(reader.GetOrdinal("time")),
-                            Diagnosis = reader.GetString(reader.GetOrdinal("diagnosis"))
+                            Diagnosis = reader.GetString(reader.GetOrdinal("diagnosis")),
+                            NextExaminationDate = reader.IsDBNull(reader.GetOrdinal("nextExaminationDate")) ? (DateTime?)null : reader.GetDateTime(reader.GetOrdinal("nextExaminationDate"))
                         };
                     }
                 }
@@ -1054,7 +1055,8 @@ namespace ClinicManagementSystem.Service.DataAccess
                 DoctorId = form.DoctorId,
                 MedicalExaminationFormID = form.Id,
                 Time = DateTime.Now,  // Can use form.Time if needed
-                Diagnosis = string.Empty
+                Diagnosis = string.Empty,
+                NextExaminationDate = null
             };
 
             using (var connection = new SqlConnection(_connectionString))
@@ -1068,6 +1070,7 @@ namespace ClinicManagementSystem.Service.DataAccess
                 command.Parameters.AddWithValue("@MedicalExaminationFormID", record.MedicalExaminationFormID);
                 command.Parameters.AddWithValue("@Time", record.Time);
                 command.Parameters.AddWithValue("@Diagnosis", record.Diagnosis);
+                command.Parameters.AddWithValue("@NextExaminationDate", record.NextExaminationDate);
 
                 record.Id = Convert.ToInt32(command.ExecuteScalar());  // Capture new ID
             }
@@ -1085,13 +1088,17 @@ namespace ClinicManagementSystem.Service.DataAccess
             {
                 connection.Open();
                 var command = new SqlCommand(
-                    "UPDATE MedicalRecord SET doctorId = @DoctorId, time = @Time, diagnosis = @Diagnosis " +
-                    "WHERE MedicalExaminationFormID = @MedicalExaminationFormID", connection);
+                    "UPDATE MedicalRecord " +
+                    "SET doctorId = @DoctorId, time = @Time, diagnosis = @Diagnosis, nextExaminationDate = @NextExaminationDate " +
+                    "WHERE MedicalExaminationFormID = @MedicalExaminationFormID", 
+                    connection);
 
                 command.Parameters.AddWithValue("@DoctorId", record.DoctorId);
                 command.Parameters.AddWithValue("@Time", record.Time);
                 command.Parameters.AddWithValue("@Diagnosis", record.Diagnosis);
                 command.Parameters.AddWithValue("@MedicalExaminationFormID", record.MedicalExaminationFormID);
+                command.Parameters.AddWithValue("@NextExaminationDate", 
+                    (object)record.NextExaminationDate ?? DBNull.Value);
 
                 command.ExecuteNonQuery();
             }
@@ -1116,16 +1123,15 @@ namespace ClinicManagementSystem.Service.DataAccess
                     {
                         // 1. Tạo đơn thuốc mới
                         var insertPrescriptionCommand = new SqlCommand(
-                            "INSERT INTO Prescription (time, medicalExaminationFormId, nextExaminationDate) " +
-                            "VALUES (@time, @medicalExaminationFormId, @nextExaminationDate); " +
+                            "INSERT INTO Prescription (time, medicalExaminationFormId) " +
+                            "VALUES (@time, @medicalExaminationFormId); " +
                             "SELECT SCOPE_IDENTITY();", 
                             connection, 
                             transaction);
 
                         insertPrescriptionCommand.Parameters.AddWithValue("@time", DateTime.Now.Date);
                         insertPrescriptionCommand.Parameters.AddWithValue("@medicalExaminationFormId", medicalExaminationFormId);
-                        insertPrescriptionCommand.Parameters.AddWithValue("@nextExaminationDate", DBNull.Value); // Có thể thêm tính năng này sau
-
+                        
                         // Lấy ID của đơn thuốc vừa tạo
                         int prescriptionId = Convert.ToInt32(insertPrescriptionCommand.ExecuteScalar());
 

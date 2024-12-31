@@ -91,6 +91,28 @@
                              Padding="10"
                              BorderBrush="{ThemeResource SystemAccentColor}"
                              BorderThickness="1"/>
+
+                    <StackPanel>
+                        <TextBlock Text="Next Examination Date (Optional)" 
+                                   FontSize="18" 
+                                   FontWeight="SemiBold" 
+                                   Margin="0,20,0,10"/>
+                        
+                        <CalendarDatePicker 
+                            PlaceholderText="Select next examination date (if needed)"
+                            Date="{x:Bind ViewModel.NextExaminationDate, Mode=TwoWay}"
+                            IsEnabled="{x:Bind ViewModel.CanEditDiagnosis, Mode=OneWay}"
+                            MinDate="{x:Bind ViewModel.MinNextExaminationDate, Mode=OneWay}"
+                            Margin="0,0,0,10"
+                            HorizontalAlignment="Left"
+                            Width="300"/>
+                    </StackPanel>
+
+                    <!-- Đường thẳng ngang -->
+                    <Rectangle Height="1" 
+                               Fill="Gray" 
+                               HorizontalAlignment="Stretch" 
+                               Margin="0,10,0,10"/>
                 </StackPanel>
 
                 <!-- Separator -->

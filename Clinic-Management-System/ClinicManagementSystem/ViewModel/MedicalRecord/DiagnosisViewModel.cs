@@ -17,6 +17,7 @@ namespace ClinicManagementSystem.ViewModel
         private decimal _totalAmount;
         private bool _canSave;
         private bool _isSaved;
+        private DateTimeOffset? _nextExaminationDate;
 
         public MedicalExaminationForm MedicalExaminationForm { get; private set; }
         public MedicalRecord MedicalRecord { get; private set; }
@@ -106,6 +107,24 @@ namespace ClinicManagementSystem.ViewModel
         public bool CanEditDiagnosis => !IsSaved;
         public bool CanSelectMedicines => !IsSaved;
 
+        public DateTimeOffset? NextExaminationDate
+        {
+            get => _nextExaminationDate;
+            set
+            {
+                if (SetProperty(ref _nextExaminationDate, value))
+                {
+                    // Cập nhật NextExaminationDate trong MedicalRecord
+                    if (MedicalRecord != null)
+                    {
+                        MedicalRecord.NextExaminationDate = value?.DateTime;
+                    }
+                }
+            }
+        }
+
+        public DateTimeOffset MinNextExaminationDate => DateTimeOffset.Now;
+
         public DiagnosisViewModel()
         {
             _dataAccess = new SqlServerDao();
@@ -117,11 +136,22 @@ namespace ClinicManagementSystem.ViewModel
 		/// <summary>
 		/// Load dữ liệu từ cơ sở dữ liệu dựa vào Id của phiếu khám bệnh
 		/// </summary>
-		/// <param name="medicalExaminationFormId"></param>
-		public void LoadData(int medicalExaminationFormId)
+		/// <param name="formId"></param>
+		public void LoadData(int formId)
         {
-            // Load MedicalExaminationForm data
-            MedicalExaminationForm = _dataAccess.GetMedicalExaminationFormById(medicalExaminationFormId);
+            MedicalExaminationForm = _dataAccess.GetMedicalExaminationFormById(formId);
+            if (MedicalExaminationForm != null)
+            {
+                // Sử dụng GetMedicalRecordByExaminationFormId thay vì GetMedicalRecordByFormId
+                MedicalRecord = _dataAccess.GetMedicalRecordByExaminationFormId(formId);
+                if (MedicalRecord != null)
+                {
+                    // Khôi phục giá trị NextExaminationDate từ MedicalRecord
+                    NextExaminationDate = MedicalRecord.NextExaminationDate.HasValue 
+                        ? new DateTimeOffset(MedicalRecord.NextExaminationDate.Value) 
+                        : null;
+                }
+            }
 
             // Kiểm tra trạng thái đã khám
             if (MedicalExaminationForm?.IsExaminated == "true")
@@ -140,7 +170,7 @@ namespace ClinicManagementSystem.ViewModel
             }
 
             // Try to load corresponding MedicalRecord
-            MedicalRecord = _dataAccess.GetMedicalRecordByExaminationFormId(medicalExaminationFormId);
+            MedicalRecord = _dataAccess.GetMedicalRecordByExaminationFormId(formId);
 
             // If MedicalRecord doesn't exist, create it using MedicalExaminationForm details
             if (MedicalRecord == null && MedicalExaminationForm != null)
@@ -150,7 +180,7 @@ namespace ClinicManagementSystem.ViewModel
 
             // Load medicines for this specific form
             SelectedMedicines.Clear();
-            var formMedicines = MedicineSelectionViewModel.GetMedicineSelectionsForForm(medicalExaminationFormId);
+            var formMedicines = MedicineSelectionViewModel.GetMedicineSelectionsForForm(formId);
             foreach (var medicine in formMedicines)
             {
                 SelectedMedicines.Add(medicine);

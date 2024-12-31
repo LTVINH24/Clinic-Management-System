@@ -12,5 +12,6 @@ namespace ClinicManagementSystem.Model
         public int MedicalExaminationFormID { get; set; }
         public DateTime Time { get; set; }
         public string Diagnosis { get; set; }
+        public DateTime? NextExaminationDate { get; set; }
     }
 }

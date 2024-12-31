@@ -75,7 +75,7 @@ namespace ClinicManagementSystem.Views.DoctorView
 
         private bool ValidateSelections(ObservableCollection<MedicineSelection> selectedMedicines)
         {
-            int totalAmount = 0;
+            //int totalAmount = 0;
 
             foreach (var medicineSelection in selectedMedicines)
             {
@@ -85,22 +85,10 @@ namespace ClinicManagementSystem.Views.DoctorView
                     return false;
                 }
 
-                if (medicineSelection.SelectedDosage <= 0)
-                {
-                    ShowMessage("Selected dosage must be greater than zero.");
-                    return false;
-                }
-
                 if (medicineSelection.SelectedQuantity > medicineSelection.Medicine.Quantity)
                 {
                     // Notify the user that the selected quantity exceeds the available quantity
                     ShowMessage($"Selected quantity for {medicineSelection.Medicine.Name} exceeds available quantity.");
-                    return false;
-                }
-                
-                if (medicineSelection.SelectedDosage > medicineSelection.SelectedQuantity)
-                {
-                    ShowMessage($"Selected dosage for {medicineSelection.Medicine.Name} must not greater than selected quantity.");
                     return false;
                 }
             }
