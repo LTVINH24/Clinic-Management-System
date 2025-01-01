@@ -28,7 +28,7 @@
                 <NavigationViewItem Content="Patient" Icon="People" ToolTipService.ToolTip="Patient" Tag="ListPatient"/>
                 <NavigationViewItem Content="Medical Examination Form" Icon="Document" ToolTipService.ToolTip="Medical Examination Form" Tag="MedicalExaminationForm"/>
                 <NavigationViewItem Content="Add" Icon="Add" ToolTipService.ToolTip="Add" Tag="AddMedicalExaminationForm"/>
-    
+                <NavigationViewItem Content="Unbilled Prescriptions" Icon="Document" ToolTipService.ToolTip="Unbilled Prescriptions" Tag="UnbilledPrescriptionsPage"/>
                 
                
                 

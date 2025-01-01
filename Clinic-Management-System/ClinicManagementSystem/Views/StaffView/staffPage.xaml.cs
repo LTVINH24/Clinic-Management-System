@@ -60,6 +60,9 @@ namespace ClinicManagementSystem.Views
 					case "ListPatient":
 						contentFrame.Navigate(typeof(ListPatient));
 						break;
+					case "UnbilledPrescriptionsPage":
+						contentFrame.Navigate(typeof(UnbilledPrescriptionsPage));
+						break;
 					default:
 						break;
 				}

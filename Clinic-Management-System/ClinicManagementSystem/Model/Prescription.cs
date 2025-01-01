@@ -12,4 +12,5 @@ public class Prescription
     // public string Dosage { get; set; }
     public int MedicalExaminationFormId { get; set; }
     public DateTime? NextExaminationDate { get; set; }
+    public string IsBilled { get; set; }
 }
