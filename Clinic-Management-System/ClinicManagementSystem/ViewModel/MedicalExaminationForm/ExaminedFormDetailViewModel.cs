@@ -10,6 +10,7 @@ namespace ClinicManagementSystem.ViewModel
         private MedicalExaminationForm _form;
         private Patient _patient;
         private string _diagnosis;
+        private string _nextExaminationDate;
         private ObservableCollection<MedicineSelection> _medicines;
 
         public ExaminedFormDetailViewModel()
@@ -36,6 +37,12 @@ namespace ClinicManagementSystem.ViewModel
             set => SetProperty(ref _diagnosis, value);
         }
 
+        public string NextExaminationDate
+        {
+            get => _nextExaminationDate;
+            set => SetProperty(ref _nextExaminationDate, value);
+        }
+
         public ObservableCollection<MedicineSelection> Medicines
         {
             get => _medicines;
@@ -54,6 +61,14 @@ namespace ClinicManagementSystem.ViewModel
                 if (medicalRecord != null)
                 {
                     Diagnosis = medicalRecord.Diagnosis;
+                }
+
+                var prescription = _dataAccess.GetPrescriptionByFormId(form.Id);
+                if (prescription != null)
+                {
+                    NextExaminationDate = prescription.NextExaminationDate.HasValue 
+                        ? prescription.NextExaminationDate.Value.ToString("dd/MM/yyyy")
+                        : null;
                 }
 
                 var formMedicines = _dataAccess.GetMedicineSelectionsByFormId(form.Id);

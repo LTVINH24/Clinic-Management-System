@@ -1103,7 +1103,8 @@ namespace ClinicManagementSystem.Service.DataAccess
 
 
 		//==============================================Prescription===============================================
-		/// <summary>
+		
+        /// <summary>
 		/// Lưu dơn thuốc vào cơ sở dữ liệu
 		/// </summary>
 		/// <param name="prescription"></param>
@@ -1180,6 +1181,52 @@ namespace ClinicManagementSystem.Service.DataAccess
                     }
                 }
             }
+        }
+
+        /// <summary>
+        /// Lấy thông tin đơn thuốc theo ID phiếu khám
+        /// </summary>
+        /// <param name="formId">ID của phiếu khám</param>
+        /// <returns>Đơn thuốc nếu tồn tại, null nếu không tìm thấy</returns>
+        public Prescription GetPrescriptionByFormId(int formId)
+        {
+            using (var connection = new SqlConnection(_connectionString))
+            {
+                var command = new SqlCommand(
+                    "SELECT id, time, medicalExaminationFormId, nextExaminationDate " +
+                    "FROM Prescription " +
+                    "WHERE medicalExaminationFormId = @formId",
+                    connection);
+                
+                command.Parameters.AddWithValue("@formId", formId);
+
+                try
+                {
+                    connection.Open();
+                    using (var reader = command.ExecuteReader())
+                    {
+                        if (reader.Read())
+                        {
+                            return new Prescription
+                            {
+                                Id = reader.GetInt32(reader.GetOrdinal("id")),
+                                Time = reader.GetDateTime(reader.GetOrdinal("time")),
+                                MedicalExaminationFormId = reader.GetInt32(reader.GetOrdinal("medicalExaminationFormId")),
+                                NextExaminationDate = reader.IsDBNull(reader.GetOrdinal("nextExaminationDate")) 
+                                    ? (DateTime?)null 
+                                    : reader.GetDateTime(reader.GetOrdinal("nextExaminationDate"))
+                            };
+                        }
+                    }
+                }
+                catch (Exception ex)
+                {
+                    // Log error
+                    System.Diagnostics.Debug.WriteLine($"Error in GetPrescriptionByFormId: {ex.Message}");
+                    return null;
+                }
+            }
+            return null;
         }
 
 		//=========================================================================================================
