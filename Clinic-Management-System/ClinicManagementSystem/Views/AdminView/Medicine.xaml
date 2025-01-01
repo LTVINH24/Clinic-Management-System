@@ -64,14 +64,26 @@
                     >
                 <StackPanel Width="400">
                     <TextBlock FontWeight="Bold" FontSize="20" Text="Medicine" Margin="0,0,0,10"/>
-                    <TextBox Header="Name" Text="{x:Bind ViewModel.MedicineEdit.Name, Mode=TwoWay}" Margin="0,0,0,10"/>
-                    <TextBox Header="Price" Text="{x:Bind ViewModel.MedicineEdit.Price, Mode=TwoWay}" Margin="0,0,0,10"/>
-                    <TextBox Header="Quantity Import" Text="{x:Bind ViewModel.MedicineEdit.QuantityImport, Mode=TwoWay}" Margin="0,0,0,10"/>
-                    <TextBox Header="Manufacturer" Text="{x:Bind ViewModel.MedicineEdit.Manufacturer, Mode=TwoWay}" Margin="0,0,0,10"/>
+                    <TextBox x:Name="NameEditMedicine" Header="Name" Text="{x:Bind ViewModel.MedicineEdit.Name, Mode=TwoWay}" Margin="0,0,0,10"/>
+                    <NumberBox
+                        Margin="0,0,0,10"
+                        x:Name="PriceEditMedicine"
+                        Value="{x:Bind ViewModel.MedicineEdit.Price, Mode=TwoWay}"
+                        SpinButtonPlacementMode="Inline"
+                        SmallChange="10"
+                        LargeChange="100" />       
+                    <NumberBox
+                        Margin="0,0,0,10"
+                        x:Name="QuantityImportEditMedicine"
+                        Value="{x:Bind ViewModel.MedicineEdit.QuantityImport, Mode=TwoWay}"
+                        SpinButtonPlacementMode="Inline"
+                        SmallChange="10"
+                        LargeChange="100" />
+                    <TextBox x:Name="ManufacturerEditMedicine" Header="Manufacturer" Text="{x:Bind ViewModel.MedicineEdit.Manufacturer, Mode=TwoWay}" Margin="0,0,0,10"/>
                     <CalendarDatePicker Header="Import Date" Date="{x:Bind ViewModel.MedicineEdit.DateImport, Mode=OneWay}" Margin="0,0,0,10"/>
 
-                    <CalendarDatePicker Header="EXP Date" Date="{x:Bind ViewModel.MedicineEdit.ExpDate, Mode=TwoWay}" Margin="0,0,0,10"/>
-                    <CalendarDatePicker Header="MFG Date" Date="{x:Bind ViewModel.MedicineEdit.MfgDate, Mode=TwoWay}" Margin="0,0,0,10"/>
+                    <CalendarDatePicker x:Name="ExpDateEditMedicine" Header="EXP Date" Date="{x:Bind ViewModel.MedicineEdit.ExpDate, Mode=TwoWay}" Margin="0,0,0,10"/>
+                    <CalendarDatePicker x:Name="MfgDateEditMedicine"  Header="MFG Date" Date="{x:Bind ViewModel.MedicineEdit.MfgDate, Mode=TwoWay}" Margin="0,0,0,10"/>
                     <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
                         <Button Click="UpdateMedicine_Click" Content="Update" Margin="5"/>
                         <Button Click="ClosePopup_Click" Content="Cancel" Margin="5"/>

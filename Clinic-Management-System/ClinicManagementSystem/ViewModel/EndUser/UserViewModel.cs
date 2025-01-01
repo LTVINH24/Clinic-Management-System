@@ -39,7 +39,7 @@ namespace ClinicManagementSystem.ViewModel.EndUser
 		/// </summary>
 		/// <param name="user"></param>
 		/// <returns>Thông báo tạo thành công hay thất bại</returns>
-		public string CreateUser(User user)
+		public string CreateUser()
 		{
 
 
@@ -61,7 +61,8 @@ namespace ClinicManagementSystem.ViewModel.EndUser
 				{
 					success = _dao.CreateUser(user);
 				}
-				return success ? "" : "Create false";
+                user = new User();
+                return success ? "" : "Create false";
 			}
 
 		}

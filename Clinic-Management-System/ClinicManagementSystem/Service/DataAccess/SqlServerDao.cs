@@ -26,7 +26,7 @@ namespace ClinicManagementSystem.Service.DataAccess
 		private static string GetConnectionString()
         {
             var connectionString = """
-                    Server = 10.14.172.119,1433;
+                    Server = localhost,1433;
                     Database = ClinicManagementSystemDatabase;
                     User Id = sa;
                     Password = SqlServer@123;
@@ -84,7 +84,7 @@ namespace ClinicManagementSystem.Service.DataAccess
                 status = reader["status"].ToString();
 
                 connection.Close();
-                if (Password.VerifyPassword(password, hassPassword)&&status!="locked")
+                if (Password.VerifyPassword(password, hassPassword) && status != "locked")
                 {
                     return (id, name, role, phone, gender, address);
                 }

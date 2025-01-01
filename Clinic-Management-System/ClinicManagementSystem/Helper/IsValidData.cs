@@ -97,9 +97,14 @@ namespace ClinicManagementSystem.Helper
 		{
 			return date != null && date.Value < DateTimeOffset.Now;
 		}
+		// ExpDate and MfgDate
+        public bool IsValidTwoDatePicker(DateTimeOffset? a , DateTimeOffset? b)
+        {
+            return a != null &&b!=null && a <= b;
+        }
 
-		// Gender
-		public bool IsValidGender(string gender)
+        // Gender
+        public bool IsValidGender(string gender)
 		{
 			return !string.IsNullOrWhiteSpace(gender);
 		}

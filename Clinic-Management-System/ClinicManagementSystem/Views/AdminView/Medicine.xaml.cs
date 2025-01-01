@@ -137,6 +137,41 @@ namespace ClinicManagementSystem.Views.AdminView
                 Notify("Quantity > 0");
                 return false;
             }
+            if (!valid.IsValidTwoDatePicker(NewMedicineMfgDate.Date, NewMedicineExpDate.Date))
+            {
+                Notify("MfgDate must be less than or equal ExpDate");
+                return false;
+            }
+            return true;
+        }
+        private bool ValidDataMedicineEdit()
+        {
+            var valid = new IsValidData();
+            if (!valid.IsValidEmpty(NameEditMedicine.Text))
+            {
+                Notify("Please enter a valid name");
+                return false;
+            }
+            if (PriceEditMedicine.Value < 0)
+            {
+                Notify("Price >= 0");
+                return false;
+            }
+            if (QuantityImportEditMedicine.Value < 0)
+            {
+                Notify("Quantity >= 0");
+                return false;
+            }
+            if (!valid.IsValidEmpty(ManufacturerEditMedicine.Text))
+            {
+                Notify("Please enter a valid manufacturer");
+                return false;
+            }
+            if(!valid.IsValidTwoDatePicker(MfgDateEditMedicine.Date, ExpDateEditMedicine.Date))
+            {
+                Notify("MfgDate must be less than or equal ExpDate");
+                return false;
+            }
             return true;
         }
         /// <summary>
@@ -217,22 +252,28 @@ namespace ClinicManagementSystem.Views.AdminView
         {
             if(RadioButton10Days.IsChecked == true)
             {
-                ViewModel.LoadMedicines(10);
+                ViewModel.DayRemainFilter = 10;
+                ViewModel.LoadMedicines();
             }
             else if(RadioButton20Days.IsChecked == true)
             {
-                ViewModel.LoadMedicines(20);
+                ViewModel.DayRemainFilter = 20;
+                ViewModel.LoadMedicines();
 
 
             }
             else if (RadioButton30Days.IsChecked == true)
             {
-                ViewModel.LoadMedicines(30);
+                ViewModel.DayRemainFilter = 30;
+
+                ViewModel.LoadMedicines();
 
             }
             else
             {
-                ViewModel.LoadMedicines(0);
+                ViewModel.DayRemainFilter = 0;
+
+                ViewModel.LoadMedicines();
 
             }
         }
@@ -242,23 +283,28 @@ namespace ClinicManagementSystem.Views.AdminView
             RadioButton10Days.IsChecked = false;
             RadioButton20Days.IsChecked = false;
             RadioButton30Days.IsChecked = false;
-            ViewModel.LoadMedicines(0);
+            ViewModel.DayRemainFilter = 0;
+            ViewModel.LoadMedicines();
 
 
         }
 
         private void UpdateMedicine_Click(object sender, RoutedEventArgs e)
         {
-            bool succes = ViewModel.UpdateMedicine();
-            if (succes)
+            if(ValidDataMedicineEdit())
             {
-                Notify("Update medicine successfully");
-            }
-            else
-            {
-                Notify("Update medicine failed");
-            }
-            EditPopup.IsOpen = false;
+
+                bool succes = ViewModel.UpdateMedicine();
+                if (succes)
+                {
+                    Notify("Update medicine successfully");
+                }
+                else
+                {
+                    Notify("Update medicine failed");
+                }
+                EditPopup.IsOpen = false;
+            }    
 
         }
 

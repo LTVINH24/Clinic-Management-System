@@ -87,7 +87,7 @@ namespace ClinicManagementSystem.Views.AdminView
         {
             if (ValidData())
             {
-                string notify= viewModel.CreateUser(viewModel.user);
+                string notify= viewModel.CreateUser();
                 if(notify == "")
                 {
                     Notify("Account created successfully");
