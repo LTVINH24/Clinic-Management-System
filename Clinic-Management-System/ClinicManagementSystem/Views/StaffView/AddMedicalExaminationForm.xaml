@@ -66,12 +66,17 @@
                      Margin="10"
                      Header="Address"  
                      Text="{x:Bind viewModel.Patient.Address, Mode=TwoWay}" />
-            <CalendarDatePicker Grid.Row="3" Grid.Column="0"
+            <!--<CalendarDatePicker Grid.Row="3" Grid.Column="0"
                                 Margin="10"  
                                 PlaceholderText="Pick a date" 
                                 Header="Date of Birth" 
                                 Date="{x:Bind viewModel.Patient.DoB, Mode=TwoWay}" 
-                                Foreground="{ThemeResource ApplicationForegroundThemeBrush}" />
+                                Foreground="{ThemeResource ApplicationForegroundThemeBrush}" />-->
+            <DatePicker Grid.Row="3" Grid.Column="0" 
+                        Margin="10"
+                        Header="Date of Birth" 
+                        Date="{x:Bind viewModel.SelectedDate, Mode=TwoWay}"
+                        Foreground="{ThemeResource ApplicationForegroundThemeBrush}"/>
 
             <StackPanel Grid.Row="3" Grid.Column="1">
                 <Grid>

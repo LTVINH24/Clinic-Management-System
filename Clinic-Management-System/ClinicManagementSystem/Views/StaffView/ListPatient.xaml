@@ -23,6 +23,7 @@
             </ResourceDictionary.ThemeDictionaries>
 
             <converter:DateTimeOffsetToDateConverters x:Key="DateTimeOffsetToDateConverters"/>
+            <converter:EditDateTimeOffsetConverter x:Key="EditDateTimeOffsetConverter"/>
 
             <DataTemplate x:Key="HorizontalUser" x:DataType="localmodel:Patient">
                 <Border BorderThickness="1" BorderBrush="#b5b5e8">
@@ -151,12 +152,16 @@
                                 </DropDownButton.Flyout>
                             </DropDownButton>
                         </StackPanel>
-                        <CalendarDatePicker Grid.Row ="4" 
+                        <!--<CalendarDatePicker Grid.Row ="4" 
                             Margin="0,10,0,0" 
                             PlaceholderText="Pick a date" 
                             Header="Date of Birth" 
                             Date="{x:Bind ViewModel.PatientEdit.DoB,Mode=TwoWay}" 
-                            Foreground="{ThemeResource ApplicationForegroundThemeBrush}" />
+                            Foreground="{ThemeResource ApplicationForegroundThemeBrush}" />-->
+                        <DatePicker Grid.Row="4" Margin="0,10,0,0"  
+                                    Header="Date of Birth" 
+                                    Date="{x:Bind ViewModel.PatientEdit.DoB,Mode=TwoWay, Converter={StaticResource EditDateTimeOffsetConverter}}" 
+                                    Foreground="{ThemeResource ApplicationForegroundThemeBrush}"/>
                         <TextBox Header="Email"
                                  Margin="0,10,0,0"
                                  Text="{x:Bind ViewModel.PatientEdit.Email,Mode=TwoWay}"/>

@@ -75,6 +75,18 @@ namespace ClinicManagementSystem.ViewModel
 			}
 		}
 
+		private DateTimeOffset _selectedDate = DateTimeOffset.Now;
+		public DateTimeOffset SelectedDate
+		{
+			get => _selectedDate;
+			set
+			{
+				_selectedDate = value;
+				Patient.DoB = value; // Tự động cập nhật DoB
+				OnPropertyChanged(nameof(SelectedDate));
+			}
+		}
+
 		public AddMedicalExaminationFormViewModel()
 		{
 			_dao = ServiceFactory.GetChildOf(typeof(IDao)) as IDao;
