@@ -3,6 +3,7 @@ using ClinicManagementSystem.Model;
 using ClinicManagementSystem.Service.DataAccess;
 using System;
 using System.Collections.ObjectModel;
+using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Input;
 using Microsoft.UI.Xaml.Controls;
@@ -18,6 +19,8 @@ namespace ClinicManagementSystem.ViewModel
         private bool _canSave;
         private bool _isSaved;
         private DateTimeOffset? _nextExaminationDate;
+        private static Dictionary<int, DateTimeOffset?> _nextExaminationDateByFormId 
+            = new Dictionary<int, DateTimeOffset?>();
 
         public MedicalExaminationForm MedicalExaminationForm { get; private set; }
         public MedicalRecord MedicalRecord { get; private set; }
@@ -114,10 +117,10 @@ namespace ClinicManagementSystem.ViewModel
             {
                 if (SetProperty(ref _nextExaminationDate, value))
                 {
-                    // Cập nhật NextExaminationDate trong MedicalRecord
-                    if (MedicalRecord != null)
+                    // Lưu vào Dictionary khi có thay đổi
+                    if (MedicalExaminationForm != null)
                     {
-                        MedicalRecord.NextExaminationDate = value?.DateTime;
+                        _nextExaminationDateByFormId[MedicalExaminationForm.Id] = value;
                     }
                 }
             }
@@ -142,14 +145,17 @@ namespace ClinicManagementSystem.ViewModel
             MedicalExaminationForm = _dataAccess.GetMedicalExaminationFormById(formId);
             if (MedicalExaminationForm != null)
             {
-                // Sử dụng GetMedicalRecordByExaminationFormId thay vì GetMedicalRecordByFormId
                 MedicalRecord = _dataAccess.GetMedicalRecordByExaminationFormId(formId);
-                if (MedicalRecord != null)
+
+                // Chỉ load ngày tái khám từ Dictionary
+                if (_nextExaminationDateByFormId.ContainsKey(formId))
                 {
-                    // Khôi phục giá trị NextExaminationDate từ MedicalRecord
-                    NextExaminationDate = MedicalRecord.NextExaminationDate.HasValue 
-                        ? new DateTimeOffset(MedicalRecord.NextExaminationDate.Value) 
-                        : null;
+                    NextExaminationDate = _nextExaminationDateByFormId[formId];
+                }
+                else
+                {
+                    // Nếu chưa có trong Dictionary thì set null
+                    NextExaminationDate = null;
                 }
             }
 
@@ -273,10 +279,11 @@ namespace ClinicManagementSystem.ViewModel
             // 1. Lưu chẩn đoán
             SaveDiagnosis();
 
-            // 2. Lưu đơn thuốc
+            // 2. Lưu đơn thuốc và ngày tái khám
             bool prescriptionSaved = _dataAccess.SavePrescription(
                 MedicalExaminationForm.Id,
-                SelectedMedicines.ToList()
+                SelectedMedicines.ToList(),
+                NextExaminationDate  // Thêm tham số ngày tái khám
             );
 
             if (!prescriptionSaved)
@@ -287,7 +294,19 @@ namespace ClinicManagementSystem.ViewModel
             // 3. Cập nhật trạng thái đã lưu
             IsSaved = true;
 
+            // 4. Xóa dữ liệu tạm trong Dictionary
+            ClearNextExaminationDate(MedicalExaminationForm.Id);
+
             return true;
+        }
+
+        // Thêm phương thức để xóa dữ liệu khi không cần thiết nữa
+        public static void ClearNextExaminationDate(int formId)
+        {
+            if (_nextExaminationDateByFormId.ContainsKey(formId))
+            {
+                _nextExaminationDateByFormId.Remove(formId);
+            }
         }
     }
 }

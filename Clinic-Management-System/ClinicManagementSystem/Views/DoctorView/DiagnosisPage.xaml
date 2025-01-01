@@ -107,6 +107,7 @@
                             HorizontalAlignment="Left"
                             Width="300"/>
                     </StackPanel>
+                    <!-- Date="{x:Bind ViewModel.NextExaminationDate, Mode=TwoWay}" -->
 
                     <!-- Đường thẳng ngang -->
                     <Rectangle Height="1" 
