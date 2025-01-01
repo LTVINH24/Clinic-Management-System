@@ -199,14 +199,14 @@
             Orientation="Horizontal" HorizontalAlignment="Center" 
             Spacing="10" Margin="0,10,0,10">
             <CalendarDatePicker Header="From date"
-                                Width="200"
-                                PlaceholderText="Choose start date" 
+                                Width="250"
+                                PlaceholderText="Choose start date follow-up" 
                                 Date="{x:Bind ViewModel.StartDateFollowUp, Mode=TwoWay}"
                                 Foreground="{ThemeResource ApplicationForegroundThemeBrush}"/>
 
             <CalendarDatePicker Header="To date"
-                                Width="200"
-                                PlaceholderText="Choose end date"
+                                Width="250"
+                                PlaceholderText="Choose end date follow-up"
                                 Date="{x:Bind ViewModel.EndDateFollowUp, Mode=TwoWay}"
                                 Foreground="{ThemeResource ApplicationForegroundThemeBrush}"/>
 

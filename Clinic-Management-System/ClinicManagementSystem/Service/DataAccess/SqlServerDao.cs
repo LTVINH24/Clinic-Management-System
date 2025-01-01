@@ -26,7 +26,7 @@ namespace ClinicManagementSystem.Service.DataAccess
 		private static string GetConnectionString()
         {
             var connectionString = """
-                    Server = 10.14.172.119,1433;
+                    Server = localhost,1433;
                     Database = ClinicManagementSystemDatabase;
                     User Id = sa;
                     Password = SqlServer@123;
@@ -775,6 +775,7 @@ namespace ClinicManagementSystem.Service.DataAccess
             string keyword,
             DateTimeOffset? startDate,
 			DateTimeOffset? endDate,
+            string statusFilter,
 			Dictionary<string, SortType> sortOptions)
         {
             var result = new List<MedicalExaminationForm>();
@@ -815,7 +816,19 @@ namespace ClinicManagementSystem.Service.DataAccess
             {
                 sortString += "ID ";
             }
-			
+
+			if (!string.IsNullOrEmpty(statusFilter))
+			{
+				if (statusFilter == "Examined")
+				{
+					whereClause += " AND m.IsExaminated = 'True'";
+				}
+				else if (statusFilter == "Pending")
+				{
+					whereClause += " AND m.IsExaminated = 'False'";
+				}
+			}
+
 			if (startDate.HasValue)
 			{
 				whereClause += " AND CAST(time AS DATE) >= @StartDate";
@@ -1416,14 +1429,33 @@ namespace ClinicManagementSystem.Service.DataAccess
             if (!string.IsNullOrEmpty(keyword))
             {
                 whereClause += @" AND (
-                    name LIKE @Keyword OR 
-                    residentId LIKE @Keyword OR 
-                    email LIKE @Keyword OR 
-                    address LIKE @Keyword
+                    p.name LIKE @Keyword OR 
+                    p.residentId LIKE @Keyword OR 
+                    p.email LIKE @Keyword OR 
+                    p.address LIKE @Keyword
                 )";
             }
 
-            //whereClause += " AND (pr.NextMedicationDate IS NULL OR pr.NextMedicationDate > @CurrentDate)";
+            if (startDate.HasValue)
+            {
+                whereClause += @" AND EXISTS (
+                    SELECT 1 
+                    FROM MedicalExaminationForm m 
+                    JOIN Prescription pr ON m.id = pr.medicalExaminationFormId
+                    WHERE m.patientId = p.id 
+                    AND CAST(pr.NextExaminationDate AS DATE) >= @StartDate
+                )";
+            }
+            if (endDate.HasValue)
+            {
+                whereClause += @" AND EXISTS (
+                    SELECT 1 
+                    FROM MedicalExaminationForm m 
+                    JOIN Prescription pr ON m.id = pr.medicalExaminationFormId
+                    WHERE m.patientId = p.id 
+                    AND CAST(pr.NextExaminationDate AS DATE) <= @EndDate
+                )";
+            }
 
 			string sortString = "ORDER BY ";
             bool useDefault = true;
@@ -1448,23 +1480,14 @@ namespace ClinicManagementSystem.Service.DataAccess
                 sortString += "ID ";
             }
 
-			if (startDate.HasValue)
-			{
-				whereClause += " AND CAST(pr.NextExaminationDate AS DATE) >= @StartDate";
-			}
-			if (endDate.HasValue)
-			{
-				whereClause += " AND CAST(pr.NextExaminationDate AS DATE) <= @EndDate";
-			}
-
 			var sql = $"""
                 SELECT count(*) over() as Total, p.id, p.name, p.residentId, p.email, p.gender, p.birthday, p.address,
                        (
-                           SELECT TOP 1 pr2.NextExaminationDate
-                           FROM MedicalExaminationForm m2 
-                           LEFT JOIN Prescription pr2 ON m2.id = pr2.medicalExaminationFormId
-                           WHERE m2.patientId = p.id
-                           ORDER BY pr2.NextExaminationDate DESC
+                           SELECT TOP 1 pr.NextExaminationDate
+                           FROM MedicalExaminationForm m 
+                           LEFT JOIN Prescription pr ON m.id = pr.medicalExaminationFormId
+                           WHERE m.patientId = p.id
+                           ORDER BY pr.NextExaminationDate DESC
                        ) as NextExaminationDate
                 FROM Patient p
                 {whereClause}

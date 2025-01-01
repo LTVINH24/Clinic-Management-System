@@ -63,7 +63,27 @@ namespace ClinicManagementSystem.Helper
 			try
 			{
 				var mailAddress = new MailAddress(email);
-				return true;
+
+				// length
+				if (email.Length > 254) 
+					return false;
+
+				// valid domain
+				var domain = email.Split('@')[1];
+				if (!domain.Contains(".") || domain.EndsWith("."))
+					return false;
+
+				// character
+				string invalidChars = "()<>[]\\,;: ";
+				if (email.Any(c => invalidChars.Contains(c)))
+					return false;
+
+				// local part, domain
+				var regex = new Regex(
+					@"^[a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$",
+					RegexOptions.IgnoreCase);
+
+				return regex.IsMatch(email);
 			}
 			catch (FormatException)
 			{

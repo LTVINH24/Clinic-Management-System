@@ -70,7 +70,19 @@ namespace ClinicManagementSystem.ViewModel
 
 		public event PropertyChangedEventHandler PropertyChanged;
 
-		
+		private bool? _isExamined = null;
+		public bool? IsExamined
+		{
+			get => _isExamined;
+			set
+			{
+				_isExamined = value;
+				LoadData();
+			}
+		}
+
+		public string StatusFilter { get; set; }
+
 		public MedicalExaminationFormViewModel()
 		{
 			RowsPerPage = 10;
@@ -149,11 +161,12 @@ namespace ClinicManagementSystem.ViewModel
 		public void LoadData()
 		{
 			var (items, count) = _dao.GetMedicalExaminationForms(
-				CurrentPage, 
-				RowsPerPage, 
+				CurrentPage,
+				RowsPerPage,
 				Keyword,
 				StartDate,
 				EndDate,
+				StatusFilter,
 				_sortOptions
 			);
 

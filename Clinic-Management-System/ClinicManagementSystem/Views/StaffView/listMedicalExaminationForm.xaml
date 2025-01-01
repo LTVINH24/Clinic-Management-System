@@ -65,13 +65,6 @@
                             ToolTipService.ToolTip="Edit">
                             <FontIcon Glyph="&#xE70F;" />
                         </Button>
-                        <!--<Button Margin="5,0,0,0" 
-                            Click="deleteMedicalExaminationForm" 
-                            Background="Transparent" 
-                            BorderBrush="Transparent"
-                                ToolTipService.ToolTip="Delete">
-                            <FontIcon Glyph="&#xE74D;" />
-                        </Button>-->
                         <Button Margin="5,0,0,0" 
                             Click="SendResult_Click" 
                             Background="Transparent" 
@@ -207,21 +200,35 @@
             Orientation="Horizontal" HorizontalAlignment="Center" 
             Spacing="10" Margin="0,10,0,10">
             <CalendarDatePicker Header="From date"
-                PlaceholderText="Choose start date follow-up" 
+                PlaceholderText="Choose start date create" 
                 Date="{x:Bind ViewModel.StartDate, Mode=TwoWay}"
                 Width="220"
                 Foreground="{ThemeResource ApplicationForegroundThemeBrush}"/>
 
             <CalendarDatePicker Header="To date"
-                PlaceholderText="Choose end date follow-up"
+                PlaceholderText="Choose end date create"
                 Date="{x:Bind ViewModel.EndDate, Mode=TwoWay}"
                 Width="220"
                 Foreground="{ThemeResource ApplicationForegroundThemeBrush}"/>
+                
+            <ComboBox x:Name="StatusFilter"
+                    Header="Status"
+                    PlaceholderText="Select Status"
+                    Width="150"
+                    Margin="0,0,8,0"
+                    SelectionChanged="StatusFilter_SelectionChanged">
+                <ComboBoxItem Content="All"/>
+                <ComboBoxItem Content="Examined"/>
+                <ComboBoxItem Content="Pending"/>
+            </ComboBox>    
+                
 
             <Button Click="ClearFilter_Click"
                 Content="Clear filter"
                 VerticalAlignment="Bottom"/>
         </StackPanel>
+
+        
 
         
             

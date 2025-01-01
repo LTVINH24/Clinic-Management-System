@@ -80,9 +80,6 @@ namespace ClinicManagementSystem.Views
 					case "StaffPage":
 						contentFrame.Navigate(typeof(StaffHomePage));
 						break;
-					case "HomePage":
-						contentFrame.Navigate(typeof(HomePage));
-						break;
 					case "MedicalExaminationForm":
 						contentFrame.Navigate(typeof(ListMedicalExaminationForm));
 						break;
