@@ -19,7 +19,7 @@
                    Margin="0,0,0,20"/>
 
         <!-- List of examined forms -->
-        <ListView Grid.Row="1"
+        <ListView x:Name="test" Grid.Row="1"
                   ItemsSource="{x:Bind ViewModel.ExaminedForms}"
                   SelectedItem="{x:Bind ViewModel.SelectedForm, Mode=TwoWay}"
                   SelectionChanged="ListView_SelectionChanged"
