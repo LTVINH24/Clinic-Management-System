@@ -39,7 +39,6 @@ namespace ClinicManagementSystem.Service.DataAccess
 
 		bool DeleteUser(User user);
 		bool LockUser(int id,string status);
-		public List<Specialty> GetSpecialty();
 		Tuple<List<Medicine>, int> GetMedicines(
 		 int page, int rowsPerPage,
 		 string keyword,
@@ -93,15 +92,17 @@ namespace ClinicManagementSystem.Service.DataAccess
 		bool DeleteMedicine(Medicine medicine);
 		List<MedicineStatistic> GetTopMedicineStatistic(DateTimeOffset startDate, DateTimeOffset endDate, int n, string sortString);
 		List<MedicineStatistic> GetMedicineStatistic(DateTimeOffset startDate, DateTimeOffset endDate);
-		//========================================================================================
+        //========================================================================================
 
-		//========================================Specialty=======================================
-		//========================================================================================
+        //========================================Specialty=======================================
+        public List<Specialty> GetSpecialty();
+		public (bool success, int specialtyId) CreateSpecialty(string specialty);
+        //========================================================================================
 
 
 
-		//========================================Patient=========================================
-		(bool, int) AddPatient(Patient patient);
+        //========================================Patient=========================================
+        (bool, int) AddPatient(Patient patient);
 
 		(bool, int) checkPatientExists(string residentId);
 

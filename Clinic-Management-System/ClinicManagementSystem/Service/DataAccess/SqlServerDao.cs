@@ -379,6 +379,25 @@ namespace ClinicManagementSystem.Service.DataAccess
             connection.Close();
             return specialties;
         }
+        public (bool success, int specialtyId) CreateSpecialty(string specialty)
+        {
+            string connectionString = GetConnectionString();
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                connection.Open();
+                string query = $"""
+            INSERT INTO Specialty (name) 
+            OUTPUT INSERTED.Id 
+            VALUES (@name)
+        """;
+                using (var command = new SqlCommand(query, connection))
+                {
+                    AddParameters(command, ("@name", specialty));
+                    int specialtyId = (int)command.ExecuteScalar(); // Lấy ID của specialty vừa tạo
+                    return (true, specialtyId);
+                }
+            }
+        }
         public User GetUserById(int userId)
         {
             User user = new User();

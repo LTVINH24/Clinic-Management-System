@@ -13,7 +13,6 @@
     <Page.Resources>
         <DataTemplate x:Key="HorizontalSpecialty" x:DataType="localmodel:Specialty">
             <StackPanel Orientation="Horizontal" >
-                <TextBlock Width="20" Margin="0" Text="{x:Bind id}" ></TextBlock>
                 <TextBlock Width="200" Margin="0" Text="{x:Bind name}" ></TextBlock>
             </StackPanel>
         </DataTemplate>
@@ -21,19 +20,19 @@
     <Grid>
         <Grid Padding="60,60,60,60">
             <Grid.RowDefinitions>
-                <RowDefinition Height="100"/>
                 <RowDefinition Height="Auto"/>
-                <RowDefinition Height="150"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
             </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*" />
                 <ColumnDefinition Width="*" />
             </Grid.ColumnDefinitions>
-            <TextBlock FontSize="24" FontWeight="Bold" Grid.ColumnSpan="2" VerticalAlignment="Top" Margin="20"  HorizontalAlignment="Center" Grid.Row="0" >Create Addcount</TextBlock>
+            <TextBlock FontSize="24" FontWeight="Bold" Grid.ColumnSpan="2" VerticalAlignment="Top" Margin="20"  HorizontalAlignment="Center" Grid.Row="0" >Create Account</TextBlock>
             <Grid Grid.Column="0" Grid.Row="1" Padding="40,0,40,0">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="*"/>
-                    <RowDefinition Height="50"/>
+                    <RowDefinition Height="90"/>
                     <RowDefinition Height="*"/>
                     <RowDefinition Height="50"/>
                     <RowDefinition Height="*"/>
@@ -53,7 +52,7 @@
             <Grid Grid.Column="1"  Grid.Row="1"  Padding="40,0,40,0">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="*"/>
-                    <RowDefinition Height="50"/>
+                    <RowDefinition Height="94"/>
                     <RowDefinition Height="*"/>
                     <RowDefinition Height="50"/>
                     <RowDefinition Height="*"/>
@@ -87,7 +86,7 @@
                         </StackPanel>
                     <StackPanel Visibility="Collapsed" x:Name="Specialty" Grid.Column="1">
                         <TextBlock>Specialty</TextBlock>
-                        <ListView  VerticalAlignment="Top" HorizontalAlignment="Left" Name="SpecialtyUser" Margin="0,10,0,0"
+                        <ListView VerticalAlignment="Top" HorizontalAlignment="Left" Name="SpecialtyUser" Margin="0,10,0,0"
                                 SelectionMode ="Single"
                                 SelectedItem="{x:Bind viewModel.selectedSpecialty, Mode=TwoWay}"
                                 MaxHeight="80"
@@ -96,6 +95,12 @@
                                 ItemsSource="{x:Bind viewModel.Specialties, Mode=TwoWay}"
                                 ItemTemplate="{StaticResource HorizontalSpecialty}">
                         </ListView>
+                        <StackPanel  Orientation="Horizontal" Margin="0,10,0,0">
+                            <TextBox x:Name="NewSpecialty" Width="200" PlaceholderText="New Specialty" Text="{x:Bind viewModel.NewSpecialty,Mode=TwoWay}"></TextBox>
+                            <Button Click="NewSpecialtyClick" Margin="10,0,0,0" Background="#b5b5e8" >
+                                <FontIcon Glyph="&#xF78C;"/>
+                            </Button>
+                        </StackPanel>
                     </StackPanel>
                     </Grid>
 

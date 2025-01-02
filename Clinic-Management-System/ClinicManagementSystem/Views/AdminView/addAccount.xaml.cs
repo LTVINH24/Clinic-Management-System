@@ -171,5 +171,27 @@ namespace ClinicManagementSystem.Views.AdminView
 				RequestedTheme = dialogTheme
 			}.ShowAsync();
         }
+
+       
+
+        private void NewSpecialtyClick(object sender, RoutedEventArgs e)
+        {
+            if(NewSpecialty.Text==null||NewSpecialty.Text=="")
+            {
+                Notify("Please enter a valid address");
+                return;
+            }
+            bool success=viewModel.CreateNewSpecialty();
+            if (success)
+            {
+                Notify("Specialty created successfully");
+                viewModel.LoadSpecialties();
+            }
+            else
+            {
+                Notify("Specialty created failed");
+
+            }
+        }
     }
 }
