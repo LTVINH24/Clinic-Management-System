@@ -23,11 +23,11 @@ namespace ClinicManagementSystem.Model
 		public DateTimeOffset? Time { get; set; }
 		public string Symptoms { get; set; }
 		public string VisitType { get; set; }
-		public string Status { get; set; }
+		// public string Status { get; set; }
 	
 		public Visibility ShowSendMailButton()
 		{
-			return Status == "Examined" ? Visibility.Visible : Visibility.Collapsed;
+			return IsExaminated == "Examined" ? Visibility.Visible : Visibility.Collapsed;
 		}
 
 		public string IsExaminated { get; set; }

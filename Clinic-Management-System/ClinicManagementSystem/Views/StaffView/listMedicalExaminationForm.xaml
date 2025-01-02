@@ -58,7 +58,7 @@
                             Text="{x:Bind VisitType}" />
                         <TextBlock Margin="20" 
                             Width="110" 
-                            Text="{x:Bind Status}" />
+                            Text="{x:Bind IsExaminated}" />
                         <Button Click="Edit_Click" 
                             Background="Transparent" 
                             BorderBrush="Transparent"

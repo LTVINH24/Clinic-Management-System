@@ -14,11 +14,6 @@
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
-
-        <!--
-            <TextBlock Grid.Row="1" Text="Welcome Back!" FontSize="24" FontWeight="Bold" Foreground="{ThemeResource SystemAccentColor}" 
-                HorizontalAlignment="Left" Margin="20,20,0,10"/>
-        -->
         
         <NavigationView x:Name="nvSample" Grid.Row="1" 
             IsPaneOpen="False"
@@ -26,7 +21,6 @@
             IsTabStop="False"
             SelectionChanged="NavigationView_SelectionChanged"
             Background="#FFB5B5E8">
-        <!--#FFB5B5E8-->
             
             <NavigationView.MenuItems>
                 <NavigationViewItem Content="Home" Icon="Home" ToolTipService.ToolTip="Home" Tag="HomePage"/>
@@ -35,21 +29,7 @@
                 <NavigationViewItem Content="Examined Forms" Icon="Document" ToolTipService.ToolTip="Examined Forms" Tag="ExaminedFormsPage"/>
                 <NavigationViewItem Content="Documents" Icon="Document" ToolTipService.ToolTip="" Tag="DocumentPage"/>
                 
-                <!-- 
-                <NavigationViewItem Content="Home" Icon="Home" ToolTipService.ToolTip="Home" Tag="MedicineSelectionPage"/>
-                <NavigationViewItem Content="Account" Icon="Contact" ToolTipService.ToolTip="Account" Tag="SamplePage2">
-                    <NavigationViewItem.MenuItems>
-                        <NavigationViewItem Content="Mail" Icon="Mail" ToolTipService.ToolTip="Mail" Tag="SamplePage3"/>
-                        <NavigationViewItem Content="Calendar" Icon="Calendar" ToolTipService.ToolTip="Calendar" Tag="SamplePage4"/>
-                    </NavigationViewItem.MenuItems>
-                </NavigationViewItem>
-                <NavigationViewItem Content="Document options" Icon="Page2" ToolTipService.ToolTip="Document options" SelectsOnInvoked="False">
-                    <NavigationViewItem.MenuItems>
-                        <NavigationViewItem Content="Create new" Icon="NewFolder" ToolTipService.ToolTip="Create new" Tag="SamplePage5"/>
-                        <NavigationViewItem Content="Upload file" Icon="OpenLocal" ToolTipService.ToolTip="Upload file" Tag="SamplePage6"/>
-                    </NavigationViewItem.MenuItems>
-                </NavigationViewItem>
-                -->
+            
             </NavigationView.MenuItems>
             <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto">
                 

@@ -990,7 +990,7 @@ namespace ClinicManagementSystem.Service.DataAccess
 					DoctorId = (int)reader["doctorId"],
 					DoctorName = reader["DoctorName"].ToString(),
 					VisitType = (string)reader["visitType"],
-					Status = (string)reader["status"] == "True" ? "Examined" : "Not examined"
+					IsExaminated = (string)reader["status"] == "true" ? "Examined" : "Not examinated"
 				};
 
 				result.Add(medicalExaminationForm);
@@ -1192,7 +1192,7 @@ namespace ClinicManagementSystem.Service.DataAccess
                 ("@Time", medicalExaminationForm.Time),
                 ("@Symptom", medicalExaminationForm.Symptoms),
                 ("@VisitType", medicalExaminationForm.VisitType),
-                ("@IsExaminated", "False"));
+                ("@IsExaminated", "false"));
 
             int result = command.ExecuteNonQuery();
 
