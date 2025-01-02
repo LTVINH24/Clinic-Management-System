@@ -106,18 +106,13 @@ namespace ClinicManagementSystem.Views.DoctorView
 
             return true;
         }
-<<<<<<< HEAD
 		/// <summary>
 		/// Hàm hiển thị thông báo
 		/// </summary>
 		/// <param name="message"></param>
 		private async void ShowMessage(string message)
-=======
-
-        private void ShowMessage(string message)
->>>>>>> 402e144c9a2c7bd9f1ea094c00d66a78ae10ab9b
         {
-            _ = DialogHelper.ShowMessage("Invalid Selection", message, this.Content.XamlRoot);
+            await DialogHelper.ShowMessage("Invalid Selection", message, this.Content.XamlRoot);
         }
 
         //private int GetCurrentMedicalRecordId()

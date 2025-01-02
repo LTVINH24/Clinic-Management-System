@@ -814,8 +814,7 @@ namespace ClinicManagementSystem.Service.DataAccess
 		public List<MedicalExaminationForm> GetMedicalExaminationForms()
         {
             var forms = new List<MedicalExaminationForm>();
-            var connectionString = GetConnectionString();
-            using (var connection = new SqlConnection(connectionString))
+            using (var connection = new SqlConnection(_connectionString))
             {
                 connection.Open();
                 using (var command = new SqlCommand())
