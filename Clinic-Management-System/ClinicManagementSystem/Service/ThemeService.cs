@@ -11,6 +11,9 @@ using ClinicManagementSystem.Views;
 
 namespace ClinicManagementSystem.Service
 {
+	/// <summary>
+	/// Lớp ThemeService chứa các phương thức để thay đổi theme của ứng dụng
+	/// </summary>
 	public class ThemeService
 	{
 		private static ThemeService _instance;

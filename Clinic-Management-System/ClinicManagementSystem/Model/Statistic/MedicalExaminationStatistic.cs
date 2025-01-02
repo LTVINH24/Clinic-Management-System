@@ -7,7 +7,10 @@ using System.Threading.Tasks;
 
 namespace ClinicManagementSystem.Model.Statistic
 {
-    public class MedicalExaminationStatistic:INotifyPropertyChanged
+	/// <summary>
+	/// Thống kê khám bệnh
+	/// </summary>
+	public class MedicalExaminationStatistic:INotifyPropertyChanged
     {
         public DateTime date { get; set; }
         public int amount { get; set; }

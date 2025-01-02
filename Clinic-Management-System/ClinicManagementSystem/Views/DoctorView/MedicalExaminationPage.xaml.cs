@@ -14,8 +14,12 @@ namespace ClinicManagementSystem.Views
             this.InitializeComponent();
             this.DataContext = new MedicalExaminationViewModel(); // Gán DataContext tại đây
         }
-
-        protected override void OnNavigatedTo(NavigationEventArgs e)
+		/// <summary>
+		/// Xử lý sự kiện khi trang được điều hướng đến
+		/// </summary>
+		/// <param name="e"></param>
+		/// <exception cref="InvalidOperationException"></exception>
+		protected override void OnNavigatedTo(NavigationEventArgs e)
         {
             base.OnNavigatedTo(e);
 
@@ -28,8 +32,12 @@ namespace ClinicManagementSystem.Views
                 throw new InvalidOperationException("Không thể lấy Frame từ tham số điều hướng.");
             }
         }
-
-        private void ListView_SelectionChanged(object sender, SelectionChangedEventArgs e)
+		/// <summary>
+		/// Xử lý sự kiện khi chọn một phiếu khám bệnh
+		/// </summary>
+		/// <param name="sender"></param>
+		/// <param name="e"></param>
+		private void ListView_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             if (sender is ListView listView && listView.SelectedItem is MedicalExaminationForm selectedForm)
             {

@@ -36,7 +36,10 @@ namespace ClinicManagementSystem.ViewModel.Statistic
             LoadData();
             UpdateChart();
         }
-        public void LoadData()
+		/// <summary>
+		/// Load dữ liệu thống kê khám bệnh
+		/// </summary>
+		public void LoadData()
         {
             var items = _dao.GetMedicalExaminationStatisticsByDate(startDate, endDate);
             MedicalExaminationstatistic.Clear();
@@ -45,7 +48,10 @@ namespace ClinicManagementSystem.ViewModel.Statistic
                 MedicalExaminationstatistic.Add(item);
             }
         }
-        private void UpdateChartTheme()
+		/// <summary>
+		/// Cập nhật giao diện biểu đồ
+		/// </summary>
+		private void UpdateChartTheme()
         {
             var currentTheme = ThemeService.Instance.GetCurrentTheme();
             var backgroundColor = currentTheme == "Dark" ? OxyColor.FromRgb(32, 32, 32) : OxyColor.FromRgb(255, 255, 255);
@@ -64,7 +70,10 @@ namespace ClinicManagementSystem.ViewModel.Statistic
             }
             ChartModel.InvalidatePlot(true);
         }
-        public void UpdateChart()
+		/// <summary>
+		/// Cập nhật biểu đồ
+		/// </summary>
+		public void UpdateChart()
         {
             var model = new PlotModel { Title = "Statistic Patient Visits" };
 

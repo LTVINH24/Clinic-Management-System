@@ -34,7 +34,10 @@ namespace ClinicManagementSystem.ViewModel.Statistic
             LoadData();
             UpdateChart();
         }
-        private void UpdateChartTheme()
+		/// <summary>
+		/// Cập nhật giao diện biểu đồ
+		/// </summary>
+		private void UpdateChartTheme()
         {
             var currentTheme = ThemeService.Instance.GetCurrentTheme();
             var backgroundColor = currentTheme == "Dark" ? OxyColor.FromRgb(32, 32, 32) :OxyColor.FromRgb(255, 255, 255);
@@ -53,7 +56,10 @@ namespace ClinicManagementSystem.ViewModel.Statistic
             }
             ChartModel.InvalidatePlot(true);
         }
-        public void LoadData()
+		/// <summary>
+		/// Lấy dữ liệu từ database
+		/// </summary>
+		public void LoadData()
         {
             var items = _dao.GetBillStatistic(startDate, endDate);
             BillStatistic.Clear();
@@ -62,7 +68,10 @@ namespace ClinicManagementSystem.ViewModel.Statistic
                 BillStatistic.Add(item);
             }
         }
-        public void UpdateChart()
+		/// <summary>
+		/// Cập nhật biểu đồ
+		/// </summary>
+		public void UpdateChart()
         {
             var model = new PlotModel { Title = "Statistic Bill" };
             var dateAxis = new DateTimeAxis

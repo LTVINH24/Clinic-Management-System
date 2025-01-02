@@ -1,4 +1,4 @@
-using ClinicManagementSystem.ViewModel.EndUser;
+﻿using ClinicManagementSystem.ViewModel.EndUser;
 using ClinicManagementSystem.Views.StaffView;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
@@ -32,21 +32,31 @@ namespace ClinicManagementSystem.Views.AdminView
             this.InitializeComponent();
             ViewModel = new AdminHomePageViewModel();
         }
-
-        private void NavigateToAddUser(object sender, RoutedEventArgs e)
+		/// <summary>
+		/// Hàm chuyển hướng đến trang thêm tài khoản
+		/// </summary>
+		/// <param name="sender"></param>
+		/// <param name="e"></param>
+		private void NavigateToAddUser(object sender, RoutedEventArgs e)
         {
             Frame.Navigate(typeof(addAccount));
 
         }
-
-        
-
-        private void NavigateToReportBill(object sender, RoutedEventArgs e)
+		/// <summary>
+		/// Hàm chuyển hướng đến trang báo cáo doanh thu
+		/// </summary>
+		/// <param name="sender"></param>
+		/// <param name="e"></param>
+		private void NavigateToReportBill(object sender, RoutedEventArgs e)
         {
             Frame.Navigate(typeof(reportBillAdmin));
         }
-
-        private void NavigateToListUser(object sender, RoutedEventArgs e)
+		/// <summary>
+		/// Hàm chuyển hướng đến trang hiển thị danh sách tài khoản
+		/// </summary>
+		/// <param name="sender"></param>
+		/// <param name="e"></param>
+		private void NavigateToListUser(object sender, RoutedEventArgs e)
         {
             Frame.Navigate(typeof(listAccount));
 

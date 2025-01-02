@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 namespace ClinicManagementSystem.Model
 {
 	/// <summary>
-	/// Lớp User chứa thông tin của người dùng gồm các thuộc tính id, name, password, username, gender, role, birthday, address, phone
+	/// Lớp User chứa thông tin của người dùng gồm các thuộc tính id, name, password, username, gender, role, birthday, address, phone, status
 	/// </summary>
 	public class User : INotifyPropertyChanged
     {

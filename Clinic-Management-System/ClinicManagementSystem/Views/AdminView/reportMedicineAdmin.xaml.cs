@@ -33,14 +33,23 @@ namespace ClinicManagementSystem.Views.AdminView
            ViewModel = new StatisticMedicineViewModel();
             DataContext = ViewModel;
         }
-
-        private void viewStatistic(object sender, RoutedEventArgs e)
+		/// <summary>
+		/// Hàm xử lí sự kiện khi click vào nút xem thống kê
+		/// </summary>
+		/// <param name="sender"></param>
+		/// <param name="e"></param>
+		private void viewStatistic(object sender, RoutedEventArgs e)
         {
             ViewModel.LoadData();
             ViewModel.UpdateChart();
         }
 
-        private void ExportExcel(object sender, RoutedEventArgs e)
+		/// <summary>
+		/// Hàm xử lí sự kiện khi click vào nút xuất file excel
+		/// </summary>
+		/// <param name="sender"></param>
+		/// <param name="e"></param>
+		private void ExportExcel(object sender, RoutedEventArgs e)
         {
             ViewModel.MedicineExportToExcel();
         }

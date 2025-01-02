@@ -38,7 +38,11 @@ namespace ClinicManagementSystem.Views
 
 			contentFrame.Navigated += ContentFrame_Navigated;
 		}
-
+		/// <summary>
+		/// Xử lí sự kiện khi NavigationView đã được load
+		/// </summary>
+		/// <param name="sender"></param>
+		/// <param name="e"></param>
 		private void ContentFrame_Navigated(object sender, NavigationEventArgs e)
 		{
 			if (e.SourcePageType == typeof(StaffHomePage))

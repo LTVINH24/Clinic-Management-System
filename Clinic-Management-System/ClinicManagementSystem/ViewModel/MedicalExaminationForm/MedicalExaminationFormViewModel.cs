@@ -222,6 +222,13 @@ namespace ClinicManagementSystem.ViewModel
 			LoadData();
 		}
 
+		/// <summary>
+		/// Kiểm tra dữ liệu cập nhật
+		/// </summary>
+		/// <returns>
+		///		Boolean: true nếu dữ liệu hợp lệ, ngược lại là false
+		///		String: thông báo lỗi
+		/// </returns>
 		public (bool, string) isValidDataUpdate()
 		{
 			IsValidData isValid = new IsValidData();
@@ -237,7 +244,10 @@ namespace ClinicManagementSystem.ViewModel
 		/// <summary>
 		/// Cập nhật phiếu khám bệnh
 		/// </summary>
-		/// <returns></returns>
+		/// <returns>
+		///		Boolean: true nếu cập nhật thành công, ngược lại là false
+		///		String: thông báo lỗi
+		/// </returns>
 		public (bool, string) Update()
 		{
 			var (isValid, message) = isValidDataUpdate();
@@ -254,7 +264,7 @@ namespace ClinicManagementSystem.ViewModel
 		/// <summary>
 		/// Xóa phiếu khám bệnh
 		/// </summary>
-		/// <returns></returns>
+		/// <returns>True nếu xóa thành công, False nếu xóa thất bại</returns>
 		public bool Delete()
 		{
 			bool success = _dao.DeleteMedicalExaminationForm(FormEdit);

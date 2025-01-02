@@ -59,7 +59,10 @@ namespace ClinicManagementSystem.ViewModel.Statistic
             LoadData();
             UpdateChart();
         }
-        public void LoadData()
+		/// <summary>
+		/// Load data từ database
+		/// </summary>
+		public void LoadData()
         { 
             var items = _dao.GetTopMedicineStatistic(startDate, endDate, 10, "QuantitySold");
             MedicinesStatistic.Clear();
@@ -76,7 +79,11 @@ namespace ClinicManagementSystem.ViewModel.Statistic
             }
 
         }
-        private void UpdateChartTheme(PlotModel ChartModel)
+		/// <summary>
+		/// Cập nhật giao diện của biểu đồ
+		/// </summary>
+		/// <param name="ChartModel"></param>
+		private void UpdateChartTheme(PlotModel ChartModel)
         {
             var currentTheme = ThemeService.Instance.GetCurrentTheme();
             var backgroundColor = currentTheme == "Dark" ? OxyColor.FromRgb(32, 32, 32) : OxyColor.FromRgb(255, 255, 255);
@@ -96,7 +103,10 @@ namespace ClinicManagementSystem.ViewModel.Statistic
             }
             ChartModel.InvalidatePlot(true);
         }
-        public void UpdateChart()
+		/// <summary>
+		/// Cập nhật biểu đồ
+		/// </summary>
+		public void UpdateChart()
         {
             var modelMoney = new PlotModel { Title = "Highest drug revenue" };
             var categoryMoneyAxis = new CategoryAxis
@@ -148,7 +158,10 @@ namespace ClinicManagementSystem.ViewModel.Statistic
             UpdateChartTheme(ChartModelMoney);
 
         }
-        private void LoadDataToExportExcel()
+		/// <summary>
+		/// Load dữ liệu để xuất file excel
+		/// </summary>
+		private void LoadDataToExportExcel()
         {
             var items = _dao.GetMedicineStatistic(startDate, endDate);
             foreach (var item in items)
@@ -156,8 +169,10 @@ namespace ClinicManagementSystem.ViewModel.Statistic
                 MedicinesStatisticCommom.Add(item);
             }
         }
-
-        public async void MedicineExportToExcel()
+		/// <summary>
+		/// Xuất file excel
+		/// </summary>
+		public async void MedicineExportToExcel()
         {
             
             LoadDataToExportExcel();

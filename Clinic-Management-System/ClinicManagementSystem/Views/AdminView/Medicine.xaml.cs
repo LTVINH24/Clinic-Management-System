@@ -23,9 +23,6 @@ using Windows.Media.Effects;
 
 namespace ClinicManagementSystem.Views.AdminView
 {
-	/// <summary>
-	/// An empty page that can be used on its own or navigated to within a Frame.
-	/// </summary>
 	public sealed partial class Medicine : Page
     {
         public MedicineViewModel ViewModel { get; set; }
@@ -113,8 +110,11 @@ namespace ClinicManagementSystem.Views.AdminView
             }
 
         }
-
-        private bool ValidData()
+		/// <summary>
+		/// Kiểm tra dữ liệu nhập vào
+		/// </summary>
+		/// <returns>True nếu dữ liệu hợp lệ, False nếu dữ liệu không hợp lệ</returns>
+		private bool ValidData()
         {
             var valid = new IsValidData();
             if (!valid.IsValidEmpty(NewMedicineName.Text))
@@ -144,7 +144,11 @@ namespace ClinicManagementSystem.Views.AdminView
             }
             return true;
         }
-        private bool ValidDataMedicineEdit()
+		/// <summary>
+		/// Kiểm tra dữ liệu nhập vào khi edit
+		/// </summary>
+		/// <returns>True nếu dữ liệu hợp lệ, False nếu dữ liệu không hợp lệ</returns>
+		private bool ValidDataMedicineEdit()
         {
             var valid = new IsValidData();
             if (!valid.IsValidEmpty(NameEditMedicine.Text))
@@ -248,7 +252,12 @@ namespace ClinicManagementSystem.Views.AdminView
             ViewModel.Search();
         }
 
-        private void RadioButton_Checked(object sender, RoutedEventArgs e)
+		/// <summary>
+		/// Xử lí sự kiện khi chọn radio button
+		/// </summary>
+		/// <param name="sender"></param>
+		/// <param name="e"></param>
+		private void RadioButton_Checked(object sender, RoutedEventArgs e)
         {
             if(RadioButton10Days.IsChecked == true)
             {
@@ -277,19 +286,25 @@ namespace ClinicManagementSystem.Views.AdminView
 
             }
         }
-
-        private void clearFilter(object sender, RoutedEventArgs e)
+		/// <summary>
+		/// Xử lí sự kiện khi nhấn nút clear filter
+		/// </summary>
+		/// <param name="sender"></param>
+		/// <param name="e"></param>
+		private void clearFilter(object sender, RoutedEventArgs e)
         {
             RadioButton10Days.IsChecked = false;
             RadioButton20Days.IsChecked = false;
             RadioButton30Days.IsChecked = false;
             ViewModel.DayRemainFilter = 0;
             ViewModel.LoadMedicines();
-
-
         }
-
-        private void UpdateMedicine_Click(object sender, RoutedEventArgs e)
+		/// <summary>
+		/// Xử lí sự kiện khi nhấn nút update
+		/// </summary>
+		/// <param name="sender"></param>
+		/// <param name="e"></param>
+		private void UpdateMedicine_Click(object sender, RoutedEventArgs e)
         {
             if(ValidDataMedicineEdit())
             {
@@ -307,8 +322,12 @@ namespace ClinicManagementSystem.Views.AdminView
             }    
 
         }
-
-        private void ClosePopup_Click(object sender, RoutedEventArgs e)
+		/// <summary>
+		/// Xử lí sự kiện khi nhấn nút close popup
+		/// </summary>
+		/// <param name="sender"></param>
+		/// <param name="e"></param>
+		private void ClosePopup_Click(object sender, RoutedEventArgs e)
         {
             EditPopup.IsOpen = false;
         }
@@ -316,7 +335,12 @@ namespace ClinicManagementSystem.Views.AdminView
         private Windows.Foundation.Point initialPosition;
         private Windows.Foundation.Point popupPosition;
 
-        private void DragArea_PointerPressed(object sender, PointerRoutedEventArgs e)
+		/// <summary>
+		/// Xử lí sự kiện khi kéo popup
+		/// </summary>
+		/// <param name="sender"></param>
+		/// <param name="e"></param>
+		private void DragArea_PointerPressed(object sender, PointerRoutedEventArgs e)
         {
             isDragging = true;
             var properties = e.GetCurrentPoint(null).Properties;
@@ -327,8 +351,12 @@ namespace ClinicManagementSystem.Views.AdminView
                 popupPosition = new Windows.Foundation.Point(EditPopup.HorizontalOffset, EditPopup.VerticalOffset);
             }
         }
-
-        private void DragArea_PointerMoved(object sender, PointerRoutedEventArgs e)
+		/// <summary>
+		/// Xử lí sự kiện khi kéo chuột
+		/// </summary>
+		/// <param name="sender"></param>
+		/// <param name="e"></param>
+		private void DragArea_PointerMoved(object sender, PointerRoutedEventArgs e)
         {
             if (isDragging)
             {
@@ -340,8 +368,12 @@ namespace ClinicManagementSystem.Views.AdminView
                 EditPopup.VerticalOffset = popupPosition.Y + deltaY;
             }
         }
-
-        private void DragArea_PointerReleased(object sender, PointerRoutedEventArgs e)
+		/// <summary>
+		/// Xử lí sự kiện khi nhả chuột
+		/// </summary>
+		/// <param name="sender"></param>
+		/// <param name="e"></param>
+		private void DragArea_PointerReleased(object sender, PointerRoutedEventArgs e)
         {
             isDragging = false;
             ((UIElement)sender).ReleasePointerCapture(e.Pointer);

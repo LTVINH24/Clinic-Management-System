@@ -1,4 +1,4 @@
-using ClinicManagementSystem.Helper;
+﻿using ClinicManagementSystem.Helper;
 using ClinicManagementSystem.Service;
 using ClinicManagementSystem.ViewModel.EndUser;
 using Microsoft.UI.Xaml;
@@ -23,9 +23,6 @@ using Windows.Storage;
 
 namespace ClinicManagementSystem.Views
 {
-    /// <summary>
-    /// An empty page that can be used on its own or navigated to within a Frame.
-    /// </summary>
     public sealed partial class SettingsPage : Page
     {
         public InformationViewModel viewModel { get; private set; }
@@ -37,15 +34,23 @@ namespace ClinicManagementSystem.Views
             viewModel.LoadInformationUser();
             LoadThemeSettings();
         }
-        private void GenderMenuFlyoutItem_Click(object sender, RoutedEventArgs e)
+		/// <summary>
+		/// Xử lí sự kiện khi chọn giới tính
+		/// </summary>
+		/// <param name="sender"></param>
+		/// <param name="e"></param>
+		private void GenderMenuFlyoutItem_Click(object sender, RoutedEventArgs e)
         {
             if (sender is MenuFlyoutItem menuItem)
             {
                 GenderDropDown.Content = menuItem.Text;
             }
         }
-
-        private bool ValidData()
+		/// <summary>
+		/// Kiểm tra dữ liệu nhập vào
+		/// </summary>
+		/// <returns>True nếu dữ liệu hợp lệ, False nếu dữ liệu không hợp lệ</returns>
+		private bool ValidData()
         {
             var valid = new IsValidData();
             if (!valid.IsValidName(NameUser.Text))
@@ -70,7 +75,11 @@ namespace ClinicManagementSystem.Views
             }
             return true;
         }
-        private async void Notify(string notify)
+		/// <summary>
+		/// Hiển thị thông báo
+		/// </summary>
+		/// <param name="notify"></param>
+		private async void Notify(string notify)
         {
             var currentTheme = ThemeService.Instance.GetCurrentTheme();
             ElementTheme dialogTheme;
@@ -97,7 +106,12 @@ namespace ClinicManagementSystem.Views
                 RequestedTheme = dialogTheme
             }.ShowAsync();
         }
-        private void Update_Click(object sender, RoutedEventArgs e)
+		/// <summary>
+		/// Cập nhật thông tin người dùng
+		/// </summary>
+		/// <param name="sender"></param>
+		/// <param name="e"></param>
+		private void Update_Click(object sender, RoutedEventArgs e)
         {
             if (ValidData())
             {
@@ -112,7 +126,10 @@ namespace ClinicManagementSystem.Views
                 }
             }
         }
-        private void LoadThemeSettings()
+		/// <summary>
+		/// Load theme setting
+		/// </summary>
+		private void LoadThemeSettings()
         {
 			var localSettings = Windows.Storage.ApplicationData.Current.LocalSettings;
 			
@@ -136,8 +153,12 @@ namespace ClinicManagementSystem.Views
 					break;
 			}
 		}
-
-        private void ThemeRadioButton_Checked(object sender, RoutedEventArgs e)
+		/// <summary>
+		/// Xử lí sự kiện khi chọn theme
+		/// </summary>
+		/// <param name="sender"></param>
+		/// <param name="e"></param>
+		private void ThemeRadioButton_Checked(object sender, RoutedEventArgs e)
         {
 			if (sender is RadioButton radioButton && radioButton.IsChecked == true)
 			{
@@ -149,7 +170,11 @@ namespace ClinicManagementSystem.Views
 				}
 			}
 		}
-
+		/// <summary>
+		/// Xử lí sự kiện khi nhấn nút logout
+		/// </summary>
+		/// <param name="sender"></param>
+		/// <param name="e"></param>
 		private async void LogoutButton_Click(object sender, RoutedEventArgs e)
 		{
             var currentTheme = ThemeService.Instance.GetCurrentTheme();

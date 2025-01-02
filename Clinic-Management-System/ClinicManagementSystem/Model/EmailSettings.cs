@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 
 namespace ClinicManagementSystem.Model
 {
+	/// <summary>
+	/// Class chứa thông tin cấu hình email
+	/// </summary>
 	public class EmailSettings
 	{
 		public string FromEmail { get; set; }

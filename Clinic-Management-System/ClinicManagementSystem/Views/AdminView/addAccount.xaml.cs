@@ -32,11 +32,6 @@ namespace ClinicManagementSystem.Views.AdminView
         }
         public  UserViewModel viewModel { get; private set; }   =new UserViewModel();
 
-        private void MenuFlyoutItem_Click(object sender, RoutedEventArgs e)
-        {
-
-        }
-
         /// <summary>
         /// Xử lí sự kiện khi chọn click role
         /// </summary>
@@ -171,10 +166,12 @@ namespace ClinicManagementSystem.Views.AdminView
 				RequestedTheme = dialogTheme
 			}.ShowAsync();
         }
-
-       
-
-        private void NewSpecialtyClick(object sender, RoutedEventArgs e)
+		/// <summary>
+		/// Xử lí sự kiện khi click vào nút tạo chuyên khoa
+		/// </summary>
+		/// <param name="sender"></param>
+		/// <param name="e"></param>
+		private void NewSpecialtyClick(object sender, RoutedEventArgs e)
         {
             if(NewSpecialty.Text==null||NewSpecialty.Text=="")
             {

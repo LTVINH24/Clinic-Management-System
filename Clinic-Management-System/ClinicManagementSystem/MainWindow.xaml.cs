@@ -39,12 +39,6 @@ namespace ClinicManagementSystem
             viewModel.LoginCompleted += OnLoginCompleted;
             this.Title = "Clinic Management System";
             this.AppWindow.SetIcon("Assets/AppIcon.ico");
-
-			//IntPtr hWnd = WinRT.Interop.WindowNative.GetWindowHandle(this);
-   //         var windowId = Win32Interop.GetWindowIdFromWindow(hWnd);
-   //         var appWindow = AppWindow.GetFromWindowId(windowId);
-   //         appWindow.Maximize();
-
 		}
 		/// <summary>
 		/// Xử lí sự kiện khi cửa sổ được bật
@@ -66,12 +60,6 @@ namespace ClinicManagementSystem
         {
             bool isRemember = rememberPassword.IsChecked ?? false;
             viewModel.Authentication(viewModel.UserLogin, isRemember);
-
-            // if (rememberPassword.IsChecked == true)
-            // {
-            //     viewModel.Authentication(viewModel.UserLogin, true);
-            // }
-            // viewModel.Authentication(viewModel.UserLogin, false);
         }
 
 		/// <summary>
@@ -94,7 +82,6 @@ namespace ClinicManagementSystem
             else
             {
                 LoginFailed();
-
             }
         }
 

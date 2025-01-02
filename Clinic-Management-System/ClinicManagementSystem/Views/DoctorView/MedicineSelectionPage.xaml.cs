@@ -21,8 +21,11 @@ namespace ClinicManagementSystem.Views.DoctorView
             this.InitializeComponent();
             this.DataContext = new MedicineSelectionViewModel();
         }
-
-        protected override void OnNavigatedTo(NavigationEventArgs e)
+		/// <summary>
+		/// Hàm điều hướng trang  
+		/// </summary>
+		/// <param name="e"></param>
+		protected override void OnNavigatedTo(NavigationEventArgs e)
         {
             base.OnNavigatedTo(e);
 
@@ -40,8 +43,12 @@ namespace ClinicManagementSystem.Views.DoctorView
                 }
             }
         }
-
-        private void BackButton_Click(object sender, RoutedEventArgs e)
+		/// <summary>
+		/// Hàm xử lý sự kiện khi người dùng nhấn nút quay lại
+		/// </summary>
+		/// <param name="sender"></param>
+		/// <param name="e"></param>
+		private void BackButton_Click(object sender, RoutedEventArgs e)
         {
             // Navigate back to the previous page
             if (Frame.CanGoBack)
@@ -49,8 +56,12 @@ namespace ClinicManagementSystem.Views.DoctorView
                 Frame.GoBack();
             }
         }
-
-        private void ConfirmButton_Click(object sender, RoutedEventArgs e)
+		/// <summary>
+		/// Hàm xử lý sự kiện khi người dùng nhấn nút xác nhận
+		/// </summary>
+		/// <param name="sender"></param>
+		/// <param name="e"></param>
+		private void ConfirmButton_Click(object sender, RoutedEventArgs e)
         {
             var selectedMedicines = ViewModel.AvailableMedicines.Where(m => m.IsSelected).ToList();
             int totalAmount = 0;
@@ -121,8 +132,11 @@ namespace ClinicManagementSystem.Views.DoctorView
             // Navigate back to DiagnosisPage
             Frame.GoBack();
         }
-
-        private async void ShowMessage(string message)
+		/// <summary>
+		/// Hàm hiển thị thông báo
+		/// </summary>
+		/// <param name="message"></param>
+		private async void ShowMessage(string message)
         {
             var dialog = new ContentDialog
             {

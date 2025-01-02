@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 
 namespace ClinicManagementSystem.Model
 {
+	/// <summary>
+	/// Class chứa thông tin phiếu khám bệnh gồm email bệnh nhân, chuẩn đoán, danh sách thuốc, ngày tái khám
+	/// </summary>
 	public class MedicalExaminationFormDetail : MedicalExaminationForm
 	{
 		public string PatientEmail { get; set; }

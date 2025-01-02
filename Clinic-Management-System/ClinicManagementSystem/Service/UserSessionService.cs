@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 
 namespace ClinicManagementSystem.Service
 {
+	/// <summary>
+	/// Lớp UserSessionService chứa thông tin về phiên đăng nhập của người dùng
+	/// </summary>
 	public class UserSessionService
 	{
 		private static UserSessionService _instance;
@@ -19,16 +22,27 @@ namespace ClinicManagementSystem.Service
 		
 		public int LoggedInUserId { get; private set; }
 
-
+		/// <summary>
+		/// Hàm SetLoggedInUserId dùng để lưu id của người dùng đăng nhập vào hệ thống
+		/// </summary>
+		/// <param name="userId"></param>
 		public void SetLoggedInUserId(int userId)
 		{
 			LoggedInUserId = userId;
 		}
+		/// <summary>
+		/// Hàm GetLoggedInUserId dùng để lấy id của người dùng đăng nhập vào hệ thống
+		/// </summary>
+		/// <returns></returns>
 		public int GetLoggedInUserId()
 		{
 			return LoggedInUserId;
 		}
 
+		/// <summary>
+		/// Hàm ClearSession dùng để xóa thông tin phiên đăng nhập của người dùng
+		/// </summary>
+		/// <param name="isRemember"></param>
 		public void ClearSession(bool isRemember = false)
 		{
 			LoggedInUserId = 0;

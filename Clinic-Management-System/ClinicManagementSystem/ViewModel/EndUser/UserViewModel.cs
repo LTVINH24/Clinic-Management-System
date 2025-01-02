@@ -22,7 +22,6 @@ namespace ClinicManagementSystem.ViewModel.EndUser
 		IDao _dao;
 		public string NewSpecialty {  get; set; }
 		public User user { get; set; } = new User();
-		// private ValidData valid { get; set; } = new ValidData();
 		private ObservableCollection<Specialty> _specialties;
 		public ObservableCollection<Specialty> Specialties
 		{
@@ -92,6 +91,11 @@ namespace ClinicManagementSystem.ViewModel.EndUser
 				Specialties.Add(specialtiesItem);
 			}
 		}
+
+		/// <summary>
+		/// Tạo mới chuyên khoa
+		/// </summary>
+		/// <returns>True nếu tạo thành công, False nếu tạo thất bại</returns>
 		public bool CreateNewSpecialty()
 		{
 			if (NewSpecialty != null && NewSpecialty != "")

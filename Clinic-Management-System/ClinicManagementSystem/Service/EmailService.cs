@@ -12,6 +12,9 @@ using MimeKit;
 
 namespace ClinicManagementSystem.Service
 {
+	/// <summary>
+	/// Lớp EmailService chứa các phương thức gửi email
+	/// </summary>
 	public class EmailService
 	{
 		private readonly EmailSettings _emailSettings;

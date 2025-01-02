@@ -140,7 +140,11 @@ namespace ClinicManagementSystem.Views.StaffView
 				VisitTypeDropDown.Content = menuItem.Text;
 			}
         }
-
+		/// <summary>
+		/// Xử lí sự kiện khi chọn bác sĩ
+		/// </summary>
+		/// <param name="sender"></param>
+		/// <param name="e"></param>
 		private void DoctorFilter_TextChanged(object sender, TextChangedEventArgs e)
 		{
 			//string filterText = DoctorFilter.Text.Trim();

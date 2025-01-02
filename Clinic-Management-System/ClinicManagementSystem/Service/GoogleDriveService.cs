@@ -6,9 +6,11 @@ using ClinicManagementSystem.Service;
 
 namespace ClinicManagementSystem.Services
 {
-    public class GoogleDriveService
+	/// <summary>
+	/// Lớp GoogleDriveService chứa các phương thức để tương tác với Google Drive
+	/// </summary>
+	public class GoogleDriveService
     {
-        //private readonly string apiKey = "AIzaSyCGIAw0GuMvTaDbOmzImjK7D-C34QJWzRg";
         private readonly string _apiKey;
 
 		public GoogleDriveService()

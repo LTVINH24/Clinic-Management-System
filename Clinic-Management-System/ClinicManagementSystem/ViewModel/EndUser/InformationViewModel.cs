@@ -19,11 +19,18 @@ namespace ClinicManagementSystem.ViewModel.EndUser
             userId = UserSessionService.Instance.LoggedInUserId;
             _dao = ServiceFactory.GetChildOf(typeof(IDao)) as IDao;
         }
-        public void LoadInformationUser()
+		/// <summary>
+		/// Lấy thông tin người dùng
+		/// </summary>
+		public void LoadInformationUser()
         {
             user = _dao.GetUserById(userId);
         }
-        public bool UpdateInformationUser()
+		/// <summary>
+		/// Cập nhật thông tin người dùng
+		/// </summary>
+		/// <returns>True nếu cập nhật thành công, False nếu cập nhật thất bại</returns>
+		public bool UpdateInformationUser()
         {
             if(user.password != null && user.password != "")
             {

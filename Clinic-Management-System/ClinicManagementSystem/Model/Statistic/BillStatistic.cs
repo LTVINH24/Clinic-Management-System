@@ -7,7 +7,10 @@ using System.Threading.Tasks;
 
 namespace ClinicManagementSystem.Model.Statistic
 {
-    public class BillStatistic : INotifyPropertyChanged
+	/// <summary>
+	/// Thống kê hóa đơn
+	/// </summary>
+	public class BillStatistic : INotifyPropertyChanged
     {
         public DateTime CreateDate { get; set; }
         public int TotalAmount { get; set; }

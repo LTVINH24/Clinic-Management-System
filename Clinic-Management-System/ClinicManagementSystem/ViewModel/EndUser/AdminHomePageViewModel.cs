@@ -21,7 +21,10 @@ namespace ClinicManagementSystem.ViewModel.EndUser
             LoadData();
         }
 
-        public void LoadData()
+		/// <summary>
+		/// Load dữ liệu gồm tổng số bệnh nhân và tổng số người dùng
+		/// </summary>
+		public void LoadData()
         {
             TotalPatientCount = _dao.GetTotalPatientsCount();
             TotalUserCount = _dao.GetTotalUsersCount();

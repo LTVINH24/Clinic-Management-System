@@ -4,7 +4,10 @@ using System;
 
 namespace ClinicManagementSystem.Converters
 {
-    public class BooleanToVisibilityConverter : IValueConverter
+	/// <summary>
+	/// Chuyển đổi giá trị Boolean sang Visibility
+	/// </summary>
+	public class BooleanToVisibilityConverter : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, string language)
         {
@@ -15,7 +18,15 @@ namespace ClinicManagementSystem.Converters
             return Visibility.Collapsed;
         }
 
-        public object ConvertBack(object value, Type targetType, object parameter, string language)
+		/// <summary>
+		/// Chuyển đổi giá trị Visibility sang Boolean
+		/// </summary>
+		/// <param name="value"></param>
+		/// <param name="targetType"></param>
+		/// <param name="parameter"></param>
+		/// <param name="language"></param>
+		/// <returns></returns>
+		public object ConvertBack(object value, Type targetType, object parameter, string language)
         {
             if (value is Visibility visibility)
             {

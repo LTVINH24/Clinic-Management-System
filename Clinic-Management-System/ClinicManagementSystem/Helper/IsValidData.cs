@@ -8,9 +8,16 @@ using System.Text.RegularExpressions;
 
 namespace ClinicManagementSystem.Helper
 {
+	/// <summary>
+	/// Kiểm tra dữ liệu nhập vào
+	/// </summary>
 	public class IsValidData
 	{
-		// Name
+		/// <summary>
+		/// Kiểm tra tên
+		/// </summary>
+		/// <param name="name"></param>
+		/// <returns></returns>
 		public bool IsValidName(string name)
 		{
 			if (string.IsNullOrWhiteSpace(name))
@@ -20,7 +27,13 @@ namespace ClinicManagementSystem.Helper
 
 			return Regex.IsMatch(name, @"^[\p{L}\s]+$");
 		}
-        public bool IsValidPhone(string phone)
+
+		/// <summary>
+		/// Kiểm tra số điện thoại
+		/// </summary>
+		/// <param name="phone"></param>
+		/// <returns></returns>
+		public bool IsValidPhone(string phone)
         {
             if (string.IsNullOrWhiteSpace(phone))
             {
@@ -29,7 +42,13 @@ namespace ClinicManagementSystem.Helper
             string pattern = @"^\+?[0-9\s\-\(\)]{10,15}$";
             return Regex.IsMatch(phone, pattern);
         }
-        public bool IsValidUsername(string username)
+
+		/// <summary>
+		/// Kiểm tra tên đăng nhập
+		/// </summary>
+		/// <param name="username"></param>
+		/// <returns></returns>
+		public bool IsValidUsername(string username)
         {
             if (string.IsNullOrWhiteSpace(username))
             {
@@ -40,7 +59,13 @@ namespace ClinicManagementSystem.Helper
             string pattern = @"^[a-zA-Z0-9_]{3,}$";
             return Regex.IsMatch(username, pattern);
         }
-        public bool IsValidPassword(string password)
+
+		/// <summary>
+		/// Kiểm tra mật khẩu
+		/// </summary>
+		/// <param name="password"></param>
+		/// <returns></returns>
+		public bool IsValidPassword(string password)
         {
             if (string.IsNullOrWhiteSpace(password))
             {
@@ -52,8 +77,12 @@ namespace ClinicManagementSystem.Helper
             return Regex.IsMatch(password, pattern);
         }
 
-        // Email
-        public bool IsValidEmail(string email)
+		/// <summary>
+		/// Kiểm tra email
+		/// </summary>
+		/// <param name="email"></param>
+		/// <returns></returns>
+		public bool IsValidEmail(string email)
 		{
 			if (string.IsNullOrWhiteSpace(email))
 			{
@@ -91,7 +120,11 @@ namespace ClinicManagementSystem.Helper
 			}
 		}
 
-		// ResidentID
+		/// <summary>
+		/// Kiểm tra số CCCD
+		/// </summary>
+		/// <param name="residentID"></param>
+		/// <returns></returns>
 		public bool IsValidResedentID(string residentID)
 		{
 			if (string.IsNullOrWhiteSpace(residentID))
@@ -101,7 +134,11 @@ namespace ClinicManagementSystem.Helper
 			return Regex.IsMatch(residentID, @"^\d{12}$");
 		}
 
-		// Address
+		/// <summary>
+		/// Kiểm tra địa chỉ
+		/// </summary>
+		/// <param name="address"></param>
+		/// <returns></returns>
 		public bool IsValidAddress(string address)
 		{
 			if (string.IsNullOrWhiteSpace(address))
@@ -112,24 +149,42 @@ namespace ClinicManagementSystem.Helper
 			return Regex.IsMatch(address, @"^[\p{L}\d\s\.,/]+$");
 		}
 
-		// DatePicker
+		/// <summary>
+		/// Kiểm tra ngày tháng
+		/// </summary>
+		/// <param name="date"></param>
+		/// <returns></returns>
 		public bool IsValidDatePicker(DateTimeOffset? date)
 		{
 			return date != null && date.Value < DateTimeOffset.Now;
 		}
-		// ExpDate and MfgDate
-        public bool IsValidTwoDatePicker(DateTimeOffset? a , DateTimeOffset? b)
+
+		/// <summary>
+		/// Kiểm tra ngày tháng
+		/// </summary>
+		/// <param name="a"></param>
+		/// <param name="b"></param>
+		/// <returns></returns>
+		public bool IsValidTwoDatePicker(DateTimeOffset? a , DateTimeOffset? b)
         {
             return a != null &&b!=null && a <= b;
         }
 
-        // Gender
-        public bool IsValidGender(string gender)
+		/// <summary>
+		/// Kiểm tra giới tính
+		/// </summary>
+		/// <param name="gender"></param>
+		/// <returns></returns>
+		public bool IsValidGender(string gender)
 		{
 			return !string.IsNullOrWhiteSpace(gender);
 		}
 
-		// Text
+		/// <summary>
+		/// Kiểm tra mô tả
+		/// </summary>
+		/// <param name="description"></param>
+		/// <returns></returns>
 		public bool IsValidDescription(string description)
 		{
 			return !string.IsNullOrWhiteSpace(description);

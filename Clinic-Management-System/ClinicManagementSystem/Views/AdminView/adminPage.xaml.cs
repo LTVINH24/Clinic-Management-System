@@ -39,7 +39,12 @@ namespace ClinicManagementSystem.Views
 
             contentFrame.Navigated += ContentFrame_Navigated;
         }
-        private void ContentFrame_Navigated(object sender, NavigationEventArgs e)
+		/// <summary>
+		/// Xử lí sự kiện khi chuyển trang
+		/// </summary>
+		/// <param name="sender"></param>
+		/// <param name="e"></param>
+		private void ContentFrame_Navigated(object sender, NavigationEventArgs e)
         {
             if (e.SourcePageType == typeof(AdminHomePage))
             {

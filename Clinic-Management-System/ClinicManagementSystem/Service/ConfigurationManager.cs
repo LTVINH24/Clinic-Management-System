@@ -8,6 +8,9 @@ using System.Threading.Tasks;
 
 namespace ClinicManagementSystem.Service
 {
+	/// <summary>
+	/// Lớp quản lý cấu hình
+	/// </summary>
 	public static class ConfigurationManager
 	{
 		public static IConfiguration AppSetting { get; }

@@ -174,7 +174,7 @@ namespace ClinicManagementSystem.ViewModel.EndUser
 		/// <summary>
 		/// Cập nhật thông tin User
 		/// </summary>
-		/// <returns></returns>
+		/// <returns>True nếu cập nhật thành công, False nếu cập nhật thất bại</returns>
 		public bool Update()
 		{
 			var Password = new Password();
@@ -187,6 +187,12 @@ namespace ClinicManagementSystem.ViewModel.EndUser
 			newPassword = "";
 			return sucess;
 		}
+		/// <summary>
+		/// Khóa hoặc mở khóa User
+		/// </summary>
+		/// <param name="id"></param>
+		/// <param name="status"></param>
+		/// <returns>True nếu khóa thành công, False nếu khóa thất bại</returns>
 		public bool LockUser(int id,string status)
 		{
 			bool result = _dao.LockUser(id, status);
@@ -195,7 +201,7 @@ namespace ClinicManagementSystem.ViewModel.EndUser
 		/// <summary>
 		/// Xóa User
 		/// </summary>
-		/// <returns></returns>
+		/// <returns>True nếu xóa thành công, False nếu xóa thất bại</returns>
 		public bool Delete()
 		{
 			return _dao.DeleteUser(UserEdit);

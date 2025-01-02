@@ -23,7 +23,9 @@ namespace ClinicManagementSystem.ViewModel.EndUser
 			_dao = ServiceFactory.GetChildOf(typeof(IDao)) as IDao;
 			LoadData();
 		}
-
+		/// <summary>
+		/// Load dữ liệu gồm số lượng phiếu khám bệnh hôm nay, tổng số bệnh nhân, số bệnh nhân mới hôm nay, số phiếu khàm bệnh chờ xử lý
+		/// </summary>
 		public void LoadData()
 		{
 			TodayFormsCount = _dao.GetTodayMedicalExaminationFormsCount();

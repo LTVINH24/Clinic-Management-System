@@ -70,14 +70,13 @@ namespace ClinicManagementSystem.Views
 			var loginWindow = new MainWindow();
 			loginWindow.Activate();
 		}
-        public IntPtr GetWindowHandle()
+		/// <summary>
+		/// Xử lí sự kiện khi cửa sổ được mở
+		/// </summary>
+		/// <returns></returns>
+		public IntPtr GetWindowHandle()
         {
             return WinRT.Interop.WindowNative.GetWindowHandle(this);
-        }
-
-        public XamlRoot GetXamlRoot()
-        {
-            return Content.XamlRoot;
         }
 
     }

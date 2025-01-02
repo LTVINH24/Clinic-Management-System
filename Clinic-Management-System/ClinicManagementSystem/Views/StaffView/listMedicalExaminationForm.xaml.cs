@@ -216,7 +216,11 @@ namespace ClinicManagementSystem.Views.StaffView
 				ViewModel.FormEdit.VisitType = menuItem.Text;
 			}
 		}
-
+		/// <summary>
+		/// Xử lí sự kiện khi chọn button clear filter
+		/// </summary>
+		/// <param name="sender"></param>
+		/// <param name="e"></param>
 		private void ClearFilter_Click(object sender, RoutedEventArgs e)
 		{
 			ViewModel.StartDate = null;
@@ -226,12 +230,20 @@ namespace ClinicManagementSystem.Views.StaffView
 			ViewModel.Search();
 		}
 
-
+		/// <summary>
+		/// Xử lí sự kiện khi nhấn nút ClosePopup
+		/// </summary>
+		/// <param name="sender"></param>
+		/// <param name="e"></param>
 		private void ClosePopup_Click(object sender, RoutedEventArgs e)
 		{
 			EditPopup.IsOpen = false;
 		}
-
+		/// <summary>
+		/// Xử lí sự kiện khi nhấn nút Edit
+		/// </summary>
+		/// <param name="sender"></param>
+		/// <param name="e"></param>
 		private void Edit_Click(object sender, RoutedEventArgs e)
 		{
 			var button = sender as Button;
@@ -239,7 +251,11 @@ namespace ClinicManagementSystem.Views.StaffView
 			ViewModel.Edit(editForm);
 			EditPopup.IsOpen = true;	
 		}
-
+		/// <summary>
+		/// Xử lí sự kiện khi nhấn nút SendResult
+		/// </summary>
+		/// <param name="sender"></param>
+		/// <param name="e"></param>
 		private async void SendResult_Click(object sender, RoutedEventArgs e)
 		{
 			try
@@ -302,7 +318,11 @@ namespace ClinicManagementSystem.Views.StaffView
 		private bool isDragging = false;
 		private Windows.Foundation.Point initialPosition;
 		private Windows.Foundation.Point popupPosition;
-
+		/// <summary>
+		/// Xử lí sự kiện khi kéo thả popup
+		/// </summary>
+		/// <param name="sender"></param>
+		/// <param name="e"></param>
 		private void DragArea_PointerPressed(object sender, PointerRoutedEventArgs e)
 		{
 			isDragging = true;
@@ -314,7 +334,11 @@ namespace ClinicManagementSystem.Views.StaffView
 				popupPosition = new Windows.Foundation.Point(EditPopup.HorizontalOffset, EditPopup.VerticalOffset);
 			}
 		}
-
+		/// <summary>
+		/// Xử lí sự kiện khi kéo thả popup
+		/// </summary>
+		/// <param name="sender"></param>
+		/// <param name="e"></param>
 		private void DragArea_PointerMoved(object sender, PointerRoutedEventArgs e)
 		{
 			if (isDragging)
@@ -327,13 +351,21 @@ namespace ClinicManagementSystem.Views.StaffView
 				EditPopup.VerticalOffset = popupPosition.Y + deltaY;
 			}
 		}
-
+		/// <summary>
+		/// Xử lí sự kiện khi kéo thả popup
+		/// </summary>
+		/// <param name="sender"></param>
+		/// <param name="e"></param>
 		private void DragArea_PointerReleased(object sender, PointerRoutedEventArgs e)
 		{
 			isDragging = false;
 			((UIElement)sender).ReleasePointerCapture(e.Pointer);
 		}
-
+		/// <summary>
+		/// Xử lí sự kiện khi chọn loại khám
+		/// </summary>
+		/// <param name="sender"></param>
+		/// <param name="e"></param>
 		private void StatusFilter_SelectionChanged(object sender, SelectionChangedEventArgs e)
 		{
 			var selectedStatus = (StatusFilter.SelectedItem as ComboBoxItem)?.Content.ToString();

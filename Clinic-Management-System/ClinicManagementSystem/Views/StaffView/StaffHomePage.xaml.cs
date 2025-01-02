@@ -1,4 +1,4 @@
-using ClinicManagementSystem.ViewModel.EndUser;
+﻿using ClinicManagementSystem.ViewModel.EndUser;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Controls.Primitives;
@@ -31,17 +31,29 @@ namespace ClinicManagementSystem.Views.StaffView
 			ViewModel = new StaffHomePageViewModel();
 			this.InitializeComponent();
 		}
-
+		/// <summary>
+		/// Hàm chuyển hướng sang trang danh sách phiếu khám bệnh
+		/// </summary>
+		/// <param name="sender"></param>
+		/// <param name="e"></param>
 		private void NavigateToListMedicalExaminationForm(object sender, RoutedEventArgs e)
 		{
 			Frame.Navigate(typeof(ListMedicalExaminationForm));
 		}
-
+		/// <summary>
+		/// Hàm chuyển hướng sang trang danh sách bệnh nhân
+		/// </summary>
+		/// <param name="sender"></param>
+		/// <param name="e"></param>
 		private void NavigateToListPatient(object sender, RoutedEventArgs e)
 		{
 			Frame.Navigate(typeof(ListPatient));
 		}
-
+		/// <summary>
+		/// Hàm chuyển hướng sang trang thêm phiếu khám bệnh
+		/// </summary>
+		/// <param name="sender"></param>
+		/// <param name="e"></param>
 		private void NavigateToAddMedicalExaminationForm(object sender, RoutedEventArgs e)
 		{
 			Frame.Navigate(typeof(AddMedicalExaminationForm));

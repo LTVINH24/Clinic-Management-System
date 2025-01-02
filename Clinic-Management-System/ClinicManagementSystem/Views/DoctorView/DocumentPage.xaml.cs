@@ -16,8 +16,10 @@ namespace ClinicManagementSystem.Views.DoctorView
             driveService = new GoogleDriveService();
             LoadFileList();
         }
-
-        private async void LoadFileList()
+		/// <summary>
+		/// Load danh sách file từ Google Drive
+		/// </summary>
+		private async void LoadFileList()
         {
             try
             {
@@ -29,8 +31,12 @@ namespace ClinicManagementSystem.Views.DoctorView
                 FileListView.ItemsSource = new List<string> { $"Lỗi: {ex.Message}" };
             }
         }
-
-        private void OpenGoogleDrive_Click(object sender, Microsoft.UI.Xaml.RoutedEventArgs e)
+		/// <summary>
+		/// Hàm xử lí sự kiện khi nhấn vào nút mở Google Drive
+		/// </summary>
+		/// <param name="sender"></param>
+		/// <param name="e"></param>
+		private void OpenGoogleDrive_Click(object sender, Microsoft.UI.Xaml.RoutedEventArgs e)
         {
             string folderUrl = $"https://drive.google.com/drive/folders/{folderId}?usp=sharing";
             var psi = new System.Diagnostics.ProcessStartInfo

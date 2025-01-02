@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 namespace ClinicManagementSystem.Model
 {
 	/// <summary>
-	/// Lớp Patient chứa thông tin của bệnh nhân gồm các thuộc tính Id, Name, Email, Resident, Address, DoB, Gender
+	/// Lớp Patient chứa thông tin của bệnh nhân gồm các thuộc tính Id, Name, Email, Resident, Address, DoB, Gender, NextExaminationDate
 	/// </summary>
 	public class Patient :INotifyPropertyChanged
 	{

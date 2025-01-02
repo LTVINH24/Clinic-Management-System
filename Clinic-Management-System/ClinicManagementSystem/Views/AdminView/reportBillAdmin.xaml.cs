@@ -1,4 +1,4 @@
-using ClinicManagementSystem.ViewModel.Statistic;
+﻿using ClinicManagementSystem.ViewModel.Statistic;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Controls.Primitives;
@@ -32,8 +32,12 @@ namespace ClinicManagementSystem.Views.AdminView
             ViewModel = new StatisticBillViewModel();
             DataContext = ViewModel;
         }
-
-        private void viewStatistic(object sender, RoutedEventArgs e)
+		/// <summary>
+		/// Hàm xử lý sự kiện khi nhấn vào nút xem thống kê
+		/// </summary>
+		/// <param name="sender"></param>
+		/// <param name="e"></param>
+		private void viewStatistic(object sender, RoutedEventArgs e)
         {
             ViewModel.LoadData();
             ViewModel.UpdateChart();

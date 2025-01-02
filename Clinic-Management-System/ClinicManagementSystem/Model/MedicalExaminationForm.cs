@@ -10,7 +10,7 @@ using System.Windows;
 namespace ClinicManagementSystem.Model
 {
 	/// <summary>
-	/// Lớp MedicalExaminationForm chứa thông tin của phiếu khám bệnh gồm các thuộc tính Id, PatientId, StaffId, DoctorId, Time, Symptoms, VisitType
+	/// Class chứa thông tin phiếu khám bệnh gồm thông tin bệnh nhân, bác sĩ, thời gian, triệu chứng, loại khám, trạng thái
 	/// </summary>
 	public class MedicalExaminationForm : INotifyPropertyChanged
 	{

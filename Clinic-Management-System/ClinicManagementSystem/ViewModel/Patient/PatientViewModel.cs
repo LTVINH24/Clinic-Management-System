@@ -184,6 +184,13 @@ namespace ClinicManagementSystem.ViewModel
 			LoadData();
 		}
 
+		/// <summary>
+		/// Kiểm tra dữ liệu cập nhật
+		/// </summary>
+		/// <returns>
+		///		Boolean: True nếu dữ liệu hợp lệ, False nếu dữ liệu không hợp lệ
+		///		String: Thông báo lỗi
+		/// </returns>
 		public (bool, string) isValidDataUpdate()
 		{
 			IsValidData isValid = new IsValidData();

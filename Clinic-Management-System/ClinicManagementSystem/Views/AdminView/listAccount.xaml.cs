@@ -103,14 +103,7 @@ namespace ClinicManagementSystem.Views.AdminView
         {
             var useredit = itemsComboBox.SelectedItem as User;
             ViewModel.Edit(useredit);
-        }
-
-		/// <summary>
-		/// Xử lí sự kiện khi chọn button update
-		/// </summary>
-		/// <param name="sender"></param>
-		/// <param name="e"></param>
-		
+        }		
 
 		/// <summary>
 		/// Xử lí sự kiện khi chọn button delete
@@ -200,8 +193,12 @@ namespace ClinicManagementSystem.Views.AdminView
                 ViewModel.UserEdit.role = menuItem.Text;
             }
         }
-
-        private void Lock(object sender, RoutedEventArgs e)
+		/// <summary>
+		/// Xử lí sự kiện khi chọn button lock
+		/// </summary>
+		/// <param name="sender"></param>
+		/// <param name="e"></param>
+		private void Lock(object sender, RoutedEventArgs e)
         {
             var button = sender as Button;
             var user = button?.DataContext as User;
