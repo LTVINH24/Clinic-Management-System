@@ -1,17 +1,24 @@
 ﻿using ClinicManagementSystem.Model;
 using ClinicManagementSystem.ViewModel;
+using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Navigation;
 using System.Collections.ObjectModel;
+using System;
+using ClinicManagementSystem.Helper;
 
 namespace ClinicManagementSystem.Views.DoctorView
 {
     public sealed partial class DiagnosisPage : Page
     {
+        public DiagnosisViewModel ViewModel { get; }
+
         public DiagnosisPage()
         {
             this.InitializeComponent();
-            this.DataContext = new DiagnosisViewModel();
+            ViewModel = new DiagnosisViewModel();
+            ViewModel.NavigationFrame = this.Frame;
+            this.DataContext = ViewModel;
         }
 
 		/// <summary>
@@ -21,10 +28,36 @@ namespace ClinicManagementSystem.Views.DoctorView
 		protected override void OnNavigatedTo(NavigationEventArgs e)
         {
             base.OnNavigatedTo(e);
-
             if (e.Parameter is MedicalExaminationForm selectedForm)
             {
-                ((DiagnosisViewModel)this.DataContext).LoadData(selectedForm.Id);
+                ViewModel.LoadData(selectedForm.Id);
+            }
+        }
+
+		/// <summary>
+		/// Xử lý sự kiện khi nhấn nút Save
+		/// </summary>
+		/// <param name="sender"></param>
+		/// <param name="e"></param>
+		private void SaveButton_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                // Lưu chẩn đoán và đơn thuốc
+                bool success = ViewModel.SaveDiagnosisAndPrescription();
+                
+                if (success)
+                {
+                    // Quay về trang trước
+                    if (Frame.CanGoBack)
+                    {
+                        Frame.GoBack();
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                _ = DialogHelper.ShowMessage("Lỗi", ex.Message, this.Content.XamlRoot);
             }
         }
 
@@ -33,9 +66,9 @@ namespace ClinicManagementSystem.Views.DoctorView
 		/// </summary>
 		/// <param name="sender"></param>
 		/// <param name="e"></param>
-		private void BackButton_Click(object sender, Microsoft.UI.Xaml.RoutedEventArgs e)
+		private void BackButton_Click(object sender, RoutedEventArgs e)
         {
-            // Điều hướng trở về DoctorPage
+            // Chỉ quay về trang trước
             if (Frame.CanGoBack)
             {
                 Frame.GoBack();
@@ -49,10 +82,15 @@ namespace ClinicManagementSystem.Views.DoctorView
 		/// <param name="e"></param>
 		private void SelectMedicinesButton_Click(object sender, Microsoft.UI.Xaml.RoutedEventArgs e)
         {
-            // Navigate to the medicine selection page
+            // Lưu chẩn đoán
+            ViewModel.SaveDiagnosis();
+
+            // Truyền formId khi navigate
             var medicineSelectionPage = new MedicineSelectionPage();
             medicineSelectionPage.MedicineSelectionConfirmed += OnMedicineSelectionConfirmed;
-            Frame.Navigate(typeof(MedicineSelectionPage), null, null);
+            
+            // Truyền formId qua parameter
+            Frame.Navigate(typeof(MedicineSelectionPage), ViewModel.MedicalExaminationForm.Id);
         }
 
 		/// <summary>
@@ -62,8 +100,23 @@ namespace ClinicManagementSystem.Views.DoctorView
 		/// <param name="selectedMedicines"></param>
 		private void OnMedicineSelectionConfirmed(object sender, ObservableCollection<MedicineSelection> selectedMedicines)
         {
-            var viewModel = (DiagnosisViewModel)this.DataContext;
-            viewModel.UpdateSelectedMedicines(selectedMedicines);
+            ViewModel.UpdateSelectedMedicines(selectedMedicines);
+        }
+
+        private void OnRequestNavigateToMedicineSelection(object sender, ObservableCollection<MedicineSelection> selectedMedicines)
+        {
+            var medicineSelectionPage = new MedicineSelectionPage();
+            medicineSelectionPage.MedicineSelectionConfirmed += OnMedicineSelectionConfirmed;
+            Frame.Navigate(typeof(MedicineSelectionPage), ViewModel.SelectedMedicines);
+        }
+
+        private void TextBox_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            var textBox = sender as TextBox;
+            if (textBox != null)
+            {
+                ViewModel.Diagnosis = textBox.Text;
+            }
         }
     }
 }

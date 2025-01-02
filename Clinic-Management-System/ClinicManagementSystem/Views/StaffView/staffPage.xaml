@@ -33,6 +33,10 @@
                                Icon="Add" 
                                ToolTipService.ToolTip="Add" 
                                Tag="AddMedicalExaminationForm"/>
+            <NavigationViewItem Content="Unbilled Prescriptions" 
+                               Icon="Document" 
+                               ToolTipService.ToolTip="Unbilled Prescriptions" 
+                               Tag="UnbilledPrescriptionsPage"/>
         </NavigationView.MenuItems>
 
         <ScrollViewer VerticalScrollBarVisibility="Auto" 
@@ -41,4 +45,5 @@
                    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"/>
         </ScrollViewer>
     </NavigationView>
+
 </Page>
