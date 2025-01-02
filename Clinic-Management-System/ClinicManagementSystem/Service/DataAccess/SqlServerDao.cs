@@ -2120,5 +2120,79 @@ namespace ClinicManagementSystem.Service.DataAccess
                 return false;
             }
         }
+
+        public List<Bill> GetAllBills()
+        {
+            var bills = new List<Bill>();
+            try
+            {
+                using (SqlConnection connection = new SqlConnection(_connectionString))
+                {
+                    connection.Open();
+
+                    string query = "SELECT * FROM Bill ORDER BY createDate DESC";
+                    using (SqlCommand command = new SqlCommand(query, connection))
+                    {
+                        using (SqlDataReader reader = command.ExecuteReader())
+                        {
+                            while (reader.Read())
+                            {
+                                var bill = new Bill
+                                {
+                                    Id = reader.GetInt32(reader.GetOrdinal("id")),
+                                    PrescriptionId = reader.GetInt32(reader.GetOrdinal("prescriptionId")),
+                                    TotalAmount = reader.GetInt32(reader.GetOrdinal("totalAmount")),
+                                    CreatedDate = reader.GetDateTime(reader.GetOrdinal("createDate")),
+                                    IsGetMedicine = reader.GetString(reader.GetOrdinal("isGetMedicine"))
+                                };
+                                bills.Add(bill);
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine($"Error in GetAllBills: {ex.Message}");
+            }
+            return bills;
+        }
+
+        public Bill GetBillById(int id)
+        {
+            try
+            {
+                using (SqlConnection connection = new SqlConnection(_connectionString))
+                {
+                    connection.Open();
+
+                    string query = "SELECT * FROM Bill WHERE id = @Id";
+                    using (SqlCommand command = new SqlCommand(query, connection))
+                    {
+                        command.Parameters.AddWithValue("@Id", id);
+
+                        using (SqlDataReader reader = command.ExecuteReader())
+                        {
+                            if (reader.Read())
+                            {
+                                return new Bill
+                                {
+                                    Id = reader.GetInt32(reader.GetOrdinal("id")),
+                                    PrescriptionId = reader.GetInt32(reader.GetOrdinal("prescriptionId")),
+                                    TotalAmount = reader.GetInt32(reader.GetOrdinal("totalAmount")),
+                                    CreatedDate = reader.GetDateTime(reader.GetOrdinal("createDate")),
+                                    IsGetMedicine = reader.GetString(reader.GetOrdinal("isGetMedicine"))
+                                };
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine($"Error in GetBillById: {ex.Message}");
+            }
+            return null;
+        }
     }
 }

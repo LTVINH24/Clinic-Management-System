@@ -1,0 +1,51 @@
+<Page
+    x:Class="ClinicManagementSystem.Views.StaffView.BillDetailPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+
+    <Grid Padding="20">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <TextBlock Text="Bill Detail"
+                  FontSize="24"
+                  FontWeight="Bold"
+                  Margin="0,0,0,20"/>
+
+        <StackPanel Grid.Row="1" Spacing="10">
+            <StackPanel Orientation="Horizontal">
+                <TextBlock Text="Bill ID: " FontWeight="SemiBold"/>
+                <TextBlock Text="{x:Bind ViewModel.Bill.Id, Mode=OneWay}"/>
+            </StackPanel>
+
+            <StackPanel Orientation="Horizontal">
+                <TextBlock Text="Date: " FontWeight="SemiBold"/>
+                <TextBlock Text="{x:Bind ViewModel.Bill.CreatedDate, Mode=OneWay}"/>
+            </StackPanel>
+
+            <StackPanel Orientation="Horizontal">
+                <TextBlock Text="Total Amount: " FontWeight="SemiBold"/>
+                <TextBlock Text="{x:Bind ViewModel.Bill.TotalAmount, Mode=OneWay}"/>
+                <TextBlock Text=" VND" Margin="5,0,0,0"/>
+            </StackPanel>
+
+            <StackPanel Orientation="Horizontal">
+                <TextBlock Text="Get Medicine: " FontWeight="SemiBold"/>
+                <TextBlock Text="{x:Bind ViewModel.Bill.IsGetMedicine, Mode=OneWay}"/>
+            </StackPanel>
+        </StackPanel>
+
+        <Button Grid.Row="2"
+                Content="Back"
+                Click="BackButton_Click"
+                HorizontalAlignment="Right"
+                Margin="0,20,0,0"/>
+    </Grid>
+</Page> 

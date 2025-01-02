@@ -37,6 +37,10 @@
                                Icon="Document" 
                                ToolTipService.ToolTip="Unbilled Prescriptions" 
                                Tag="UnbilledPrescriptionsPage"/>
+            <NavigationViewItem Content="Bill" 
+                               Icon="Document" 
+                               ToolTipService.ToolTip="Bill" 
+                               Tag="BillListPage"/>
         </NavigationView.MenuItems>
 
         <ScrollViewer VerticalScrollBarVisibility="Auto" 
