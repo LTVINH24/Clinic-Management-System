@@ -15,18 +15,20 @@ namespace ClinicManagementSystem.ViewModel
 	public class MedicalExaminationViewModel : BaseViewModel
 	{
 		private readonly SqlServerDao _dataAccess;
-		private int doctorId { get; set; }
-		private Frame _navigationFrame;
 		private ObservableCollection<MedicalExaminationForm> _examinationForms;
+		private ObservableCollection<PageInfo> _pageInfos;
+		private PageInfo _selectedPageInfo;
+		private Frame _navigationFrame;
+		private int _currentPage = 0;
+		private const int PageSize = 2;
+		private readonly int doctorId;
+		private string _keyword = "";
 
-		// Số phần tử mỗi trang
-		private const int PageSize = 4;
-		private int _currentPage = 0; // Trang hiện tại
-
-		public ObservableCollection<MedicalExaminationForm> ExaminationForms
+		public MedicalExaminationViewModel()
 		{
-			get => _examinationForms;
-			set => SetProperty(ref _examinationForms, value);
+			_dataAccess = new SqlServerDao();
+			doctorId = UserSessionService.Instance.GetLoggedInUserId();
+			LoadExaminationForms();
 		}
 
 		public Frame NavigationFrame
@@ -35,70 +37,104 @@ namespace ClinicManagementSystem.ViewModel
 			set => _navigationFrame = value;
 		}
 
-		public ICommand PreviousPageCommand { get; }
-		public ICommand NextPageCommand { get; }
-
-		public MedicalExaminationViewModel()
+		public ObservableCollection<MedicalExaminationForm> ExaminationForms
 		{
-			_dataAccess = new SqlServerDao();
-			ExaminationForms = new ObservableCollection<MedicalExaminationForm>();
-			PreviousPageCommand = new RelayCommand(PreviousPage);
-			NextPageCommand = new RelayCommand(NextPage);
-			doctorId = UserSessionService.Instance.GetLoggedInUserId();
-			LoadExaminationForms(); // Gọi phương thức để tải dữ liệu
+			get => _examinationForms ??= new ObservableCollection<MedicalExaminationForm>();
+			set => SetProperty(ref _examinationForms, value);
 		}
 
-		/// <summary>
-		/// Tải dữ liệu các phiếu khám từ cơ sở dữ liệu
-		/// </summary>
+		public ObservableCollection<PageInfo> PageInfos
+		{
+			get => _pageInfos ??= new ObservableCollection<PageInfo>();
+			set => SetProperty(ref _pageInfos, value);
+		}
+
+		public PageInfo SelectedPageInfo
+		{
+			get => _selectedPageInfo;
+			set => SetProperty(ref _selectedPageInfo, value);
+		}
+
+		public string Keyword
+		{
+			get => _keyword;
+			set
+			{
+				if (SetProperty(ref _keyword, value))
+				{
+					System.Diagnostics.Debug.WriteLine($"Keyword changed to: {value}");
+					_currentPage = 0;
+					LoadExaminationForms();
+				}
+			}
+		}
+
 		private void LoadExaminationForms()
 		{
-            // Lấy danh sách phiếu khám chưa khám
-            var forms = _dataAccess.GetMedicalExaminationForms(doctorId)
-                .Where(f => f.IsExaminated == "false")
-                .ToList();
-			ExaminationForms.Clear();
+			System.Diagnostics.Debug.WriteLine($"Loading forms with keyword: {Keyword}");
+			var (forms, totalCount) = _dataAccess.GetDoctorPendingExaminationForms(
+				doctorId, 
+				_currentPage + 1, 
+				PageSize,
+				Keyword
+			);
+			System.Diagnostics.Debug.WriteLine($"Total count: {totalCount}, Forms count: {forms.Count}");
 
-			// Chỉ lấy các phần tử cho trang hiện tại
-			var pagedForms = forms.Skip(_currentPage * PageSize).Take(PageSize);
-			foreach (var form in pagedForms)
+			ExaminationForms.Clear();
+			foreach (var form in forms)
 			{
 				ExaminationForms.Add(form);
 			}
+
+			int totalPages = (totalCount + PageSize - 1) / PageSize;
+			totalPages = Math.Max(1, totalPages);
+
+			PageInfos.Clear();
+			for (int i = 1; i <= totalPages; i++)
+			{
+				PageInfos.Add(new PageInfo { Page = i, Total = totalPages });
+			}
+			
+			System.Diagnostics.Debug.WriteLine($"Current page: {_currentPage + 1}, Total pages: {totalPages}");
+			
+			SelectedPageInfo = PageInfos.FirstOrDefault(p => p.Page == _currentPage + 1) 
+				?? new PageInfo { Page = 1, Total = totalPages };
 		}
 
-		/// <summary>
-		/// Chuyển sang trang trước
-		/// </summary>
-		private void PreviousPage()
+		public void GoToNextPage()
 		{
+			System.Diagnostics.Debug.WriteLine($"Attempting to go to next page. Current: {_currentPage + 1}");
+			if (_currentPage < (PageInfos.Count - 1))
+			{
+				_currentPage++;
+				LoadExaminationForms();
+			}
+		}
+
+		public void GoToPreviousPage()
+		{
+			System.Diagnostics.Debug.WriteLine($"Attempting to go to previous page. Current: {_currentPage + 1}");
 			if (_currentPage > 0)
 			{
 				_currentPage--;
-				LoadExaminationForms(); // Tải lại các phiếu khám cho trang trước
+				LoadExaminationForms();
 			}
 		}
 
-		/// <summary>
-		/// Chuyển sang trang tiếp theo
-		/// </summary>
-		private void NextPage()
+		public void GoToPage(int page)
 		{
-			if (ExaminationForms.Count == PageSize)
+			System.Diagnostics.Debug.WriteLine($"Attempting to go to page {page}");
+			if (page >= 1 && page <= PageInfos.Count)
 			{
-				_currentPage++;
-				LoadExaminationForms(); // Tải lại các phiếu khám cho trang tiếp theo
+				_currentPage = page - 1;
+				LoadExaminationForms();
 			}
 		}
 
-		/// <summary>
-		/// Điều hướng sang trang chẩn đoán
-		/// </summary>
-		/// <param name="selectedForm"></param>
 		public void NavigateToDiagnosisPage(MedicalExaminationForm selectedForm)
 		{
-			// Điều hướng từ MedicalExaminationPage sang DiagnosisPage
 			NavigationFrame?.Navigate(typeof(DiagnosisPage), selectedForm);
 		}
 	}
 }
+

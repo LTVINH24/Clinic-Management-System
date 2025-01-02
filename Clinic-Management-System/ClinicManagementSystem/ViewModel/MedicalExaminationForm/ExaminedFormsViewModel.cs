@@ -36,11 +36,11 @@ namespace ClinicManagementSystem.ViewModel
         private void LoadExaminedForms()
         {
             // Lấy danh sách phiếu khám đã khám
-            var forms = _dataAccess.GetMedicalExaminationForms(doctorId)
-                .Where(f => f.IsExaminated == "true")
-                .ToList();
+            //var forms = _dataAccess.GetMedicalExaminationForms(doctorId)
+            //    .Where(f => f.IsExaminated == "true")
+            //    .ToList();
 
-            ExaminedForms = new ObservableCollection<MedicalExaminationForm>(forms);
+            //ExaminedForms = new ObservableCollection<MedicalExaminationForm>(forms);
         }
     }
 }
