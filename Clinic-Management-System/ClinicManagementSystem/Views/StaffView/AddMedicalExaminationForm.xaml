@@ -66,12 +66,17 @@
                      Margin="10"
                      Header="Address"  
                      Text="{x:Bind viewModel.Patient.Address, Mode=TwoWay}" />
-            <CalendarDatePicker Grid.Row="3" Grid.Column="0"
+            <!--<CalendarDatePicker Grid.Row="3" Grid.Column="0"
                                 Margin="10"  
                                 PlaceholderText="Pick a date" 
                                 Header="Date of Birth" 
                                 Date="{x:Bind viewModel.Patient.DoB, Mode=TwoWay}" 
-                                Foreground="{ThemeResource ApplicationForegroundThemeBrush}" />
+                                Foreground="{ThemeResource ApplicationForegroundThemeBrush}" />-->
+            <DatePicker Grid.Row="3" Grid.Column="0" 
+                        Margin="10"
+                        Header="Date of Birth" 
+                        Date="{x:Bind viewModel.SelectedDate, Mode=TwoWay}"
+                        Foreground="{ThemeResource ApplicationForegroundThemeBrush}"/>
 
             <StackPanel Grid.Row="3" Grid.Column="1">
                 <Grid>
@@ -135,24 +140,20 @@
                               SelectedItem="{x:Bind viewModel.SelectedDoctor, Mode=TwoWay}"
                               ItemTemplate="{StaticResource VerticalEmployee}"
                               Width="600"
-                              MaxHeight="150"
+                              Height="150"
                               Margin="10"
                               BorderBrush="{ThemeResource ApplicationForegroundThemeBrush}" BorderThickness="2">
                     </ListView>
 
-                    <StackPanel Width="200" Margin="20, 10, 10, 10">
-                        <TextBox x:Name="FilterByName" 
-                                 Width="auto"
+                    <StackPanel Width="500" Margin="20, 10, 10, 10">
+                        <TextBox x:Name="DoctorFilter" 
+                                 Width="300"
                                  Margin="8" 
-                                 Header="Filter by Doctor Name" 
+                                 PlaceholderText="Search by doctor name or specialty"
+                                 Header="Search Doctor" 
                                  HorizontalAlignment="Left"
-                                 Text="{x:Bind viewModel.DoctorNameFilter, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
-                        <TextBox x:Name="FilterBySpecialty"
-                                 Width="auto"  
-                                 Margin="8"
-                                 Header="Filter by Specialty Name"
-                                 HorizontalAlignment="Left"
-                                 Text="{x:Bind viewModel.SpecialtyFilter, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                                 Text="{x:Bind viewModel.Keyword, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                 TextChanged="DoctorFilter_TextChanged"/>
                     </StackPanel>
                 </StackPanel>
             </StackPanel>

@@ -26,9 +26,9 @@
                 Padding="24">
             <StackPanel Spacing="16">
                 <TextBlock
+                     Text="Information"
                      Style="{StaticResource SubtitleTextBlockStyle}"
-                     FontWeight="SemiBold"
-                    Text="Information"/>
+                     FontWeight="SemiBold"/>
                 <Grid >
                     <Grid.RowDefinitions>
                         <RowDefinition Height="Auto"/>
@@ -54,20 +54,20 @@
                         </Grid.ColumnDefinitions>
 
                         <TextBox  Grid.Row="0"
-        x:Name="NameUser" 
-        Header="Name" 
-        PlaceholderText="Name" 
-        Text="{x:Bind viewModel.user.name, Mode=TwoWay}"/>
+                            x:Name="NameUser" 
+                            Header="Name" 
+                            PlaceholderText="Name" 
+                            Text="{x:Bind viewModel.user.name, Mode=TwoWay}"/>          
                         <TextBox Grid.Row="2"
-       x:Name="PhoneUser"  
-       Header="Phone" 
-       PlaceholderText="Phone" 
-       Text="{x:Bind viewModel.user.phone, Mode=TwoWay}"/>
+                            x:Name="PhoneUser"  
+                            Header="Phone" 
+                            PlaceholderText="Phone" 
+                            Text="{x:Bind viewModel.user.phone, Mode=TwoWay}"/>
                         <TextBox Grid.Row="4"
-       x:Name="AddressUser"  
-       Header="Address" 
-       PlaceholderText="Adress" 
-       Text="{x:Bind viewModel.user.address, Mode=TwoWay}"/>
+                            x:Name="AddressUser"  
+                            Header="Address" 
+                            PlaceholderText="Adress" 
+                            Text="{x:Bind viewModel.user.address, Mode=TwoWay}"/>
                     </Grid>
 
                     <Grid Grid.Row="0" Grid.Column="1" 
@@ -89,9 +89,9 @@
                         <StackPanel Grid.Row="0" VerticalAlignment="Center">
                             <TextBlock>Gender</TextBlock>
                             <DropDownButton x:Name="GenderDropDown" 
-                  Margin="0,8,0,0" 
-                  Height="32" Width="100"  
-                  Content="{x:Bind viewModel.user.gender,Mode=TwoWay}">
+                                Margin="0,8,0,0" 
+                                Height="32" Width="100"  
+                                Content="{x:Bind viewModel.user.gender,Mode=TwoWay}">
                                 <DropDownButton.Flyout>
                                     <MenuFlyout Placement="Bottom">
                                         <MenuFlyoutItem Text="Male"  Click="GenderMenuFlyoutItem_Click"/>
@@ -113,23 +113,23 @@
                             </Grid.ColumnDefinitions>
 
                             <CalendarDatePicker Grid.Column="0"
-                      x:Name="BirthDayUser"   
-                      PlaceholderText="Pick a date" 
-                      Header="Birthday" 
-                      Date="{x:Bind viewModel.user.birthday,Mode=TwoWay}" 
-                      Foreground="{ThemeResource ApplicationForegroundThemeBrush}"/>
+                                x:Name="BirthDayUser"   
+                                PlaceholderText="Pick a date" 
+                                Header="Birthday" 
+                                Date="{x:Bind viewModel.user.birthday,Mode=TwoWay}" 
+                                Foreground="{ThemeResource ApplicationForegroundThemeBrush}"/>
                         </Grid>
 
                         <PasswordBox Grid.Row="4" 
-           x:Name="PasswordUser"   
-           Header="Password" 
-           PlaceholderText="Password" 
-           PasswordChar="*" 
-           Password="{x:Bind viewModel.user.password, Mode=TwoWay}"/>
+                            x:Name="PasswordUser"   
+                            Header="Password" 
+                            PlaceholderText="Password" 
+                            PasswordChar="*" 
+                            Password="{x:Bind viewModel.user.password, Mode=TwoWay}"/>
                     </Grid>
                     <StackPanel Grid.Row="1" Grid.ColumnSpan="2"  
-      Orientation="Horizontal" 
-      HorizontalAlignment="Left">
+                        Orientation="Horizontal" 
+                        HorizontalAlignment="Left">
                         <Button 
                            Click="Update_Click"
                              Style="{StaticResource AccentButtonStyle}">

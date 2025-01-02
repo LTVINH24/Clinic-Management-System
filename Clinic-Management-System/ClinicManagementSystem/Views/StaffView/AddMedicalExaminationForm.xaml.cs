@@ -140,5 +140,15 @@ namespace ClinicManagementSystem.Views.StaffView
 				VisitTypeDropDown.Content = menuItem.Text;
 			}
         }
+
+		private void DoctorFilter_TextChanged(object sender, TextChangedEventArgs e)
+		{
+			//string filterText = DoctorFilter.Text.Trim();
+			//viewModel.LoadDoctors(filterText);
+			if(sender is TextBox textBox)
+			{
+				viewModel.Keyword = textBox.Text;
+			}
+		}
     }
 }

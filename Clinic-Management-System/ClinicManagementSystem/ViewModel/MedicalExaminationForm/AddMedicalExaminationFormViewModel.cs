@@ -22,27 +22,41 @@ namespace ClinicManagementSystem.ViewModel
 
 		public ObservableCollection<Doctor> Doctors { get; set; } = new ObservableCollection<Doctor>();
 
-		private string _doctorNameFilter;
-		private string _specialtyFilter;
-		public string DoctorNameFilter
+		//private string _doctorNameFilter;
+		//private string _specialtyFilter;
+		private string _keyword;
+		//public string DoctorNameFilter
+		//{
+		//	get { return _doctorNameFilter; }
+		//	set
+		//	{
+		//		_doctorNameFilter = value;
+		//		//LoadDoctors(_doctorNameFilter, _specialtyFilter);
+		//		LoadDoctors(_keyword);
+
+		//	}
+		//}
+
+		//public string SpecialtyFilter
+		//{
+		//	get { return _specialtyFilter; }
+		//	set
+		//	{
+		//		_specialtyFilter = value;
+		//		OnPropertyChanged(nameof(SpecialtyFilter));
+		//		//LoadDoctors(_doctorNameFilter, _specialtyFilter);
+		//		LoadDoctors(_keyword);
+		//	}
+		//}
+
+		public string Keyword
 		{
-			get { return _doctorNameFilter; }
+			get { return _keyword; }
 			set
 			{
-				_doctorNameFilter = value;
-				LoadDoctors(_doctorNameFilter, _specialtyFilter);
-
-			}
-		}
-
-		public string SpecialtyFilter
-		{
-			get { return _specialtyFilter; }
-			set
-			{
-				_specialtyFilter = value;
-				OnPropertyChanged(nameof(SpecialtyFilter));
-				LoadDoctors(_doctorNameFilter, _specialtyFilter);
+				_keyword = value;
+				OnPropertyChanged(nameof(Keyword));
+				LoadDoctors(_keyword);
 			}
 		}
 
@@ -58,6 +72,18 @@ namespace ClinicManagementSystem.ViewModel
 				{
 					MedicalExaminationForm.DoctorId = _selectedDoctor.Id;
 				}
+			}
+		}
+
+		private DateTimeOffset _selectedDate = DateTimeOffset.Now;
+		public DateTimeOffset SelectedDate
+		{
+			get => _selectedDate;
+			set
+			{
+				_selectedDate = value;
+				Patient.DoB = value; 
+				OnPropertyChanged(nameof(SelectedDate));
 			}
 		}
 
@@ -189,28 +215,44 @@ namespace ClinicManagementSystem.ViewModel
 		/// </summary>
 		/// <param name="doctorNameFilter"></param>
 		/// <param name="specialtyFilter"></param>
-		public void LoadDoctors(string doctorNameFilter = null, string specialtyFilter = null)
-		{
+		//public void LoadDoctors(string doctorNameFilter = null, string specialtyFilter = null)
+		//{
 
+		//	var doctors = _dao.GetInforDoctor();
+		//	Doctors.Clear();
+
+
+		//	foreach (var doctor in doctors)
+		//	{
+		//		bool matchesName = string.IsNullOrEmpty(doctorNameFilter) ||
+		//						   doctor.name.Contains(doctorNameFilter, StringComparison.OrdinalIgnoreCase);
+		//		bool matchesSpecialty = string.IsNullOrEmpty(specialtyFilter) ||
+		//								doctor.SpecialtyName.Contains(specialtyFilter, StringComparison.OrdinalIgnoreCase);
+
+		//		if (matchesName && matchesSpecialty)
+		//		{
+		//			Doctors.Add(doctor);
+		//		}
+		//	}
+
+		//	OnPropertyChanged(nameof(Doctors));
+		//}
+
+		public void LoadDoctors(string keyword = null)
+		{
 			var doctors = _dao.GetInforDoctor();
 			Doctors.Clear();
 
-
 			foreach (var doctor in doctors)
 			{
-				bool matchesName = string.IsNullOrEmpty(doctorNameFilter) ||
-								   doctor.name.Contains(doctorNameFilter, StringComparison.OrdinalIgnoreCase);
-				bool matchesSpecialty = string.IsNullOrEmpty(specialtyFilter) ||
-										doctor.SpecialtyName.Contains(specialtyFilter, StringComparison.OrdinalIgnoreCase);
-
-				if (matchesName && matchesSpecialty)
+				if (string.IsNullOrEmpty(keyword) ||
+					doctor.name.Contains(keyword, StringComparison.OrdinalIgnoreCase) ||
+					doctor.SpecialtyName.Contains(keyword, StringComparison.OrdinalIgnoreCase))
 				{
 					Doctors.Add(doctor);
 				}
 			}
-
 			OnPropertyChanged(nameof(Doctors));
-
 		}
 
 		/// <summary>
@@ -221,8 +263,8 @@ namespace ClinicManagementSystem.ViewModel
 			Patient = new Patient();
 			MedicalExaminationForm = new MedicalExaminationForm();
 			SelectedDoctor = null;
-			DoctorNameFilter = null;
-			SpecialtyFilter = null;
+			Keyword = string.Empty;
+			SelectedDate = DateTimeOffset.Now;
 			LoadDoctors();
 		}
 

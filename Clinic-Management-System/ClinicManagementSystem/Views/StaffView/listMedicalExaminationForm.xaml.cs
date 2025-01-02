@@ -221,7 +221,9 @@ namespace ClinicManagementSystem.Views.StaffView
 		{
 			ViewModel.StartDate = null;
 			ViewModel.EndDate = null;
-			ViewModel.LoadData();
+			StatusFilter.SelectedIndex = 0;
+			ViewModel.StatusFilter = null;
+			ViewModel.Search();
 		}
 
 
@@ -330,6 +332,18 @@ namespace ClinicManagementSystem.Views.StaffView
 		{
 			isDragging = false;
 			((UIElement)sender).ReleasePointerCapture(e.Pointer);
+		}
+
+		private void StatusFilter_SelectionChanged(object sender, SelectionChangedEventArgs e)
+		{
+			var selectedStatus = (StatusFilter.SelectedItem as ComboBoxItem)?.Content.ToString();
+			
+			if (selectedStatus == "All")
+				ViewModel.StatusFilter = null;
+			else
+				ViewModel.StatusFilter = selectedStatus;
+				
+			ViewModel.Search();
 		}
     }	
 }

@@ -21,10 +21,6 @@
                                Icon="Home" 
                                ToolTipService.ToolTip="Home" 
                                Tag="StaffPage"/>
-            <NavigationViewItem Content="Account" 
-                               Icon="Contact" 
-                               ToolTipService.ToolTip="Account" 
-                               Tag="HomePage"/>
             <NavigationViewItem Content="Patient" 
                                Icon="People" 
                                ToolTipService.ToolTip="Patient" 

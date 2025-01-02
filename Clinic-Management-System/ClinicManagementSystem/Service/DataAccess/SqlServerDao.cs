@@ -9,6 +9,7 @@ using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Globalization;
+using System.IO;
 using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
@@ -19,43 +20,46 @@ namespace ClinicManagementSystem.Service.DataAccess
 {
     public class SqlServerDao : IDao
     {
+
+        private readonly string _connectionString;
+
 		/// <summary>
 		/// Lấy chuỗi kết nối database
 		/// </summary>
 		/// <returns>Chuỗi kết nối</returns>
-		private static string GetConnectionString()
-        {
-            var connectionString = """
-                    Server = localhost,1433;
-                    Database = ClinicManagementSystemDatabase;
-                    User Id = sa;
-                    Password = SqlServer@123;
-                    TrustServerCertificate = True;
-                """;
-            return connectionString;
-        }
-        private readonly string _connectionString = GetConnectionString();
 
-  //      private readonly string _connectionString;
-		//public SqlServerDao()
+		//private static string GetConnectionString()
   //      {
-  //          _connectionString = ConfigurationManager.AppSetting
-  //              .GetConnectionString("DefaultConnection");
-		//}
+  //          var connectionString = """
+		//	        Server = localhost,1433;
+		//	        Database = ClinicManagementSystemDatabase;
+		//	        User Id = sa;
+		//	        Password = SqlServer@123;
+		//	        TrustServerCertificate = True;
+		//	    """;
+  //          return connectionString;
+  //      }
+        // private readonly string _connectionString = GetConnectionString();
+
+        public SqlServerDao()
+        {
+            _connectionString = ConfigurationManager.AppSetting
+                .GetConnectionString("DefaultConnection");
+        }
 
 
-		//==============================================Helper===========================================
-		/// <summary>
-		/// Xứ lí xác thực người dùng
-		/// </summary>
-		/// <param name="username"></param>
-		/// <param name="password"></param>
-		/// <returns>Thông tin người dùng</returns>
-		public (int, string, string, string, string, string) Authentication(string username, string password)
+        //==============================================Helper===========================================
+        /// <summary>
+        /// Xứ lí xác thực người dùng
+        /// </summary>
+        /// <param name="username"></param>
+        /// <param name="password"></param>
+        /// <returns>Thông tin người dùng</returns>
+        public (int, string, string, string, string, string) Authentication(string username, string password)
         {
 
-            var connectionString = GetConnectionString();
-            SqlConnection connection = new SqlConnection(connectionString);
+            //// var connectionString = GetConnectionString();
+            SqlConnection connection = new SqlConnection(_connectionString);
             connection.Open();
             string query = $"SELECT id,name, role,password,phone,birthday,gender,address,status FROM EndUser WHERE username = @Username";
             var command = new SqlCommand(query, connection);
@@ -130,8 +134,8 @@ namespace ClinicManagementSystem.Service.DataAccess
         Dictionary<string, SortType> sortOptions)
         {
             var result = new List<User>();
-            var connectionString = GetConnectionString();
-            SqlConnection connection = new SqlConnection(connectionString);
+            // // var connectionString = GetConnectionString();
+            SqlConnection connection = new SqlConnection(_connectionString);
             connection.Open();
             string sortString = "ORDER BY ";
             bool useDefault = true;
@@ -157,12 +161,12 @@ namespace ClinicManagementSystem.Service.DataAccess
 
 
             var sql = $"""
-            SELECT count(*) over() as Total, id, name, role, username,phone,birthday,address,gender,status
-            FROM EndUser
-            WHERE Name like @Keyword
-            {sortString} 
-            OFFSET @Skip ROWS FETCH NEXT @Take ROWS ONLY;        
-        """;
+                    SELECT count(*) over() as Total, id, name, role, username,phone,birthday,address,gender,status
+                    FROM EndUser
+                    WHERE Name like @Keyword
+                    {sortString} 
+                    OFFSET @Skip ROWS FETCH NEXT @Take ROWS ONLY;        
+                """;
             var command = new SqlCommand(sql, connection);
             AddParameters(command, ("@Skip", (page - 1) * rowsPerPage), ("@Take", rowsPerPage), ("@Keyword", $"%{keyword}%"));
             var reader = command.ExecuteReader();
@@ -198,8 +202,8 @@ namespace ClinicManagementSystem.Service.DataAccess
 		/// <returns>True nếu người dùng tồn tại, False nếu người dùng không tồn tại</returns>
 		public bool CheckUserExists(string username)
         {
-            var connectionString = GetConnectionString();
-            SqlConnection connection = new SqlConnection(connectionString);
+            // // var connectionString = GetConnectionString();
+            SqlConnection connection = new SqlConnection(_connectionString);
             connection.Open();
             string query = $"SELECT count(*) FROM EndUser WHERE username = @Username";
             var command = new SqlCommand(query, connection);
@@ -217,8 +221,8 @@ namespace ClinicManagementSystem.Service.DataAccess
 		/// <returns>True nếu tạo người dùng thành công</returns>
 		public bool CreateUser(User user)
         {
-            var connectionString = GetConnectionString();
-            SqlConnection connection = new SqlConnection(connectionString);
+            // var connectionString = GetConnectionString();
+            SqlConnection connection = new SqlConnection(_connectionString);
             connection.Open();
             string query = $"insert into EndUser(name,role,username,password,phone,birthday,address,gender) values(@name,@role,@username,@password,@phone,@birthday,@address,@gender) ";
             var command = new SqlCommand(query, connection);
@@ -251,8 +255,8 @@ namespace ClinicManagementSystem.Service.DataAccess
             bool success = true;
             success = CreateUser(user);
 
-            var connectionString = GetConnectionString();
-            SqlConnection connection = new SqlConnection(connectionString);
+            // var connectionString = GetConnectionString();
+            SqlConnection connection = new SqlConnection(_connectionString);
             connection.Open();
             string queryGetId = $"SELECT id FROM EndUser WHERE username = @Username";
             var commandGetId = new SqlCommand(queryGetId, connection);
@@ -274,8 +278,8 @@ namespace ClinicManagementSystem.Service.DataAccess
 		/// <returns>Trả về true nếu cập nhật thành công</returns>
 		public bool UpdateUser(User info)
         {
-            var connectionString = GetConnectionString();
-            SqlConnection connection = new SqlConnection(connectionString);
+            // var connectionString = GetConnectionString();
+            SqlConnection connection = new SqlConnection(_connectionString);
             connection.Open();
             string passwordString = "";
             if (info.password != null && info.password!="")
@@ -311,8 +315,8 @@ namespace ClinicManagementSystem.Service.DataAccess
 		/// <returns>Trả về true nếu xóa thành công</returns>
 		public bool DeleteUser(User user)
         {
-            var connectionString = GetConnectionString();
-            SqlConnection connection = new SqlConnection(connectionString);
+            // var connectionString = GetConnectionString();
+            SqlConnection connection = new SqlConnection(_connectionString);
             connection.Open();
             int result = 0;
             if (user.role == "doctor")
@@ -331,8 +335,8 @@ namespace ClinicManagementSystem.Service.DataAccess
         }
 		public bool LockUser(int id,string status)
         {
-            var connectionString = GetConnectionString();
-            SqlConnection connection = new SqlConnection( connectionString);
+            // var connectionString = GetConnectionString();
+            SqlConnection connection = new SqlConnection( _connectionString);
             connection.Open();
             string query = "update EndUser set status = @status where id=@id";
             var command = new SqlCommand(query, connection);
@@ -363,8 +367,8 @@ namespace ClinicManagementSystem.Service.DataAccess
         public List<Specialty> GetSpecialty()
         {
             var specialties = new List<Specialty>();
-            var connectionString = GetConnectionString();
-            SqlConnection connection = new SqlConnection(connectionString);
+            // var _connectionString = GetConnectionString();
+            SqlConnection connection = new SqlConnection(_connectionString);
             connection.Open();
             string query = $"SELECT id,name FROM  Specialty";
             var command = new SqlCommand(query, connection);
@@ -381,8 +385,8 @@ namespace ClinicManagementSystem.Service.DataAccess
         }
         public (bool success, int specialtyId) CreateSpecialty(string specialty)
         {
-            string connectionString = GetConnectionString();
-            using (SqlConnection connection = new SqlConnection(connectionString))
+            // string connectionString = GetConnectionString();
+            using (SqlConnection connection = new SqlConnection(_connectionString))
             {
                 connection.Open();
                 string query = $"""
@@ -401,8 +405,8 @@ namespace ClinicManagementSystem.Service.DataAccess
         public User GetUserById(int userId)
         {
             User user = new User();
-            string connectionString = GetConnectionString();
-            SqlConnection connection = new SqlConnection(connectionString);
+            // string connectionString = GetConnectionString();
+            SqlConnection connection = new SqlConnection(_connectionString);
             connection.Open();
             string query = $"""
                 select id, name,phone,address,gender,birthday
@@ -448,8 +452,8 @@ namespace ClinicManagementSystem.Service.DataAccess
                 filter = "AND DATEDIFF(day, GETDATE(), ExpDate) <= @DaysRemaining";
             }    
             var result = new List<Medicine>();
-            var connectionString = GetConnectionString();
-            SqlConnection connection = new SqlConnection(connectionString);
+            // var connectionString = GetConnectionString();
+            SqlConnection connection = new SqlConnection(_connectionString);
             connection.Open();
             string sortString = "ORDER BY ";
             bool useDefault = true;
@@ -523,8 +527,8 @@ namespace ClinicManagementSystem.Service.DataAccess
 		/// <returns>True nếu tạo thành công, False nếu tạo thất bại</returns>
 		public bool CreateMedicine(Medicine medicine)
         {
-            string connectionString = GetConnectionString();
-            SqlConnection connection = new SqlConnection(connectionString);
+            // string _connectionString = GetConnectionString();
+            SqlConnection connection = new SqlConnection(_connectionString);
             connection.Open();
             string query = $"insert into Medicine(name,manufacturer,price,quantity, quantityimport,DateImport ,ExpDate,MfgDate) values(@name,@manufacturer,@price,@quantity,@quantityimport,@DateImport,@ExpDate,@MfgDate)";
             var command = new SqlCommand(query, connection);
@@ -549,8 +553,8 @@ namespace ClinicManagementSystem.Service.DataAccess
 		/// <returns>True nếu update thành công, False nếu update thất bại</returns>
 		public bool UpdateMedicine(Medicine medicine)
         {
-            string connectionString = GetConnectionString();
-            SqlConnection connection = new SqlConnection(connectionString);
+            // string connectionString = GetConnectionString();
+            SqlConnection connection = new SqlConnection(_connectionString);
             connection.Open();
             string query = $"update Medicine set name=@name, manufacturer =@manufacturer, price =@price, quantity =@quantity, quantityimport=@quantityimport, ExpDate =@expdate ,MfgDate =@mfgdate where id =@id";
             var command = new SqlCommand(query, connection);
@@ -576,8 +580,8 @@ namespace ClinicManagementSystem.Service.DataAccess
 		/// <returns>True nếu xóa thành công, False nếu xóa thất bại</returns>
 		public bool DeleteMedicine(Medicine medicine)
         {
-            string connectionString = GetConnectionString();
-            SqlConnection connection = new SqlConnection(connectionString);
+            // string connectionString = GetConnectionString();
+            SqlConnection connection = new SqlConnection(_connectionString);
             connection.Open();
             string query = $"update Medicine set isDeleted = 'true' where id=@id";
             var command = new SqlCommand(query, connection);
@@ -609,7 +613,7 @@ namespace ClinicManagementSystem.Service.DataAccess
 
         {
             var result = new List<MedicineStatistic>();
-            using (var connection = new SqlConnection(GetConnectionString()))
+            using (var connection = new SqlConnection(_connectionString))
             {
                 try
                 {
@@ -658,7 +662,7 @@ namespace ClinicManagementSystem.Service.DataAccess
         public List<MedicineStatistic> GetMedicineStatistic(DateTimeOffset startDate, DateTimeOffset endDate)
         {
             var result = new List<MedicineStatistic>();
-            using (var connection = new SqlConnection(GetConnectionString()))
+            using (var connection = new SqlConnection(_connectionString))
             {
                 try
                 {
@@ -713,7 +717,7 @@ namespace ClinicManagementSystem.Service.DataAccess
         public List<Medicine> GetAvailableMedicines()
         {
             var medicines = new List<Medicine>();
-            using (var connection = new SqlConnection(GetConnectionString()))
+            using (var connection = new SqlConnection(_connectionString))
             {
                 var command = new SqlCommand("SELECT Id, Name, Manufacturer, Price, Quantity, ExpDate, MfgDate FROM Medicine", connection);
                 connection.Open();
@@ -794,11 +798,12 @@ namespace ClinicManagementSystem.Service.DataAccess
             string keyword,
             DateTimeOffset? startDate,
 			DateTimeOffset? endDate,
+            string statusFilter,
 			Dictionary<string, SortType> sortOptions)
         {
             var result = new List<MedicalExaminationForm>();
-            var connectionString = GetConnectionString();
-            SqlConnection connection = new SqlConnection(connectionString);
+            // var _connectionString = GetConnectionString();
+            SqlConnection connection = new SqlConnection(_connectionString);
             connection.Open();
 
             var whereClause = "WHERE m.staffId = @StaffId";
@@ -834,7 +839,19 @@ namespace ClinicManagementSystem.Service.DataAccess
             {
                 sortString += "ID ";
             }
-			
+
+			if (!string.IsNullOrEmpty(statusFilter))
+			{
+				if (statusFilter == "Examined")
+				{
+					whereClause += " AND m.IsExaminated = 'True'";
+				}
+				else if (statusFilter == "Pending")
+				{
+					whereClause += " AND m.IsExaminated = 'False'";
+				}
+			}
+
 			if (startDate.HasValue)
 			{
 				whereClause += " AND CAST(time AS DATE) >= @StartDate";
@@ -908,8 +925,8 @@ namespace ClinicManagementSystem.Service.DataAccess
 
 		public MedicalExaminationFormDetail GetMedicalExaminationFormDetail(int formId)
         {
-            var connectionString = GetConnectionString();
-            SqlConnection connection = new SqlConnection(connectionString);
+            // var connectionString = GetConnectionString();
+            SqlConnection connection = new SqlConnection(_connectionString);
             connection.Open();
 
 			var query = @"
@@ -964,8 +981,8 @@ namespace ClinicManagementSystem.Service.DataAccess
         public List<MedicalExaminationStatistic> GetMedicalExaminationStatisticsByDate(DateTimeOffset startDate, DateTimeOffset endDate)
         {
             var result = new List<MedicalExaminationStatistic>();
-            string connectionString = GetConnectionString();
-            SqlConnection connection = new SqlConnection(connectionString);
+            // string connectionString = GetConnectionString();
+            SqlConnection connection = new SqlConnection(_connectionString);
             connection.Open();
             string query = $"""
                 select CONVERT(date, m.time) as Date, count(*) as total
@@ -1024,8 +1041,8 @@ namespace ClinicManagementSystem.Service.DataAccess
 		/// <returns>True và id bệnh nhân nếu tạo thành công, False và id bằng 0 nếu tạo thất bại</returns>
 		public (bool, int) AddPatient(Patient patient)
         {
-            var connectionString = GetConnectionString();
-            SqlConnection connection = new SqlConnection(connectionString);
+            // var connectionString = GetConnectionString();
+            SqlConnection connection = new SqlConnection(_connectionString);
             connection.Open();
 
 
@@ -1055,8 +1072,8 @@ namespace ClinicManagementSystem.Service.DataAccess
 		/// <returns>True và id nếu bệnh nhân tồn tại, False và 0 nếu bệnh nhân không tồn tại</returns>
 		public (bool, int) checkPatientExists(string residentId)
         {
-            var connectionString = GetConnectionString();
-            SqlConnection connection = new SqlConnection(connectionString);
+            // var connectionString = GetConnectionString();
+            SqlConnection connection = new SqlConnection(_connectionString);
             connection.Open();
 
             string query = "SELECT id FROM Patient WHERE ResidentId = @ResidentId";
@@ -1086,8 +1103,8 @@ namespace ClinicManagementSystem.Service.DataAccess
 		/// <returns>True nếu thêm thành công, False nếu thêm thất bại</returns>
 		public bool AddMedicalExaminationForm(int patientId, MedicalExaminationForm medicalExaminationForm)
         {
-            var connectionString = GetConnectionString();
-            SqlConnection connection = new SqlConnection(connectionString);
+            // var connectionString = GetConnectionString();
+            SqlConnection connection = new SqlConnection(_connectionString);
             connection.Open();
 
             medicalExaminationForm.Time = DateTimeOffset.Now;
@@ -1154,8 +1171,8 @@ namespace ClinicManagementSystem.Service.DataAccess
 		/// <returns>True nếu cập nhật thành công, False nếu cập nhật thất bại</returns>
 		public bool UpdateMedicalExaminationForm(MedicalExaminationForm form)
         {
-            var connectionString = GetConnectionString();
-            SqlConnection connection = new SqlConnection(connectionString);
+            // var connectionString = GetConnectionString();
+            SqlConnection connection = new SqlConnection(_connectionString);
             connection.Open();
 
 			form.Time = DateTimeOffset.Now;
@@ -1190,8 +1207,8 @@ namespace ClinicManagementSystem.Service.DataAccess
 		/// <returns>True nếu xóa thành công, False nếu xóa thất bạu</returns>
 		public bool DeleteMedicalExaminationForm(MedicalExaminationForm form)
         {
-            var connectionString = GetConnectionString();
-            SqlConnection connection = new SqlConnection(connectionString);
+            // var connectionString = GetConnectionString();
+            SqlConnection connection = new SqlConnection(_connectionString);
             connection.Open();
 
             using (var transaction = connection.BeginTransaction())
@@ -1248,8 +1265,8 @@ namespace ClinicManagementSystem.Service.DataAccess
 		/// <returns>Danh sách các bác sĩ</returns>
 		public List<Doctor> GetInforDoctor()
         {
-            var connectionString = GetConnectionString();
-            SqlConnection connection = new SqlConnection(connectionString);
+            // var connectionString = GetConnectionString();
+            SqlConnection connection = new SqlConnection(_connectionString);
             connection.Open();
 
             string query1 = $"SELECT id, role FROM EndUser WHERE username = @Username AND password = @Password";
@@ -1427,22 +1444,41 @@ namespace ClinicManagementSystem.Service.DataAccess
         )
         {
             var result = new List<Patient>();
-            var connectionString = GetConnectionString();
-            SqlConnection connection = new SqlConnection(connectionString);
+            // var connectionString = GetConnectionString();
+            SqlConnection connection = new SqlConnection(_connectionString);
             connection.Open();
 
             var whereClause = "WHERE 1=1";
             if (!string.IsNullOrEmpty(keyword))
             {
                 whereClause += @" AND (
-                    name LIKE @Keyword OR 
-                    residentId LIKE @Keyword OR 
-                    email LIKE @Keyword OR 
-                    address LIKE @Keyword
+                    p.name LIKE @Keyword OR 
+                    p.residentId LIKE @Keyword OR 
+                    p.email LIKE @Keyword OR 
+                    p.address LIKE @Keyword
                 )";
             }
 
-            //whereClause += " AND (pr.NextMedicationDate IS NULL OR pr.NextMedicationDate > @CurrentDate)";
+            if (startDate.HasValue)
+            {
+                whereClause += @" AND EXISTS (
+                    SELECT 1 
+                    FROM MedicalExaminationForm m 
+                    JOIN Prescription pr ON m.id = pr.medicalExaminationFormId
+                    WHERE m.patientId = p.id 
+                    AND CAST(pr.NextExaminationDate AS DATE) >= @StartDate
+                )";
+            }
+            if (endDate.HasValue)
+            {
+                whereClause += @" AND EXISTS (
+                    SELECT 1 
+                    FROM MedicalExaminationForm m 
+                    JOIN Prescription pr ON m.id = pr.medicalExaminationFormId
+                    WHERE m.patientId = p.id 
+                    AND CAST(pr.NextExaminationDate AS DATE) <= @EndDate
+                )";
+            }
 
 			string sortString = "ORDER BY ";
             bool useDefault = true;
@@ -1467,23 +1503,14 @@ namespace ClinicManagementSystem.Service.DataAccess
                 sortString += "ID ";
             }
 
-			if (startDate.HasValue)
-			{
-				whereClause += " AND CAST(pr.NextExaminationDate AS DATE) >= @StartDate";
-			}
-			if (endDate.HasValue)
-			{
-				whereClause += " AND CAST(pr.NextExaminationDate AS DATE) <= @EndDate";
-			}
-
 			var sql = $"""
                 SELECT count(*) over() as Total, p.id, p.name, p.residentId, p.email, p.gender, p.birthday, p.address,
                        (
-                           SELECT TOP 1 pr2.NextExaminationDate
-                           FROM MedicalExaminationForm m2 
-                           LEFT JOIN Prescription pr2 ON m2.id = pr2.medicalExaminationFormId
-                           WHERE m2.patientId = p.id
-                           ORDER BY pr2.NextExaminationDate DESC
+                           SELECT TOP 1 pr.NextExaminationDate
+                           FROM MedicalExaminationForm m 
+                           LEFT JOIN Prescription pr ON m.id = pr.medicalExaminationFormId
+                           WHERE m.patientId = p.id
+                           ORDER BY pr.NextExaminationDate DESC
                        ) as NextExaminationDate
                 FROM Patient p
                 {whereClause}
@@ -1576,8 +1603,8 @@ namespace ClinicManagementSystem.Service.DataAccess
 		/// <returns>True nếu cập nhật thành công, False nếu cập nhật thất bại</returns>
 		public bool UpdatePatient(Patient patient)
         {
-            var connectionString = GetConnectionString();
-            SqlConnection connection = new SqlConnection(connectionString);
+            // var connectionString = GetConnectionString();
+            SqlConnection connection = new SqlConnection(_connectionString);
             connection.Open();
 
             var sql = @"update Patient set 
@@ -1612,8 +1639,8 @@ namespace ClinicManagementSystem.Service.DataAccess
 		/// <returns>True nếu xóa thành công, False nếu xóa thất bại</returns>
 		public bool DeletePatient(Patient patient)
         {
-            var connectionString = GetConnectionString();
-            SqlConnection connection = new SqlConnection(connectionString);
+            // var connectionString = GetConnectionString();
+            SqlConnection connection = new SqlConnection(_connectionString);
             connection.Open();
 
             using (var transaction = connection.BeginTransaction())
@@ -1705,7 +1732,7 @@ namespace ClinicManagementSystem.Service.DataAccess
 		/// <param name="selectedMedicines"></param>
 		public void UpdateMedicineQuantities(List<MedicineSelection> selectedMedicines)
         {
-            using (var connection = new SqlConnection(GetConnectionString()))
+            using (var connection = new SqlConnection(_connectionString))
             {
                 connection.Open();
                 using (var transaction = connection.BeginTransaction())
@@ -1750,8 +1777,8 @@ namespace ClinicManagementSystem.Service.DataAccess
         public List<BillStatistic> GetBillStatistic(DateTimeOffset startDate, DateTimeOffset endDate)
         {
             var result = new List<BillStatistic>();
-            string connectionString = GetConnectionString();
-            SqlConnection connection = new SqlConnection(connectionString);
+            // string connectionString = GetConnectionString();
+            SqlConnection connection = new SqlConnection(_connectionString);
             connection.Open();
             string query = $"""
                 select CONVERT(date, b.CreateDate) as Date,sum(b.totalAmount) as TotalAmount

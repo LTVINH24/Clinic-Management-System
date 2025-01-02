@@ -65,6 +65,7 @@ namespace ClinicManagementSystem.Service.DataAccess
 			string keyword,
 			DateTimeOffset? startDate,
 			DateTimeOffset? endDate,
+			string statusFilter,
 			Dictionary<string, SortType> sortOptions);
 
 		bool UpdateMedicalExaminationForm(MedicalExaminationForm form);
