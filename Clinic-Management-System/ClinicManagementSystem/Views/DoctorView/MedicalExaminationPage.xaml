@@ -5,7 +5,14 @@
     xmlns:local="using:ClinicManagementSystem.Views"
     xmlns:vm="using:ClinicManagementSystem.ViewModel"
     xmlns:model="using:ClinicManagementSystem.Model"
+    xmlns:converters="using:ClinicManagementSystem.Converters"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+
+    <Page.Resources>
+        <converters:ExaminationStatusColorConverter x:Key="ExaminationStatusColorConverter"/>
+        <converters:ExaminationStatusTextConverter x:Key="ExaminationStatusTextConverter"/>
+        <converters:DateConverter x:Key="DateConverter"/>
+    </Page.Resources>
 
     <Grid Padding="20">
         <Grid.RowDefinitions>
@@ -27,16 +34,43 @@
                     <Border BorderBrush="{ThemeResource SystemAccentColor}" 
                             BorderThickness="0,0,0,1" 
                             Padding="10">
-                        <StackPanel>
-                            <TextBlock Text="Examination ID:" FontWeight="Bold" Foreground="Gray"/>
-                            <TextBlock Text="{x:Bind Id}" FontSize="16" Margin="0,0,0,10"/>
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+                            
+                            <StackPanel Grid.Column="0">
+                                <TextBlock Text="Examination ID:" FontWeight="Bold" Foreground="Gray"/>
+                                <TextBlock Text="{x:Bind Id}" FontSize="16" Margin="0,0,0,10"/>
 
-                            <TextBlock Text="Time:" FontWeight="Bold" Foreground="Gray"/>
-                            <TextBlock Text="{x:Bind Time}" FontSize="16" Margin="0,0,0,10"/>
+                                <TextBlock Text="Patient Information:" FontWeight="Bold" Foreground="Gray"/>
+                                <TextBlock FontSize="16" Margin="0,0,0,10">
+                                    <Run Text="{x:Bind Patient.Name}"/>
+                                    <Run Text=" - "/>
+                                    <Run Text="{x:Bind Patient.Gender}"/>
+                                    <Run Text=" - "/>
+                                    <Run Text="{x:Bind Patient.DoB, Converter={StaticResource DateConverter}}"/>
+                                </TextBlock>
 
-                            <TextBlock Text="Symptom:" FontWeight="Bold" Foreground="Gray"/>
-                            <TextBlock Text="{x:Bind Symptoms}" FontSize="16" TextWrapping="Wrap"/>
-                        </StackPanel>
+                                <TextBlock Text="Time:" FontWeight="Bold" Foreground="Gray"/>
+                                <TextBlock Text="{x:Bind Time}" FontSize="16" Margin="0,0,0,10"/>
+
+                                <TextBlock Text="Symptom:" FontWeight="Bold" Foreground="Gray"/>
+                                <TextBlock Text="{x:Bind Symptoms}" FontSize="16" TextWrapping="Wrap"/>
+                            </StackPanel>
+
+                            <Border Grid.Column="1" 
+                                    Background="{x:Bind IsExaminated, Converter={StaticResource ExaminationStatusColorConverter}}"
+                                    CornerRadius="4"
+                                    Padding="8,4"
+                                    VerticalAlignment="Top"
+                                    Margin="10,0,0,0">
+                                <TextBlock Text="{x:Bind IsExaminated, Converter={StaticResource ExaminationStatusTextConverter}}"
+                                       Foreground="White"
+                                       FontWeight="SemiBold"/>
+                            </Border>
+                        </Grid>
                     </Border>
                 </DataTemplate>
             </ListView.ItemTemplate>

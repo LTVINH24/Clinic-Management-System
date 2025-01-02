@@ -30,6 +30,10 @@ namespace ClinicManagementSystem.Model
 			return Status == "Examined" ? Visibility.Visible : Visibility.Collapsed;
 		}
 
+		public string IsExaminated { get; set; }
+
+		public Patient Patient { get; set; }
+
 		public event PropertyChangedEventHandler PropertyChanged;
 	}
 }

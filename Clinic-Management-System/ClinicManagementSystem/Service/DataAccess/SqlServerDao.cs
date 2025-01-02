@@ -601,7 +601,6 @@ namespace ClinicManagementSystem.Service.DataAccess
 		/// <param name="sortString"></param>
 		/// <returns>Danh sách thuốc bán và có doanh thu nhiều nhất</returns>
 		public List<MedicineStatistic> GetTopMedicineStatistic(DateTimeOffset startDate, DateTimeOffset endDate, int n, string sortString)
-
         {
             var result = new List<MedicineStatistic>();
             using (var connection = new SqlConnection(_connectionString))
@@ -740,6 +739,68 @@ namespace ClinicManagementSystem.Service.DataAccess
 
             return medicines;
         }
+        
+        /// <summary>
+        /// Lấy danh sách thuốc đã kê cho một phiếu khám bệnh
+        /// </summary>
+        /// <param name="formId">ID của phiếu khám bệnh</param>
+        /// <returns>Danh sách các MedicineSelection</returns>
+        public List<MedicineSelection> GetMedicineSelectionsByFormId(int formId)
+        {
+            var medicines = new List<MedicineSelection>();
+            using (var connection = new SqlConnection(_connectionString))
+            {
+                var command = new SqlCommand(
+                    "SELECT m.id, m.name, m.manufacturer, m.price, " +
+                    "m.quantity, m.expDate, m.mfgDate, pd.quantity, pd.dosage " +
+                    "FROM Medicine m " +
+                    "INNER JOIN PrescriptionDetail pd ON m.id = pd.medicineId " +
+                    "INNER JOIN Prescription p ON pd.prescriptionId = p.id " +
+                    "WHERE p.medicalExaminationFormId = @formId",
+                    connection);
+
+                command.Parameters.AddWithValue("@formId", formId);
+
+                try
+                {
+                    connection.Open();
+                    using (var reader = command.ExecuteReader())
+                    {
+                        while (reader.Read())
+                        {
+                            var medicine = new Medicine
+                            {
+                                Id = reader.GetInt32(0),
+                                Name = reader.GetString(1),
+                                Manufacturer = reader.GetString(2),
+                                Price = reader.GetInt32(3),
+                                Quantity = reader.GetInt32(4),
+                                ExpDate = reader.GetDateTime(5),
+                                MfgDate = reader.GetDateTime(6)
+                            };
+
+                            var medicineSelection = new MedicineSelection
+                            {
+                                Medicine = medicine,
+                                IsSelected = true,
+                                SelectedQuantity = reader.GetInt32(7),    // prescribedQuantity
+                                SelectedDosage = reader.GetString(8)      // prescribedDosage
+                            };
+
+                            medicines.Add(medicineSelection);
+                        }
+                    }
+                }
+                catch (Exception ex)
+                {
+                    // Log error
+                    System.Diagnostics.Debug.WriteLine($"Error in GetMedicineSelectionsByFormId: {ex.Message}");
+                    return new List<MedicineSelection>();
+                }
+            }
+
+            return medicines;
+        }
 
 		//=============================================================================================
 
@@ -753,31 +814,50 @@ namespace ClinicManagementSystem.Service.DataAccess
 		public List<MedicalExaminationForm> GetMedicalExaminationForms()
         {
             var forms = new List<MedicalExaminationForm>();
-
-            using (var connection = new SqlConnection(_connectionString))
+            var connectionString = GetConnectionString();
+            using (var connection = new SqlConnection(connectionString))
             {
                 connection.Open();
-                var command = new SqlCommand("SELECT Id, PatientId, StaffId, Time, Symptom, DoctorId FROM MedicalExaminationForm", connection);
-
-                using (var reader = command.ExecuteReader())
+                using (var command = new SqlCommand())
                 {
-                    while (reader.Read())
-                    {
-                        var form = new MedicalExaminationForm
-                        {
-                            Id = reader.GetInt32(0),                                                    // Id
-                            PatientId = reader.GetInt32(1),                                             // PatientId
-                            StaffId = reader.GetInt32(2),                                               // StaffId
-                            Time = reader.GetDateTime(3),                                               // Time
-                            Symptoms = reader.IsDBNull(4) ? string.Empty : reader.GetString(4),          // Symptom
-                            DoctorId = reader.GetInt32(5)                                               // DoctorId
-                        };
+                    command.Connection = connection;
+                    command.CommandText = @"
+                        SELECT f.id, f.patientId, f.staffId, f.doctorId, f.time, 
+                               f.symptom, f.visitType, f.isExaminated,
+                               p.name, p.email, p.residentId, p.address, p.birthday, p.gender
+                        FROM MedicalExaminationForm f
+                        INNER JOIN Patient p ON f.patientId = p.id
+                        ORDER BY f.time DESC";
 
-                        forms.Add(form);
+                    using (var reader = command.ExecuteReader())
+                    {
+                        while (reader.Read())
+                        {
+                            forms.Add(new MedicalExaminationForm
+                            {
+                                Id = reader.GetInt32(0),
+                                PatientId = reader.GetInt32(1),
+                                StaffId = reader.GetInt32(2),
+                                DoctorId = reader.GetInt32(3),
+                                Time = reader.GetDateTime(4),
+                                Symptoms = reader.GetString(5),
+                                VisitType = reader.GetString(6),
+                                IsExaminated = reader.GetString(7),
+                                Patient = new Patient
+                                {
+                                    Id = reader.GetInt32(1), // PatientId
+                                    Name = reader.GetString(8),
+                                    Email = reader.GetString(9),
+                                    ResidentId = reader.GetString(10),
+                                    Address = reader.GetString(11),
+                                    DoB = reader.GetDateTime(12),
+                                    Gender = reader.GetString(13)
+                                }
+                            });
+                        }
                     }
                 }
             }
-
             return forms;
         }
 		/// <summary>
@@ -1369,8 +1449,10 @@ namespace ClinicManagementSystem.Service.DataAccess
             {
                 connection.Open();
                 var command = new SqlCommand(
-                    "UPDATE MedicalRecord SET doctorId = @DoctorId, time = @Time, diagnosis = @Diagnosis " +
-                    "WHERE MedicalExaminationFormID = @MedicalExaminationFormID", connection);
+                    "UPDATE MedicalRecord " +
+                    "SET doctorId = @DoctorId, time = @Time, diagnosis = @Diagnosis " +
+                    "WHERE MedicalExaminationFormID = @MedicalExaminationFormID", 
+                    connection);
 
                 command.Parameters.AddWithValue("@DoctorId", record.DoctorId);
                 command.Parameters.AddWithValue("@Time", record.Time);
@@ -1385,28 +1467,243 @@ namespace ClinicManagementSystem.Service.DataAccess
 
 
 		//==============================================Prescription===============================================
-		/// <summary>
+		
+        /// <summary>
 		/// Lưu dơn thuốc vào cơ sở dữ liệu
 		/// </summary>
 		/// <param name="prescription"></param>
-		public void SavePrescription(Prescription prescription)
+		public bool SavePrescription(
+            int medicalExaminationFormId, 
+            List<MedicineSelection> selectedMedicines, 
+            DateTimeOffset? nextExaminationDate)
         {
-            using (SqlConnection connection = new SqlConnection(_connectionString))
+            using (var connection = new SqlConnection(_connectionString))
             {
                 connection.Open();
-                using (SqlCommand command = new SqlCommand(
-                    "INSERT INTO Prescription (time, medicineId, quantity, dosage, medicalExaminationFormId) " +
-                    "OUTPUT INSERTED.id VALUES (@Time, @MedicineId, @Quantity, @Dosage, @MedicalExaminationFormId)", connection))
+                using (var transaction = connection.BeginTransaction())
                 {
-                    command.Parameters.AddWithValue("@Time", DateTime.Now);
-                    command.Parameters.AddWithValue("@MedicineId", prescription.MedicineId);
-                    command.Parameters.AddWithValue("@Quantity", prescription.Quantity);
-                    command.Parameters.AddWithValue("@Dosage", prescription.Dosage);
-                    command.Parameters.AddWithValue("@MedicalExaminationFormId", prescription.MedicalExaminationFormId);
+                    try
+                    {
+                        // 1. Tạo đơn thuốc mới
+                        var insertPrescriptionCommand = new SqlCommand(
+                            "INSERT INTO Prescription (time, medicalExaminationFormId, nextExaminationDate, isBilled) " +
+                            "VALUES (@time, @medicalExaminationFormId, @nextExaminationDate, @isBilled); " +
+                            "SELECT SCOPE_IDENTITY();", 
+                            connection, 
+                            transaction);
 
-                    prescription.Id = (int)command.ExecuteScalar();
+                        insertPrescriptionCommand.Parameters.AddWithValue("@time", DateTime.Now.Date);
+                        insertPrescriptionCommand.Parameters.AddWithValue("@medicalExaminationFormId", medicalExaminationFormId);
+                        insertPrescriptionCommand.Parameters.AddWithValue("@isBilled", "false");
+
+                        // Xử lý nextExaminationDate
+                        if (nextExaminationDate.HasValue)
+                        {
+                            insertPrescriptionCommand.Parameters.AddWithValue("@nextExaminationDate", nextExaminationDate.Value.DateTime);
+                        }
+                        else
+                        {
+                            insertPrescriptionCommand.Parameters.AddWithValue("@nextExaminationDate", DBNull.Value);
+                        }
+
+                        // Lấy ID của đơn thuốc vừa tạo
+                        int prescriptionId = Convert.ToInt32(insertPrescriptionCommand.ExecuteScalar());
+
+                        // 2. Thêm chi tiết đơn thuốc
+                        foreach (var medicine in selectedMedicines)
+                        {
+                            var insertDetailCommand = new SqlCommand(
+                                "INSERT INTO PrescriptionDetail (PrescriptionId, medicineId, quantity, dosage) " +
+                                "VALUES (@prescriptionId, @medicineId, @quantity, @dosage)",
+                                connection,
+                                transaction);
+
+                            insertDetailCommand.Parameters.AddWithValue("@prescriptionId", prescriptionId);
+                            insertDetailCommand.Parameters.AddWithValue("@medicineId", medicine.Medicine.Id);
+                            insertDetailCommand.Parameters.AddWithValue("@quantity", medicine.SelectedQuantity);
+                            insertDetailCommand.Parameters.AddWithValue("@dosage", medicine.SelectedDosage);
+
+                            insertDetailCommand.ExecuteNonQuery();
+                        }
+
+                        // 3. Cập nhật trạng thái đã khám
+                        var updateFormCommand = new SqlCommand(
+                            "UPDATE MedicalExaminationForm SET isExaminated = 'true' " +
+                            "WHERE id = @formId",
+                            connection,
+                            transaction);
+
+                        updateFormCommand.Parameters.AddWithValue("@formId", medicalExaminationFormId);
+                        updateFormCommand.ExecuteNonQuery();
+
+                        transaction.Commit();
+                        return true;
+                    }
+                    catch (Exception)
+                    {
+                        transaction.Rollback();
+                        return false;
+                    }
                 }
             }
+        }
+
+        /// <summary>
+        /// Lấy thông tin đơn thuốc theo ID phiếu khám
+        /// </summary>
+        /// <param name="formId">ID của phiếu khám</param>
+        /// <returns>Đơn thuốc nếu tồn tại, null nếu không tìm thấy</returns>
+        public Prescription GetPrescriptionByFormId(int formId)
+        {
+            using (var connection = new SqlConnection(_connectionString))
+            {
+                var command = new SqlCommand(
+                    "SELECT id, time, medicalExaminationFormId, nextExaminationDate " +
+                    "FROM Prescription " +
+                    "WHERE medicalExaminationFormId = @formId",
+                    connection);
+                
+                command.Parameters.AddWithValue("@formId", formId);
+
+                try
+                {
+                    connection.Open();
+                    using (var reader = command.ExecuteReader())
+                    {
+                        if (reader.Read())
+                        {
+                            return new Prescription
+                            {
+                                Id = reader.GetInt32(reader.GetOrdinal("id")),
+                                Time = reader.GetDateTime(reader.GetOrdinal("time")),
+                                MedicalExaminationFormId = reader.GetInt32(reader.GetOrdinal("medicalExaminationFormId")),
+                                NextExaminationDate = reader.IsDBNull(reader.GetOrdinal("nextExaminationDate")) 
+                                    ? (DateTime?)null 
+                                    : reader.GetDateTime(reader.GetOrdinal("nextExaminationDate"))
+                            };
+                        }
+                    }
+                }
+                catch (Exception ex)
+                {
+                    // Log error
+                    System.Diagnostics.Debug.WriteLine($"Error in GetPrescriptionByFormId: {ex.Message}");
+                    return null;
+                }
+            }
+            return null;
+        }
+
+        public bool UpdatePrescriptionBillStatus(int prescriptionId, string isBilled)
+        {
+            using (var connection = new SqlConnection(_connectionString))
+            {
+                var command = new SqlCommand(
+                    "UPDATE Prescription SET isBilled = @isBilled " +
+                    "WHERE id = @prescriptionId",
+                    connection);
+
+                command.Parameters.AddWithValue("@isBilled", isBilled);
+                command.Parameters.AddWithValue("@prescriptionId", prescriptionId);
+
+                try
+                {
+                    connection.Open();
+                    int rowsAffected = command.ExecuteNonQuery();
+                    return rowsAffected > 0;
+                }
+                catch (Exception)
+                {
+                    return false;
+                }
+            }
+        }
+
+        // Thêm phương thức lấy danh sách theo trạng thái in
+        public List<Prescription> GetPrescriptionsByBillStatus(bool isBilled)
+        {
+            List<Prescription> prescriptions = new List<Prescription>();
+            try
+            {
+                using (SqlConnection connection = new SqlConnection(_connectionString))
+                {
+                    connection.Open();
+
+                    string query = "SELECT * FROM Prescription WHERE isBilled = @IsBilled";
+                    using (SqlCommand command = new SqlCommand(query, connection))
+                    {
+                        command.Parameters.AddWithValue("@IsBilled", isBilled ? "true" : "false");
+
+                        using (SqlDataReader reader = command.ExecuteReader())
+                        {
+                            while (reader.Read())
+                            {
+                                try
+                                {
+                                    var prescription = new Prescription
+                                    {
+                                        Id = reader.GetInt32(reader.GetOrdinal("id")),
+                                        Time = reader.GetDateTime(reader.GetOrdinal("time")),
+                                        MedicalExaminationFormId = reader.GetInt32(reader.GetOrdinal("medicalExaminationFormId")),
+                                        NextExaminationDate = reader.IsDBNull(reader.GetOrdinal("nextExaminationDate")) 
+                                            ? (DateTime?)null 
+                                            : reader.GetDateTime(reader.GetOrdinal("nextExaminationDate")),
+                                        IsBilled = reader.GetString(reader.GetOrdinal("isBilled"))  // Thay đổi từ GetBoolean sang GetString
+                                    };
+                                    prescriptions.Add(prescription);
+                                }
+                                catch (Exception ex)
+                                {
+                                    System.Diagnostics.Debug.WriteLine($"Error reading prescription: {ex.Message}");
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine($"Database error: {ex.Message}");
+            }
+            return prescriptions;
+        }
+
+        public Prescription GetPrescriptionById(int id)
+        {
+            Prescription prescription = null;
+            try
+            {
+                using (SqlConnection connection = new SqlConnection(_connectionString))
+                {
+                    connection.Open();
+
+                    string query = "SELECT * FROM Prescription WHERE id = @Id";
+                    using (SqlCommand command = new SqlCommand(query, connection))
+                    {
+                        command.Parameters.AddWithValue("@Id", id);
+
+                        using (SqlDataReader reader = command.ExecuteReader())
+                        {
+                            if (reader.Read())
+                            {
+                                prescription = new Prescription
+                                {
+                                    Id = reader.GetInt32(reader.GetOrdinal("id")),
+                                    MedicalExaminationFormId = reader.GetInt32(reader.GetOrdinal("medicalExaminationFormId")),
+                                    Time = reader.GetDateTime(reader.GetOrdinal("time")),
+                                    IsBilled = reader.GetString(reader.GetOrdinal("isBilled"))
+                                };
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                // Log error
+                System.Diagnostics.Debug.WriteLine($"Error in GetPrescriptionById: {ex.Message}");
+            }
+            return prescription;
         }
 
 		//=========================================================================================================
@@ -1795,5 +2092,34 @@ namespace ClinicManagementSystem.Service.DataAccess
             return result;
         }
 
+        public bool SaveBill(Bill bill)
+        {
+            try
+            {
+                using (SqlConnection connection = new SqlConnection(_connectionString))
+                {
+                    connection.Open();
+
+                    string query = @"INSERT INTO Bill (prescriptionId, totalAmount, createDate, isGetMedicine) 
+                                VALUES (@PrescriptionId, @TotalAmount, @CreateDate, @IsGetMedicine)";
+
+                    using (SqlCommand command = new SqlCommand(query, connection))
+                    {
+                        command.Parameters.AddWithValue("@PrescriptionId", bill.PrescriptionId);
+                        command.Parameters.AddWithValue("@TotalAmount", bill.TotalAmount);
+                        command.Parameters.AddWithValue("@CreateDate", bill.CreatedDate);
+                        command.Parameters.AddWithValue("@IsGetMedicine", bill.IsGetMedicine);
+
+                        int rowsAffected = command.ExecuteNonQuery();
+                        return rowsAffected > 0;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine($"Error in SaveBill: {ex.Message}");
+                return false;
+            }
+        }
     }
 }
