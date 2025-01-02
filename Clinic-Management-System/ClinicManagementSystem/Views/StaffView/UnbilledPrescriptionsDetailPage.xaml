@@ -91,10 +91,36 @@
             </StackPanel>
         </Grid>
 
-        <!-- Get Medicine Option -->
+        <!-- Thêm vào trước phần Get Medicine Option -->
         <StackPanel Grid.Row="2" Margin="0,10,0,10">
+            <TextBlock Text="Examination Fee:" FontWeight="SemiBold"/>
+            <NumberBox Value="{x:Bind ViewModel.ExaminationFee, Mode=TwoWay}"
+                    SpinButtonPlacementMode="Inline"
+                    Minimum="0"
+                    SmallChange="1000"
+                    LargeChange="10000"
+                    Width="200"
+                    HorizontalAlignment="Left"/>
+
+            <Rectangle Height="1" Fill="Gray" Margin="0,10"/>
+            
+            <TextBlock Text="Medicine Cost:" FontWeight="SemiBold"/>
+            <TextBlock>
+                <Run Text="{x:Bind ViewModel.TotalAmount, Mode=OneWay}"/>
+                <Run Text=" VND"/>
+            </TextBlock>
+
             <CheckBox Content="Get Medicine"
-                      IsChecked="{x:Bind ViewModel.IsGetMedicine, Mode=TwoWay}"/>
+                    IsChecked="{x:Bind ViewModel.IsGetMedicine, Mode=TwoWay}"
+                    Margin="0,10,0,0"/>
+
+            <Rectangle Height="1" Fill="Gray" Margin="0,10"/>
+            
+            <TextBlock Text="Final Total:" FontWeight="SemiBold"/>
+            <TextBlock FontSize="16" Foreground="{ThemeResource SystemAccentColor}">
+                <Run Text="{x:Bind ViewModel.FinalTotal, Mode=OneWay}"/>
+                <Run Text=" VND"/>
+            </TextBlock>
         </StackPanel>
 
         <!-- Buttons -->
