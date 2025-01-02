@@ -4,15 +4,18 @@ using System.Linq;
 using System.Windows.Input;
 using ClinicManagementSystem.Command;
 using ClinicManagementSystem.Model;
+using ClinicManagementSystem.Service;
 using ClinicManagementSystem.Service.DataAccess;
 using ClinicManagementSystem.Views.DoctorView;
 using Microsoft.UI.Xaml.Controls;
+using Windows.Networking.NetworkOperators;
 
 namespace ClinicManagementSystem.ViewModel
 {
 	public class MedicalExaminationViewModel : BaseViewModel
 	{
 		private readonly SqlServerDao _dataAccess;
+		private int doctorId {get;set;}
 		private Frame _navigationFrame;
 		private ObservableCollection<MedicalExaminationForm> _examinationForms;
 
@@ -41,6 +44,7 @@ namespace ClinicManagementSystem.ViewModel
 			ExaminationForms = new ObservableCollection<MedicalExaminationForm>();
 			PreviousPageCommand = new RelayCommand(PreviousPage);
 			NextPageCommand = new RelayCommand(NextPage);
+			doctorId = UserSessionService.Instance.GetLoggedInUserId();
 			LoadExaminationForms(); // Gọi phương thức để tải dữ liệu
 		}
 
@@ -49,8 +53,8 @@ namespace ClinicManagementSystem.ViewModel
 		/// </summary>
 		private void LoadExaminationForms()
 		{
-            // Lấy danh sách phiếu khám chưa khám
-            var forms = _dataAccess.GetMedicalExaminationForms()
+			// Lấy danh sách phiếu khám chưa khám
+			var forms = _dataAccess.GetMedicalExaminationForms(doctorId)
                 .Where(f => f.IsExaminated == "false")
                 .ToList();
 			ExaminationForms.Clear();
