@@ -37,7 +37,7 @@
             </Grid.RowDefinitions>
 
             <Button Grid.Column="0" Grid.Row="0" 
-                 Background="#27E1E8"
+                 Background="Pink"
                  Height="300"
                  HorizontalAlignment="Stretch"
                  VerticalAlignment="Stretch">
@@ -124,7 +124,8 @@
             <Button Grid.Column="1" Grid.Row="1"
         
      Click="NavigateToReportBill"
-     Background="{ThemeResource CardBackgroundFillColorDefaultBrush}"
+                    
+     Background="#27E1E8"
      BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}"
      Height="300"
      HorizontalAlignment="Stretch"
