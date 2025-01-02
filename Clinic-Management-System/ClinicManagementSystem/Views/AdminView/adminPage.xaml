@@ -40,8 +40,6 @@
 
                     </NavigationViewItem.MenuItems>
                 </NavigationViewItem>
-
-
             </NavigationView.MenuItems>
             <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto">
                 <Frame x:Name="contentFrame" Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"/>
