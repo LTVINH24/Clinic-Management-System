@@ -15,6 +15,7 @@ namespace ClinicManagementSystem.ViewModel
 	public class MedicineViewModel : INotifyPropertyChanged
 	{
 		IDao _dao;
+		public int DayRemainFilter { get; set; } 
 		private int OldQuantityImport = 0;
 		private ObservableCollection<Medicine> _medicines;
 		public ObservableCollection<Medicine> Medicines
@@ -34,8 +35,9 @@ namespace ClinicManagementSystem.ViewModel
 		{
 			RowsPerPage = 5;
 			CurrentPage = 1;
+			DayRemainFilter = 0;
 			_dao = ServiceFactory.GetChildOf(typeof(IDao)) as IDao;
-            LoadMedicines(0);
+            LoadMedicines();
 		}
 		public PageInfo SelectedPageInfoItem { get; set; } = new PageInfo();
 		private ObservableCollection<PageInfo> _pageinfos;
@@ -66,18 +68,18 @@ namespace ClinicManagementSystem.ViewModel
 						_sortOptions.Remove("Name");
 					}
 				}
-				LoadMedicines(0);
+				LoadMedicines();
 			}
 		}
 
 		/// <summary>
 		/// Load dữ liệu thuốc từ database
 		/// </summary>
-		public void LoadMedicines(int daysRemain)
+		public void LoadMedicines()
 		{
 			var (items, count) = _dao.GetMedicines(
 				CurrentPage, RowsPerPage, Keyword,
-				_sortOptions, daysRemain
+				_sortOptions, DayRemainFilter
             );
 			Medicines.Clear();
 			foreach (var medicine in items)
@@ -110,7 +112,7 @@ namespace ClinicManagementSystem.ViewModel
 		public void Search()
 		{
 			CurrentPage = 1;
-			LoadMedicines(0);
+			LoadMedicines();
 		}
 
 		/// <summary>
@@ -121,7 +123,7 @@ namespace ClinicManagementSystem.ViewModel
 			if (CurrentPage < TotalPages)
 			{
 				CurrentPage++;
-				LoadMedicines(0);
+				LoadMedicines();
 			}
 		}
 
@@ -133,7 +135,7 @@ namespace ClinicManagementSystem.ViewModel
 			if (CurrentPage > 1)
 			{
 				CurrentPage--;
-				LoadMedicines(0);
+				LoadMedicines();
 			}
 		}
 
@@ -144,7 +146,7 @@ namespace ClinicManagementSystem.ViewModel
 		public void GoToPage(int page)
 		{
 			CurrentPage = page;
-			LoadMedicines(0);
+			LoadMedicines();
 		}
 
 		/// <summary>
@@ -156,7 +158,7 @@ namespace ClinicManagementSystem.ViewModel
 			int newQuantity = MedicineEdit.QuantityImport - OldQuantityImport;
 			MedicineEdit.Quantity += newQuantity;
 			bool success = _dao.UpdateMedicine(MedicineEdit);
-			LoadMedicines(0);
+			LoadMedicines();
 			return success;
 		}
 
@@ -167,7 +169,7 @@ namespace ClinicManagementSystem.ViewModel
 		public bool AddMedicine()
 		{
 			bool success = _dao.CreateMedicine(MedicineNew);
-			LoadMedicines(0);
+			LoadMedicines();
 			return success;
 		}
 
@@ -189,7 +191,7 @@ namespace ClinicManagementSystem.ViewModel
 		public bool DeleteMedicine(Medicine newMedicine)
 		{
 			bool success = _dao.DeleteMedicine(newMedicine);
-			LoadMedicines(0);
+			LoadMedicines();
 			return success;
 		}
 

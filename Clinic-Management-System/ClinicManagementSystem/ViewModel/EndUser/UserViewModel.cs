@@ -11,6 +11,8 @@ using System.Security.Cryptography;
 using Windows.Storage;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using Microsoft.UI.Xaml.Controls;
+using OxyPlot;
 
 namespace ClinicManagementSystem.ViewModel.EndUser
 {
@@ -18,6 +20,7 @@ namespace ClinicManagementSystem.ViewModel.EndUser
 	public class UserViewModel : INotifyPropertyChanged
 	{
 		IDao _dao;
+		public string NewSpecialty {  get; set; }
 		public User user { get; set; } = new User();
 		// private ValidData valid { get; set; } = new ValidData();
 		private ObservableCollection<Specialty> _specialties;
@@ -26,7 +29,7 @@ namespace ClinicManagementSystem.ViewModel.EndUser
 			get => _specialties ??= new ObservableCollection<Specialty>();
 			set => _specialties = value;
 		}
-		public Specialty selectedSpecialty { get; set; }
+		public Specialty selectedSpecialty { get; set; } = new Specialty();
 		public string Room { get; set; }
 		public UserViewModel()
 		{
@@ -39,10 +42,8 @@ namespace ClinicManagementSystem.ViewModel.EndUser
 		/// </summary>
 		/// <param name="user"></param>
 		/// <returns>Thông báo tạo thành công hay thất bại</returns>
-		public string CreateUser(User user)
+		public string CreateUser()
 		{
-
-
 			if (_dao.CheckUserExists(user.username))
 			{
 				return "Username already exists";
@@ -50,18 +51,31 @@ namespace ClinicManagementSystem.ViewModel.EndUser
 			else
 			{
 				var Password = new Password();
-				user.password = Password.HashPassword(user.password);
+				
 				var success = true;
 				if (user.role == "doctor")
 				{
-
-					success = _dao.CreateUserRoleDoctor(user, selectedSpecialty.id, Room);
+					if(selectedSpecialty.id==0)
+					{
+						return "Please choose specialty";
+					}
+					if (Room == "" || Room == null)
+                    {
+                        return "Please enter room";
+                    }
+                    user.password = Password.HashPassword(user.password);
+                    success = _dao.CreateUserRoleDoctor(user, selectedSpecialty.id, Room);
+					
 				}
 				else
 				{
-					success = _dao.CreateUser(user);
+                    user.password = Password.HashPassword(user.password);
+                    success = _dao.CreateUser(user);
 				}
-				return success ? "" : "Create false";
+				Room = "";
+				NewSpecialty = "";
+                user = new User();
+                return success ? "" : "Create false";
 			}
 
 		}
@@ -69,7 +83,7 @@ namespace ClinicManagementSystem.ViewModel.EndUser
 		/// <summary>
 		/// Load dữ liệu chuyên khoa
 		/// </summary>
-		private void LoadSpecialties()
+		public void LoadSpecialties()
 		{
 			var specialties = _dao.GetSpecialty();
 			Specialties.Clear();
@@ -77,6 +91,21 @@ namespace ClinicManagementSystem.ViewModel.EndUser
 			{
 				Specialties.Add(specialtiesItem);
 			}
+		}
+		public bool CreateNewSpecialty()
+		{
+			if (NewSpecialty != null && NewSpecialty != "")
+			{
+				var (success,newSpecialtyId)= _dao.CreateSpecialty(NewSpecialty);
+				if(success)
+				{
+                    selectedSpecialty.id = newSpecialtyId;
+					return true;
+
+                }
+				return false;
+			}
+			return false;
 		}
 		public event PropertyChangedEventHandler PropertyChanged;
 

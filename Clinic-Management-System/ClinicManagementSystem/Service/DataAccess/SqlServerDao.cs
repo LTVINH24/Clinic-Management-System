@@ -27,6 +27,7 @@ namespace ClinicManagementSystem.Service.DataAccess
 		/// Lấy chuỗi kết nối database
 		/// </summary>
 		/// <returns>Chuỗi kết nối</returns>
+
 		//private static string GetConnectionString()
   //      {
   //          var connectionString = """
@@ -87,7 +88,7 @@ namespace ClinicManagementSystem.Service.DataAccess
                 status = reader["status"].ToString();
 
                 connection.Close();
-                if (Password.VerifyPassword(password, hassPassword)&&status!="locked")
+                if (Password.VerifyPassword(password, hassPassword) && status != "locked")
                 {
                     return (id, name, role, phone, gender, address);
                 }
@@ -381,6 +382,25 @@ namespace ClinicManagementSystem.Service.DataAccess
             }
             connection.Close();
             return specialties;
+        }
+        public (bool success, int specialtyId) CreateSpecialty(string specialty)
+        {
+            // string connectionString = GetConnectionString();
+            using (SqlConnection connection = new SqlConnection(_connectionString))
+            {
+                connection.Open();
+                string query = $"""
+            INSERT INTO Specialty (name) 
+            OUTPUT INSERTED.Id 
+            VALUES (@name)
+        """;
+                using (var command = new SqlCommand(query, connection))
+                {
+                    AddParameters(command, ("@name", specialty));
+                    int specialtyId = (int)command.ExecuteScalar(); // Lấy ID của specialty vừa tạo
+                    return (true, specialtyId);
+                }
+            }
         }
         public User GetUserById(int userId)
         {

@@ -87,7 +87,7 @@ namespace ClinicManagementSystem.Views.AdminView
         {
             if (ValidData())
             {
-                string notify= viewModel.CreateUser(viewModel.user);
+                string notify= viewModel.CreateUser();
                 if(notify == "")
                 {
                     Notify("Account created successfully");
@@ -170,6 +170,28 @@ namespace ClinicManagementSystem.Views.AdminView
                 CloseButtonText = "OK",
 				RequestedTheme = dialogTheme
 			}.ShowAsync();
+        }
+
+       
+
+        private void NewSpecialtyClick(object sender, RoutedEventArgs e)
+        {
+            if(NewSpecialty.Text==null||NewSpecialty.Text=="")
+            {
+                Notify("Please enter a valid address");
+                return;
+            }
+            bool success=viewModel.CreateNewSpecialty();
+            if (success)
+            {
+                Notify("Specialty created successfully");
+                viewModel.LoadSpecialties();
+            }
+            else
+            {
+                Notify("Specialty created failed");
+
+            }
         }
     }
 }

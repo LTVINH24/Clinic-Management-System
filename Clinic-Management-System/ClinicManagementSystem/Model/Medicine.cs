@@ -17,8 +17,8 @@ namespace ClinicManagementSystem.Model
 		public int QuantityImport { get; set; }   // Số lượng thuốc được kê đơn
 		public string Dosage { get; set; }      // Liều dùng (số viên/ngày hoặc ghi chú khác)
 		public DateTimeOffset DateImport { get; set; } = DateTimeOffset.Now;
-		public DateTimeOffset ExpDate { get; set; } = DateTimeOffset.Now;
-		public DateTimeOffset MfgDate { get; set; } = DateTimeOffset.Now;
+		public DateTimeOffset? ExpDate { get; set; } = null;
+		public DateTimeOffset? MfgDate { get; set; } = null;
 
 		public event PropertyChangedEventHandler PropertyChanged;
 	}
