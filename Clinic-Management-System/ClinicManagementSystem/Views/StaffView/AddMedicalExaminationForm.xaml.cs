@@ -143,8 +143,12 @@ namespace ClinicManagementSystem.Views.StaffView
 
 		private void DoctorFilter_TextChanged(object sender, TextChangedEventArgs e)
 		{
-			string filterText = DoctorFilter.Text.Trim();
-			viewModel.LoadDoctors(filterText);
+			//string filterText = DoctorFilter.Text.Trim();
+			//viewModel.LoadDoctors(filterText);
+			if(sender is TextBox textBox)
+			{
+				viewModel.Keyword = textBox.Text;
+			}
 		}
     }
 }

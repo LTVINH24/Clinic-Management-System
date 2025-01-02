@@ -152,6 +152,7 @@
                                  PlaceholderText="Search by doctor name or specialty"
                                  Header="Search Doctor" 
                                  HorizontalAlignment="Left"
+                                 Text="{x:Bind viewModel.Keyword, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                  TextChanged="DoctorFilter_TextChanged"/>
                     </StackPanel>
                 </StackPanel>

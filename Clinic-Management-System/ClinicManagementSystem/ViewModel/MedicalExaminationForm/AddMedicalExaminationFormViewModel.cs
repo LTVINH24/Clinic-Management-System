@@ -24,7 +24,7 @@ namespace ClinicManagementSystem.ViewModel
 
 		//private string _doctorNameFilter;
 		//private string _specialtyFilter;
-		//private string _keyword;
+		private string _keyword;
 		//public string DoctorNameFilter
 		//{
 		//	get { return _doctorNameFilter; }
@@ -49,16 +49,16 @@ namespace ClinicManagementSystem.ViewModel
 		//	}
 		//}
 
-		//public string Keyword
-		//{
-		//	get { return _keyword; }
-		//	set
-		//	{
-		//		_keyword = value;
-		//		OnPropertyChanged(nameof(Keyword));
-		//		LoadDoctors(_keyword);
-		//	}
-		//}
+		public string Keyword
+		{
+			get { return _keyword; }
+			set
+			{
+				_keyword = value;
+				OnPropertyChanged(nameof(Keyword));
+				LoadDoctors(_keyword);
+			}
+		}
 
 		private Doctor _selectedDoctor;
 		public Doctor SelectedDoctor
@@ -82,7 +82,7 @@ namespace ClinicManagementSystem.ViewModel
 			set
 			{
 				_selectedDate = value;
-				Patient.DoB = value; // Tự động cập nhật DoB
+				Patient.DoB = value; 
 				OnPropertyChanged(nameof(SelectedDate));
 			}
 		}
@@ -263,8 +263,8 @@ namespace ClinicManagementSystem.ViewModel
 			Patient = new Patient();
 			MedicalExaminationForm = new MedicalExaminationForm();
 			SelectedDoctor = null;
-			//DoctorNameFilter = null;
-			//SpecialtyFilter = null;
+			Keyword = string.Empty;
+			SelectedDate = DateTimeOffset.Now;
 			LoadDoctors();
 		}
 
