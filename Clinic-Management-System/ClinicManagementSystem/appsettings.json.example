@@ -5,5 +5,11 @@
     "SmtpServer": "smtp.gmail.com",
     "Port": 587,
     "DisplayName": "Your Display Name"
+  },
+  "ConnectionStrings": {
+    "DefaultConnection": "Server=your-server,port;Database=your-database;User Id=your-username;Password=your-password;TrustServerCertificate=True;"
+  },
+  "GoogleDriveSettings": {
+    "ApiKey": "your-google-drive-api-key"
   }
 }
