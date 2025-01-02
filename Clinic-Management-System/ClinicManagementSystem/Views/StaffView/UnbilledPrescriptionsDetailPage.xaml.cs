@@ -26,12 +26,27 @@ namespace ClinicManagementSystem.Views.StaffView
 
         private void SaveButton_Click(object sender, RoutedEventArgs e)
         {
+            System.Diagnostics.Debug.WriteLine("SaveButton clicked");
+
             if (ViewModel.SaveBill())
             {
+                System.Diagnostics.Debug.WriteLine("Bill saved successfully");
                 if (Frame.CanGoBack)
                 {
                     Frame.GoBack();
                 }
+            }
+            else
+            {
+                var dialog = new ContentDialog
+                {
+                    XamlRoot = this.XamlRoot,
+                    Title = "Error",
+                    Content = "Failed to save bill. Please try again.",
+                    CloseButtonText = "OK"
+                };
+                dialog.ShowAsync();
+                System.Diagnostics.Debug.WriteLine("Failed to save bill");
             }
         }
 

@@ -133,21 +133,39 @@ namespace ClinicManagementSystem.ViewModel
         {
             try
             {
+                // 1. Tạo và lưu bill
                 var bill = new Bill
                 {
                     PrescriptionId = Prescription.Id,
-                    TotalAmount = TotalAmount,
+                    TotalAmount = FinalTotal, // Dùng FinalTotal thay vì TotalAmount
                     CreatedDate = DateTime.Now,
                     IsGetMedicine = IsGetMedicine ? "true" : "false"
                 };
 
                 bool success = _dataAccess.SaveBill(bill);
+                if (!success) return false;
 
-                if (success)
+                // 2. Cập nhật số lượng thuốc trong kho nếu có lấy thuốc
+                if (IsGetMedicine)
                 {
-                    success = _dataAccess.UpdatePrescriptionBillStatus(Prescription.Id, true);
+                    foreach (var medicine in Medicines)
+                    {
+                        try
+                        {
+                            _dataAccess.UpdateMedicineQuantity(
+                                medicine.Medicine.Id, 
+                                -medicine.SelectedQuantity
+                            );
+                        }
+                        catch
+                        {
+                            return false;
+                        }
+                    }
                 }
 
+                // 3. Cập nhật trạng thái đơn thuốc
+                success = _dataAccess.UpdatePrescriptionBillStatus(Prescription.Id, "true");
                 return success;
             }
             catch

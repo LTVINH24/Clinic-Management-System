@@ -1123,14 +1123,15 @@ namespace ClinicManagementSystem.Service.DataAccess
                         // 1. Tạo đơn thuốc mới
                         var insertPrescriptionCommand = new SqlCommand(
                             "INSERT INTO Prescription (time, medicalExaminationFormId, nextExaminationDate, isBilled) " +
-                            "VALUES (@time, @medicalExaminationFormId, @nextExaminationDate, 0); " +  // Mặc định là chưa in
+                            "VALUES (@time, @medicalExaminationFormId, @nextExaminationDate, @isBilled); " +
                             "SELECT SCOPE_IDENTITY();", 
                             connection, 
                             transaction);
 
                         insertPrescriptionCommand.Parameters.AddWithValue("@time", DateTime.Now.Date);
                         insertPrescriptionCommand.Parameters.AddWithValue("@medicalExaminationFormId", medicalExaminationFormId);
-                        
+                        insertPrescriptionCommand.Parameters.AddWithValue("@isBilled", "false");
+
                         // Xử lý nextExaminationDate
                         if (nextExaminationDate.HasValue)
                         {
@@ -1229,7 +1230,7 @@ namespace ClinicManagementSystem.Service.DataAccess
             return null;
         }
 
-        public bool UpdatePrescriptionBillStatus(int prescriptionId, bool isBilled)
+        public bool UpdatePrescriptionBillStatus(int prescriptionId, string isBilled)
         {
             using (var connection = new SqlConnection(_connectionString))
             {
@@ -1594,14 +1595,14 @@ namespace ClinicManagementSystem.Service.DataAccess
                 {
                     connection.Open();
 
-                    string query = @"INSERT INTO Bill (prescriptionId, totalAmount, createdDate, isGetMedicine) 
-                                VALUES (@PrescriptionId, @TotalAmount, @CreatedDate, @IsGetMedicine)";
+                    string query = @"INSERT INTO Bill (prescriptionId, totalAmount, createDate, isGetMedicine) 
+                                VALUES (@PrescriptionId, @TotalAmount, @CreateDate, @IsGetMedicine)";
 
                     using (SqlCommand command = new SqlCommand(query, connection))
                     {
                         command.Parameters.AddWithValue("@PrescriptionId", bill.PrescriptionId);
                         command.Parameters.AddWithValue("@TotalAmount", bill.TotalAmount);
-                        command.Parameters.AddWithValue("@CreatedDate", bill.CreatedDate);
+                        command.Parameters.AddWithValue("@CreateDate", bill.CreatedDate);
                         command.Parameters.AddWithValue("@IsGetMedicine", bill.IsGetMedicine);
 
                         int rowsAffected = command.ExecuteNonQuery();
@@ -1611,7 +1612,7 @@ namespace ClinicManagementSystem.Service.DataAccess
             }
             catch (Exception ex)
             {
-                // Log error
+                System.Diagnostics.Debug.WriteLine($"Error in SaveBill: {ex.Message}");
                 return false;
             }
         }

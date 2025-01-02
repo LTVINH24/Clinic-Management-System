@@ -43,7 +43,7 @@ namespace ClinicManagementSystem.ViewModel
         // Thêm phương thức để cập nhật trạng thái bill
         public bool UpdateBillStatus(int prescriptionId)
         {
-            bool success = _dataAccess.UpdatePrescriptionBillStatus(prescriptionId, true);
+            bool success = _dataAccess.UpdatePrescriptionBillStatus(prescriptionId, "true");
             if (success)
             {
                 RefreshList(); // Tải lại danh sách sau khi cập nhật
