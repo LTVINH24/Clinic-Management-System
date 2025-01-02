@@ -16,7 +16,7 @@
         </Grid.RowDefinitions>
 
         <Grid Height="120" Margin="-4,-24,-24,8">
-            <TextBlock Text="Staff Dashboard" 
+            <TextBlock Text="Dashboard" 
                      FontSize="28" 
                      FontWeight="SemiBold"
                      Style="{StaticResource TitleLargeTextBlockStyle}"
