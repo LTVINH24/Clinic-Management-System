@@ -3,6 +3,7 @@ using System.Linq;
 using System.Collections.ObjectModel;
 using ClinicManagementSystem.Model;
 using ClinicManagementSystem.Service.DataAccess;
+using ClinicManagementSystem.Service;
 
 namespace ClinicManagementSystem.ViewModel
 {
@@ -11,10 +12,12 @@ namespace ClinicManagementSystem.ViewModel
         private readonly SqlServerDao _dataAccess;
         private ObservableCollection<MedicalExaminationForm> _examinedForms;
         private MedicalExaminationForm _selectedForm;
+        private int doctorId { get; set; }
 
         public ExaminedFormsViewModel()
         {
             _dataAccess = new SqlServerDao();
+            doctorId = UserSessionService.Instance.GetLoggedInUserId();
             LoadExaminedForms();
         }
 
@@ -33,7 +36,7 @@ namespace ClinicManagementSystem.ViewModel
         private void LoadExaminedForms()
         {
             // Lấy danh sách phiếu khám đã khám
-            var forms = _dataAccess.GetMedicalExaminationForms()
+            var forms = _dataAccess.GetMedicalExaminationForms(doctorId)
                 .Where(f => f.IsExaminated == "true")
                 .ToList();
 

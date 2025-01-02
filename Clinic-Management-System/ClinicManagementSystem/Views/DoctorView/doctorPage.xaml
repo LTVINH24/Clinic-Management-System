@@ -26,7 +26,7 @@
                 <NavigationViewItem Content="Home" Icon="Home" ToolTipService.ToolTip="Home" Tag="HomePage"/>
 
                 <NavigationViewItem Content="Medical Examinations" Icon="Document" ToolTipService.ToolTip="Medical Examinations" Tag="MedicalExaminationPage"/>
-                <NavigationViewItem Content="Examined Forms" Icon="Document" ToolTipService.ToolTip="Examined Forms" Tag="ExaminedFormsPage"/>
+                <NavigationViewItem Content="Examined Forms" Icon="Camera" ToolTipService.ToolTip="Examined Forms" Tag="ExaminedFormsPage"/>
                 <NavigationViewItem Content="Documents" Icon="Document" ToolTipService.ToolTip="" Tag="DocumentPage"/>
                 
             

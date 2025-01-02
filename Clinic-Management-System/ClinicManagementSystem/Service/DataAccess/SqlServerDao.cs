@@ -811,7 +811,7 @@ namespace ClinicManagementSystem.Service.DataAccess
 		/// Lấy danh sách phiếu khám bệnh
 		/// </summary>
 		/// <returns>Danh sách phiếu khám bệnh</returns>
-		public List<MedicalExaminationForm> GetMedicalExaminationForms()
+		public List<MedicalExaminationForm> GetMedicalExaminationForms(int id)
         {
             var forms = new List<MedicalExaminationForm>();
             using (var connection = new SqlConnection(_connectionString))
@@ -826,8 +826,10 @@ namespace ClinicManagementSystem.Service.DataAccess
                                p.name, p.email, p.residentId, p.address, p.birthday, p.gender
                         FROM MedicalExaminationForm f
                         INNER JOIN Patient p ON f.patientId = p.id
+                        WHERE f.doctorId = @id
                         ORDER BY f.time DESC";
 
+                    AddParameters(command, ("@id", id));
                     using (var reader = command.ExecuteReader())
                     {
                         while (reader.Read())

@@ -79,7 +79,7 @@
             <Button  Click="previousButton_Click" >
                 <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xE76B;"/>
             </Button>
-            <StackPanel Orientation="Vertical">
+            <StackPanel Orientation="Vertical" HorizontalAlignment="Center">
                 <TextBlock TextAlignment="Center" Width="60" FontSize="16" >
                     <Run Text="{x:Bind ViewModel.SelectedPageInfoItem.Page ,Mode=OneWay}"/> of <Run Text="{x:Bind ViewModel.SelectedPageInfoItem.Total, Mode=OneWay}"/>
                 </TextBlock>
