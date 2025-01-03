@@ -24,7 +24,7 @@ namespace ClinicManagementSystem.ViewModel.EndUser
 			LoadData();
 		}
 		/// <summary>
-		/// Load dữ liệu gồm số lượng phiếu khám bệnh hôm nay, tổng số bệnh nhân, số bệnh nhân mới hôm nay, số phiếu khàm bệnh chờ xử lý
+		/// Load dữ liệu gồm số lượng phiếu khám bệnh hôm nay, tổng số bệnh nhân, số bệnh nhân mới hôm nay, số phiếu khám bệnh chờ xử lý
 		/// </summary>
 		public void LoadData()
 		{
