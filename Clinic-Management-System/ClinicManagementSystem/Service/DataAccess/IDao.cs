@@ -84,10 +84,11 @@ namespace ClinicManagementSystem.Service.DataAccess
 
 		public int GetPendingFormsCount();
 
-		public (List<MedicalExaminationForm>, int) GetDoctorPendingExaminationForms(
+		public (List<MedicalExaminationForm>, int) GetDoctorExaminationForms(
 			int doctorId,
-			int currentPage,
+			int page,
 			int pageSize,
+			string isExaminated,  // Thay đổi kiểu từ bool sang string
 			string keyword = ""
 		);
 		//========================================================================================

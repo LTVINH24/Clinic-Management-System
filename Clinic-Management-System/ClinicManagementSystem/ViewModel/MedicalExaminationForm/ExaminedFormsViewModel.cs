@@ -9,38 +9,153 @@ namespace ClinicManagementSystem.ViewModel
 {
     public class ExaminedFormsViewModel : BaseViewModel
     {
-        private readonly SqlServerDao _dataAccess;
-        private ObservableCollection<MedicalExaminationForm> _examinedForms;
-        private MedicalExaminationForm _selectedForm;
-        private int doctorId { get; set; }
+        private IDao _dao;
+        private string _keyword = "";
+        private int _currentPage = 1;
+        private int _totalPages;
+        private int _totalItems = 0;
+        private int _pageSize = 10;
+        private ObservableCollection<PageInfo> _pageInfos;
+        private PageInfo _selectedPageInfo;
+        private ObservableCollection<MedicalExaminationForm> _examinationForms;
+        private readonly int doctorId;
+
+        public string Keyword
+        {
+            get => _keyword;
+            set
+            {
+                if (SetProperty(ref _keyword, value))
+                {
+                    Search();
+                }
+            }
+        }
+
+        public int CurrentPage
+        {
+            get => _currentPage;
+            set => SetProperty(ref _currentPage, value);
+        }
+
+        public int TotalPages
+        {
+            get => _totalPages;
+            set => SetProperty(ref _totalPages, value);
+        }
+
+        public int TotalItems
+		{
+			get => _totalItems;
+			set => SetProperty(ref _totalItems, value);
+		}
+
+        public int PageSize
+        {
+            get => _pageSize;
+            set => SetProperty(ref _pageSize, value);
+        }
+
+        public ObservableCollection<MedicalExaminationForm> ExaminationForms
+        {
+            get => _examinationForms ??= new ObservableCollection<MedicalExaminationForm>();
+            set => SetProperty(ref _examinationForms, value);
+        }
+
+        public ObservableCollection<PageInfo> PageInfos
+        {
+            get => _pageInfos ??= new ObservableCollection<PageInfo>();
+            set => SetProperty(ref _pageInfos, value);
+        }
+
+        public PageInfo SelectedPageInfo
+        {
+            get => _selectedPageInfo;
+            set => SetProperty(ref _selectedPageInfo, value);
+        }
 
         public ExaminedFormsViewModel()
         {
-            _dataAccess = new SqlServerDao();
-            doctorId = UserSessionService.Instance.GetLoggedInUserId();
-            LoadExaminedForms();
+            _dao = ServiceFactory.GetChildOf(typeof(IDao)) as IDao;
+            doctorId = UserSessionService.Instance.LoggedInUserId;
+            LoadExaminationForms();
         }
 
-        public ObservableCollection<MedicalExaminationForm> ExaminedForms
+        public void Search()
         {
-            get => _examinedForms;
-            set => SetProperty(ref _examinedForms, value);
+            CurrentPage = 1;
+            LoadExaminationForms();
         }
 
-        public MedicalExaminationForm SelectedForm
+        private void LoadExaminationForms()
         {
-            get => _selectedForm;
-            set => SetProperty(ref _selectedForm, value);
+            var (forms, totalCount) = _dao.GetDoctorExaminationForms(
+                doctorId, 
+                CurrentPage, 
+                PageSize,
+                "true",  // examined forms
+                Keyword
+            );
+            
+            ExaminationForms.Clear();
+            foreach (var form in forms)
+            {
+                ExaminationForms.Add(form);
+            }
+
+            if (totalCount != TotalItems)
+            {
+                TotalItems = totalCount;
+                TotalPages = TotalItems / PageSize + 
+                    (TotalItems % PageSize == 0 ? 0 : 1);
+            }
+
+            PageInfos.Clear();
+            int startPage = Math.Max(1, CurrentPage - 1);
+            int endPage = Math.Min(startPage + 2, TotalPages);
+            
+            if (endPage - startPage < 2 && startPage > 1)
+            {
+                startPage = Math.Max(1, endPage - 2);
+            }
+
+            for (int i = startPage; i <= endPage; i++)
+            {
+                PageInfos.Add(new PageInfo
+                {
+                    Page = i,
+                    Total = TotalPages
+                });
+            }
+            
+            SelectedPageInfo = new PageInfo { Page = CurrentPage, Total = TotalPages };
         }
 
-        private void LoadExaminedForms()
+        public void GoToNextPage()
         {
-            // Lấy danh sách phiếu khám đã khám
-            //var forms = _dataAccess.GetMedicalExaminationForms(doctorId)
-            //    .Where(f => f.IsExaminated == "true")
-            //    .ToList();
+            if (CurrentPage < TotalPages)
+            {
+                CurrentPage++;
+                LoadExaminationForms();
+            }
+        }
 
-            //ExaminedForms = new ObservableCollection<MedicalExaminationForm>(forms);
+        public void GoToPreviousPage()
+        {
+            if (CurrentPage > 1)
+            {
+                CurrentPage--;
+                LoadExaminationForms();
+            }
+        }
+
+        public void GoToPage(int page)
+        {
+            if (page >= 1 && page <= TotalPages)
+            {
+                CurrentPage = page;
+                LoadExaminationForms();
+            }
         }
     }
 }

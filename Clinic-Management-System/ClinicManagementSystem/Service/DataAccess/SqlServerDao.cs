@@ -812,10 +812,11 @@ namespace ClinicManagementSystem.Service.DataAccess
 		/// Lấy danh sách phiếu khám bệnh
 		/// </summary>
 		/// <returns>Danh sách phiếu khám bệnh</returns>
-		public (List<MedicalExaminationForm>, int) GetDoctorPendingExaminationForms(
+		public (List<MedicalExaminationForm>, int) GetDoctorExaminationForms(
             int doctorId, 
             int currentPage, 
             int pageSize,
+            string isExaminated,
             string keyword = ""
         )
         {
@@ -836,7 +837,7 @@ namespace ClinicManagementSystem.Service.DataAccess
                         FROM MedicalExaminationForm f
                         INNER JOIN Patient p ON f.patientId = p.id
                         WHERE f.doctorId = @DoctorId 
-                            AND f.isExaminated = 'false'
+                            AND f.isExaminated = @IsExaminated
                             AND (@Keyword = '' OR p.name LIKE @KeywordPattern)
                         ORDER BY f.time DESC
                         OFFSET @Offset ROWS 
@@ -847,7 +848,8 @@ namespace ClinicManagementSystem.Service.DataAccess
                         ("@Offset", (currentPage - 1) * pageSize),
                         ("@PageSize", pageSize),
                         ("@Keyword", keyword ?? ""),
-                        ("@KeywordPattern", $"%{keyword}%"));
+                        ("@KeywordPattern", $"%{keyword}%"),
+                        ("@IsExaminated", isExaminated));  // Truyền trực tiếp string
 
                     using (var reader = command.ExecuteReader())
                     {
@@ -855,7 +857,7 @@ namespace ClinicManagementSystem.Service.DataAccess
                         {
                             if (totalCount == 0)
                             {
-                                totalCount = reader.GetInt32(0); // Đọc TotalCount từ cột đầu tiên
+                                totalCount = reader.GetInt32(0);
                             }
 
                             forms.Add(new MedicalExaminationForm

@@ -8,22 +8,47 @@ namespace ClinicManagementSystem.Views.DoctorView
 {
     public sealed partial class ExaminedFormsPage : Page
     {
-        public ExaminedFormsViewModel ViewModel { get; }
+        private ExaminedFormsViewModel ViewModel { get; }
 
         public ExaminedFormsPage()
         {
-            this.InitializeComponent();
             ViewModel = new ExaminedFormsViewModel();
+            this.InitializeComponent();
+            this.DataContext = ViewModel;
+        }
+
+        private void AutoSuggestBox_TextChanged(AutoSuggestBox sender, AutoSuggestBoxTextChangedEventArgs args)
+        {
+            if (args.Reason == AutoSuggestionBoxTextChangeReason.UserInput)
+            {
+                ViewModel.Keyword = sender.Text;
+            }
         }
 
         private void ListView_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            if (ViewModel.SelectedForm != null)
+            if (sender is ListView listView && listView.SelectedItem is MedicalExaminationForm selectedForm)
             {
-                Frame.Navigate(typeof(ExaminedFormDetailPage));
-                var a = test.SelectedItem as MedicalExaminationForm;
-                ViewModel.SelectedForm = a;
+                // Xử lý khi chọn form (nếu cần)
+                listView.SelectedItem = null;
+            }
+        }
 
+        private void PreviousButton_Click(object sender, RoutedEventArgs e)
+        {
+            ViewModel.GoToPreviousPage();
+        }
+
+        private void NextButton_Click(object sender, RoutedEventArgs e)
+        {
+            ViewModel.GoToNextPage();
+        }
+
+        private void PagesComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (sender is ComboBox comboBox && comboBox.SelectedItem is PageInfo pageInfo)
+            {
+                ViewModel.GoToPage(pageInfo.Page);
             }
         }
     }

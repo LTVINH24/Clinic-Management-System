@@ -101,10 +101,11 @@ namespace ClinicManagementSystem.ViewModel
 
 		private void LoadExaminationForms()
 		{
-			var (forms, totalCount) = _dao.GetDoctorPendingExaminationForms(
+			var (forms, totalCount) = _dao.GetDoctorExaminationForms(
 				doctorId, 
 				CurrentPage, 
 				PageSize,
+				"false",  // pending forms
 				Keyword
 			);
 
