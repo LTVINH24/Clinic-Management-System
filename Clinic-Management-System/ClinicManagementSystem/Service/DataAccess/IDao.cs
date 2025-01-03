@@ -83,6 +83,13 @@ namespace ClinicManagementSystem.Service.DataAccess
 		public int GetTodayNewPatientsCount();
 
 		public int GetPendingFormsCount();
+
+		public (List<MedicalExaminationForm>, int) GetDoctorPendingExaminationForms(
+			int doctorId,
+			int currentPage,
+			int pageSize,
+			string keyword = ""
+		);
 		//========================================================================================
 
 

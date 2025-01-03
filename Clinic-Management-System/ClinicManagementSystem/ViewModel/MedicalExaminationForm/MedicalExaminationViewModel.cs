@@ -14,19 +14,21 @@ namespace ClinicManagementSystem.ViewModel
 {
 	public class MedicalExaminationViewModel : BaseViewModel
 	{
-		private readonly SqlServerDao _dataAccess;
+		private IDao _dao;
 		private ObservableCollection<MedicalExaminationForm> _examinationForms;
+		private string _keyword = "";
+		private int _currentPage = 1;
+		private int _totalPages;
+		private int _totalItems = 0;
+		private int _pageSize = 10;
 		private ObservableCollection<PageInfo> _pageInfos;
 		private PageInfo _selectedPageInfo;
 		private Frame _navigationFrame;
-		private int _currentPage = 0;
-		private const int PageSize = 2;
 		private readonly int doctorId;
-		private string _keyword = "";
 
 		public MedicalExaminationViewModel()
 		{
-			_dataAccess = new SqlServerDao();
+			_dao = ServiceFactory.GetChildOf(typeof(IDao)) as IDao;
 			doctorId = UserSessionService.Instance.GetLoggedInUserId();
 			LoadExaminationForms();
 		}
@@ -62,23 +64,49 @@ namespace ClinicManagementSystem.ViewModel
 			{
 				if (SetProperty(ref _keyword, value))
 				{
-					System.Diagnostics.Debug.WriteLine($"Keyword changed to: {value}");
-					_currentPage = 0;
-					LoadExaminationForms();
+					Search();
 				}
 			}
 		}
 
+		public int CurrentPage
+		{
+			get => _currentPage;
+			set => SetProperty(ref _currentPage, value);
+		}
+
+		public int TotalPages
+		{
+			get => _totalPages;
+			set => SetProperty(ref _totalPages, value);
+		}
+
+		public int TotalItems
+		{
+			get => _totalItems;
+			set => SetProperty(ref _totalItems, value);
+		}
+
+		public int PageSize
+		{
+			get => _pageSize;
+			set => SetProperty(ref _pageSize, value);
+		}
+
+		public void Search()
+		{
+			CurrentPage = 1;
+			LoadExaminationForms();
+		}
+
 		private void LoadExaminationForms()
 		{
-			System.Diagnostics.Debug.WriteLine($"Loading forms with keyword: {Keyword}");
-			var (forms, totalCount) = _dataAccess.GetDoctorPendingExaminationForms(
+			var (forms, totalCount) = _dao.GetDoctorPendingExaminationForms(
 				doctorId, 
-				_currentPage + 1, 
+				CurrentPage, 
 				PageSize,
 				Keyword
 			);
-			System.Diagnostics.Debug.WriteLine($"Total count: {totalCount}, Forms count: {forms.Count}");
 
 			ExaminationForms.Clear();
 			foreach (var form in forms)
@@ -86,47 +114,57 @@ namespace ClinicManagementSystem.ViewModel
 				ExaminationForms.Add(form);
 			}
 
-			int totalPages = (totalCount + PageSize - 1) / PageSize;
-			totalPages = Math.Max(1, totalPages);
+			if (totalCount != TotalItems)
+			{
+				TotalItems = totalCount;
+				TotalPages = TotalItems / PageSize + 
+					(TotalItems % PageSize == 0 ? 0 : 1);
+			}
 
 			PageInfos.Clear();
-			for (int i = 1; i <= totalPages; i++)
+			int startPage = Math.Max(1, CurrentPage - 1);
+			int endPage = Math.Min(startPage + 2, TotalPages);
+			
+			if (endPage - startPage < 2 && startPage > 1)
 			{
-				PageInfos.Add(new PageInfo { Page = i, Total = totalPages });
+				startPage = Math.Max(1, endPage - 2);
+			}
+
+			for (int i = startPage; i <= endPage; i++)
+			{
+				PageInfos.Add(new PageInfo
+				{
+					Page = i,
+					Total = TotalPages
+				});
 			}
 			
-			System.Diagnostics.Debug.WriteLine($"Current page: {_currentPage + 1}, Total pages: {totalPages}");
-			
-			SelectedPageInfo = PageInfos.FirstOrDefault(p => p.Page == _currentPage + 1) 
-				?? new PageInfo { Page = 1, Total = totalPages };
+			SelectedPageInfo = new PageInfo { Page = CurrentPage, Total = TotalPages };
 		}
 
 		public void GoToNextPage()
 		{
-			System.Diagnostics.Debug.WriteLine($"Attempting to go to next page. Current: {_currentPage + 1}");
-			if (_currentPage < (PageInfos.Count - 1))
+			if (CurrentPage < TotalPages)
 			{
-				_currentPage++;
+				CurrentPage++;
 				LoadExaminationForms();
 			}
 		}
 
 		public void GoToPreviousPage()
 		{
-			System.Diagnostics.Debug.WriteLine($"Attempting to go to previous page. Current: {_currentPage + 1}");
-			if (_currentPage > 0)
+			if (CurrentPage > 1)
 			{
-				_currentPage--;
+				CurrentPage--;
 				LoadExaminationForms();
 			}
 		}
 
 		public void GoToPage(int page)
 		{
-			System.Diagnostics.Debug.WriteLine($"Attempting to go to page {page}");
-			if (page >= 1 && page <= PageInfos.Count)
+			if (page >= 1 && page <= TotalPages)
 			{
-				_currentPage = page - 1;
+				CurrentPage = page;
 				LoadExaminationForms();
 			}
 		}

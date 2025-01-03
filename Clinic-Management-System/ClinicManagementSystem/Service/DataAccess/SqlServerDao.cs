@@ -813,77 +813,78 @@ namespace ClinicManagementSystem.Service.DataAccess
 		/// </summary>
 		/// <returns>Danh sách phiếu khám bệnh</returns>
 		public (List<MedicalExaminationForm>, int) GetDoctorPendingExaminationForms(
-    int doctorId, 
-    int page, 
-    int pageSize,
-    string keyword = "")
-{
-    var forms = new List<MedicalExaminationForm>();
-    int totalCount = 0;
-    
-    using (var connection = new SqlConnection(_connectionString))
-    {
-        connection.Open();
-        using (var command = new SqlCommand())
+            int doctorId, 
+            int currentPage, 
+            int pageSize,
+            string keyword = ""
+        )
         {
-            command.Connection = connection;
-            command.CommandText = @"
-                SELECT COUNT(*) OVER() as TotalCount,
-                       f.id, f.patientId, f.staffId, f.doctorId, f.time, 
-                       f.symptom, f.visitType, f.isExaminated,
-                       p.name, p.email, p.residentId, p.address, p.birthday, p.gender
-                FROM MedicalExaminationForm f
-                INNER JOIN Patient p ON f.patientId = p.id
-                WHERE f.doctorId = @DoctorId 
-                      AND f.isExaminated = 'false'
-                      AND (@Keyword = '' OR p.name LIKE @KeywordPattern)
-                ORDER BY f.time DESC
-                OFFSET @Offset ROWS 
-                FETCH NEXT @PageSize ROWS ONLY";
-
-            AddParameters(command, 
-                ("@DoctorId", doctorId),
-                ("@Offset", (page - 1) * pageSize),
-                ("@PageSize", pageSize),
-                ("@Keyword", keyword ?? ""),
-                ("@KeywordPattern", $"%{keyword}%"));
-
-            using (var reader = command.ExecuteReader())
+            var forms = new List<MedicalExaminationForm>();
+            int totalCount = 0;
+            
+            using (var connection = new SqlConnection(_connectionString))
             {
-                while (reader.Read())
+                connection.Open();
+                using (var command = new SqlCommand())
                 {
-                    if (totalCount == 0)
-                    {
-                        totalCount = reader.GetInt32(0); // Đọc TotalCount từ cột đầu tiên
-                    }
+                    command.Connection = connection;
+                    command.CommandText = @"
+                        SELECT COUNT(*) OVER() as TotalCount,
+                            f.id, f.patientId, f.staffId, f.doctorId, f.time, 
+                            f.symptom, f.visitType, f.isExaminated,
+                            p.name, p.email, p.residentId, p.address, p.birthday, p.gender
+                        FROM MedicalExaminationForm f
+                        INNER JOIN Patient p ON f.patientId = p.id
+                        WHERE f.doctorId = @DoctorId 
+                            AND f.isExaminated = 'false'
+                            AND (@Keyword = '' OR p.name LIKE @KeywordPattern)
+                        ORDER BY f.time DESC
+                        OFFSET @Offset ROWS 
+                        FETCH NEXT @PageSize ROWS ONLY";
 
-                    forms.Add(new MedicalExaminationForm
+                    AddParameters(command, 
+                        ("@DoctorId", doctorId),
+                        ("@Offset", (currentPage - 1) * pageSize),
+                        ("@PageSize", pageSize),
+                        ("@Keyword", keyword ?? ""),
+                        ("@KeywordPattern", $"%{keyword}%"));
+
+                    using (var reader = command.ExecuteReader())
                     {
-                        Id = reader.GetInt32(reader.GetOrdinal("id")),
-                        PatientId = reader.GetInt32(reader.GetOrdinal("patientId")),
-                        StaffId = reader.GetInt32(reader.GetOrdinal("staffId")),
-                        DoctorId = reader.GetInt32(reader.GetOrdinal("doctorId")),
-                        Time = reader.GetDateTime(reader.GetOrdinal("time")),
-                        Symptoms = reader.GetString(reader.GetOrdinal("symptom")),
-                        VisitType = reader.GetString(reader.GetOrdinal("visitType")),
-                        IsExaminated = reader.GetString(reader.GetOrdinal("isExaminated")),
-                        Patient = new Patient
+                        while (reader.Read())
                         {
-                            Id = reader.GetInt32(reader.GetOrdinal("patientId")),
-                            Name = reader.GetString(reader.GetOrdinal("name")),
-                            Email = reader.GetString(reader.GetOrdinal("email")),
-                            ResidentId = reader.GetString(reader.GetOrdinal("residentId")),
-                            Address = reader.GetString(reader.GetOrdinal("address")),
-                            DoB = reader.GetDateTime(reader.GetOrdinal("birthday")),
-                            Gender = reader.GetString(reader.GetOrdinal("gender"))
+                            if (totalCount == 0)
+                            {
+                                totalCount = reader.GetInt32(0); // Đọc TotalCount từ cột đầu tiên
+                            }
+
+                            forms.Add(new MedicalExaminationForm
+                            {
+                                Id = reader.GetInt32(reader.GetOrdinal("id")),
+                                PatientId = reader.GetInt32(reader.GetOrdinal("patientId")),
+                                StaffId = reader.GetInt32(reader.GetOrdinal("staffId")),
+                                DoctorId = reader.GetInt32(reader.GetOrdinal("doctorId")),
+                                Time = reader.GetDateTime(reader.GetOrdinal("time")),
+                                Symptoms = reader.GetString(reader.GetOrdinal("symptom")),
+                                VisitType = reader.GetString(reader.GetOrdinal("visitType")),
+                                IsExaminated = reader.GetString(reader.GetOrdinal("isExaminated")),
+                                Patient = new Patient
+                                {
+                                    Id = reader.GetInt32(reader.GetOrdinal("patientId")),
+                                    Name = reader.GetString(reader.GetOrdinal("name")),
+                                    Email = reader.GetString(reader.GetOrdinal("email")),
+                                    ResidentId = reader.GetString(reader.GetOrdinal("residentId")),
+                                    Address = reader.GetString(reader.GetOrdinal("address")),
+                                    DoB = reader.GetDateTime(reader.GetOrdinal("birthday")),
+                                    Gender = reader.GetString(reader.GetOrdinal("gender"))
+                                }
+                            });
                         }
-                    });
+                    }
                 }
             }
+            return (forms, totalCount);
         }
-    }
-    return (forms, totalCount);
-}
         
 		/// <summary>
 		/// Lấy danh sách phiếu khám bệnh
