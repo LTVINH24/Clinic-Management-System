@@ -29,8 +29,9 @@ namespace ClinicManagementSystem.Views.DoctorView
         {
             if (sender is ListView listView && listView.SelectedItem is MedicalExaminationForm selectedForm)
             {
-                // Xử lý khi chọn form (nếu cần)
-                listView.SelectedItem = null;
+                // Điều hướng đến trang chi tiết
+                Frame.Navigate(typeof(ExaminedFormDetailPage), selectedForm);
+                listView.SelectedItem = null; // Reset selection
             }
         }
 

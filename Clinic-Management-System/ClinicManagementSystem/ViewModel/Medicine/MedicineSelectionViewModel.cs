@@ -40,6 +40,9 @@ namespace ClinicManagementSystem.ViewModel
         private int _totalItems = 0;
         private int _pageSize = 10;
 
+        private ObservableCollection<PageInfo> _pageInfos;
+        private PageInfo _selectedPageInfo;
+
         public int CurrentPage
         {
             get => _currentPage;
@@ -76,10 +79,30 @@ namespace ClinicManagementSystem.ViewModel
             private set => SetProperty(ref _filteredMedicines, value);
         }
 
+        public ObservableCollection<PageInfo> PageInfos
+        {
+            get => _pageInfos;
+            set => SetProperty(ref _pageInfos, value);
+        }
+
+        public PageInfo SelectedPageInfo
+        {
+            get => _selectedPageInfo;
+            set
+            {
+                if (SetProperty(ref _selectedPageInfo, value) && value != null)
+                {
+                    CurrentPage = value.Page;
+                    LoadAvailableMedicines();
+                }
+            }
+        }
+
         public MedicineSelectionViewModel()
         {
             _dataAccess = ServiceFactory.GetChildOf(typeof(IDao)) as IDao;
             AvailableMedicines = new ObservableCollection<MedicineSelection>();
+            PageInfos = new ObservableCollection<PageInfo>();
             _currentFormId = -1;
             LoadAvailableMedicines();
             FilteredMedicines = new ObservableCollection<MedicineSelection>(AvailableMedicines);
@@ -102,9 +125,20 @@ namespace ClinicManagementSystem.ViewModel
             {
                 _totalItems = totalCount;
                 TotalPages = (_totalItems + _pageSize - 1) / _pageSize;
+                UpdatePageInfos();
             }
 
             FilterMedicines();
+        }
+
+        private void UpdatePageInfos()
+        {
+            PageInfos.Clear();
+            for (int i = 1; i <= TotalPages; i++)
+            {
+                PageInfos.Add(new PageInfo { Page = i, Total = TotalPages });
+            }
+            SelectedPageInfo = PageInfos.FirstOrDefault(p => p.Page == CurrentPage);
         }
 
         public void InitializeWithSelectedMedicines(ObservableCollection<MedicineSelection> selectedMedicines)

@@ -9,6 +9,8 @@
 
     <Page.Resources>
         <converters:NullToVisibilityConverter x:Key="NullToVisibilityConverter"/>
+        <converters:DateOnlyConverter x:Key="DateOnlyConverter"/>
+        <converters:DateTimeFullConverter x:Key="DateTimeFullConverter"/>
     </Page.Resources>
 
     <ScrollViewer>
@@ -83,7 +85,7 @@
                     <StackPanel Orientation="Horizontal" Margin="0,5">
                         <TextBlock Text="Date: " FontWeight="SemiBold"/>
                         <TextBlock Text="{x:Bind ViewModel.NextExaminationDate, Mode=OneWay}"/>
-                        <TextBlock Text=" (if needed)" 
+                        <TextBlock Text=" (no needed)" 
                                   FontStyle="Italic" 
                                   Foreground="Gray"
                                   Margin="5,0,0,0"
@@ -133,7 +135,6 @@
                                     </StackPanel>
                                     <StackPanel Grid.Column="2" Orientation="Horizontal">
                                         <TextBlock Text="{Binding SelectedDosage}"/>
-                                        <TextBlock Text=" pills/day"/>
                                     </StackPanel>
                                 </Grid>
                             </DataTemplate>

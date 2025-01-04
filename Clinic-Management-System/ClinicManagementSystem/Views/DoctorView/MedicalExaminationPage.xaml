@@ -4,11 +4,17 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:converters="using:ClinicManagementSystem.Converters"
     xmlns:model="using:ClinicManagementSystem.Model"
     mc:Ignorable="d"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
-    <Grid>
+    <Page.Resources>
+        <converters:DateTimeFullConverter x:Key="DateTimeFullConverter"/>
+        <converters:DateOnlyConverter x:Key="DateOnlyConverter"/>
+    </Page.Resources>
+
+    <Grid Margin="20">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
@@ -17,12 +23,13 @@
         </Grid.RowDefinitions>
 
         <TextBlock Text="Medical Examination Forms"
-                  FontSize="24"
-                  FontWeight="Bold"
-                  Margin="20"/>
+                  Style="{StaticResource TitleTextBlockStyle}"
+                  Margin="0,0,0,20"/>
 
         <AutoSuggestBox Grid.Row="1"
-                        Margin="20,0,20,10"
+                        Width="500"
+                        HorizontalAlignment="Left"
+                        Margin="0,0,0,20"
                         PlaceholderText="Search by patient name..."
                         QueryIcon="Find"
                         TextChanged="AutoSuggestBox_TextChanged"
@@ -31,21 +38,81 @@
         <ListView Grid.Row="2"
                   ItemsSource="{Binding ExaminationForms}"
                   SelectionChanged="ListView_SelectionChanged"
-                  Margin="20">
+                  Margin="0,0,0,10">
+            <ListView.Header>
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="230"/>  <!-- Patient Name -->
+                        <ColumnDefinition Width="125"/>  <!-- DoB -->
+                        <ColumnDefinition Width="125"/>  <!-- Gender -->
+                        <ColumnDefinition Width="125"/>  <!-- Visit Type -->
+                        <ColumnDefinition Width="*"/>    <!-- Time -->
+                    </Grid.ColumnDefinitions>
+
+                    <TextBlock Grid.Column="0" Text="Patient Name" 
+                             FontWeight="SemiBold" 
+                             Margin="12,8"
+                             VerticalAlignment="Center"
+                             HorizontalAlignment="Center"/>
+                    <TextBlock Grid.Column="1" Text="Date of Birth" 
+                             FontWeight="SemiBold" 
+                             Margin="12,8"
+                             VerticalAlignment="Center"
+                             HorizontalAlignment="Center"/>
+                    <TextBlock Grid.Column="2" Text="Gender" 
+                             FontWeight="SemiBold" 
+                             Margin="12,8"
+                             VerticalAlignment="Center"
+                             HorizontalAlignment="Center"/>
+                    <TextBlock Grid.Column="3" Text="Visit Type" 
+                             FontWeight="SemiBold" 
+                             Margin="12,8"
+                             VerticalAlignment="Center"
+                             HorizontalAlignment="Center"/>
+                    <TextBlock Grid.Column="4" Text="Examination Time" 
+                             FontWeight="SemiBold" 
+                             Margin="12,8"
+                             VerticalAlignment="Center"
+                             HorizontalAlignment="Center"/>
+                </Grid>
+            </ListView.Header>
+
             <ListView.ItemTemplate>
                 <DataTemplate x:DataType="model:MedicalExaminationForm">
-                    <Grid Margin="0,5">
+                    <Grid>
                         <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="200"/>
+                            <ColumnDefinition Width="150"/>
+                            <ColumnDefinition Width="100"/>
+                            <ColumnDefinition Width="150"/>
                             <ColumnDefinition Width="*"/>
-                            <ColumnDefinition Width="Auto"/>
-                            <ColumnDefinition Width="Auto"/>
                         </Grid.ColumnDefinitions>
 
-                        <TextBlock Text="{x:Bind Id}" Margin="0,0,20,0"/>
-                        <TextBlock Grid.Column="1" Text="{x:Bind Patient.Name}" Margin="0,0,20,0"/>
-                        <TextBlock Grid.Column="2" Text="{x:Bind Time}" Margin="0,0,20,0"/>
-                        <TextBlock Grid.Column="3" Text="{x:Bind VisitType}"/>
+                        <TextBlock Grid.Column="0" 
+                                 Text="{x:Bind Patient.Name}" 
+                                 Margin="12,8"
+                                 VerticalAlignment="Center"
+                                 HorizontalAlignment="Center"/>
+                        <TextBlock Grid.Column="1" 
+                                 Text="{Binding Patient.DoB, Converter={StaticResource DateOnlyConverter}}" 
+                                 Margin="12,8"
+                                 VerticalAlignment="Center"
+                                 HorizontalAlignment="Center"/>
+                        <TextBlock Grid.Column="2" 
+                                 Text="{x:Bind Patient.Gender}" 
+                                 Margin="12,8"
+                                 VerticalAlignment="Center"
+                                 HorizontalAlignment="Center"/>
+                        <TextBlock Grid.Column="3" 
+                                 Text="{x:Bind VisitType}" 
+                                 Margin="12,8"
+                                 VerticalAlignment="Center"
+                                 HorizontalAlignment="Center"/>
+                        <TextBlock Grid.Column="4" 
+                                 Text="{Binding Time, Converter={StaticResource DateTimeFullConverter}}"
+                                 Margin="12,8"
+                                 VerticalAlignment="Center"
+                                 HorizontalAlignment="Center"/>
                     </Grid>
                 </DataTemplate>
             </ListView.ItemTemplate>
@@ -55,7 +122,7 @@
         <StackPanel Grid.Row="3" 
                     Orientation="Horizontal" 
                     HorizontalAlignment="Center"
-                    Margin="0,10,0,20">
+                    Margin="0,10,0,0">
             <Button Click="PreviousButton_Click">
                 <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xE76B;"/>
             </Button>

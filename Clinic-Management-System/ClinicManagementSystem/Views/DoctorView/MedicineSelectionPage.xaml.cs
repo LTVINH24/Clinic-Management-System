@@ -155,5 +155,13 @@ namespace ClinicManagementSystem.Views.DoctorView
                 ViewModel.GoToPage(page);
             }
         }
+
+        private void PagesComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (sender is ComboBox comboBox && comboBox.SelectedItem is PageInfo pageInfo)
+            {
+                ViewModel.GoToPage(pageInfo.Page);
+            }
+        }
     }
 }
