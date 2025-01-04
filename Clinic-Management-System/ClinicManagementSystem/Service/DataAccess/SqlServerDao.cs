@@ -912,7 +912,11 @@ namespace ClinicManagementSystem.Service.DataAccess
                             AND (@Keyword = '' OR p.name LIKE @KeywordPattern)
                             AND (@StartDate IS NULL OR CAST(f.time AS DATE) >= @StartDate)
                             AND (@EndDate IS NULL OR CAST(f.time AS DATE) <= @EndDate)
-                        ORDER BY f.time ASC
+                        ORDER BY 
+                            CASE 
+                                WHEN @IsExaminated = 'false' THEN f.time END ASC,
+                            CASE 
+                                WHEN @IsExaminated = 'true' THEN f.time END DESC
                         OFFSET @Offset ROWS 
                         FETCH NEXT @PageSize ROWS ONLY";
 

@@ -93,6 +93,7 @@ namespace ClinicManagementSystem.Service.DataAccess
 			DateTimeOffset? startDate = null,
 			DateTimeOffset? endDate = null
 		);
+		public MedicalExaminationForm GetMedicalExaminationFormById(int id);
 		//========================================================================================
 
 
@@ -109,6 +110,7 @@ namespace ClinicManagementSystem.Service.DataAccess
             int pageSize, 
             string keyword = ""
         );
+		public void UpdateMedicineQuantity(int medicineId, int quantityChange);
 		//========================================================================================
 
         //========================================Specialty=======================================
@@ -135,9 +137,12 @@ namespace ClinicManagementSystem.Service.DataAccess
 		bool UpdatePatient(Patient patient);
 
 		bool DeletePatient(Patient patient);
+
+		public Patient GetPatientById(int patientId);
         //========================================================================================
 
 		//========================================Prescription=========================================
+		public Prescription GetPrescriptionById(int id);
 		public (List<Prescription>, int) GetPrescriptionsByPage(
 			int page,
 			int pageSize,
@@ -155,6 +160,8 @@ namespace ClinicManagementSystem.Service.DataAccess
 			DateTimeOffset? startDate = null, 
 			DateTimeOffset? endDate = null,
             string status = ""
-		);	
+		);
+		public bool SaveBill(Bill bill);
+		public bool UpdatePrescriptionBillStatus(int prescriptionId, string isBilled);
 	}
 }
