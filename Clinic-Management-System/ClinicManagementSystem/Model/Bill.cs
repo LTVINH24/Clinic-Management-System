@@ -16,6 +16,8 @@ namespace ClinicManagementSystem.Model
 
         // Navigation properties
         public Prescription Prescription { get; set; }
-        public Patient Patient { get; set; }  // Thông tin bệnh nhân thông qua Prescription
+        public Patient Patient { get; set; }
+        public int ExaminationFee { get; set; }
+        public List<MedicineSelection> Medicines { get; set; }
     }
 }

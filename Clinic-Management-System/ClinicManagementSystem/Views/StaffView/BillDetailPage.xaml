@@ -4,8 +4,15 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:converters="using:ClinicManagementSystem.Converters"
     mc:Ignorable="d"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+
+    <Page.Resources>
+        <converters:DateOnlyConverter x:Key="DateOnlyConverter"/>
+        <converters:InverseBoolToVisibilityConverter x:Key="InverseBoolToVisibilityConverter"/>
+        <converters:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter"/>
+    </Page.Resources>
 
     <Grid Padding="20">
         <Grid.RowDefinitions>
@@ -14,38 +21,217 @@
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
 
-        <TextBlock Text="Bill Detail"
-                  FontSize="24"
-                  FontWeight="Bold"
-                  Margin="0,0,0,20"/>
-
-        <StackPanel Grid.Row="1" Spacing="10">
-            <StackPanel Orientation="Horizontal">
-                <TextBlock Text="Bill ID: " FontWeight="SemiBold"/>
-                <TextBlock Text="{x:Bind ViewModel.Bill.Id, Mode=OneWay}"/>
-            </StackPanel>
-
-            <StackPanel Orientation="Horizontal">
-                <TextBlock Text="Date: " FontWeight="SemiBold"/>
-                <TextBlock Text="{x:Bind ViewModel.Bill.CreatedDate, Mode=OneWay}"/>
-            </StackPanel>
-
-            <StackPanel Orientation="Horizontal">
-                <TextBlock Text="Total Amount: " FontWeight="SemiBold"/>
-                <TextBlock Text="{x:Bind ViewModel.Bill.TotalAmount, Mode=OneWay}"/>
-                <TextBlock Text=" VND" Margin="5,0,0,0"/>
-            </StackPanel>
-
-            <StackPanel Orientation="Horizontal">
-                <TextBlock Text="Get Medicine: " FontWeight="SemiBold"/>
-                <TextBlock Text="{x:Bind ViewModel.Bill.IsGetMedicine, Mode=OneWay}"/>
-            </StackPanel>
+        <!-- Header -->
+        <StackPanel Grid.Row="0" HorizontalAlignment="Center" Spacing="4">
+            <TextBlock Text="VTV CLINIC"
+                      FontSize="24"
+                      FontWeight="Bold"
+                      HorizontalAlignment="Center"/>
+            <TextBlock Text="MEDICAL BILL"
+                      FontSize="20"
+                      FontWeight="SemiBold"
+                      HorizontalAlignment="Center"/>
+            <TextBlock Text="{x:Bind ViewModel.Bill.CreatedDate, Mode=OneWay, Converter={StaticResource DateOnlyConverter}}"
+                      HorizontalAlignment="Center"/>
         </StackPanel>
 
-        <Button Grid.Row="2"
-                Content="Back"
-                Click="BackButton_Click"
-                HorizontalAlignment="Right"
-                Margin="0,20,0,0"/>
+        <!-- Content -->
+        <ScrollViewer Grid.Row="1" Margin="0,20">
+            <StackPanel Spacing="20">
+                <!-- Patient Info -->
+                <Border Background="{ThemeResource CardBackgroundFillColorDefaultBrush}"
+                        BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}"
+                        BorderThickness="1"
+                        CornerRadius="8"
+                        Padding="16">
+                    <StackPanel Spacing="8">
+                        <TextBlock Text="PATIENT INFORMATION" 
+                                 FontWeight="SemiBold"
+                                 Margin="0,0,0,8"/>
+                        
+                        <Grid ColumnSpacing="16" RowSpacing="8">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                            </Grid.RowDefinitions>
+
+                            <TextBlock Text="Full name:" Grid.Column="0"/>
+                            <TextBlock Text="{x:Bind ViewModel.Bill.Patient.Name, Mode=OneWay}" 
+                                     Grid.Column="1"/>
+                            
+                            <TextBlock Text="Gender:" Grid.Column="2"/>
+                            <TextBlock Text="{x:Bind ViewModel.Bill.Patient.Gender, Mode=OneWay}" 
+                                     Grid.Column="3"/>
+
+                            <TextBlock Text="Date of birth:" Grid.Row="1" Grid.Column="0"/>
+                            <TextBlock Text="{x:Bind ViewModel.Bill.Patient.DoB, Mode=OneWay, Converter={StaticResource DateOnlyConverter}}" 
+                                     Grid.Row="1" Grid.Column="1"/>
+
+                            <TextBlock Text="ID:" Grid.Row="1" Grid.Column="2"/>
+                            <TextBlock Text="{x:Bind ViewModel.Bill.Patient.ResidentId, Mode=OneWay}" 
+                                     Grid.Row="1" Grid.Column="3"/>
+                        </Grid>
+                    </StackPanel>
+                </Border>
+
+                <!-- Bill Details -->
+                <Border Background="{ThemeResource CardBackgroundFillColorDefaultBrush}"
+                        BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}"
+                        BorderThickness="1"
+                        CornerRadius="8"
+                        Padding="16">
+                    <StackPanel Spacing="8">
+                        <TextBlock Text="BILL DETAILS" 
+                                 FontWeight="SemiBold"
+                                 Margin="0,0,0,8"/>
+
+                        <!-- Examination Fee -->
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Text="Examination Fee"/>
+                            <TextBlock Grid.Column="1">
+                                <Run Text="{x:Bind ViewModel.Bill.ExaminationFee, Mode=OneWay}"/>
+                                <Run Text=" VND"/>
+                            </TextBlock>
+                        </Grid>
+
+                        <!-- Medicines -->
+                        <TextBlock Text="Medicines:" Margin="0,8,0,4"/>
+
+                        <!-- Hiển thị khi không có thuốc -->
+                        <TextBlock Text="No medicines prescribed"
+                                   Margin="16,4,0,0"
+                                   Visibility="{x:Bind ViewModel.Bill.IsGetMedicine, Mode=OneWay, Converter={StaticResource InverseBoolToVisibilityConverter}}"/>
+
+                        <!-- Medicine Header -->
+                        <Grid Margin="16,0,0,8"
+                              Visibility="{x:Bind ViewModel.Bill.IsGetMedicine, Mode=OneWay, Converter={StaticResource BoolToVisibilityConverter}}">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="3*"/>  <!-- Tên thuốc -->
+                                <ColumnDefinition Width="*"/>   <!-- Số lượng -->
+                                <ColumnDefinition Width="*"/>   <!-- Đơn giá -->
+                                <ColumnDefinition Width="2*"/>  <!-- Thành tiền -->
+                            </Grid.ColumnDefinitions>
+                            
+                            <TextBlock Text="Medicine Name" 
+                                      Grid.Column="0"
+                                      FontWeight="SemiBold"/>
+                            <TextBlock Text="Quantity" 
+                                      Grid.Column="1"
+                                      FontWeight="SemiBold"
+                                      HorizontalAlignment="Center"/>
+                            <TextBlock Text="Unit Price" 
+                                      Grid.Column="2"
+                                      FontWeight="SemiBold"
+                                      HorizontalAlignment="Center"/>
+                            <TextBlock Text="Total" 
+                                      Grid.Column="3"
+                                      FontWeight="SemiBold"
+                                      HorizontalAlignment="Right"/>
+                        </Grid>
+
+                        <!-- Medicine List -->
+                        <ScrollViewer MaxHeight="200" 
+                                      Margin="16,0,0,0"
+                                      Visibility="{x:Bind ViewModel.Bill.IsGetMedicine, Mode=OneWay, Converter={StaticResource BoolToVisibilityConverter}}">
+                            <ItemsControl ItemsSource="{x:Bind ViewModel.Bill.Medicines, Mode=OneWay}">
+                                <ItemsControl.ItemTemplate>
+                                    <DataTemplate>
+                                        <Border Background="{ThemeResource CardBackgroundFillColorDefaultBrush}"
+                                                BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}"
+                                                BorderThickness="1"
+                                                CornerRadius="4"
+                                                Padding="12"
+                                                Margin="0,4">
+                                            <Grid>
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="3*"/>  <!-- Tên thuốc -->
+                                                    <ColumnDefinition Width="*"/>   <!-- Số lượng -->
+                                                    <ColumnDefinition Width="*"/>   <!-- Đơn giá -->
+                                                    <ColumnDefinition Width="2*"/>  <!-- Thành tiền -->
+                                                </Grid.ColumnDefinitions>
+
+                                                <!-- Tên thuốc -->
+                                                <TextBlock Grid.Column="0"
+                                                         Text="{Binding Medicine.Name}"
+                                                         VerticalAlignment="Center"/>
+
+                                                <!-- Số lượng -->
+                                                <TextBlock Grid.Column="1"
+                                                         VerticalAlignment="Center"
+                                                         HorizontalAlignment="Center">
+                                                    <Run Text="{Binding SelectedQuantity}"/>
+                                                    <Run Text=" pill(s)"/>
+                                                </TextBlock>
+
+                                                <!-- Đơn giá -->
+                                                <StackPanel Grid.Column="2"
+                                                          Orientation="Horizontal"
+                                                          VerticalAlignment="Center"
+                                                          HorizontalAlignment="Center">
+                                                    <TextBlock Text="{Binding Medicine.Price}"/>
+                                                    <TextBlock Text=" VND"/>
+                                                </StackPanel>
+
+                                                <!-- Thành tiền -->
+                                                <StackPanel Grid.Column="3"
+                                                          Orientation="Horizontal"
+                                                          VerticalAlignment="Center"
+                                                          HorizontalAlignment="Right">
+                                                    <TextBlock Text="{Binding TotalPrice}"/>
+                                                    <TextBlock Text=" VND"/>
+                                                </StackPanel>
+                                            </Grid>
+                                        </Border>
+                                    </DataTemplate>
+                                </ItemsControl.ItemTemplate>
+                                <ItemsControl.ItemContainerStyle>
+                                    <Style TargetType="ContentPresenter">
+                                        <Setter Property="HorizontalAlignment" Value="Stretch"/>
+                                    </Style>
+                                </ItemsControl.ItemContainerStyle>
+                            </ItemsControl>
+                        </ScrollViewer>
+
+                        <Rectangle Height="1" 
+                                 Fill="{ThemeResource CardStrokeColorDefaultBrush}" 
+                                 Margin="0,8"/>
+
+                        <!-- Total -->
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Text="Total"
+                                     FontWeight="SemiBold"/>
+                            <TextBlock Grid.Column="1"
+                                     FontWeight="SemiBold">
+                                <Run Text="{x:Bind ViewModel.Bill.TotalAmount, Mode=OneWay}"/>
+                                <Run Text=" VND"/>
+                            </TextBlock>
+                        </Grid>
+                    </StackPanel>
+                </Border>
+            </StackPanel>
+        </ScrollViewer>
+
+        <!-- Footer -->
+        <StackPanel Grid.Row="2" 
+                    Orientation="Horizontal" 
+                    HorizontalAlignment="Center"
+                    Spacing="8">
+            <Button Content="Back"
+                    Click="BackButton_Click"/>
+        </StackPanel>
     </Grid>
 </Page> 

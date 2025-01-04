@@ -2412,25 +2412,124 @@ namespace ClinicManagementSystem.Service.DataAccess
                 using (SqlConnection connection = new SqlConnection(_connectionString))
                 {
                     connection.Open();
+                    System.Diagnostics.Debug.WriteLine($"Querying bill with ID: {id}"); // Debug line
 
-                    string query = "SELECT * FROM Bill WHERE id = @Id";
+                    string query = @"
+                        SELECT b.*, p.*, mef.*, pt.*,
+                            CASE 
+                                WHEN b.isGetMedicine = 'true' THEN m.id 
+                                ELSE NULL 
+                            END as medicineId,
+                            CASE 
+                                WHEN b.isGetMedicine = 'true' THEN m.name 
+                                ELSE NULL 
+                            END as medicineName,
+                            CASE 
+                                WHEN b.isGetMedicine = 'true' THEN m.price 
+                                ELSE NULL 
+                            END as medicinePrice,
+                            CASE 
+                                WHEN b.isGetMedicine = 'true' THEN pd.quantity 
+                                ELSE NULL 
+                            END as prescribedQuantity,
+                            CASE 
+                                WHEN b.isGetMedicine = 'true' THEN (
+                                    SELECT SUM(pd2.quantity * m2.price)
+                                    FROM PrescriptionDetail pd2 
+                                    JOIN Medicine m2 ON pd2.medicineId = m2.id
+                                    WHERE pd2.prescriptionId = p.id
+                                )
+                                ELSE 0
+                            END as totalMedicineCost
+                        FROM Bill b
+                        JOIN Prescription p ON b.prescriptionId = p.id
+                        JOIN MedicalExaminationForm mef ON p.medicalExaminationFormId = mef.id
+                        JOIN Patient pt ON mef.patientId = pt.id
+                        LEFT JOIN PrescriptionDetail pd ON (p.id = pd.prescriptionId AND b.isGetMedicine = 'true')
+                        LEFT JOIN Medicine m ON (pd.medicineId = m.id AND b.isGetMedicine = 'true')
+                        WHERE b.id = @Id";
+
                     using (SqlCommand command = new SqlCommand(query, connection))
                     {
                         command.Parameters.AddWithValue("@Id", id);
-
-                        using (SqlDataReader reader = command.ExecuteReader())
+                        try
                         {
-                            if (reader.Read())
+                            using (SqlDataReader reader = command.ExecuteReader())
                             {
-                                return new Bill
+                                System.Diagnostics.Debug.WriteLine("Reader executed successfully"); // Debug line
+                                Bill bill = null;
+                                var medicineSelections = new List<MedicineSelection>();
+
+                                while (reader.Read())
                                 {
-                                    Id = reader.GetInt32(reader.GetOrdinal("id")),
-                                    PrescriptionId = reader.GetInt32(reader.GetOrdinal("prescriptionId")),
-                                    TotalAmount = reader.GetInt32(reader.GetOrdinal("totalAmount")),
-                                    CreatedDate = reader.GetDateTime(reader.GetOrdinal("createDate")),
-                                    IsGetMedicine = reader.GetString(reader.GetOrdinal("isGetMedicine"))
-                                };
+                                    System.Diagnostics.Debug.WriteLine("Reading row..."); // Debug line
+                                    try
+                                    {
+                                        if (bill == null)
+                                        {
+                                            int totalAmount = reader.GetInt32(reader.GetOrdinal("totalAmount"));
+                                            int totalMedicineCost = reader.IsDBNull(reader.GetOrdinal("totalMedicineCost")) ? 0 : reader.GetInt32(reader.GetOrdinal("totalMedicineCost"));
+
+                                            bill = new Bill
+                                            {
+                                                Id = reader.GetInt32(reader.GetOrdinal("id")),
+                                                PrescriptionId = reader.GetInt32(reader.GetOrdinal("prescriptionId")),
+                                                TotalAmount = reader.GetInt32(reader.GetOrdinal("totalAmount")),
+                                                CreatedDate = reader.GetDateTime(reader.GetOrdinal("createDate")),
+                                                IsGetMedicine = reader.GetString(reader.GetOrdinal("isGetMedicine")),
+                                                Patient = new Patient
+                                                {
+                                                    Id = reader.GetInt32(reader.GetOrdinal("patientId")),
+                                                    Name = reader.GetString(reader.GetOrdinal("name")),
+                                                    ResidentId = reader.GetString(reader.GetOrdinal("residentId")),
+                                                    Gender = reader.GetString(reader.GetOrdinal("gender")),
+                                                    DoB = reader.GetDateTime(reader.GetOrdinal("birthday")),
+                                                    Address = reader.GetString(reader.GetOrdinal("address"))
+                                                },
+                                                ExaminationFee = totalAmount - totalMedicineCost
+                                            };
+                                            System.Diagnostics.Debug.WriteLine($"Created bill object with ID: {bill.Id}"); // Debug line
+                                        }
+
+                                        if (!reader.IsDBNull(reader.GetOrdinal("medicineId")))
+                                        {
+                                            var medicine = new MedicineSelection
+                                            {
+                                                Medicine = new Medicine
+                                                {
+                                                    Id = reader.GetInt32(reader.GetOrdinal("medicineId")),
+                                                    Name = reader.GetString(reader.GetOrdinal("medicineName")),
+                                                    Price = reader.GetInt32(reader.GetOrdinal("medicinePrice"))
+                                                },
+                                                SelectedQuantity = reader.GetInt32(reader.GetOrdinal("prescribedQuantity"))
+                                            };
+                                            medicineSelections.Add(medicine);
+                                            System.Diagnostics.Debug.WriteLine($"Added medicine: {medicine.Medicine.Name}"); // Debug line
+                                        }
+                                    }
+                                    catch (Exception ex)
+                                    {
+                                        System.Diagnostics.Debug.WriteLine($"Error reading data: {ex.Message}"); // Debug line
+                                    }
+                                }
+
+                                if (bill != null)
+                                {
+                                    bill.Medicines = medicineSelections;
+                                    System.Diagnostics.Debug.WriteLine($"Returning bill with {medicineSelections.Count} medicines"); // Debug line
+                                }
+                                else
+                                {
+                                    System.Diagnostics.Debug.WriteLine("No bill found"); // Debug line
+                                }
+
+                                return bill;
                             }
+                        }
+                        catch (Exception ex)
+                        {
+                            System.Diagnostics.Debug.WriteLine($"Error executing reader: {ex.Message}"); // Debug line
+                            throw;
                         }
                     }
                 }
@@ -2438,8 +2537,8 @@ namespace ClinicManagementSystem.Service.DataAccess
             catch (Exception ex)
             {
                 System.Diagnostics.Debug.WriteLine($"Error in GetBillById: {ex.Message}");
+                throw; // Thêm throw để xem lỗi chi tiết
             }
-            return null;
         }
     }
 }

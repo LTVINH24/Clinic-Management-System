@@ -28,13 +28,24 @@ namespace ClinicManagementSystem.Model
         public int SelectedQuantity
         {
             get => _selectedQuantity;
-            set => SetProperty(ref _selectedQuantity, value);
+            set
+            {
+                if (SetProperty(ref _selectedQuantity, value))
+                {
+                    OnPropertyChanged(nameof(TotalPrice));
+                }
+            }
         }
 
         public string SelectedDosage
         {
             get => _selectedDosage;
             set => SetProperty(ref _selectedDosage, value);
+        }
+
+        public int TotalPrice
+        {
+            get => Medicine != null ? Medicine.Price * SelectedQuantity : 0;
         }
 
         public event PropertyChangedEventHandler PropertyChanged;

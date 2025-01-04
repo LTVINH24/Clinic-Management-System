@@ -65,10 +65,10 @@
             <ListView.Header>
                 <Grid>
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="230"/>  <!-- Patient Name -->
+                        <ColumnDefinition Width="255"/>  <!-- Patient Name -->
                         <ColumnDefinition Width="125"/>  <!-- DoB -->
-                        <ColumnDefinition Width="125"/>  <!-- Gender -->
-                        <ColumnDefinition Width="125"/>  <!-- Visit Type -->
+                        <ColumnDefinition Width="155"/>  <!-- Gender -->
+                        <ColumnDefinition Width="100"/>  <!-- Visit Type -->
                         <ColumnDefinition Width="*"/>    <!-- Time -->
                     </Grid.ColumnDefinitions>
 
@@ -109,7 +109,7 @@
                           Margin="0,4">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="200"/>
-                            <ColumnDefinition Width="150"/>
+                            <ColumnDefinition Width="180"/>
                             <ColumnDefinition Width="100"/>
                             <ColumnDefinition Width="150"/>
                             <ColumnDefinition Width="*"/>

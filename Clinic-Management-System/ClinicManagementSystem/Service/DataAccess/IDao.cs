@@ -161,6 +161,7 @@ namespace ClinicManagementSystem.Service.DataAccess
 			DateTimeOffset? endDate = null,
             string status = ""
 		);
+		public Bill GetBillById(int id);
 		public bool SaveBill(Bill bill);
 		public bool UpdatePrescriptionBillStatus(int prescriptionId, string isBilled);
 	}

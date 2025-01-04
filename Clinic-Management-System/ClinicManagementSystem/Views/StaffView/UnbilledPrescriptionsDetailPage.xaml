@@ -12,6 +12,8 @@
 
     <Page.Resources>
         <converters:DateOnlyConverter x:Key="DateOnlyConverter"/>
+        <converters:EmptyCollectionToVisibilityConverter x:Key="EmptyCollectionToVisibilityConverter"/>
+        <converters:NotEmptyCollectionToVisibilityConverter x:Key="NotEmptyCollectionToVisibilityConverter"/>
     </Page.Resources>
 
     <Grid Padding="20">
@@ -98,58 +100,92 @@
                              Style="{StaticResource SubtitleTextBlockStyle}"
                              Margin="0,0,0,16"/>
 
-                    <!-- Medicine List Header -->
-                    <Grid Margin="0,0,0,8">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="2*"/>
-                            <ColumnDefinition Width="*"/>
-                            <ColumnDefinition Width="*"/>
-                        </Grid.ColumnDefinitions>
+                    <!-- Hiển thị khi không có thuốc -->
+                    <TextBlock Text="No medicines prescribed"
+                              Margin="0,8,0,0"
+                              Visibility="{x:Bind ViewModel.Medicines.Count, Mode=OneWay, Converter={StaticResource EmptyCollectionToVisibilityConverter}}"/>
 
-                        <TextBlock Text="Medicine Name"
-                                  FontWeight="SemiBold"
-                                  VerticalAlignment="Center"/>
-                        <TextBlock Text="Quantity"
-                                  Grid.Column="1"
-                                  FontWeight="SemiBold"
-                                  VerticalAlignment="Center"/>
-                        <TextBlock Text="Dosage"
-                                  Grid.Column="2"
-                                  FontWeight="SemiBold"
-                                  VerticalAlignment="Center"/>
-                    </Grid>
+                    <!-- Medicine List Container -->
+                    <Border Background="{ThemeResource CardBackgroundFillColorSecondaryBrush}"
+                            BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}"
+                            BorderThickness="1"
+                            CornerRadius="4"
+                            Padding="12"
+                            Margin="0,8,0,0"
+                            Visibility="{x:Bind ViewModel.Medicines.Count, Mode=OneWay, Converter={StaticResource NotEmptyCollectionToVisibilityConverter}}">
+                        
+                        <!-- Medicine List Header -->
+                        <StackPanel>
+                            <Grid Margin="0,0,0,8">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="2*"/>
+                                    <ColumnDefinition Width="105"/>
+                                    <ColumnDefinition Width="120"/>
+                                </Grid.ColumnDefinitions>
 
-                    <ListView ItemsSource="{x:Bind ViewModel.Medicines, Mode=OneWay}"
-                            IsEnabled="False"
-                            SelectionMode="None"
-                            Background="Transparent"
-                            BorderThickness="0">
-                        <ListView.ItemTemplate>
-                            <DataTemplate x:DataType="model:MedicineSelection">
-                                <Grid Margin="0,4" ColumnSpacing="12">
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="2*"/>
-                                        <ColumnDefinition Width="*"/>
-                                        <ColumnDefinition Width="*"/>
-                                    </Grid.ColumnDefinitions>
-                                    
-                                    <TextBlock Text="{x:Bind Medicine.Name}"
-                                             VerticalAlignment="Center"/>
-                                    <StackPanel Grid.Column="1" 
-                                              Orientation="Horizontal"
-                                              VerticalAlignment="Center">
-                                        <TextBlock Text="{x:Bind SelectedQuantity}"/>
-                                        <TextBlock Text=" pills"/>
-                                    </StackPanel>
-                                    <StackPanel Grid.Column="2" 
-                                              Orientation="Horizontal"
-                                              VerticalAlignment="Center">
-                                        <TextBlock Text="{x:Bind SelectedDosage}"/>
-                                    </StackPanel>
-                                </Grid>
-                            </DataTemplate>
-                        </ListView.ItemTemplate>
-                    </ListView>
+                                <TextBlock Text="Medicine Name"
+                                         FontWeight="SemiBold"
+                                         VerticalAlignment="Center"/>
+                                <TextBlock Text="Quantity"
+                                         Grid.Column="1"
+                                         FontWeight="SemiBold"
+                                         VerticalAlignment="Center"/>
+                                <TextBlock Text="Dosage"
+                                         Grid.Column="2"
+                                         FontWeight="SemiBold"
+                                         VerticalAlignment="Center"/>
+                            </Grid>
+
+                            <!-- Separator -->
+                            <Rectangle Height="1" 
+                                     Fill="{ThemeResource CardStrokeColorDefaultBrush}"
+                                     Margin="0,0,0,8"/>
+
+                            <!-- Medicine List -->
+                            <ListView ItemsSource="{x:Bind ViewModel.Medicines, Mode=OneWay}"
+                                     IsEnabled="False"
+                                     SelectionMode="None"
+                                     Background="Transparent"
+                                     BorderThickness="0">
+                                <ListView.ItemTemplate>
+                                    <DataTemplate x:DataType="model:MedicineSelection">
+                                        <Border Background="{ThemeResource CardBackgroundFillColorDefaultBrush}"
+                                                BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}"
+                                                BorderThickness="1"
+                                                CornerRadius="4"
+                                                Padding="8"
+                                                Margin="0,4">
+                                            <Grid ColumnSpacing="12">
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="2*"/>
+                                                    <ColumnDefinition Width="*"/>
+                                                    <ColumnDefinition Width="*"/>
+                                                </Grid.ColumnDefinitions>
+                                                
+                                                <TextBlock Text="{x:Bind Medicine.Name}"
+                                                         VerticalAlignment="Center"/>
+                                                <StackPanel Grid.Column="1" 
+                                                          Orientation="Horizontal"
+                                                          VerticalAlignment="Center">
+                                                    <TextBlock Text="{x:Bind SelectedQuantity}"/>
+                                                    <TextBlock Text=" pill(s)"/>
+                                                </StackPanel>
+                                                <TextBlock Grid.Column="2" 
+                                                         Text="{x:Bind SelectedDosage}"
+                                                         VerticalAlignment="Center"/>
+                                            </Grid>
+                                        </Border>
+                                    </DataTemplate>
+                                </ListView.ItemTemplate>
+                                <ListView.ItemContainerStyle>
+                                    <Style TargetType="ListViewItem">
+                                        <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+                                        <Setter Property="Padding" Value="0"/>
+                                    </Style>
+                                </ListView.ItemContainerStyle>
+                            </ListView>
+                        </StackPanel>
+                    </Border>
                 </StackPanel>
             </Border>
         </Grid>

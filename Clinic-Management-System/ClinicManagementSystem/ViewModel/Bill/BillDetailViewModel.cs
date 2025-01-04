@@ -1,16 +1,17 @@
 using ClinicManagementSystem.Model;
+using ClinicManagementSystem.Service;
 using ClinicManagementSystem.Service.DataAccess;
 
 namespace ClinicManagementSystem.ViewModel
 {
     public class BillDetailViewModel : BaseViewModel
     {
-        private readonly SqlServerDao _dataAccess;
+        private readonly IDao _dao;
         private Bill _bill;
 
         public BillDetailViewModel()
         {
-            _dataAccess = new SqlServerDao();
+            _dao = ServiceFactory.GetChildOf(typeof(IDao)) as IDao;
         }
 
         public Bill Bill
@@ -21,7 +22,7 @@ namespace ClinicManagementSystem.ViewModel
 
         public void LoadData(int billId)
         {
-            Bill = _dataAccess.GetBillById(billId);
+            Bill = _dao.GetBillById(billId);
         }
     }
 } 

@@ -74,12 +74,12 @@
             <ListView.Header>
                 <Grid>
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="230"/>  <!-- Patient Name -->
-                        <ColumnDefinition Width="150"/>  <!-- Gender -->
-                        <ColumnDefinition Width="150"/>  <!-- Birthday -->
-                        <ColumnDefinition Width="200"/>  <!-- Amount -->
-                        <ColumnDefinition Width="150"/>  <!-- Medicine Status -->
-                        <ColumnDefinition Width="*"/>    <!-- Created Date -->
+                        <ColumnDefinition Width="285"/>  <!-- Patient Name -->
+                        <ColumnDefinition Width="95"/>  <!-- Gender -->
+                        <ColumnDefinition Width="205"/>  <!-- Birthday -->
+                        <ColumnDefinition Width="145"/>  <!-- Amount -->
+                        <ColumnDefinition Width="310"/>  <!-- Medicine Status -->
+                        <ColumnDefinition Width="350"/>    <!-- Created Date -->
                     </Grid.ColumnDefinitions>
 
                     <TextBlock Grid.Column="0" Text="Patient Name" 
@@ -127,7 +127,7 @@
                             <ColumnDefinition Width="150"/>
                             <ColumnDefinition Width="150"/>
                             <ColumnDefinition Width="200"/>
-                            <ColumnDefinition Width="150"/>
+                            <ColumnDefinition Width="250"/>
                             <ColumnDefinition Width="*"/>
                         </Grid.ColumnDefinitions>
 
