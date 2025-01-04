@@ -886,7 +886,9 @@ namespace ClinicManagementSystem.Service.DataAccess
             int currentPage, 
             int pageSize,
             string isExaminated,
-            string keyword = ""
+            string keyword = "",
+            DateTimeOffset? startDate = null,
+            DateTimeOffset? endDate = null
         )
         {
             var forms = new List<MedicalExaminationForm>();
@@ -908,6 +910,8 @@ namespace ClinicManagementSystem.Service.DataAccess
                         WHERE f.doctorId = @DoctorId 
                             AND f.isExaminated = @IsExaminated
                             AND (@Keyword = '' OR p.name LIKE @KeywordPattern)
+                            AND (@StartDate IS NULL OR CAST(f.time AS DATE) >= @StartDate)
+                            AND (@EndDate IS NULL OR CAST(f.time AS DATE) <= @EndDate)
                         ORDER BY f.time ASC
                         OFFSET @Offset ROWS 
                         FETCH NEXT @PageSize ROWS ONLY";
@@ -918,7 +922,25 @@ namespace ClinicManagementSystem.Service.DataAccess
                         ("@PageSize", pageSize),
                         ("@Keyword", keyword ?? ""),
                         ("@KeywordPattern", $"%{keyword}%"),
-                        ("@IsExaminated", isExaminated));  // Truyền trực tiếp string
+                        ("@IsExaminated", isExaminated));
+
+                    if (startDate.HasValue)
+                    {
+                        command.Parameters.AddWithValue("@StartDate", startDate.Value.Date);
+                    }
+                    else
+                    {
+                        command.Parameters.AddWithValue("@StartDate", DBNull.Value);
+                    }
+
+                    if (endDate.HasValue)
+                    {
+                        command.Parameters.AddWithValue("@EndDate", endDate.Value.Date);
+                    }
+                    else
+                    {
+                        command.Parameters.AddWithValue("@EndDate", DBNull.Value);
+                    }
 
                     using (var reader = command.ExecuteReader())
                     {

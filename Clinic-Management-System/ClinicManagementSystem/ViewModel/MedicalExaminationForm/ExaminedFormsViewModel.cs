@@ -19,6 +19,8 @@ namespace ClinicManagementSystem.ViewModel
         private PageInfo _selectedPageInfo;
         private ObservableCollection<MedicalExaminationForm> _examinationForms;
         private readonly int doctorId;
+        private DateTimeOffset? _startDate;
+        private DateTimeOffset? _endDate;
 
         public string Keyword
         {
@@ -74,6 +76,30 @@ namespace ClinicManagementSystem.ViewModel
             set => SetProperty(ref _selectedPageInfo, value);
         }
 
+        public DateTimeOffset? StartDate
+        {
+            get => _startDate;
+            set
+            {
+                if (SetProperty(ref _startDate, value))
+                {
+                    Search();
+                }
+            }
+        }
+
+        public DateTimeOffset? EndDate
+        {
+            get => _endDate;
+            set
+            {
+                if (SetProperty(ref _endDate, value))
+                {
+                    Search();
+                }
+            }
+        }
+
         public ExaminedFormsViewModel()
         {
             _dao = ServiceFactory.GetChildOf(typeof(IDao)) as IDao;
@@ -94,7 +120,9 @@ namespace ClinicManagementSystem.ViewModel
                 CurrentPage, 
                 PageSize,
                 "true",  // examined forms
-                Keyword
+                Keyword,
+                StartDate,
+                EndDate
             );
             
             ExaminationForms.Clear();
@@ -156,6 +184,14 @@ namespace ClinicManagementSystem.ViewModel
                 CurrentPage = page;
                 LoadExaminationForms();
             }
+        }
+
+        public void ClearFilter()
+        {
+            Keyword = "";
+            StartDate = null;
+            EndDate = null;
+            Search();
         }
     }
 }

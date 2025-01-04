@@ -26,14 +26,37 @@
                   Style="{StaticResource TitleTextBlockStyle}"
                   Margin="0,0,0,20"/>
 
-        <AutoSuggestBox Grid.Row="1"
-                        Width="500"
-                        HorizontalAlignment="Left"
-                        Margin="0,0,0,20"
-                        PlaceholderText="Search by patient name..."
-                        QueryIcon="Find"
-                        TextChanged="AutoSuggestBox_TextChanged"
-                        Text="{Binding Keyword, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+        <StackPanel Grid.Row="1" 
+                    Margin="0,0,0,20" 
+                    Spacing="10"
+                    HorizontalAlignment="Center">
+            <!-- Dòng tìm kiếm -->
+            <AutoSuggestBox PlaceholderText="Search by patient name..."
+                            QueryIcon="Find"
+                            TextChanged="AutoSuggestBox_TextChanged"
+                            Text="{x:Bind ViewModel.Keyword, Mode=TwoWay}"
+                            Width="500"/>
+
+            <!-- Dòng filter -->
+            <StackPanel Orientation="Horizontal" 
+                        Spacing="10"
+                        HorizontalAlignment="Center">
+                <CalendarDatePicker Header="From Date"
+                                   Date="{x:Bind ViewModel.StartDate, Mode=TwoWay}"
+                                   PlaceholderText="Select start date"
+                                   Width="200"/>
+
+                <CalendarDatePicker Header="To Date"
+                                   Date="{x:Bind ViewModel.EndDate, Mode=TwoWay}"
+                                   PlaceholderText="Select end date"
+                                   Width="200"/>
+
+                <Button Content="Clear Filter"
+                        Click="ClearFilter_Click"
+                        Style="{StaticResource AccentButtonStyle}"
+                        VerticalAlignment="Bottom"/>
+            </StackPanel>
+        </StackPanel>
 
         <ListView Grid.Row="2"
                   ItemsSource="{Binding ExaminationForms}"

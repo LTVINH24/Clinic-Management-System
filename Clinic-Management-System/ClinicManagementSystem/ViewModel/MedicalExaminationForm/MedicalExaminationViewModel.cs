@@ -25,6 +25,8 @@ namespace ClinicManagementSystem.ViewModel
 		private PageInfo _selectedPageInfo;
 		private Frame _navigationFrame;
 		private readonly int doctorId;
+		private DateTimeOffset? _startDate;
+		private DateTimeOffset? _endDate;
 
 		public MedicalExaminationViewModel()
 		{
@@ -93,6 +95,30 @@ namespace ClinicManagementSystem.ViewModel
 			set => SetProperty(ref _pageSize, value);
 		}
 
+		public DateTimeOffset? StartDate
+		{
+			get => _startDate;
+			set
+			{
+				if (SetProperty(ref _startDate, value))
+				{
+					Search();
+				}
+			}
+		}
+
+		public DateTimeOffset? EndDate
+		{
+			get => _endDate;
+			set
+			{
+				if (SetProperty(ref _endDate, value))
+				{
+					Search();
+				}
+			}
+		}
+
 		public void Search()
 		{
 			CurrentPage = 1;
@@ -106,7 +132,9 @@ namespace ClinicManagementSystem.ViewModel
 				CurrentPage, 
 				PageSize,
 				"false",  // pending forms
-				Keyword
+				Keyword,
+				StartDate,
+				EndDate
 			);
 
 			ExaminationForms.Clear();
@@ -173,6 +201,14 @@ namespace ClinicManagementSystem.ViewModel
 		public void NavigateToDiagnosisPage(MedicalExaminationForm selectedForm)
 		{
 			NavigationFrame?.Navigate(typeof(DiagnosisPage), selectedForm);
+		}
+
+		public void ClearFilter()
+		{
+			Keyword = "";
+			StartDate = null;
+			EndDate = null;
+			Search();
 		}
 	}
 }

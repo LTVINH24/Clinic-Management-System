@@ -86,10 +86,12 @@ namespace ClinicManagementSystem.Service.DataAccess
 
 		public (List<MedicalExaminationForm>, int) GetDoctorExaminationForms(
 			int doctorId,
-			int page,
+			int currentPage,
 			int pageSize,
 			string isExaminated,
-			string keyword = ""
+			string keyword = "",
+			DateTimeOffset? startDate = null,
+			DateTimeOffset? endDate = null
 		);
 		//========================================================================================
 

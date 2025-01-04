@@ -52,5 +52,10 @@ namespace ClinicManagementSystem.Views.DoctorView
                 ViewModel.GoToPage(pageInfo.Page);
             }
         }
+
+        private void ClearFilter_Click(object sender, RoutedEventArgs e)
+        {
+            ViewModel.ClearFilter();
+        }
     }
 } 
