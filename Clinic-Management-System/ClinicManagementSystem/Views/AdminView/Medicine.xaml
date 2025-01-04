@@ -24,7 +24,7 @@
             <DataTemplate x:Key="HorizontalMedicine" x:DataType="localmodel:Medicine">
                 <Border BorderThickness="1" BorderBrush="#b5b5e8">
                     <StackPanel Orientation="Horizontal">
-                        <TextBlock Width="80" Margin="20" Text="{x:Bind Id}" />
+                        <TextBlock Width="50" Margin="20" Text="{x:Bind Id}" />
                         <TextBlock Width="150" Margin="20" Text="{x:Bind Name}" />
                         <TextBlock Width="100" Margin="20" Text="{x:Bind Quantity}" />
                         <TextBlock Width="100" Margin="20" Text="{x:Bind QuantityImport}" />
@@ -85,7 +85,7 @@
                     <CalendarDatePicker x:Name="ExpDateEditMedicine" Header="EXP Date" Date="{x:Bind ViewModel.MedicineEdit.ExpDate, Mode=TwoWay}" Margin="0,0,0,10"/>
                     <CalendarDatePicker x:Name="MfgDateEditMedicine"  Header="MFG Date" Date="{x:Bind ViewModel.MedicineEdit.MfgDate, Mode=TwoWay}" Margin="0,0,0,10"/>
                     <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
-                        <Button Click="UpdateMedicine_Click" Content="Update" Margin="5"/>
+                        <Button Click="UpdateMedicine_Click" Background="Blue" Foreground="White" Content="Update" Margin="5"/>
                         <Button Click="ClosePopup_Click" Content="Cancel" Margin="5"/>
                     </StackPanel>
                 </StackPanel>
@@ -105,7 +105,7 @@
         </StackPanel>
 
         <StackPanel Grid.Row="1" Margin="35,0,0,0" Orientation="Horizontal" HorizontalAlignment="Left">
-            <TextBlock FontWeight="Bold" FontSize="20" Width="120">ID</TextBlock>
+            <TextBlock FontWeight="Bold" FontSize="20" Width="90">ID</TextBlock>
             <TextBlock FontWeight="Bold" FontSize="20" Width="190">Name</TextBlock>
             <TextBlock FontWeight="Bold" FontSize="20" Width="140">Remain</TextBlock>
             <TextBlock FontWeight="Bold" FontSize="20" Width="140">Import</TextBlock>
