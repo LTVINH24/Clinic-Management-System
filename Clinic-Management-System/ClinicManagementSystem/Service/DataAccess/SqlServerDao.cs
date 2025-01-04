@@ -802,6 +802,75 @@ namespace ClinicManagementSystem.Service.DataAccess
             return medicines;
         }
 
+        public (List<MedicineSelection>, int) GetMedicinesByPage(
+            int currentPage, 
+            int pageSize, 
+            string keyword = ""
+        )
+        {
+            var medicines = new List<MedicineSelection>();
+            int totalCount = 0;
+
+            using (var connection = new SqlConnection(_connectionString))
+            {
+                connection.Open();
+                using (var command = new SqlCommand())
+                {
+                    command.Connection = connection;
+                    command.CommandText = @"
+                        SELECT COUNT(*) OVER() as TotalCount,
+                            m.id, m.name, m.manufacturer, m.price, 
+                            m.quantity, m.expDate, m.mfgDate
+                        FROM Medicine m
+                        WHERE (@Keyword = '' OR m.name LIKE @KeywordPattern)
+                            AND m.isDeleted != 'true'
+                            AND CAST(m.expDate AS DATE) > CAST(GETDATE() AS DATE)
+                        ORDER BY m.name
+                        OFFSET @Offset ROWS 
+                        FETCH NEXT @PageSize ROWS ONLY";
+
+                    AddParameters(command,
+                        ("@Offset", (currentPage - 1) * pageSize),
+                        ("@PageSize", pageSize),
+                        ("@Keyword", keyword ?? ""),
+                        ("@KeywordPattern", $"%{keyword}%"));
+
+                    using (var reader = command.ExecuteReader())
+                    {
+                        while (reader.Read())
+                        {
+                            if (totalCount == 0)
+                            {
+                                totalCount = reader.GetInt32(0);
+                            }
+
+                            var medicine = new Medicine
+                            {
+                                Id = reader.GetInt32(reader.GetOrdinal("id")),
+                                Name = reader.GetString(reader.GetOrdinal("name")),
+                                Manufacturer = reader.GetString(reader.GetOrdinal("manufacturer")),
+                                Price = reader.GetInt32(reader.GetOrdinal("price")),
+                                Quantity = reader.GetInt32(reader.GetOrdinal("quantity")),
+                                ExpDate = reader.GetDateTime(reader.GetOrdinal("expDate")),
+                                MfgDate = reader.GetDateTime(reader.GetOrdinal("mfgDate"))
+                            };
+
+                            var medicineSelection = new MedicineSelection
+                            {
+                                Medicine = medicine,
+                                IsSelected = false,
+                                SelectedQuantity = 0,
+                                SelectedDosage = ""
+                            };
+
+                            medicines.Add(medicineSelection);
+                        }
+                    }
+                }
+            }
+            return (medicines, totalCount);
+        }
+
 		//=============================================================================================
 
 
@@ -839,7 +908,7 @@ namespace ClinicManagementSystem.Service.DataAccess
                         WHERE f.doctorId = @DoctorId 
                             AND f.isExaminated = @IsExaminated
                             AND (@Keyword = '' OR p.name LIKE @KeywordPattern)
-                        ORDER BY f.time DESC
+                        ORDER BY f.time ASC
                         OFFSET @Offset ROWS 
                         FETCH NEXT @PageSize ROWS ONLY";
 
@@ -1734,6 +1803,74 @@ namespace ClinicManagementSystem.Service.DataAccess
             return prescription;
         }
 
+        public (List<Prescription>, int) GetPrescriptionsByPage(
+            int currentPage,
+            int pageSize,
+            string isBilled,
+            string keyword = ""
+        )
+        {
+            var prescriptions = new List<Prescription>();
+            int totalCount = 0;
+
+            using (var connection = new SqlConnection(_connectionString))
+            {
+                connection.Open();
+                using (var command = new SqlCommand())
+                {
+                    command.Connection = connection;
+                    command.CommandText = @"
+                        SELECT COUNT(*) OVER() as TotalCount,
+                            p.id, p.time, p.medicalExaminationFormId, p.nextExaminationDate, p.isBilled,
+                            pt.name as patientName, pt.gender as gender, pt.birthday as birthday
+                        FROM Prescription p
+                        INNER JOIN MedicalExaminationForm m ON p.medicalExaminationFormId = m.id
+                        INNER JOIN Patient pt ON m.patientId = pt.id
+                        WHERE p.isBilled = @IsBilled
+                            AND (@Keyword = '' OR pt.name LIKE @KeywordPattern)
+                        ORDER BY p.time ASC
+                        OFFSET @Offset ROWS 
+                        FETCH NEXT @PageSize ROWS ONLY";
+
+                    AddParameters(command,
+                        ("@Offset", (currentPage - 1) * pageSize),
+                        ("@PageSize", pageSize),
+                        ("@IsBilled", isBilled),
+                        ("@Keyword", keyword ?? ""),
+                        ("@KeywordPattern", $"%{keyword}%"));
+
+                    using (var reader = command.ExecuteReader())
+                    {
+                        while (reader.Read())
+                        {
+                            if (totalCount == 0)
+                            {
+                                totalCount = reader.GetInt32(0);
+                            }
+
+                            prescriptions.Add(new Prescription
+                            {
+                                Id = reader.GetInt32(reader.GetOrdinal("id")),
+                                Time = reader.GetDateTime(reader.GetOrdinal("time")),
+                                MedicalExaminationFormId = reader.GetInt32(reader.GetOrdinal("medicalExaminationFormId")),
+                                NextExaminationDate = reader.IsDBNull(reader.GetOrdinal("nextExaminationDate")) 
+                                    ? null 
+                                    : reader.GetDateTime(reader.GetOrdinal("nextExaminationDate")),
+                                IsBilled = reader.GetString(reader.GetOrdinal("isBilled")),
+                                Patient = new Patient
+                                {
+                                    Name = reader.GetString(reader.GetOrdinal("patientName")),
+                                    Gender = reader.GetString(reader.GetOrdinal("gender")),
+                                    DoB = reader.GetDateTime(reader.GetOrdinal("birthday"))
+                                }
+                            });
+                        }
+                    }
+                }
+            }
+            return (prescriptions, totalCount);
+        }
+
 		//=========================================================================================================
 
 
@@ -2150,41 +2287,93 @@ namespace ClinicManagementSystem.Service.DataAccess
             }
         }
 
-        public List<Bill> GetAllBills()
+        public (List<Bill>, int) GetBillsByPage(
+            int currentPage, 
+            int pageSize, 
+            string keyword = "", 
+            DateTimeOffset? startDate = null, 
+            DateTimeOffset? endDate = null
+        )
         {
             var bills = new List<Bill>();
-            try
-            {
-                using (SqlConnection connection = new SqlConnection(_connectionString))
-                {
-                    connection.Open();
+            int totalCount = 0;
 
-                    string query = "SELECT * FROM Bill ORDER BY createDate DESC";
-                    using (SqlCommand command = new SqlCommand(query, connection))
+            using (var connection = new SqlConnection(_connectionString))
+            {
+                connection.Open();
+                using (var command = new SqlCommand())
+                {
+                    command.Connection = connection;
+                    command.CommandText = @"
+                        SELECT COUNT(*) OVER() as TotalCount,
+                            b.id, b.prescriptionId, b.totalAmount, b.createDate, b.isGetMedicine,
+                            pt.id as patientId, pt.name as patientName, pt.gender as patientGender, 
+                            pt.birthday as patientDoB
+                        FROM Bill b
+                        INNER JOIN Prescription p ON b.prescriptionId = p.id
+                        INNER JOIN MedicalExaminationForm m ON p.medicalExaminationFormId = m.id
+                        INNER JOIN Patient pt ON m.patientId = pt.id
+                        WHERE (@Keyword = '' OR pt.name LIKE @KeywordPattern)
+                            AND (@StartDate IS NULL OR CAST(b.createDate AS DATE) >= @StartDate)
+                            AND (@EndDate IS NULL OR CAST(b.createDate AS DATE) <= @EndDate)
+                        ORDER BY b.createDate ASC
+                        OFFSET @Offset ROWS 
+                        FETCH NEXT @PageSize ROWS ONLY";
+
+                    AddParameters(command,
+                        ("@Offset", (currentPage - 1) * pageSize),
+                        ("@PageSize", pageSize),
+                        ("@Keyword", keyword ?? ""),
+                        ("@KeywordPattern", $"%{keyword}%"));
+
+                    // Xử lý riêng cho tham số ngày tháng
+                    if (startDate.HasValue)
                     {
-                        using (SqlDataReader reader = command.ExecuteReader())
+                        command.Parameters.AddWithValue("@StartDate", startDate.Value.Date);
+                    }
+                    else
+                    {
+                        command.Parameters.AddWithValue("@StartDate", DBNull.Value);
+                    }
+
+                    if (endDate.HasValue)
+                    {
+                        command.Parameters.AddWithValue("@EndDate", endDate.Value.Date);
+                    }
+                    else
+                    {
+                        command.Parameters.AddWithValue("@EndDate", DBNull.Value);
+                    }
+
+                    using (var reader = command.ExecuteReader())
+                    {
+                        while (reader.Read())
                         {
-                            while (reader.Read())
+                            if (totalCount == 0)
                             {
-                                var bill = new Bill
-                                {
-                                    Id = reader.GetInt32(reader.GetOrdinal("id")),
-                                    PrescriptionId = reader.GetInt32(reader.GetOrdinal("prescriptionId")),
-                                    TotalAmount = reader.GetInt32(reader.GetOrdinal("totalAmount")),
-                                    CreatedDate = reader.GetDateTime(reader.GetOrdinal("createDate")),
-                                    IsGetMedicine = reader.GetString(reader.GetOrdinal("isGetMedicine"))
-                                };
-                                bills.Add(bill);
+                                totalCount = reader.GetInt32(0);
                             }
+
+                            bills.Add(new Bill
+                            {
+                                Id = reader.GetInt32(reader.GetOrdinal("id")),
+                                PrescriptionId = reader.GetInt32(reader.GetOrdinal("prescriptionId")),
+                                TotalAmount = reader.GetInt32(reader.GetOrdinal("totalAmount")),
+                                CreatedDate = reader.GetDateTime(reader.GetOrdinal("createDate")),
+                                IsGetMedicine = reader.GetString(reader.GetOrdinal("isGetMedicine")),
+                                Patient = new Patient
+                                {
+                                    Id = reader.GetInt32(reader.GetOrdinal("patientId")),
+                                    Name = reader.GetString(reader.GetOrdinal("patientName")),
+                                    Gender = reader.GetString(reader.GetOrdinal("patientGender")),
+                                    DoB = reader.GetDateTime(reader.GetOrdinal("patientDoB"))
+                                }
+                            });
                         }
                     }
                 }
             }
-            catch (Exception ex)
-            {
-                System.Diagnostics.Debug.WriteLine($"Error in GetAllBills: {ex.Message}");
-            }
-            return bills;
+            return (bills, totalCount);
         }
 
         public Bill GetBillById(int id)

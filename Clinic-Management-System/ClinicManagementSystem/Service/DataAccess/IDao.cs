@@ -88,7 +88,7 @@ namespace ClinicManagementSystem.Service.DataAccess
 			int doctorId,
 			int page,
 			int pageSize,
-			string isExaminated,  // Thay đổi kiểu từ bool sang string
+			string isExaminated,
 			string keyword = ""
 		);
 		//========================================================================================
@@ -101,7 +101,13 @@ namespace ClinicManagementSystem.Service.DataAccess
 		bool DeleteMedicine(Medicine medicine);
 		List<MedicineStatistic> GetTopMedicineStatistic(DateTimeOffset startDate, DateTimeOffset endDate, int n, string sortString);
 		List<MedicineStatistic> GetMedicineStatistic(DateTimeOffset startDate, DateTimeOffset endDate);
-        //========================================================================================
+        public List<MedicineSelection> GetMedicineSelectionsByFormId(int formId);
+		public (List<MedicineSelection>, int) GetMedicinesByPage(
+            int currentPage, 
+            int pageSize, 
+            string keyword = ""
+        );
+		//========================================================================================
 
         //========================================Specialty=======================================
         public List<Specialty> GetSpecialty();
@@ -129,8 +135,23 @@ namespace ClinicManagementSystem.Service.DataAccess
 		bool DeletePatient(Patient patient);
         //========================================================================================
 
+		//========================================Prescription=========================================
+		public (List<Prescription>, int) GetPrescriptionsByPage(
+			int page,
+			int pageSize,
+			string isBilled,
+			string keyword = ""
+		);
+		//========================================================================================
 
         //=========================================Bill==========================================
         public List<BillStatistic> GetBillStatistic(DateTimeOffset startDate, DateTimeOffset endDate);
-    }
+		public (List<Bill>, int) GetBillsByPage(
+			int currentPage, 
+			int pageSize, 
+			string keyword = "", 
+			DateTimeOffset? startDate = null, 
+			DateTimeOffset? endDate = null
+		);	
+	}
 }

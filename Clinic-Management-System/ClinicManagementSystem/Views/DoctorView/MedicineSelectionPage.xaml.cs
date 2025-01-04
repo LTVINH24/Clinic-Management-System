@@ -137,5 +137,23 @@ namespace ClinicManagementSystem.Views.DoctorView
                 ViewModel.SearchText = sender.Text;
             }
         }
+
+        private void PreviousButton_Click(object sender, RoutedEventArgs e)
+        {
+            ViewModel.GoToPreviousPage();
+        }
+
+        private void NextButton_Click(object sender, RoutedEventArgs e)
+        {
+            ViewModel.GoToNextPage();
+        }
+
+        private void PageButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (sender is Button button && button.Content is int page)
+            {
+                ViewModel.GoToPage(page);
+            }
+        }
     }
 }

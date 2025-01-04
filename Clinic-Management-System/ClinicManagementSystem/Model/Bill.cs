@@ -13,5 +13,9 @@ namespace ClinicManagementSystem.Model
         public int TotalAmount { get; set; }
         public DateTime CreatedDate { get; set; }
         public string IsGetMedicine { get; set; }
+
+        // Navigation properties
+        public Prescription Prescription { get; set; }
+        public Patient Patient { get; set; }  // Thông tin bệnh nhân thông qua Prescription
     }
 }
