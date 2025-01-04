@@ -11,120 +11,197 @@
 
     <Page.Resources>
         <converters:DateTimeToStringConverter x:Key="DateTimeToStringConverter"/>
+        <converters:MedicineStatusConverter x:Key="MedicineStatusConverter"/>
     </Page.Resources>
 
     <Grid Margin="20">
         <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="*"/>
-            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>  <!-- Tiêu đề -->
+            <RowDefinition Height="Auto"/>  <!-- Thanh tìm kiếm và filter -->
+            <RowDefinition Height="*"/>     <!-- ListView -->
+            <RowDefinition Height="Auto"/>  <!-- Phân trang -->
         </Grid.RowDefinitions>
 
-        <!-- Search Box -->
-        <Grid Row="0">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="Auto"/>
-                <ColumnDefinition Width="Auto"/>
-                <ColumnDefinition Width="Auto"/>
-                <ColumnDefinition Width="Auto"/>
-                <ColumnDefinition Width="*"/>
-            </Grid.ColumnDefinitions>
+        <TextBlock Text="Bills List"
+                  Style="{StaticResource TitleTextBlockStyle}"
+                  Margin="0,0,0,20"/>
 
-            <!-- Search Box -->
-            <AutoSuggestBox Grid.Column="0"
-                            PlaceholderText="Search by patient name..."
+        <!-- Search và Filter -->
+        <StackPanel Grid.Row="1" 
+                    Margin="0,0,0,20" 
+                    Spacing="10"
+                    HorizontalAlignment="Center">
+            <!-- Dòng tìm kiếm -->
+            <AutoSuggestBox PlaceholderText="Search by patient name..."
                             QueryIcon="Find"
-                            Text="{x:Bind ViewModel.Keyword, Mode=TwoWay}"
-                            Width="300"
-                            Margin="0,0,10,0"/>
+                            TextChanged="AutoSuggestBox_TextChanged"
+                            Text="{x:Bind ViewModel.Keyword, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                            Width="500"/>
 
-            <!-- Date Range Pickers -->
-            <CalendarDatePicker Grid.Column="1"
-                                Header="From Date"
-                                Date="{x:Bind ViewModel.StartDate, Mode=TwoWay}"
-                                Margin="0,0,10,0"/>
+            <!-- Dòng filter -->
+            <StackPanel Orientation="Horizontal" 
+                        Spacing="10"
+                        HorizontalAlignment="Center">
+                <CalendarDatePicker Header="From Date"
+                                   Date="{x:Bind ViewModel.StartDate, Mode=TwoWay}"
+                                   Width="200"/>
 
-            <CalendarDatePicker Grid.Column="2"
-                                Header="To Date"
-                                Date="{x:Bind ViewModel.EndDate, Mode=TwoWay}"
-                                Margin="0,0,10,0"/>
+                <CalendarDatePicker Header="To Date"
+                                   Date="{x:Bind ViewModel.EndDate, Mode=TwoWay}"
+                                   Width="200"/>
 
-            <!-- Clear Filter Button -->
-            <Button Grid.Column="3"
-                    Content="Clear Filter"
-                    Click="ClearFilter_Click"
-                    Style="{StaticResource AccentButtonStyle}"
-                    Margin="0,0,10,0"/>
-        </Grid>
+                <ComboBox Header="Medicine Status"
+                          SelectedIndex="0"
+                          SelectionChanged="StatusComboBox_SelectionChanged"
+                          Width="150">
+                    <ComboBoxItem Content="All" Tag=""/>
+                    <ComboBoxItem Content="Got Medicine" Tag="true"/>
+                    <ComboBoxItem Content="Not Yet" Tag="false"/>
+                </ComboBox>
+
+                <Button Content="Clear Filter"
+                        Click="ClearFilter_Click"
+                        Style="{StaticResource AccentButtonStyle}"
+                        VerticalAlignment="Bottom"/>
+            </StackPanel>
+        </StackPanel>
 
         <!-- Bills List -->
-        <ListView Grid.Row="1"
+        <ListView Grid.Row="2"
                   ItemsSource="{x:Bind ViewModel.Bills, Mode=OneWay}"
                   SelectionChanged="ListView_SelectionChanged"
-                  Margin="0,10">
+                  Margin="0,0,0,10">
+            <ListView.Header>
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="230"/>  <!-- Patient Name -->
+                        <ColumnDefinition Width="150"/>  <!-- Gender -->
+                        <ColumnDefinition Width="150"/>  <!-- Birthday -->
+                        <ColumnDefinition Width="200"/>  <!-- Amount -->
+                        <ColumnDefinition Width="150"/>  <!-- Medicine Status -->
+                        <ColumnDefinition Width="*"/>    <!-- Created Date -->
+                    </Grid.ColumnDefinitions>
+
+                    <TextBlock Grid.Column="0" Text="Patient Name" 
+                              FontWeight="SemiBold" 
+                              Margin="12,8"
+                              VerticalAlignment="Center"
+                              HorizontalAlignment="Center"/>
+                    <TextBlock Grid.Column="1" Text="Gender" 
+                              FontWeight="SemiBold" 
+                              Margin="12,8"
+                              VerticalAlignment="Center"
+                              HorizontalAlignment="Center"/>
+                    <TextBlock Grid.Column="2" Text="Birthday" 
+                              FontWeight="SemiBold" 
+                              Margin="12,8"
+                              VerticalAlignment="Center"
+                              HorizontalAlignment="Center"/>
+                    <TextBlock Grid.Column="3" Text="Amount" 
+                              FontWeight="SemiBold" 
+                              Margin="12,8"
+                              VerticalAlignment="Center"
+                              HorizontalAlignment="Center"/>
+                    <TextBlock Grid.Column="4" Text="Medicine Status" 
+                              FontWeight="SemiBold" 
+                              Margin="12,8"
+                              VerticalAlignment="Center"
+                              HorizontalAlignment="Center"/>
+                    <TextBlock Grid.Column="5" Text="Created Date" 
+                              FontWeight="SemiBold" 
+                              Margin="12,8"
+                              VerticalAlignment="Center"
+                              HorizontalAlignment="Center"/>
+                </Grid>
+            </ListView.Header>
+
             <ListView.ItemTemplate>
                 <DataTemplate x:DataType="model:Bill">
-                    <Grid Padding="12">
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="Auto"/>
-                            <RowDefinition Height="Auto"/>
-                        </Grid.RowDefinitions>
+                    <Grid Padding="12" 
+                          BorderBrush="{ThemeResource SystemControlForegroundBaseMediumLowBrush}"
+                          BorderThickness="1"
+                          CornerRadius="4"
+                          Margin="0,4">
                         <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="230"/>
+                            <ColumnDefinition Width="150"/>
+                            <ColumnDefinition Width="150"/>
+                            <ColumnDefinition Width="200"/>
+                            <ColumnDefinition Width="150"/>
                             <ColumnDefinition Width="*"/>
-                            <ColumnDefinition Width="Auto"/>
                         </Grid.ColumnDefinitions>
 
-                        <!-- Row 1: Bill ID and Date -->
-                        <StackPanel Grid.Row="0" Grid.Column="0" 
-                                  Orientation="Horizontal">
-                            <TextBlock Text="Bill ID: "/>
-                            <TextBlock Text="{x:Bind Id}" FontWeight="SemiBold"/>
-                            <TextBlock Text=" | Patient: " Margin="10,0,0,0"/>
-                            <TextBlock Text="{x:Bind Patient.Name}" FontWeight="SemiBold"/>
-                        </StackPanel>
-
-                        <TextBlock Grid.Row="0" Grid.Column="1" 
-                                 Text="{x:Bind CreatedDate, Converter={StaticResource DateTimeToStringConverter}}" 
-                                 Foreground="Gray"/>
-
-                        <!-- Row 2: Amount and Status -->
-                        <StackPanel Grid.Row="1" Grid.Column="0" 
-                                  Orientation="Horizontal">
-                            <TextBlock Text="Amount: "/>
-                            <TextBlock Text="{x:Bind TotalAmount}" Foreground="Gray"/>
-                            <TextBlock Text=" VND" Foreground="Gray"/>
-                            <TextBlock Text=" | Status: " Margin="10,0,0,0"/>
-                            <TextBlock Text="{x:Bind IsGetMedicine}" Foreground="Gray"/>
-                        </StackPanel>
+                        <TextBlock Grid.Column="0" 
+                                 Text="{x:Bind Patient.Name}" 
+                                 Margin="12,8"
+                                 VerticalAlignment="Center"
+                                 HorizontalAlignment="Center"/>
+                        <TextBlock Grid.Column="1" 
+                                 Text="{x:Bind Patient.Gender}" 
+                                 Margin="12,8"
+                                 VerticalAlignment="Center"
+                                 HorizontalAlignment="Center"/>
+                        <TextBlock Grid.Column="2" 
+                                 Text="{x:Bind Patient.DoB, Converter={StaticResource DateTimeToStringConverter}}" 
+                                 Margin="12,8"
+                                 VerticalAlignment="Center"
+                                 HorizontalAlignment="Center"/>
+                        <TextBlock Grid.Column="3" 
+                                 Margin="12,8"
+                                 VerticalAlignment="Center"
+                                 HorizontalAlignment="Center">
+                            <Run Text="{x:Bind TotalAmount}"/>
+                            <Run Text=" VND"/>
+                        </TextBlock>
+                        <TextBlock Grid.Column="4" 
+                                 Text="{x:Bind IsGetMedicine, Converter={StaticResource MedicineStatusConverter}}" 
+                                 Margin="12,8"
+                                 VerticalAlignment="Center"
+                                 HorizontalAlignment="Center"/>
+                        <TextBlock Grid.Column="5" 
+                                 Text="{x:Bind CreatedDate, Converter={StaticResource DateTimeToStringConverter}}"
+                                 Margin="12,8"
+                                 VerticalAlignment="Center"
+                                 HorizontalAlignment="Center"/>
                     </Grid>
                 </DataTemplate>
             </ListView.ItemTemplate>
         </ListView>
 
-        <!-- Pagination -->
-        <StackPanel Grid.Row="2" 
+        <!-- Phân trang -->
+        <StackPanel Grid.Row="3" 
                     Orientation="Horizontal" 
                     HorizontalAlignment="Center"
-                    Spacing="10">
-            <Button Content="Previous"
-                    Click="PreviousButton_Click"/>
-            <ItemsControl ItemsSource="{x:Bind ViewModel.PageInfos, Mode=OneWay}">
-                <ItemsControl.ItemsPanel>
-                    <ItemsPanelTemplate>
-                        <StackPanel Orientation="Horizontal"/>
-                    </ItemsPanelTemplate>
-                </ItemsControl.ItemsPanel>
-                <ItemsControl.ItemTemplate>
-                    <DataTemplate x:DataType="model:PageInfo">
-                        <Button Content="{x:Bind Page}"
-                                Margin="5,0"
-                                Click="PageButton_Click"
-                                Style="{StaticResource AccentButtonStyle}"/>
-                    </DataTemplate>
-                </ItemsControl.ItemTemplate>
-            </ItemsControl>
-            <Button Content="Next"
-                    Click="NextButton_Click"/>
+                    Margin="0,10,0,0">
+            <Button Click="PreviousButton_Click">
+                <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xE76B;"/>
+            </Button>
+            
+            <StackPanel Orientation="Vertical" Margin="10,0">
+                <TextBlock TextAlignment="Center" 
+                          Width="60" 
+                          FontSize="16">
+                    <Run Text="{Binding SelectedPageInfo.Page}"/> of 
+                    <Run Text="{Binding SelectedPageInfo.Total}"/>
+                </TextBlock>
+                <ComboBox ItemsSource="{Binding PageInfos}"
+                         SelectedItem="{Binding SelectedPageInfo, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                         SelectionChanged="PagesComboBox_SelectionChanged"
+                         Width="100">
+                    <ComboBox.ItemTemplate>
+                        <DataTemplate x:DataType="model:PageInfo">
+                            <TextBlock>
+                                <Run Text="{x:Bind Page}"/>/
+                                <Run Text="{x:Bind Total}"/>
+                            </TextBlock>
+                        </DataTemplate>
+                    </ComboBox.ItemTemplate>
+                </ComboBox>
+            </StackPanel>
+
+            <Button Click="NextButton_Click">
+                <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xE76C;"/>
+            </Button>
         </StackPanel>
     </Grid>
 </Page> 

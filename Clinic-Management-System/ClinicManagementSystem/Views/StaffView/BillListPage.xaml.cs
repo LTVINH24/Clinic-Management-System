@@ -13,6 +13,7 @@ namespace ClinicManagementSystem.Views.StaffView
         {
             this.InitializeComponent();
             ViewModel = new BillListViewModel();
+            this.DataContext = ViewModel;
         }
 
         private void ListView_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -45,6 +46,33 @@ namespace ClinicManagementSystem.Views.StaffView
         private void ClearFilter_Click(object sender, RoutedEventArgs e)
         {
             ViewModel.ClearFilter();
+        }
+
+        private void AutoSuggestBox_TextChanged(AutoSuggestBox sender, AutoSuggestBoxTextChangedEventArgs args)
+        {
+            if (args.Reason == AutoSuggestionBoxTextChangeReason.UserInput)
+            {
+                ViewModel.Keyword = sender.Text;
+            }
+        }
+
+        private void PagesComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (sender is ComboBox comboBox && comboBox.SelectedItem is PageInfo selectedPage)
+            {
+                ViewModel.SelectedPageInfo = selectedPage;
+            }
+        }
+
+        private void StatusComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (sender is ComboBox comboBox && 
+                comboBox.SelectedItem is ComboBoxItem selectedItem && 
+                ViewModel != null)
+            {
+                string status = selectedItem.Tag?.ToString() ?? "";
+                ViewModel.SelectedStatus = status;
+            }
         }
     }
 } 

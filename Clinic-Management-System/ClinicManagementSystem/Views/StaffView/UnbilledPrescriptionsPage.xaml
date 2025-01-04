@@ -15,10 +15,10 @@
 
     <Grid Margin="20">
         <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>  <!-- Tiêu đề -->
+            <RowDefinition Height="Auto"/>  <!-- Thanh tìm kiếm -->
+            <RowDefinition Height="*"/>     <!-- ListView - chiếm hết không gian còn lại -->
+            <RowDefinition Height="Auto"/>  <!-- Phân trang -->
         </Grid.RowDefinitions>
 
         <TextBlock Text="Unbilled Prescriptions"
@@ -26,8 +26,10 @@
                    Margin="0,0,0,20"/>
 
         <AutoSuggestBox Grid.Row="1"
-                        Margin="0,0,0,10"
-                        PlaceholderText="Search prescriptions..."
+                        Width="500"
+                        HorizontalAlignment="Center"
+                        Margin="0,0,0,20"
+                        PlaceholderText="Search by patient name..."
                         QueryIcon="Find"
                         TextChanged="AutoSuggestBox_TextChanged"
                         Text="{Binding Keyword, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
@@ -36,48 +38,84 @@
                   ItemsSource="{Binding Prescriptions}"
                   SelectionChanged="ListView_SelectionChanged"
                   Margin="0,0,0,10">
+            <ListView.Header>
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="230"/>  <!-- Patient Name -->
+                        <ColumnDefinition Width="150"/>  <!-- Gender -->
+                        <ColumnDefinition Width="150"/>  <!-- DoB -->
+                        <ColumnDefinition Width="150"/>  <!-- Prescription ID -->
+                        <ColumnDefinition Width="*"/>    <!-- Time -->
+                    </Grid.ColumnDefinitions>
+
+                    <TextBlock Grid.Column="0" Text="Patient Name" 
+                              FontWeight="SemiBold" 
+                              Margin="12,8"
+                              VerticalAlignment="Center"
+                              HorizontalAlignment="Center"/>
+                    <TextBlock Grid.Column="1" Text="Gender" 
+                              FontWeight="SemiBold" 
+                              Margin="12,8"
+                              VerticalAlignment="Center"
+                              HorizontalAlignment="Center"/>
+                    <TextBlock Grid.Column="2" Text="Date of Birth" 
+                              FontWeight="SemiBold" 
+                              Margin="12,8"
+                              VerticalAlignment="Center"
+                              HorizontalAlignment="Center"/>
+                    <TextBlock Grid.Column="3" Text="Prescription ID" 
+                              FontWeight="SemiBold" 
+                              Margin="12,8"
+                              VerticalAlignment="Center"
+                              HorizontalAlignment="Center"/>
+                    <TextBlock Grid.Column="4" Text="Examination Time" 
+                              FontWeight="SemiBold" 
+                              Margin="12,8"
+                              VerticalAlignment="Center"
+                              HorizontalAlignment="Center"/>
+                </Grid>
+            </ListView.Header>
+
             <ListView.ItemTemplate>
                 <DataTemplate x:DataType="model:Prescription">
-                    <Grid Padding="12">
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="Auto"/>
-                            <RowDefinition Height="Auto"/>
-                            <RowDefinition Height="Auto"/>
-                        </Grid.RowDefinitions>
+                    <Grid Padding="12" 
+                          BorderBrush="{ThemeResource SystemControlForegroundBaseMediumLowBrush}"
+                          BorderThickness="1"
+                          CornerRadius="4"
+                          Margin="0,4">
                         <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="230"/>
+                            <ColumnDefinition Width="150"/>
+                            <ColumnDefinition Width="150"/>
+                            <ColumnDefinition Width="150"/>
                             <ColumnDefinition Width="*"/>
-                            <ColumnDefinition Width="Auto"/>
                         </Grid.ColumnDefinitions>
 
-                        <!-- Row 1: Time and Patient Name -->
-                        <StackPanel Grid.Row="0" Grid.Column="0" 
-                                    Orientation="Horizontal">
-                            <TextBlock Text="Patient: "/>
-                            <TextBlock Text="{x:Bind Patient.Name}" FontWeight="SemiBold"/>
-                        </StackPanel>
-
-                        <TextBlock Grid.Row="0" Grid.Column="1" 
-                                  Text="{x:Bind Time, Converter={StaticResource DateTimeToStringConverter}}" 
-                                  Foreground="Gray"/>
-
-                        <!-- Row 2: Gender and DoB -->
-                        <StackPanel Grid.Row="1" Grid.Column="0" 
-                                    Orientation="Horizontal">
-                            <TextBlock Text="Gender: "/>
-                            <TextBlock Text="{x:Bind Patient.Gender}" 
-                                      Foreground="Gray"/>
-                            <TextBlock Text=" | DoB: " Margin="10,0,0,0"/>
-                            <TextBlock Text="{x:Bind Patient.DoB, Converter={StaticResource DateTimeToStringConverter}}" 
-                                      Foreground="Gray"/>
-                        </StackPanel>
-
-                        <!-- Row 3: Prescription ID -->
-                        <StackPanel Grid.Row="2" Grid.Column="0" 
-                                    Orientation="Horizontal">
-                            <TextBlock Text="Prescription ID: "/>
-                            <TextBlock Text="{x:Bind Id}" 
-                                      Foreground="Gray"/>
-                        </StackPanel>
+                        <TextBlock Grid.Column="0" 
+                                 Text="{x:Bind Patient.Name}" 
+                                 Margin="12,8"
+                                 VerticalAlignment="Center"
+                                 HorizontalAlignment="Center"/>
+                        <TextBlock Grid.Column="1" 
+                                 Text="{x:Bind Patient.Gender}" 
+                                 Margin="12,8"
+                                 VerticalAlignment="Center"
+                                 HorizontalAlignment="Center"/>
+                        <TextBlock Grid.Column="2" 
+                                 Text="{x:Bind Patient.DoB, Converter={StaticResource DateTimeToStringConverter}}" 
+                                 Margin="12,8"
+                                 VerticalAlignment="Center"
+                                 HorizontalAlignment="Center"/>
+                        <TextBlock Grid.Column="3" 
+                                 Text="{x:Bind Id}" 
+                                 Margin="12,8"
+                                 VerticalAlignment="Center"
+                                 HorizontalAlignment="Center"/>
+                        <TextBlock Grid.Column="4" 
+                                 Text="{x:Bind Time, Converter={StaticResource DateTimeToStringConverter}}"
+                                 Margin="12,8"
+                                 VerticalAlignment="Center"
+                                 HorizontalAlignment="Center"/>
                     </Grid>
                 </DataTemplate>
             </ListView.ItemTemplate>
@@ -85,22 +123,37 @@
 
         <StackPanel Grid.Row="3" 
                     Orientation="Horizontal" 
-                    HorizontalAlignment="Center">
-            <Button Content="Previous"
-                    Click="PreviousButton_Click"
-                    Style="{StaticResource AccentButtonStyle}"
-                    Margin="0,0,10,0"/>
+                    HorizontalAlignment="Center"
+                    Margin="0,10,0,0">
+            <Button Click="PreviousButton_Click">
+                <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xE76B;"/>
+            </Button>
+            
+            <StackPanel Orientation="Vertical" Margin="10,0">
+                <TextBlock TextAlignment="Center" 
+                          Width="60" 
+                          FontSize="16">
+                    <Run Text="{Binding SelectedPageInfo.Page}"/> of 
+                    <Run Text="{Binding SelectedPageInfo.Total}"/>
+                </TextBlock>
+                <ComboBox ItemsSource="{Binding PageInfos}"
+                         SelectedItem="{Binding SelectedPageInfo, Mode=TwoWay}"
+                         SelectionChanged="PagesComboBox_SelectionChanged"
+                         Width="100">
+                    <ComboBox.ItemTemplate>
+                        <DataTemplate x:DataType="model:PageInfo">
+                            <TextBlock>
+                                <Run Text="{x:Bind Page}"/>/
+                                <Run Text="{x:Bind Total}"/>
+                            </TextBlock>
+                        </DataTemplate>
+                    </ComboBox.ItemTemplate>
+                </ComboBox>
+            </StackPanel>
 
-            <TextBlock VerticalAlignment="Center" Margin="10,0">
-                <Run Text="{Binding CurrentPage}"/>
-                <Run Text="/"/>
-                <Run Text="{Binding TotalPages}"/>
-            </TextBlock>
-
-            <Button Content="Next"
-                    Click="NextButton_Click"
-                    Style="{StaticResource AccentButtonStyle}"
-                    Margin="10,0,0,0"/>
+            <Button Click="NextButton_Click">
+                <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xE76C;"/>
+            </Button>
         </StackPanel>
     </Grid>
 </Page> 

@@ -3,6 +3,7 @@ using ClinicManagementSystem.Model;
 using ClinicManagementSystem.Service.DataAccess;
 using ClinicManagementSystem.Service;
 using System;
+using System.Linq;
 
 namespace ClinicManagementSystem.ViewModel
 {
@@ -15,6 +16,9 @@ namespace ClinicManagementSystem.ViewModel
         private int _totalItems = 0;
         private int _pageSize = 10;
         private ObservableCollection<Prescription> _prescriptions;
+        private ObservableCollection<PageInfo> _pageInfos;
+        private PageInfo _selectedPageInfo;
+        private bool _isUpdatingPageInfo = false;
 
         public string Keyword
         {
@@ -58,6 +62,27 @@ namespace ClinicManagementSystem.ViewModel
             set => SetProperty(ref _prescriptions, value);
         }
 
+        public ObservableCollection<PageInfo> PageInfos
+        {
+            get => _pageInfos ??= new ObservableCollection<PageInfo>();
+            set => SetProperty(ref _pageInfos, value);
+        }
+
+        public PageInfo SelectedPageInfo
+        {
+            get => _selectedPageInfo;
+            set
+            {
+                if (_isUpdatingPageInfo) return;
+                
+                if (SetProperty(ref _selectedPageInfo, value) && value != null)
+                {
+                    CurrentPage = value.Page;
+                    LoadPrescriptions();
+                }
+            }
+        }
+
         public UnbilledPrescriptionsViewModel()
         {
             _dao = ServiceFactory.GetChildOf(typeof(IDao)) as IDao;
@@ -75,7 +100,7 @@ namespace ClinicManagementSystem.ViewModel
             var (prescriptions, totalCount) = _dao.GetPrescriptionsByPage(
                 CurrentPage,
                 PageSize,
-                "false", // isBilled = false
+                "false",
                 Keyword
             );
 
@@ -87,6 +112,7 @@ namespace ClinicManagementSystem.ViewModel
 
             TotalItems = totalCount;
             TotalPages = (totalCount + PageSize - 1) / PageSize;
+            UpdatePageInfos();
         }
 
         public void GoToNextPage()
@@ -104,6 +130,26 @@ namespace ClinicManagementSystem.ViewModel
             {
                 CurrentPage--;
                 LoadPrescriptions();
+            }
+        }
+
+        private void UpdatePageInfos()
+        {
+            try
+            {
+                _isUpdatingPageInfo = true;
+                PageInfos.Clear();
+                for (int i = 1; i <= TotalPages; i++)
+                {
+                    PageInfos.Add(new PageInfo { Page = i, Total = TotalPages });
+                }
+                
+                var newSelectedPage = PageInfos.FirstOrDefault(p => p.Page == CurrentPage);
+                SetProperty(ref _selectedPageInfo, newSelectedPage, nameof(SelectedPageInfo));
+            }
+            finally
+            {
+                _isUpdatingPageInfo = false;
             }
         }
     }

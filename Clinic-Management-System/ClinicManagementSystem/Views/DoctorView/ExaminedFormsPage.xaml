@@ -77,7 +77,11 @@
 
             <ListView.ItemTemplate>
                 <DataTemplate x:DataType="model:MedicalExaminationForm">
-                    <Grid>
+                    <Grid Padding="12" 
+                          BorderBrush="{ThemeResource SystemControlForegroundBaseMediumLowBrush}"
+                          BorderThickness="1"
+                          CornerRadius="4"
+                          Margin="0,4">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="200"/>  <!-- Patient Name -->
                             <ColumnDefinition Width="220"/>  <!-- DoB -->

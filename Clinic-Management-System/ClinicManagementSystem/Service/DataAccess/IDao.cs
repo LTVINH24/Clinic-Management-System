@@ -151,7 +151,8 @@ namespace ClinicManagementSystem.Service.DataAccess
 			int pageSize, 
 			string keyword = "", 
 			DateTimeOffset? startDate = null, 
-			DateTimeOffset? endDate = null
+			DateTimeOffset? endDate = null,
+            string status = ""
 		);	
 	}
 }

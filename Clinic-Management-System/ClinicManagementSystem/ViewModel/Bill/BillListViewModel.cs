@@ -21,10 +21,12 @@ namespace ClinicManagementSystem.ViewModel
         private PageInfo _selectedPageInfo;
         private DateTimeOffset? _startDate;
         private DateTimeOffset? _endDate;
+        private string _selectedStatus = "";
 
         public BillListViewModel()
         {
             _dao = ServiceFactory.GetChildOf(typeof(IDao)) as IDao;
+            SelectedStatus = "";
             LoadBills();
         }
 
@@ -100,6 +102,18 @@ namespace ClinicManagementSystem.ViewModel
             }
         }
 
+        public string SelectedStatus
+        {
+            get => _selectedStatus;
+            set
+            {
+                if (SetProperty(ref _selectedStatus, value))
+                {
+                    LoadBills();
+                }
+            }
+        }
+
         public void Search()
         {
             CurrentPage = 1;
@@ -113,7 +127,8 @@ namespace ClinicManagementSystem.ViewModel
                 _pageSize, 
                 Keyword, 
                 StartDate, 
-                EndDate
+                EndDate,
+                SelectedStatus
             );
 
             Bills.Clear();
@@ -182,6 +197,7 @@ namespace ClinicManagementSystem.ViewModel
             StartDate = null;
             EndDate = null;
             Keyword = "";
+            SelectedStatus = "";
             LoadBills();
         }
     }

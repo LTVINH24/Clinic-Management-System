@@ -2292,7 +2292,8 @@ namespace ClinicManagementSystem.Service.DataAccess
             int pageSize, 
             string keyword = "", 
             DateTimeOffset? startDate = null, 
-            DateTimeOffset? endDate = null
+            DateTimeOffset? endDate = null,
+            string status = ""
         )
         {
             var bills = new List<Bill>();
@@ -2316,7 +2317,8 @@ namespace ClinicManagementSystem.Service.DataAccess
                         WHERE (@Keyword = '' OR pt.name LIKE @KeywordPattern)
                             AND (@StartDate IS NULL OR CAST(b.createDate AS DATE) >= @StartDate)
                             AND (@EndDate IS NULL OR CAST(b.createDate AS DATE) <= @EndDate)
-                        ORDER BY b.createDate ASC
+                            AND (@Status = '' OR b.isGetMedicine = @Status)
+                        ORDER BY b.createDate DESC
                         OFFSET @Offset ROWS 
                         FETCH NEXT @PageSize ROWS ONLY";
 
@@ -2324,7 +2326,8 @@ namespace ClinicManagementSystem.Service.DataAccess
                         ("@Offset", (currentPage - 1) * pageSize),
                         ("@PageSize", pageSize),
                         ("@Keyword", keyword ?? ""),
-                        ("@KeywordPattern", $"%{keyword}%"));
+                        ("@KeywordPattern", $"%{keyword}%"),
+                        ("@Status", status));
 
                     // Xử lý riêng cho tham số ngày tháng
                     if (startDate.HasValue)
