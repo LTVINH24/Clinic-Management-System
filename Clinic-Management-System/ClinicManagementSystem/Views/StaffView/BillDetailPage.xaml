@@ -110,16 +110,19 @@
                         <!-- Hiển thị khi không có thuốc -->
                         <TextBlock Text="No medicines prescribed"
                                    Margin="16,4,0,0"
+                                   Foreground="Gray" 
+                                   FontStyle="Italic"
+                                   HorizontalAlignment="Center"
                                    Visibility="{x:Bind ViewModel.Bill.IsGetMedicine, Mode=OneWay, Converter={StaticResource InverseBoolToVisibilityConverter}}"/>
 
                         <!-- Medicine Header -->
                         <Grid Margin="16,0,0,8"
                               Visibility="{x:Bind ViewModel.Bill.IsGetMedicine, Mode=OneWay, Converter={StaticResource BoolToVisibilityConverter}}">
                             <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="3*"/>  <!-- Tên thuốc -->
-                                <ColumnDefinition Width="*"/>   <!-- Số lượng -->
-                                <ColumnDefinition Width="*"/>   <!-- Đơn giá -->
-                                <ColumnDefinition Width="2*"/>  <!-- Thành tiền -->
+                                <ColumnDefinition Width="2*"/>   <!-- Tên thuốc -->
+                                <ColumnDefinition Width="1.2*"/> <!-- Số lượng -->
+                                <ColumnDefinition Width="1.2*"/> <!-- Đơn giá -->
+                                <ColumnDefinition Width="1.5*"/> <!-- Thành tiền -->
                             </Grid.ColumnDefinitions>
                             
                             <TextBlock Text="Medicine Name" 
@@ -150,43 +153,40 @@
                                                 BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}"
                                                 BorderThickness="1"
                                                 CornerRadius="4"
-                                                Padding="12"
+                                                Padding="12,8"
                                                 Margin="0,4">
                                             <Grid>
                                                 <Grid.ColumnDefinitions>
-                                                    <ColumnDefinition Width="3*"/>  <!-- Tên thuốc -->
-                                                    <ColumnDefinition Width="*"/>   <!-- Số lượng -->
-                                                    <ColumnDefinition Width="*"/>   <!-- Đơn giá -->
-                                                    <ColumnDefinition Width="2*"/>  <!-- Thành tiền -->
+                                                    <ColumnDefinition Width="2*"/>   <!-- Tên thuốc -->
+                                                    <ColumnDefinition Width="1.2*"/> <!-- Số lượng -->
+                                                    <ColumnDefinition Width="1.2*"/> <!-- Đơn giá -->
+                                                    <ColumnDefinition Width="1.5*"/> <!-- Thành tiền -->
                                                 </Grid.ColumnDefinitions>
 
-                                                <!-- Tên thuốc -->
-                                                <TextBlock Grid.Column="0"
+                                                <TextBlock Grid.Column="0" 
                                                          Text="{Binding Medicine.Name}"
+                                                         TextWrapping="Wrap"
                                                          VerticalAlignment="Center"/>
 
-                                                <!-- Số lượng -->
                                                 <TextBlock Grid.Column="1"
-                                                         VerticalAlignment="Center"
-                                                         HorizontalAlignment="Center">
+                                                         HorizontalAlignment="Center"
+                                                         VerticalAlignment="Center">
                                                     <Run Text="{Binding SelectedQuantity}"/>
-                                                    <Run Text=" pill(s)"/>
+                                                    <Run Text=" pills" Foreground="Gray"/>
                                                 </TextBlock>
 
-                                                <!-- Đơn giá -->
                                                 <StackPanel Grid.Column="2"
                                                           Orientation="Horizontal"
-                                                          VerticalAlignment="Center"
-                                                          HorizontalAlignment="Center">
+                                                          HorizontalAlignment="Center"
+                                                          VerticalAlignment="Center">
                                                     <TextBlock Text="{Binding Medicine.Price}"/>
                                                     <TextBlock Text=" VND"/>
                                                 </StackPanel>
 
-                                                <!-- Thành tiền -->
                                                 <StackPanel Grid.Column="3"
                                                           Orientation="Horizontal"
-                                                          VerticalAlignment="Center"
-                                                          HorizontalAlignment="Right">
+                                                          HorizontalAlignment="Right"
+                                                          VerticalAlignment="Center">
                                                     <TextBlock Text="{Binding TotalPrice}"/>
                                                     <TextBlock Text=" VND"/>
                                                 </StackPanel>

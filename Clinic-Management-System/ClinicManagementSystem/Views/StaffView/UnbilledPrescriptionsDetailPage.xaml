@@ -103,6 +103,9 @@
                     <!-- Hiển thị khi không có thuốc -->
                     <TextBlock Text="No medicines prescribed"
                               Margin="0,8,0,0"
+                              Foreground="Gray" 
+                              FontStyle="Italic"
+                              HorizontalAlignment="Center"
                               Visibility="{x:Bind ViewModel.Medicines.Count, Mode=OneWay, Converter={StaticResource EmptyCollectionToVisibilityConverter}}"/>
 
                     <!-- Medicine List Container -->
@@ -119,8 +122,8 @@
                             <Grid Margin="0,0,0,8">
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="2*"/>
-                                    <ColumnDefinition Width="105"/>
-                                    <ColumnDefinition Width="120"/>
+                                    <ColumnDefinition Width="205"/>
+                                    <ColumnDefinition Width="150"/>
                                 </Grid.ColumnDefinitions>
 
                                 <TextBlock Text="Medicine Name"
@@ -158,8 +161,8 @@
                                             <Grid ColumnSpacing="12">
                                                 <Grid.ColumnDefinitions>
                                                     <ColumnDefinition Width="2*"/>
-                                                    <ColumnDefinition Width="*"/>
-                                                    <ColumnDefinition Width="*"/>
+                                                    <ColumnDefinition Width="200"/>
+                                                    <ColumnDefinition Width="130"/>
                                                 </Grid.ColumnDefinitions>
                                                 
                                                 <TextBlock Text="{x:Bind Medicine.Name}"
@@ -196,7 +199,7 @@
                 BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}"
                 BorderThickness="1"
                 CornerRadius="8"
-                Padding="20"
+                Padding="24"
                 Margin="0,20,0,0">
             <Grid>
                 <Grid.ColumnDefinitions>
@@ -205,61 +208,113 @@
                 </Grid.ColumnDefinitions>
 
                 <!-- Billing Details -->
-                <StackPanel Spacing="12">
+                <StackPanel Spacing="16">
                     <!-- Examination Fee Section -->
-                    <StackPanel>
-                        <TextBlock Text="Examination Fee" FontWeight="SemiBold"/>
-                        <StackPanel Orientation="Horizontal" Spacing="8">
+                    <Border Background="{ThemeResource CardBackgroundFillColorSecondaryBrush}"
+                            BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}"
+                            BorderThickness="1"
+                            CornerRadius="4"
+                            Padding="16">
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                            </Grid.RowDefinitions>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+
+                            <!-- Label -->
+                            <TextBlock Text="Examination Fee" 
+                                     FontWeight="SemiBold"
+                                     Grid.Row="0"
+                                     Grid.ColumnSpan="2"
+                                     Margin="0,0,0,8"/>
+
+                            <!-- Input Controls -->
                             <NumberBox Value="{x:Bind ViewModel.ExaminationFee, Mode=TwoWay}"
                                      SpinButtonPlacementMode="Inline"
                                      Minimum="0"
                                      SmallChange="1000"
                                      LargeChange="10000"
                                      Width="200"
-                                     IsEnabled="{x:Bind ViewModel.IsExaminationFeeEditable, Mode=OneWay}"/>
+                                     IsEnabled="{x:Bind ViewModel.IsExaminationFeeEditable, Mode=OneWay}"
+                                     Grid.Row="1"
+                                     Grid.Column="0"/>
+                            
                             <CheckBox Content="Lock Fee"
-                                     IsChecked="{x:Bind ViewModel.IsExaminationFeeLocked, Mode=TwoWay}"/>
+                                     IsChecked="{x:Bind ViewModel.IsExaminationFeeLocked, Mode=TwoWay}"
+                                     Grid.Row="1"
+                                     Grid.Column="1"
+                                     HorizontalAlignment="Right"
+                                     VerticalAlignment="Center"/>
+                        </Grid>
+                    </Border>
+
+                    <!-- Medicine Cost Section -->
+                    <Border Background="{ThemeResource CardBackgroundFillColorSecondaryBrush}"
+                            BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}"
+                            BorderThickness="1"
+                            CornerRadius="4"
+                            Padding="16">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+                            
+                            <StackPanel>
+                                <TextBlock Text="Medicine Cost" 
+                                         FontWeight="SemiBold"/>
+                                <TextBlock Style="{StaticResource BodyTextBlockStyle}"
+                                         Margin="0,4,0,0">
+                                    <Run Text="{x:Bind ViewModel.TotalAmount, Mode=OneWay}"/>
+                                    <Run Text=" VND"/>
+                                </TextBlock>
+                            </StackPanel>
+                            
+                            <CheckBox Grid.Column="1"
+                                     Content="Get Medicine"
+                                     IsChecked="{x:Bind ViewModel.IsGetMedicine, Mode=TwoWay}"
+                                     IsThreeState="False"
+                                     VerticalAlignment="Center"/>
+                        </Grid>
+                    </Border>
+
+                    <!-- Final Total Section -->
+                    <Border Background="{ThemeResource CardBackgroundFillColorSecondaryBrush}"
+                            BorderBrush="{ThemeResource SystemAccentColor}"
+                            BorderThickness="2"
+                            CornerRadius="4"
+                            Padding="16">
+                        <StackPanel>
+                            <TextBlock Text="Final Total" 
+                                     FontWeight="SemiBold"
+                                     Margin="0,0,0,4"/>
+                            <TextBlock Style="{StaticResource SubtitleTextBlockStyle}"
+                                     Foreground="{ThemeResource SystemAccentColor}">
+                                <Run Text="{x:Bind ViewModel.FinalTotal, Mode=OneWay}"/>
+                                <Run Text=" VND"/>
+                            </TextBlock>
                         </StackPanel>
-                    </StackPanel>
-
-                    <StackPanel>
-                        <TextBlock Text="Medicine Cost" FontWeight="SemiBold"/>
-                        <TextBlock Style="{StaticResource BodyTextBlockStyle}">
-                            <Run Text="{x:Bind ViewModel.TotalAmount, Mode=OneWay}"/>
-                            <Run Text=" VND"/>
-                        </TextBlock>
-                    </StackPanel>
-
-                    <CheckBox Content="Get Medicine"
-                             IsChecked="{x:Bind ViewModel.IsGetMedicine, Mode=TwoWay}"
-                             IsThreeState="False"/>
-
-                    <Rectangle Height="1" 
-                              Fill="{ThemeResource CardStrokeColorDefaultBrush}" 
-                              Margin="0,8"/>
-                    
-                    <StackPanel>
-                        <TextBlock Text="Final Total" 
-                                  FontWeight="SemiBold"/>
-                        <TextBlock Style="{StaticResource SubtitleTextBlockStyle}"
-                                  Foreground="{ThemeResource SystemAccentColor}">
-                            <Run Text="{x:Bind ViewModel.FinalTotal, Mode=OneWay}"/>
-                            <Run Text=" VND"/>
-                        </TextBlock>
-                    </StackPanel>
+                    </Border>
                 </StackPanel>
 
                 <!-- Action Buttons -->
                 <StackPanel Grid.Column="1" 
                           Orientation="Horizontal" 
                           VerticalAlignment="Bottom"
-                          Spacing="8">
+                          Spacing="12"
+                          Margin="24,0,0,0">
                     <Button Content="Back"
-                            Click="BackButton_Click"/>
+                            Click="BackButton_Click"
+                            Width="100"/>
                     <Button Content="Save"
                             Click="SaveButton_Click"
                             IsEnabled="{x:Bind ViewModel.CanSave, Mode=OneWay}"
-                            Style="{StaticResource AccentButtonStyle}"/>
+                            Style="{StaticResource AccentButtonStyle}"
+                            Width="100"/>
                 </StackPanel>
             </Grid>
         </Border>

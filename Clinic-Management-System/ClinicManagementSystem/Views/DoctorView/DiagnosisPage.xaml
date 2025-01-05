@@ -13,6 +13,8 @@
 
     <Page.Resources>
         <converters:VisibilityConverter x:Key="VisibilityConverter"/>
+        <converters:DateOnlyConverter x:Key="DateOnlyConverter"/>
+        <converters:DateTimeFullConverter x:Key="DateTimeFullConverter"/>
     </Page.Resources>
 
     <ScrollViewer VerticalScrollBarVisibility="Auto">
@@ -27,7 +29,6 @@
             <TextBlock Text="Diagnosis Information"
                        FontSize="24"
                        FontWeight="Bold"
-                       Foreground="{ThemeResource SystemAccentColor}"
                        Margin="0,0,0,20"/>
 
             <!-- Content Grid -->
@@ -49,7 +50,7 @@
 
                     <StackPanel Orientation="Horizontal" Spacing="10">
                         <TextBlock Text="Date of Birth:" FontWeight="SemiBold" Foreground="Gray"/>
-                        <TextBlock Text="{Binding Patient.DoB}" FontWeight="Normal"/>
+                        <TextBlock Text="{x:Bind ViewModel.Patient.DoB, Mode=OneWay, Converter={StaticResource DateOnlyConverter}}"/>
                     </StackPanel>
 
                     <StackPanel Orientation="Horizontal" Spacing="10">
@@ -69,7 +70,7 @@
 
                     <StackPanel Orientation="Horizontal" Spacing="10">
                         <TextBlock Text="Time:" FontWeight="SemiBold" Foreground="Gray"/>
-                        <TextBlock Text="{Binding MedicalExaminationForm.Time}" FontWeight="Normal"/>
+                        <TextBlock Text="{x:Bind ViewModel.MedicalExaminationForm.Time, Mode=OneWay, Converter={StaticResource DateTimeFullConverter}}"/>
                     </StackPanel>
 
                     <StackPanel Orientation="Horizontal" Spacing="10">
@@ -103,6 +104,7 @@
                             Date="{x:Bind ViewModel.NextExaminationDate, Mode=TwoWay}"
                             IsEnabled="{x:Bind ViewModel.CanEditDiagnosis, Mode=OneWay}"
                             MinDate="{x:Bind ViewModel.MinNextExaminationDate, Mode=OneWay}"
+                            DateFormat="{}{day.integer(2)}/{month.integer(2)}/{year.full}"
                             Margin="0,0,0,10"
                             HorizontalAlignment="Left"
                             Width="300"/>
@@ -140,44 +142,61 @@
                                       MinHeight="100">
                                 <ListView.HeaderTemplate>
                                     <DataTemplate>
-                                        <Grid>
+                                        <Grid Margin="12,8">
                                             <Grid.ColumnDefinitions>
                                                 <ColumnDefinition Width="2*"/>
                                                 <ColumnDefinition Width="*"/>
                                                 <ColumnDefinition Width="*"/>
                                             </Grid.ColumnDefinitions>
                                             
-                                            <TextBlock Grid.Column="0" Text="Medicine Name" FontWeight="Bold" Margin="5"/>
-                                            <TextBlock Grid.Column="1" Text="Quantity" FontWeight="Bold" Margin="5"/>
-                                            <TextBlock Grid.Column="2" Text="Dosage" FontWeight="Bold" Margin="5"/>
+                                            <TextBlock Grid.Column="0" Text="Medicine Name" FontWeight="Bold"/>
+                                            <TextBlock Grid.Column="1" Text="Quantity" FontWeight="Bold" HorizontalAlignment="Center"/>
+                                            <TextBlock Grid.Column="2" Text="Dosage" FontWeight="Bold" HorizontalAlignment="Center"/>
                                         </Grid>
                                     </DataTemplate>
                                 </ListView.HeaderTemplate>
                                 
                                 <ListView.ItemTemplate>
                                     <DataTemplate>
-                                        <Grid>
-                                            <Grid.ColumnDefinitions>
-                                                <ColumnDefinition Width="2*"/>
-                                                <ColumnDefinition Width="*"/>
-                                                <ColumnDefinition Width="*"/>
-                                            </Grid.ColumnDefinitions>
-                                            
-                                            <TextBlock Grid.Column="0" 
-                                                      Text="{Binding Medicine.Name}" 
-                                                      TextWrapping="Wrap"
-                                                      Margin="5"/>
-                                            
-                                            <TextBlock Grid.Column="1" 
-                                                      Text="{Binding SelectedQuantity}"
-                                                      Margin="5"/>
-                                            
-                                            <TextBlock Grid.Column="2" 
-                                                      Text="{Binding SelectedDosage}"
-                                                      Margin="5"/>
-                                        </Grid>
+                                        <Border Background="{ThemeResource CardBackgroundFillColorDefaultBrush}"
+                                                BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}"
+                                                BorderThickness="1"
+                                                CornerRadius="4"
+                                                Margin="0,4"
+                                                Padding="12,8">
+                                            <Grid>
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="2*"/>
+                                                    <ColumnDefinition Width="*"/>
+                                                    <ColumnDefinition Width="*"/>
+                                                </Grid.ColumnDefinitions>
+                                                
+                                                <TextBlock Grid.Column="0" 
+                                                         Text="{Binding Medicine.Name}" 
+                                                         TextWrapping="Wrap"
+                                                         VerticalAlignment="Center"/>
+                                                
+                                                <TextBlock Grid.Column="1"
+                                                         HorizontalAlignment="Center"
+                                                         VerticalAlignment="Center">
+                                                    <Run Text="{Binding SelectedQuantity}"/>
+                                                    <Run Text=" pill(s)" Foreground="Gray"/>
+                                                </TextBlock>
+                                                
+                                                <TextBlock Grid.Column="2" 
+                                                         Text="{Binding SelectedDosage}"
+                                                         VerticalAlignment="Center"
+                                                         HorizontalAlignment="Center"/>
+                                            </Grid>
+                                        </Border>
                                     </DataTemplate>
                                 </ListView.ItemTemplate>
+                                <ListView.ItemContainerStyle>
+                                    <Style TargetType="ListViewItem">
+                                        <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+                                        <Setter Property="Padding" Value="8,0"/>
+                                    </Style>
+                                </ListView.ItemContainerStyle>
                             </ListView>
                         </StackPanel>
 

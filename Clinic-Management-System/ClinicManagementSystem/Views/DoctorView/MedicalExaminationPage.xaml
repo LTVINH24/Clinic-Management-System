@@ -44,11 +44,13 @@
                 <CalendarDatePicker Header="From Date"
                                    Date="{x:Bind ViewModel.StartDate, Mode=TwoWay}"
                                    PlaceholderText="Select start date"
+                                   DateFormat="{}{day.integer(2)}/{month.integer(2)}/{year.full}"
                                    Width="200"/>
 
                 <CalendarDatePicker Header="To Date"
                                    Date="{x:Bind ViewModel.EndDate, Mode=TwoWay}"
                                    PlaceholderText="Select end date"
+                                   DateFormat="{}{day.integer(2)}/{month.integer(2)}/{year.full}"
                                    Width="200"/>
 
                 <Button Content="Clear Filter"
