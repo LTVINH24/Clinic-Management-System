@@ -9,6 +9,9 @@ using System;
 
 namespace ClinicManagementSystem.ViewModel
 {
+    /// <summary>
+    /// ViewModel cho MedicineSelection
+    /// </summary>
     public class MedicineSelectionViewModel : BaseViewModel
     {
         private readonly IDao _dataAccess;

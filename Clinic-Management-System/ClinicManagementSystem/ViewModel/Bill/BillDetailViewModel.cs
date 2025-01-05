@@ -4,6 +4,9 @@ using ClinicManagementSystem.Service.DataAccess;
 
 namespace ClinicManagementSystem.ViewModel
 {
+    /// <summary>
+    /// ViewModel cho BillDetail
+    /// </summary>
     public class BillDetailViewModel : BaseViewModel
     {
         private readonly IDao _dao;

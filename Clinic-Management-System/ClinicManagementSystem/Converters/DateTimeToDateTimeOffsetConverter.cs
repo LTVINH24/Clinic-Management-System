@@ -3,6 +3,9 @@ using Microsoft.UI.Xaml.Data;
 
 namespace ClinicManagementSystem.Converters
 {
+    /// <summary>
+    /// Chuyển đổi giá trị DateTime sang DateTimeOffset
+    /// </summary>
     public class DateTimeToDateTimeOffsetConverter : IValueConverter
     {
 		/// <summary>

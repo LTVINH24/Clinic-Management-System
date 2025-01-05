@@ -11,6 +11,9 @@ using ClinicManagementSystem.Helper;
 
 namespace ClinicManagementSystem.Views.DoctorView
 {
+    /// <summary>
+    /// MedicineSelectionPage là trang chọn thuốc
+    /// </summary>
     public sealed partial class MedicineSelectionPage : Page
     {
         private MedicineSelectionViewModel ViewModel => (MedicineSelectionViewModel)DataContext;

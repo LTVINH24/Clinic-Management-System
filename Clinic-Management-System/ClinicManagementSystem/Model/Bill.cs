@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 
 namespace ClinicManagementSystem.Model
 {
+    /// <summary>
+    /// Lớp Bill để quản lý các hóa đơn
+    /// </summary>
     public class Bill
     {
         public int Id { get; set; }

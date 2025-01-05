@@ -6,6 +6,9 @@ using ClinicManagementSystem.ViewModel;
 
 namespace ClinicManagementSystem.Views.DoctorView
 {
+    /// <summary>
+    /// ExaminedFormDetailPage là trang chi tiết phiếu khám bệnh
+    /// </summary>
     public sealed partial class ExaminedFormDetailPage : Page
     {
         public ExaminedFormDetailViewModel ViewModel { get; }
@@ -16,6 +19,10 @@ namespace ClinicManagementSystem.Views.DoctorView
             ViewModel = new ExaminedFormDetailViewModel();
         }
 
+        /// <summary>
+        /// Xử lí sự kiện khi được chuyển đến trang
+        /// </summary>
+        /// <param name="e"></param>
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
             if (e.Parameter is MedicalExaminationForm form)
@@ -24,6 +31,11 @@ namespace ClinicManagementSystem.Views.DoctorView
             }
         }
 
+        /// <summary>
+        /// Xử lí sự kiện khi nhấn nút Back
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void BackButton_Click(object sender, RoutedEventArgs e)
         {
             if (Frame.CanGoBack)

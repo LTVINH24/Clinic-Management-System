@@ -15,6 +15,9 @@ using static ClinicManagementSystem.Service.DataAccess.IDao;
 
 namespace ClinicManagementSystem.ViewModel
 {
+	/// <summary>
+	/// ViewModel cho AddMedicalExaminationForm
+	/// </summary>
 	public class AddMedicalExaminationFormViewModel : INotifyPropertyChanged
 	{
 		IDao _dao;

@@ -4,6 +4,9 @@ using System.Collections.ObjectModel;
 
 namespace ClinicManagementSystem.ViewModel
 {
+    /// <summary>
+    /// ViewModel cho ExaminedFormDetail
+    /// </summary>
     public class ExaminedFormDetailViewModel : BaseViewModel
     {
         private readonly SqlServerDao _dataAccess;

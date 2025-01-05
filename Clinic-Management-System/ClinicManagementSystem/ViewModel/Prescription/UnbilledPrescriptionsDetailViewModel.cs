@@ -7,6 +7,9 @@ using ClinicManagementSystem.Service;
 
 namespace ClinicManagementSystem.ViewModel
 {
+    /// <summary>
+    /// ViewModel cho UnbilledPrescriptionsDetail
+    /// </summary>
     public class UnbilledPrescriptionsDetailViewModel : BaseViewModel
     {
         private readonly IDao _dao;

@@ -7,6 +7,9 @@ using ClinicManagementSystem.Service;
 
 namespace ClinicManagementSystem.ViewModel
 {
+    /// <summary>
+    /// ViewModel cho ExaminedForms
+    /// </summary>
     public class ExaminedFormsViewModel : BaseViewModel
     {
         private IDao _dao;

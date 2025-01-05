@@ -9,6 +9,9 @@ using System.Threading.Tasks;
 
 namespace ClinicManagementSystem.ViewModel.EndUser
 {
+    /// <summary>
+    /// ViewModel cho AdminHomePage
+    /// </summary>
     public class AdminHomePageViewModel : INotifyPropertyChanged
     {
         private readonly IDao _dao;

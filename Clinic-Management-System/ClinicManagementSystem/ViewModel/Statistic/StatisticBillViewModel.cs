@@ -14,6 +14,9 @@ using System.Threading.Tasks;
 
 namespace ClinicManagementSystem.ViewModel.Statistic
 {
+    /// <summary>
+    /// ViewModel cho StatisticBill
+    /// </summary>
     public class StatisticBillViewModel : INotifyPropertyChanged
     {
         IDao _dao;

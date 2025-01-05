@@ -12,6 +12,9 @@ using Windows.Networking.NetworkOperators;
 
 namespace ClinicManagementSystem.ViewModel
 {
+	/// <summary>
+	/// ViewModel cho MedicalExamination
+	/// </summary>
 	public class MedicalExaminationViewModel : BaseViewModel
 	{
 		private IDao _dao;

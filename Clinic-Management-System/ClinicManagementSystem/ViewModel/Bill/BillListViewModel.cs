@@ -8,6 +8,9 @@ using System.Linq;
 
 namespace ClinicManagementSystem.ViewModel
 {
+    /// <summary>
+    /// ViewModel cho BillList
+    /// </summary>
     public class BillListViewModel : BaseViewModel
     {
         private readonly IDao _dao;

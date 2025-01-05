@@ -7,6 +7,9 @@ using System.Linq;
 
 namespace ClinicManagementSystem.ViewModel
 {
+    /// <summary>
+    /// ViewModel cho UnbilledPrescriptions
+    /// </summary>
     public class UnbilledPrescriptionsViewModel : BaseViewModel
     {
         private IDao _dao;

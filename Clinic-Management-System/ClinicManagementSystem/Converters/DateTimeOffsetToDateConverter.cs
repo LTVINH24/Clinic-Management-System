@@ -12,6 +12,14 @@ namespace ClinicManagementSystem.Converters
 	/// </summary>
 	public class DateTimeOffsetToDateConverters : IValueConverter
 	{
+		/// <summary>
+		/// Chuyển đổi giá trị DateTimeOffset sang chuỗi ngày tháng năm
+		/// </summary>
+		/// <param name="value">Giá trị DateTimeOffset</param>
+		/// <param name="targetType">Kiểu dữ liệu mục tiêu</param>
+		/// <param name="parameter">Tham số</param>
+		/// <param name="language">Ngôn ngữ</param>
+		/// <returns>Định dạng ngày tháng năm</returns>
 		public object Convert(object value, Type targetType, object parameter, string language)
 		{
 			if (value is DateTimeOffset dateTimeOffset)
@@ -36,7 +44,6 @@ namespace ClinicManagementSystem.Converters
 		/// <param name="parameter"></param>
 		/// <param name="language"></param>
 		/// <returns></returns>
-
 		public object ConvertBack(object value, Type targetType, object parameter, string language)
 		{
 			if (value is string dateString)

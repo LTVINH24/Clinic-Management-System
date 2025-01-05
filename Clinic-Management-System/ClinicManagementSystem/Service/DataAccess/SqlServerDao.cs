@@ -18,6 +18,9 @@ using static ClinicManagementSystem.Service.DataAccess.IDao;
 
 namespace ClinicManagementSystem.Service.DataAccess
 {
+    /// <summary>
+    /// SqlServerDao cho các hàm liên quan đến database
+    /// </summary>
     public class SqlServerDao : IDao
     {
 
@@ -34,7 +37,8 @@ namespace ClinicManagementSystem.Service.DataAccess
 
 
 		//==============================================Helper===========================================
-		/// <summary>
+		
+        /// <summary>
 		/// Xứ lí xác thực người dùng
 		/// </summary>
 		/// <param name="username"></param>
@@ -103,7 +107,8 @@ namespace ClinicManagementSystem.Service.DataAccess
 
 
 		//================================================EndUser========================================
-		/// <summary>
+		
+        /// <summary>
 		/// Lấy danh sách người dùng
 		/// </summary>
 		/// <param name="page"></param>
@@ -310,6 +315,13 @@ namespace ClinicManagementSystem.Service.DataAccess
             connection.Close();
             return result > 0;
         }
+
+		/// <summary>
+		/// Khóa người dùng
+		/// </summary>
+		/// <param name="id"></param>
+		/// <param name="status"></param>
+		/// <returns>Trả về true nếu khóa thành công</returns>
 		public bool LockUser(int id,string status)
         {
             SqlConnection connection = new SqlConnection( _connectionString);
@@ -321,6 +333,11 @@ namespace ClinicManagementSystem.Service.DataAccess
             connection.Close();
             return result > 0;
         }
+
+		/// <summary>
+		/// Lấy tổng số người dùng
+		/// </summary>
+		/// <returns>Trả về tổng số người dùng</returns>
         public int GetTotalUsersCount()
         {
             using (var connection = new SqlConnection(_connectionString))
@@ -335,6 +352,7 @@ namespace ClinicManagementSystem.Service.DataAccess
 
 
         //================================================Specialty========================================
+        
         /// <summary>
         /// Lấy danh sách chuyên khoa
         /// </summary>
@@ -418,6 +436,7 @@ namespace ClinicManagementSystem.Service.DataAccess
 
 
         //================================================Medicine========================================
+        
         /// <summary>
         /// Lấy danh sách thuốc
         /// </summary>
@@ -429,7 +448,8 @@ namespace ClinicManagementSystem.Service.DataAccess
         public Tuple<List<Medicine>, int> GetMedicines(
                 int page, int rowsPerPage,
                 string keyword,
-                Dictionary<string, SortType> sortOptions, int daysRemaining)
+                Dictionary<string, SortType> sortOptions, int daysRemaining
+        )
         {
             string filter = "";
             if(daysRemaining > 0)
@@ -802,6 +822,13 @@ namespace ClinicManagementSystem.Service.DataAccess
             return medicines;
         }
 
+		/// <summary>
+		/// Lấy danh sách thuốc theo trang
+		/// </summary>
+		/// <param name="currentPage"></param>
+		/// <param name="pageSize"></param>
+		/// <param name="keyword"></param>
+		/// <returns>Danh sách thuốc và tổng số thuốc</returns>
         public (List<MedicineSelection>, int) GetMedicinesByPage(
             int currentPage, 
             int pageSize, 
@@ -1123,6 +1150,11 @@ namespace ClinicManagementSystem.Service.DataAccess
             return new Tuple<List<MedicalExaminationForm>, int>(result, count);
         }
 
+		/// <summary>
+		/// Lấy thông tin chi tiết phiếu khám bệnh
+		/// </summary>
+		/// <param name="formId"></param>
+		/// <returns>Thông tin chi tiết phiếu khám bệnh</returns>
 		public MedicalExaminationFormDetail GetMedicalExaminationFormDetail(int formId)
         {
             SqlConnection connection = new SqlConnection(_connectionString);
@@ -1177,6 +1209,12 @@ namespace ClinicManagementSystem.Service.DataAccess
 			return result;
 		}
 
+		/// <summary>
+		/// Lấy thống kê khám bệnh theo ngày
+		/// </summary>
+		/// <param name="startDate"></param>
+		/// <param name="endDate"></param>
+		/// <returns>Danh sách thống kê khám bệnh</returns>
         public List<MedicalExaminationStatistic> GetMedicalExaminationStatisticsByDate(DateTimeOffset startDate, DateTimeOffset endDate)
         {
             var result = new List<MedicalExaminationStatistic>();
@@ -1202,6 +1240,10 @@ namespace ClinicManagementSystem.Service.DataAccess
             return result;
         }
 
+		/// <summary>
+		/// Lấy số lượng phiếu khám bệnh ngày hôm nay
+		/// </summary>
+		/// <returns>Số lượng phiếu khám bệnh ngày hôm nay</returns>
 		public int GetTodayMedicalExaminationFormsCount()
 		{
 			using (var connection = new SqlConnection(_connectionString))
@@ -1217,6 +1259,10 @@ namespace ClinicManagementSystem.Service.DataAccess
 			}
 		}
 
+		/// <summary>
+		/// Lấy số lượng phiếu khám bệnh chưa được xác nhận
+		/// </summary>
+		/// <returns>Số lượng phiếu khám bệnh chưa được xác nhận</returns>
 		public int GetPendingFormsCount()
 		{
 			using (var connection = new SqlConnection(_connectionString))
@@ -1449,7 +1495,8 @@ namespace ClinicManagementSystem.Service.DataAccess
 
 
 		//================================================Doctor========================================
-		/// <summary>
+		
+        /// <summary>
 		/// Lấy danh sách bác sĩ
 		/// </summary>
 		/// <returns>Danh sách các bác sĩ</returns>
@@ -1497,7 +1544,8 @@ namespace ClinicManagementSystem.Service.DataAccess
 
 
 		//========================================MedicalRecord==========================================
-		/// <summary>
+		
+        /// <summary>
 		/// Lấy thông tin bệnh án theo id
 		/// </summary>
 		/// <param name="medicalExaminationFormId"></param>
@@ -1529,7 +1577,8 @@ namespace ClinicManagementSystem.Service.DataAccess
         }
 
 		// New method to create a MedicalRecord using data from MedicalExaminationForm
-		/// <summary>
+		
+        /// <summary>
 		/// Tạo bệnh án từ phiếu khám bệnh
 		/// </summary>
 		/// <param name="form"></param>
@@ -1717,6 +1766,12 @@ namespace ClinicManagementSystem.Service.DataAccess
             return null;
         }
 
+		/// <summary>
+		/// Cập nhật trạng thái đã thanh toán đơn thuốc
+		/// </summary>
+		/// <param name="prescriptionId"></param>
+		/// <param name="isBilled"></param>
+		/// <returns>Trả về true nếu cập nhật thành công</returns>
         public bool UpdatePrescriptionBillStatus(int prescriptionId, string isBilled)
         {
             using (var connection = new SqlConnection(_connectionString))
@@ -1742,7 +1797,11 @@ namespace ClinicManagementSystem.Service.DataAccess
             }
         }
 
-        // Thêm phương thức lấy danh sách theo trạng thái in
+		/// <summary>
+		/// Lấy danh sách đơn thuốc theo trạng thái thanh toán
+		/// </summary>
+		/// <param name="isBilled"></param>
+		/// <returns>Danh sách đơn thuốc</returns>
         public List<Prescription> GetPrescriptionsByBillStatus(bool isBilled)
         {
             List<Prescription> prescriptions = new List<Prescription>();
@@ -1791,6 +1850,11 @@ namespace ClinicManagementSystem.Service.DataAccess
             return prescriptions;
         }
 
+		/// <summary>
+		/// Lấy thông tin đơn thuốc theo ID
+		/// </summary>
+		/// <param name="id"></param>
+		/// <returns>Đơn thuốc</returns>
         public Prescription GetPrescriptionById(int id)
         {
             Prescription prescription = null;
@@ -1829,6 +1893,14 @@ namespace ClinicManagementSystem.Service.DataAccess
             return prescription;
         }
 
+		/// <summary>
+		/// Lấy danh sách đơn thuốc theo trang
+		/// </summary>
+		/// <param name="currentPage"></param>
+		/// <param name="pageSize"></param>
+		/// <param name="isBilled"></param>
+		/// <param name="keyword"></param>
+		/// <returns>Danh sách đơn thuốc và tổng số đơn thuốc</returns>
         public (List<Prescription>, int) GetPrescriptionsByPage(
             int currentPage,
             int pageSize,
@@ -1902,7 +1974,8 @@ namespace ClinicManagementSystem.Service.DataAccess
 
 
 		//===================================================Patient===============================================
-		/// <summary>
+		
+        /// <summary>
 		/// Lấy danh sách bệnh nhân từ cơ sở dữ liệu
 		/// </summary>
 		/// <param name="page"></param>
@@ -2036,7 +2109,8 @@ namespace ClinicManagementSystem.Service.DataAccess
                 result, count
             );
         }
-		/// <summary>
+		
+        /// <summary>
 		/// Lấy tổng số bệnh nhân
 		/// </summary>
 		/// <returns>Tổng số bệnh nhân</returns>
@@ -2049,7 +2123,8 @@ namespace ClinicManagementSystem.Service.DataAccess
 				return (int)command.ExecuteScalar();
 			}
 		}
-		/// <summary>
+		
+        /// <summary>
 		/// Lấy số lượng bệnh nhân mới trong ngày
 		/// </summary>
 		/// <returns>Số lượng bệnh nhân mới trong ngày</returns>
@@ -2204,7 +2279,8 @@ namespace ClinicManagementSystem.Service.DataAccess
 		//=========================================================================================================
 
 		//=====================================================Bill================================================
-		/// <summary>
+		
+        /// <summary>
 		/// Cập nhật số lượng thuốc
 		/// </summary>
 		/// <param name="selectedMedicines"></param>
@@ -2252,7 +2328,8 @@ namespace ClinicManagementSystem.Service.DataAccess
 
 
 		//==========================================================Bill========================================
-		/// <summary>
+		
+        /// <summary>
 		/// Lấy thông tin hóa đơn theo ngày
 		/// </summary>
 		/// <param name="startDate"></param>
@@ -2283,6 +2360,11 @@ namespace ClinicManagementSystem.Service.DataAccess
             return result;
         }
 
+		/// <summary>
+		/// Lưu hóa đơn
+		/// </summary>
+		/// <param name="bill"></param>
+		/// <returns>True nếu lưu thành công, False nếu lưu thất bại</returns>
         public bool SaveBill(Bill bill)
         {
             try
@@ -2313,6 +2395,16 @@ namespace ClinicManagementSystem.Service.DataAccess
             }
         }
 
+		/// <summary>
+		/// Lấy danh sách hóa đơn theo trang
+		/// </summary>
+		/// <param name="currentPage"></param>
+		/// <param name="pageSize"></param>
+		/// <param name="keyword"></param>
+		/// <param name="startDate"></param>
+		/// <param name="endDate"></param>
+		/// <param name="status"></param>
+		/// <returns>Danh sách hóa đơn và tổng số hóa đơn</returns>
         public (List<Bill>, int) GetBillsByPage(
             int currentPage, 
             int pageSize, 
@@ -2405,6 +2497,11 @@ namespace ClinicManagementSystem.Service.DataAccess
             return (bills, totalCount);
         }
 
+		/// <summary>
+		/// Lấy thông tin hóa đơn theo ID
+		/// </summary>
+		/// <param name="id"></param>
+		/// <returns>Hóa đơn</returns>
         public Bill GetBillById(int id)
         {
             try

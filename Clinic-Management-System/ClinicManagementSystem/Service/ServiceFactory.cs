@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 
 namespace ClinicManagementSystem.Service
 {
+    /// <summary>
+    /// ServiceFactory cho các service khác nhau
+    /// </summary>
     public class ServiceFactory
     {
         private static Dictionary<string, Type> _choices = new Dictionary<string, Type>();

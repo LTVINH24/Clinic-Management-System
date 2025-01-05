@@ -5,6 +5,14 @@ namespace ClinicManagementSystem.Converters
 {
     public class DateConverter : IValueConverter
     {
+        /// <summary>
+        /// Chuyển đổi ngày tháng sang định dạng dd/MM/yyyy
+        /// </summary>
+        /// <param name="value">Giá trị ngày tháng</param>
+        /// <param name="targetType">Kiểu dữ liệu mục tiêu</param>
+        /// <param name="parameter">Tham số</param>
+        /// <param name="language">Ngôn ngữ</param>
+        /// <returns>Định dạng ngày tháng</returns>
         public object Convert(object value, Type targetType, object parameter, string language)
         {
             if (value is DateTimeOffset dateTime)
@@ -14,6 +22,14 @@ namespace ClinicManagementSystem.Converters
             return string.Empty;
         }
 
+        /// <summary>
+        /// Chuyển đổi ngày tháng từ định dạng dd/MM/yyyy sang DateTimeOffset
+        /// </summary>
+        /// <param name="value">Giá trị ngày tháng</param>
+        /// <param name="targetType">Kiểu dữ liệu mục tiêu</param>
+        /// <param name="parameter">Tham số</param>
+        /// <param name="language">Ngôn ngữ</param>
+        /// <returns>Giá trị DateTimeOffset</returns>
         public object ConvertBack(object value, Type targetType, object parameter, string language)
         {
             throw new NotImplementedException();

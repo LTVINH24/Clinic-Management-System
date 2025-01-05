@@ -28,7 +28,9 @@ namespace ClinicManagementSystem.Views.StaffView
 	// Dữ liệu không đúng định dạng (x)
 	// Dữ liệu không đúng miền giá trị (x)
 
-
+	/// <summary>
+	/// AddMedicalExaminationForm là trang thêm phiếu khám bệnh
+	/// </summary>
 	public sealed partial class AddMedicalExaminationForm : Page
     {
 		public AddMedicalExaminationFormViewModel viewModel { get; set; } = new AddMedicalExaminationFormViewModel();
