@@ -52,6 +52,7 @@
                             <RowDefinition Height="Auto"/>
                             <RowDefinition Height="Auto"/>
                             <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
                         </Grid.RowDefinitions>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="Auto"/>
@@ -65,18 +66,25 @@
                                  Grid.Row="0" Grid.Column="1"
                                  Margin="12,0,0,0"/>
 
-                        <TextBlock Text="Date of Birth:" 
+                        <TextBlock Text="Resident ID:" 
                                  FontWeight="SemiBold"
                                  Grid.Row="1"/>
-                        <TextBlock Text="{x:Bind ViewModel.Patient.DoB, Mode=OneWay, Converter={StaticResource DateOnlyConverter}}"
+                        <TextBlock Text="{x:Bind ViewModel.Patient.ResidentId, Mode=OneWay}"
                                  Grid.Row="1" Grid.Column="1"
+                                 Margin="12,0,0,0"/>
+
+                        <TextBlock Text="Date of Birth:" 
+                                 FontWeight="SemiBold"
+                                 Grid.Row="2"/>
+                        <TextBlock Text="{x:Bind ViewModel.Patient.DoB, Mode=OneWay, Converter={StaticResource DateOnlyConverter}}"
+                                 Grid.Row="2" Grid.Column="1"
                                  Margin="12,0,0,0"/>
 
                         <TextBlock Text="Gender:" 
                                  FontWeight="SemiBold"
-                                 Grid.Row="2"/>
+                                 Grid.Row="3"/>
                         <TextBlock Text="{x:Bind ViewModel.Patient.Gender, Mode=OneWay}"
-                                 Grid.Row="2" Grid.Column="1"
+                                 Grid.Row="3" Grid.Column="1"
                                  Margin="12,0,0,0"/>
                     </Grid>
                 </StackPanel>
@@ -119,24 +127,24 @@
                         
                         <!-- Medicine List Header -->
                         <StackPanel>
-                            <Grid Margin="0,0,0,8">
+                            <Grid x:Name="HeaderGrid" Margin="0,0,0,8">
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="2*"/>
-                                    <ColumnDefinition Width="205"/>
-                                    <ColumnDefinition Width="150"/>
+                                    <ColumnDefinition Width="3*"/>
+                                    <ColumnDefinition Width="200"/>
                                 </Grid.ColumnDefinitions>
 
                                 <TextBlock Text="Medicine Name"
-                                         FontWeight="SemiBold"
-                                         VerticalAlignment="Center"/>
+                                          FontWeight="SemiBold"
+                                          VerticalAlignment="Center"/>
                                 <TextBlock Text="Quantity"
-                                         Grid.Column="1"
-                                         FontWeight="SemiBold"
-                                         VerticalAlignment="Center"/>
+                                          Grid.Column="1"
+                                          FontWeight="SemiBold"
+                                          VerticalAlignment="Center"/>
                                 <TextBlock Text="Dosage"
-                                         Grid.Column="2"
-                                         FontWeight="SemiBold"
-                                         VerticalAlignment="Center"/>
+                                          Grid.Column="2"
+                                          FontWeight="SemiBold"
+                                          VerticalAlignment="Center"/>
                             </Grid>
 
                             <!-- Separator -->
@@ -146,10 +154,10 @@
 
                             <!-- Medicine List -->
                             <ListView ItemsSource="{x:Bind ViewModel.Medicines, Mode=OneWay}"
-                                     IsEnabled="False"
-                                     SelectionMode="None"
-                                     Background="Transparent"
-                                     BorderThickness="0">
+                                      IsEnabled="False"
+                                      SelectionMode="None"
+                                      Background="Transparent"
+                                      BorderThickness="0">
                                 <ListView.ItemTemplate>
                                     <DataTemplate x:DataType="model:MedicineSelection">
                                         <Border Background="{ThemeResource CardBackgroundFillColorDefaultBrush}"
@@ -161,8 +169,8 @@
                                             <Grid ColumnSpacing="12">
                                                 <Grid.ColumnDefinitions>
                                                     <ColumnDefinition Width="2*"/>
-                                                    <ColumnDefinition Width="200"/>
-                                                    <ColumnDefinition Width="130"/>
+                                                    <ColumnDefinition Width="100"/>
+                                                    <ColumnDefinition Width="335"/>
                                                 </Grid.ColumnDefinitions>
                                                 
                                                 <TextBlock Text="{x:Bind Medicine.Name}"
@@ -175,7 +183,13 @@
                                                 </StackPanel>
                                                 <TextBlock Grid.Column="2" 
                                                          Text="{x:Bind SelectedDosage}"
-                                                         VerticalAlignment="Center"/>
+                                                         TextTrimming="CharacterEllipsis"
+                                                         TextWrapping="NoWrap"
+                                                         MaxWidth="200"
+                                                         HorizontalAlignment="Center"
+                                                         VerticalAlignment="Center"
+                                                         TextAlignment="Center"
+                                                         ToolTipService.ToolTip="{x:Bind SelectedDosage}"/>
                                             </Grid>
                                         </Border>
                                     </DataTemplate>

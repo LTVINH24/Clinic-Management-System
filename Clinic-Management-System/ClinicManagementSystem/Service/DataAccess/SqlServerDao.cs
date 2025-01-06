@@ -1983,7 +1983,7 @@ namespace ClinicManagementSystem.Service.DataAccess
                     command.CommandText = @"
                         SELECT COUNT(*) OVER() as TotalCount,
                             p.id, p.time, p.medicalExaminationFormId, p.nextExaminationDate, p.isBilled,
-                            pt.name as patientName, pt.gender as gender, pt.birthday as birthday
+                            pt.name as patientName, pt.residentId as residentId, pt.gender as gender, pt.birthday as birthday
                         FROM Prescription p
                         INNER JOIN MedicalExaminationForm m ON p.medicalExaminationFormId = m.id
                         INNER JOIN Patient pt ON m.patientId = pt.id
@@ -2021,6 +2021,7 @@ namespace ClinicManagementSystem.Service.DataAccess
                                 Patient = new Patient
                                 {
                                     Name = reader.GetString(reader.GetOrdinal("patientName")),
+                                    ResidentId = reader.GetString(reader.GetOrdinal("residentId")),
                                     Gender = reader.GetString(reader.GetOrdinal("gender")),
                                     DoB = reader.GetDateTime(reader.GetOrdinal("birthday"))
                                 }

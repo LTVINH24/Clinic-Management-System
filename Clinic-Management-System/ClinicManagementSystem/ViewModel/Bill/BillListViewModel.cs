@@ -25,6 +25,7 @@ namespace ClinicManagementSystem.ViewModel
         private DateTimeOffset? _startDate;
         private DateTimeOffset? _endDate;
         private string _selectedStatus = "";
+        private int _selectedStatusIndex;
 
         public BillListViewModel()
         {
@@ -117,6 +118,12 @@ namespace ClinicManagementSystem.ViewModel
             }
         }
 
+        public int SelectedStatusIndex
+        {
+            get => _selectedStatusIndex;
+            set => SetProperty(ref _selectedStatusIndex, value);
+        }
+
         public void Search()
         {
             CurrentPage = 1;
@@ -201,6 +208,7 @@ namespace ClinicManagementSystem.ViewModel
             EndDate = null;
             Keyword = "";
             SelectedStatus = "";
+            SelectedStatusIndex = 0;
             LoadBills();
         }
     }

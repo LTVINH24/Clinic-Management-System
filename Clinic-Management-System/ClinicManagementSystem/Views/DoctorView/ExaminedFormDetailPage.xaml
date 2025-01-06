@@ -32,13 +32,16 @@
             <!-- Content -->
             <Grid Grid.Row="1">
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*"/>
-                    <ColumnDefinition Width="Auto"/>
-                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>     <!-- Left column -->
+                    <ColumnDefinition Width="Auto"/>  <!-- Separator -->
+                    <ColumnDefinition Width="*"/>     <!-- Right column -->
                 </Grid.ColumnDefinitions>
-
-                <!-- Left Column - Patient & Form Info -->
-                <StackPanel Grid.Column="0" Spacing="15">
+                
+                <!-- Left Column -->
+                <StackPanel Grid.Column="0" 
+                            Spacing="15"
+                            MaxWidth="800"
+                            HorizontalAlignment="Stretch">
                     <!-- Patient Information -->
                     <TextBlock Text="Patient Information" 
                               FontSize="18" 
@@ -86,17 +89,47 @@
                             </StackPanel>
 
                             <StackPanel Orientation="Vertical" Spacing="8">
-                                <TextBlock Text="Symptoms:" FontWeight="SemiBold" Foreground="Gray"/>
-                                <TextBlock Text="{x:Bind ViewModel.Form.Symptoms, Mode=OneWay}"
-                                         TextWrapping="Wrap"
-                                         Margin="20,0,0,0"/>
+                                <TextBlock Text="Symptoms:" 
+                                           FontWeight="SemiBold" 
+                                           Foreground="Gray"/>
+                                <Border Background="{ThemeResource LayerFillColorDefaultBrush}"
+                                        BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}"
+                                        BorderThickness="1"
+                                        CornerRadius="8"
+                                        MaxWidth="500">
+                                    <ScrollViewer MinHeight="50"
+                                                 MaxHeight="300"
+                                                 VerticalScrollBarVisibility="Auto"
+                                                 HorizontalScrollBarVisibility="Disabled"
+                                                 Padding="16,12">
+                                        <TextBlock Text="{x:Bind ViewModel.Form.Symptoms, Mode=OneWay}"
+                                                  TextWrapping="Wrap"
+                                                  FontSize="14"
+                                                  LineHeight="20"/>
+                                    </ScrollViewer>
+                                </Border>
                             </StackPanel>
 
                             <StackPanel Orientation="Vertical" Spacing="8">
-                                <TextBlock Text="Diagnosis:" FontWeight="SemiBold" Foreground="Gray"/>
-                                <TextBlock Text="{x:Bind ViewModel.Diagnosis, Mode=OneWay}"
-                                         TextWrapping="Wrap"
-                                         Margin="20,0,0,0"/>
+                                <TextBlock Text="Diagnosis:" 
+                                           FontWeight="SemiBold" 
+                                           Foreground="Gray"/>
+                                <Border Background="{ThemeResource LayerFillColorDefaultBrush}"
+                                        BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}"
+                                        BorderThickness="1"
+                                        CornerRadius="8"
+                                        MaxWidth="500">
+                                    <ScrollViewer MinHeight="50"
+                                                 MaxHeight="300"
+                                                 VerticalScrollBarVisibility="Auto"
+                                                 HorizontalScrollBarVisibility="Disabled"
+                                                 Padding="16,12">
+                                        <TextBlock Text="{x:Bind ViewModel.Diagnosis, Mode=OneWay}"
+                                                  TextWrapping="Wrap"
+                                                  FontSize="14"
+                                                  LineHeight="20"/>
+                                    </ScrollViewer>
+                                </Border>
                             </StackPanel>
 
                             <StackPanel Orientation="Horizontal" Spacing="10">
@@ -114,12 +147,15 @@
 
                 <!-- Separator -->
                 <Rectangle Grid.Column="1" 
-                          Width="1" 
-                          Fill="{ThemeResource CardStrokeColorDefaultBrush}"
-                          Margin="20,0"/>
+                           Width="1" 
+                           Fill="Gray" 
+                           Margin="40,0"/>
 
-                <!-- Right Column - Medicines -->
-                <StackPanel Grid.Column="2">
+                <!-- Right Column -->
+                <StackPanel Grid.Column="2" 
+                            Spacing="15"
+                            MaxWidth="800"
+                            HorizontalAlignment="Stretch">
                     <TextBlock Text="Prescribed Medicines" 
                              FontSize="18" 
                              FontWeight="SemiBold" 
@@ -146,9 +182,9 @@
                         <StackPanel>
                             <Grid Margin="0,0,0,8">
                                 <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="2*"/>
-                                    <ColumnDefinition Width="*"/>
-                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="150"/>
+                                    <ColumnDefinition Width="100"/>
+                                    <ColumnDefinition Width="470"/>
                                 </Grid.ColumnDefinitions>
 
                                 <TextBlock Text="Medicine Name"
@@ -187,9 +223,9 @@
                                                 Margin="0,4">
                                             <Grid>
                                                 <Grid.ColumnDefinitions>
-                                                    <ColumnDefinition Width="2*"/>
-                                                    <ColumnDefinition Width="*"/>
-                                                    <ColumnDefinition Width="*"/>
+                                                    <ColumnDefinition Width="150"/>
+                                                    <ColumnDefinition Width="80"/>
+                                                    <ColumnDefinition Width="500"/>
                                                 </Grid.ColumnDefinitions>
                                                 
                                                 <TextBlock Grid.Column="0" 
@@ -206,8 +242,13 @@
                                                 
                                                 <TextBlock Grid.Column="2" 
                                                          Text="{Binding SelectedDosage}"
+                                                         TextTrimming="CharacterEllipsis"
+                                                         TextWrapping="NoWrap"
+                                                         MaxWidth="200"
+                                                         HorizontalAlignment="Center"
                                                          VerticalAlignment="Center"
-                                                         HorizontalAlignment="Center"/>
+                                                         TextAlignment="Center"
+                                                         ToolTipService.ToolTip="{Binding SelectedDosage}"/>
                                             </Grid>
                                         </Border>
                                     </DataTemplate>
