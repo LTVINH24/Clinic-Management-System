@@ -40,7 +40,8 @@
                 <!-- Left Column -->
                 <StackPanel Grid.Column="0" 
                             Spacing="15"
-                            MaxWidth="800"
+                            Margin="0,0,10,0"
+                            MinWidth="430"
                             HorizontalAlignment="Stretch">
                     <!-- Patient Information -->
                     <TextBlock Text="Patient Information" 
@@ -95,8 +96,7 @@
                                 <Border Background="{ThemeResource LayerFillColorDefaultBrush}"
                                         BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}"
                                         BorderThickness="1"
-                                        CornerRadius="8"
-                                        MaxWidth="500">
+                                        CornerRadius="8">
                                     <ScrollViewer MinHeight="50"
                                                  MaxHeight="300"
                                                  VerticalScrollBarVisibility="Auto"
@@ -117,8 +117,7 @@
                                 <Border Background="{ThemeResource LayerFillColorDefaultBrush}"
                                         BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}"
                                         BorderThickness="1"
-                                        CornerRadius="8"
-                                        MaxWidth="500">
+                                        CornerRadius="8">
                                     <ScrollViewer MinHeight="50"
                                                  MaxHeight="300"
                                                  VerticalScrollBarVisibility="Auto"
@@ -154,7 +153,7 @@
                 <!-- Right Column -->
                 <StackPanel Grid.Column="2" 
                             Spacing="15"
-                            MaxWidth="800"
+                            Margin="10,0,0,0"
                             HorizontalAlignment="Stretch">
                     <TextBlock Text="Prescribed Medicines" 
                              FontSize="18" 
@@ -180,16 +179,17 @@
                         
                         <!-- Medicine Header -->
                         <StackPanel>
-                            <Grid Margin="0,0,0,8">
+                            <Grid Margin="0,0,0,8" MinWidth="400">
                                 <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="150"/>
-                                    <ColumnDefinition Width="100"/>
-                                    <ColumnDefinition Width="470"/>
+                                    <ColumnDefinition Width="2*"/>    
+                                    <ColumnDefinition Width="1*"/>    
+                                    <ColumnDefinition Width="3*"/>   
                                 </Grid.ColumnDefinitions>
 
                                 <TextBlock Text="Medicine Name"
-                                         FontWeight="SemiBold"
-                                         VerticalAlignment="Center"/>
+                                          Grid.Column="0"
+                                          FontWeight="SemiBold"
+                                          VerticalAlignment="Center"/>
                                 <TextBlock Text="Quantity"
                                          Grid.Column="1"
                                          FontWeight="SemiBold"
@@ -223,9 +223,9 @@
                                                 Margin="0,4">
                                             <Grid>
                                                 <Grid.ColumnDefinitions>
-                                                    <ColumnDefinition Width="150"/>
-                                                    <ColumnDefinition Width="80"/>
-                                                    <ColumnDefinition Width="500"/>
+                                                    <ColumnDefinition Width="2*"/>
+                                                    <ColumnDefinition Width="1*"/>
+                                                    <ColumnDefinition Width="3*"/>
                                                 </Grid.ColumnDefinitions>
                                                 
                                                 <TextBlock Grid.Column="0" 
