@@ -125,7 +125,7 @@
                         <ColumnDefinition Width="*" />
                         <ColumnDefinition Width="*" />
                     </Grid.ColumnDefinitions>
-                    <CalendarDatePicker x:Name="BirthDayUser" Grid.Column="0"  PlaceholderText="Pick a date" Header="Birthday" Date="{x:Bind viewModel.user.birthday,Mode=TwoWay}" Foreground="{ThemeResource ApplicationForegroundThemeBrush}"/>
+                    <CalendarDatePicker x:Name="BirthDayUser" Grid.Column="0"  PlaceholderText="Pick a date" Header="Birthday" Date="{x:Bind viewModel.user.birthday,Mode=TwoWay}" DateFormat="{}{day.integer}/{month.integer}/{year.full}" Foreground="{ThemeResource ApplicationForegroundThemeBrush}"/>
                     <TextBox x:Name="Room" Visibility="Collapsed" Grid.Column="1" Header="Room" Text="{x:Bind viewModel.Room,Mode=TwoWay}" />
                 </Grid>
                 <PasswordBox x:Name="PasswordUser" Grid.Row="6"  Header="New password" PlaceholderText="Password" PasswordChar="*" Password="{x:Bind viewModel.user.password, Mode=TwoWay}"/>
