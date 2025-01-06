@@ -11,6 +11,9 @@ using ClinicManagementSystem.Helper;
 
 namespace ClinicManagementSystem.Views.DoctorView
 {
+    /// <summary>
+    /// MedicineSelectionPage là trang chọn thuốc
+    /// </summary>
     public sealed partial class MedicineSelectionPage : Page
     {
         private MedicineSelectionViewModel ViewModel => (MedicineSelectionViewModel)DataContext;
@@ -135,6 +138,32 @@ namespace ClinicManagementSystem.Views.DoctorView
             if (args.Reason == AutoSuggestionBoxTextChangeReason.UserInput)
             {
                 ViewModel.SearchText = sender.Text;
+            }
+        }
+
+        private void PreviousButton_Click(object sender, RoutedEventArgs e)
+        {
+            ViewModel.GoToPreviousPage();
+        }
+
+        private void NextButton_Click(object sender, RoutedEventArgs e)
+        {
+            ViewModel.GoToNextPage();
+        }
+
+        private void PageButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (sender is Button button && button.Content is int page)
+            {
+                ViewModel.GoToPage(page);
+            }
+        }
+
+        private void PagesComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (sender is ComboBox comboBox && comboBox.SelectedItem is PageInfo pageInfo)
+            {
+                ViewModel.GoToPage(pageInfo.Page);
             }
         }
     }

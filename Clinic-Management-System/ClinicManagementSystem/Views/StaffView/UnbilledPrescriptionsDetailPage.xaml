@@ -4,10 +4,17 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:local="using:ClinicManagementSystem.Views.StaffView"
     xmlns:model="using:ClinicManagementSystem.Model"
+    xmlns:converters="using:ClinicManagementSystem.Converters"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+
+    <Page.Resources>
+        <converters:DateOnlyConverter x:Key="DateOnlyConverter"/>
+        <converters:EmptyCollectionToVisibilityConverter x:Key="EmptyCollectionToVisibilityConverter"/>
+        <converters:NotEmptyCollectionToVisibilityConverter x:Key="NotEmptyCollectionToVisibilityConverter"/>
+    </Page.Resources>
 
     <Grid Padding="20">
         <Grid.RowDefinitions>
@@ -15,6 +22,11 @@
             <RowDefinition Height="*"/>
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
+
+        <!-- Header -->
+        <TextBlock Text="Prescription Details"
+                  Style="{StaticResource TitleTextBlockStyle}"
+                  Margin="0,0,0,20"/>
 
         <!-- Content -->
         <Grid Grid.Row="1">
@@ -25,115 +37,286 @@
             </Grid.ColumnDefinitions>
 
             <!-- Left Column - Patient Info -->
-            <StackPanel>
-                <TextBlock Text="Patient Information" 
-                         FontSize="18" 
-                         FontWeight="SemiBold" 
-                         Margin="0,0,0,10"/>
+            <Border Background="{ThemeResource CardBackgroundFillColorDefaultBrush}"
+                    BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}"
+                    BorderThickness="1"
+                    CornerRadius="8"
+                    Padding="20">
+                <StackPanel>
+                    <TextBlock Text="Patient Information" 
+                             Style="{StaticResource SubtitleTextBlockStyle}"
+                             Margin="0,0,0,16"/>
 
-                <StackPanel Orientation="Horizontal" Margin="0,5">
-                    <TextBlock Text="Name: " FontWeight="SemiBold"/>
-                    <TextBlock Text="{x:Bind ViewModel.Patient.Name, Mode=OneWay}"/>
-                </StackPanel>
+                    <Grid RowSpacing="12">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
 
-                <StackPanel Orientation="Horizontal" Margin="0,5">
-                    <TextBlock Text="Date of Birth: " FontWeight="SemiBold"/>
-                    <TextBlock Text="{x:Bind ViewModel.Patient.DoB, Mode=OneWay}"/>
+                        <TextBlock Text="Name:" 
+                                 FontWeight="SemiBold"
+                                 Grid.Row="0"/>
+                        <TextBlock Text="{x:Bind ViewModel.Patient.Name, Mode=OneWay}"
+                                 Grid.Row="0" Grid.Column="1"
+                                 Margin="12,0,0,0"/>
+
+                        <TextBlock Text="Date of Birth:" 
+                                 FontWeight="SemiBold"
+                                 Grid.Row="1"/>
+                        <TextBlock Text="{x:Bind ViewModel.Patient.DoB, Mode=OneWay, Converter={StaticResource DateOnlyConverter}}"
+                                 Grid.Row="1" Grid.Column="1"
+                                 Margin="12,0,0,0"/>
+
+                        <TextBlock Text="Gender:" 
+                                 FontWeight="SemiBold"
+                                 Grid.Row="2"/>
+                        <TextBlock Text="{x:Bind ViewModel.Patient.Gender, Mode=OneWay}"
+                                 Grid.Row="2" Grid.Column="1"
+                                 Margin="12,0,0,0"/>
+                    </Grid>
                 </StackPanel>
-            </StackPanel>
+            </Border>
 
             <!-- Separator -->
             <Rectangle Grid.Column="1" 
                       Width="1" 
-                      Fill="Gray" 
+                      Fill="{ThemeResource CardStrokeColorDefaultBrush}" 
                       Margin="20,0"/>
 
             <!-- Right Column - Medicines -->
-            <StackPanel Grid.Column="2">
-                <TextBlock Text="Prescribed Medicines" 
-                         FontSize="18" 
-                         FontWeight="SemiBold" 
-                         Margin="0,0,0,10"/>
+            <Border Grid.Column="2"
+                    Background="{ThemeResource CardBackgroundFillColorDefaultBrush}"
+                    BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}"
+                    BorderThickness="1"
+                    CornerRadius="8"
+                    Padding="20">
+                <StackPanel>
+                    <TextBlock Text="Prescribed Medicines" 
+                             Style="{StaticResource SubtitleTextBlockStyle}"
+                             Margin="0,0,0,16"/>
 
-                <ListView ItemsSource="{x:Bind ViewModel.Medicines, Mode=OneWay}"
-                        IsEnabled="False"
-                        SelectionMode="None">
-                    <ListView.ItemTemplate>
-                        <DataTemplate x:DataType="model:MedicineSelection">
-                            <Grid Margin="0,5">
+                    <!-- Hiển thị khi không có thuốc -->
+                    <TextBlock Text="No medicines prescribed"
+                              Margin="0,8,0,0"
+                              Foreground="Gray" 
+                              FontStyle="Italic"
+                              HorizontalAlignment="Center"
+                              Visibility="{x:Bind ViewModel.Medicines.Count, Mode=OneWay, Converter={StaticResource EmptyCollectionToVisibilityConverter}}"/>
+
+                    <!-- Medicine List Container -->
+                    <Border Background="{ThemeResource CardBackgroundFillColorSecondaryBrush}"
+                            BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}"
+                            BorderThickness="1"
+                            CornerRadius="4"
+                            Padding="12"
+                            Margin="0,8,0,0"
+                            Visibility="{x:Bind ViewModel.Medicines.Count, Mode=OneWay, Converter={StaticResource NotEmptyCollectionToVisibilityConverter}}">
+                        
+                        <!-- Medicine List Header -->
+                        <StackPanel>
+                            <Grid Margin="0,0,0,8">
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="2*"/>
-                                    <ColumnDefinition Width="*"/>
-                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="205"/>
+                                    <ColumnDefinition Width="150"/>
                                 </Grid.ColumnDefinitions>
-                                
-                                <TextBlock Text="{x:Bind Medicine.Name}"/>
-                                <StackPanel Grid.Column="1" Orientation="Horizontal">
-                                    <TextBlock Text="{x:Bind SelectedQuantity}"/>
-                                    <TextBlock Text=" pills"/>
-                                </StackPanel>
-                                <StackPanel Grid.Column="2" Orientation="Horizontal">
-                                    <TextBlock Text="{x:Bind SelectedDosage}"/>
-                                    <TextBlock Text=" pills/day"/>
-                                </StackPanel>
-                            </Grid>
-                        </DataTemplate>
-                    </ListView.ItemTemplate>
-                </ListView>
 
-                <StackPanel Margin="0,10">
-                    <TextBlock Text="Total Amount:" FontWeight="SemiBold"/>
-                    <TextBlock>
-                        <Run Text="{x:Bind ViewModel.TotalAmount, Mode=OneWay}"/>
-                        <Run Text=" VND"/>
-                    </TextBlock>
+                                <TextBlock Text="Medicine Name"
+                                         FontWeight="SemiBold"
+                                         VerticalAlignment="Center"/>
+                                <TextBlock Text="Quantity"
+                                         Grid.Column="1"
+                                         FontWeight="SemiBold"
+                                         VerticalAlignment="Center"/>
+                                <TextBlock Text="Dosage"
+                                         Grid.Column="2"
+                                         FontWeight="SemiBold"
+                                         VerticalAlignment="Center"/>
+                            </Grid>
+
+                            <!-- Separator -->
+                            <Rectangle Height="1" 
+                                     Fill="{ThemeResource CardStrokeColorDefaultBrush}"
+                                     Margin="0,0,0,8"/>
+
+                            <!-- Medicine List -->
+                            <ListView ItemsSource="{x:Bind ViewModel.Medicines, Mode=OneWay}"
+                                     IsEnabled="False"
+                                     SelectionMode="None"
+                                     Background="Transparent"
+                                     BorderThickness="0">
+                                <ListView.ItemTemplate>
+                                    <DataTemplate x:DataType="model:MedicineSelection">
+                                        <Border Background="{ThemeResource CardBackgroundFillColorDefaultBrush}"
+                                                BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}"
+                                                BorderThickness="1"
+                                                CornerRadius="4"
+                                                Padding="8"
+                                                Margin="0,4">
+                                            <Grid ColumnSpacing="12">
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="2*"/>
+                                                    <ColumnDefinition Width="200"/>
+                                                    <ColumnDefinition Width="130"/>
+                                                </Grid.ColumnDefinitions>
+                                                
+                                                <TextBlock Text="{x:Bind Medicine.Name}"
+                                                         VerticalAlignment="Center"/>
+                                                <StackPanel Grid.Column="1" 
+                                                          Orientation="Horizontal"
+                                                          VerticalAlignment="Center">
+                                                    <TextBlock Text="{x:Bind SelectedQuantity}"/>
+                                                    <TextBlock Text=" pill(s)"/>
+                                                </StackPanel>
+                                                <TextBlock Grid.Column="2" 
+                                                         Text="{x:Bind SelectedDosage}"
+                                                         VerticalAlignment="Center"/>
+                                            </Grid>
+                                        </Border>
+                                    </DataTemplate>
+                                </ListView.ItemTemplate>
+                                <ListView.ItemContainerStyle>
+                                    <Style TargetType="ListViewItem">
+                                        <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+                                        <Setter Property="Padding" Value="0"/>
+                                    </Style>
+                                </ListView.ItemContainerStyle>
+                            </ListView>
+                        </StackPanel>
+                    </Border>
                 </StackPanel>
-            </StackPanel>
+            </Border>
         </Grid>
 
-        <!-- Thêm vào trước phần Get Medicine Option -->
-        <StackPanel Grid.Row="2" Margin="0,10,0,10">
-            <TextBlock Text="Examination Fee:" FontWeight="SemiBold"/>
-            <NumberBox Value="{x:Bind ViewModel.ExaminationFee, Mode=TwoWay}"
-                    SpinButtonPlacementMode="Inline"
-                    Minimum="0"
-                    SmallChange="1000"
-                    LargeChange="10000"
-                    Width="200"
-                    HorizontalAlignment="Left"/>
+        <!-- Bottom Panel - Billing Info -->
+        <Border Grid.Row="2"
+                Background="{ThemeResource CardBackgroundFillColorDefaultBrush}"
+                BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}"
+                BorderThickness="1"
+                CornerRadius="8"
+                Padding="24"
+                Margin="0,20,0,0">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
 
-            <Rectangle Height="1" Fill="Gray" Margin="0,10"/>
-            
-            <TextBlock Text="Medicine Cost:" FontWeight="SemiBold"/>
-            <TextBlock>
-                <Run Text="{x:Bind ViewModel.TotalAmount, Mode=OneWay}"/>
-                <Run Text=" VND"/>
-            </TextBlock>
+                <!-- Billing Details -->
+                <StackPanel Spacing="16">
+                    <!-- Examination Fee Section -->
+                    <Border Background="{ThemeResource CardBackgroundFillColorSecondaryBrush}"
+                            BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}"
+                            BorderThickness="1"
+                            CornerRadius="4"
+                            Padding="16">
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                            </Grid.RowDefinitions>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
 
-            <CheckBox Content="Get Medicine"
-                    IsChecked="{x:Bind ViewModel.IsGetMedicine, Mode=TwoWay}"
-                    Margin="0,10,0,0"/>
+                            <!-- Label -->
+                            <TextBlock Text="Examination Fee" 
+                                     FontWeight="SemiBold"
+                                     Grid.Row="0"
+                                     Grid.ColumnSpan="2"
+                                     Margin="0,0,0,8"/>
 
-            <Rectangle Height="1" Fill="Gray" Margin="0,10"/>
-            
-            <TextBlock Text="Final Total:" FontWeight="SemiBold"/>
-            <TextBlock FontSize="16" Foreground="{ThemeResource SystemAccentColor}">
-                <Run Text="{x:Bind ViewModel.FinalTotal, Mode=OneWay}"/>
-                <Run Text=" VND"/>
-            </TextBlock>
-        </StackPanel>
+                            <!-- Input Controls -->
+                            <NumberBox Value="{x:Bind ViewModel.ExaminationFee, Mode=TwoWay}"
+                                     SpinButtonPlacementMode="Inline"
+                                     Minimum="0"
+                                     SmallChange="1000"
+                                     LargeChange="10000"
+                                     Width="200"
+                                     IsEnabled="{x:Bind ViewModel.IsExaminationFeeEditable, Mode=OneWay}"
+                                     Grid.Row="1"
+                                     Grid.Column="0"/>
+                            
+                            <CheckBox Content="Lock Fee"
+                                     IsChecked="{x:Bind ViewModel.IsExaminationFeeLocked, Mode=TwoWay}"
+                                     Grid.Row="1"
+                                     Grid.Column="1"
+                                     HorizontalAlignment="Right"
+                                     VerticalAlignment="Center"/>
+                        </Grid>
+                    </Border>
 
-        <!-- Buttons -->
-        <StackPanel Grid.Row="2" 
-                    Orientation="Horizontal" 
-                    HorizontalAlignment="Right" 
-                    Margin="0,20,0,0">
-            <Button Content="Back"
-                    Margin="0,0,10,0"
-                    Click="BackButton_Click"/>
-            <Button Content="Save"
-                    Click="SaveButton_Click"
-                    Style="{StaticResource AccentButtonStyle}"/>
-        </StackPanel>
+                    <!-- Medicine Cost Section -->
+                    <Border Background="{ThemeResource CardBackgroundFillColorSecondaryBrush}"
+                            BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}"
+                            BorderThickness="1"
+                            CornerRadius="4"
+                            Padding="16">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+                            
+                            <StackPanel>
+                                <TextBlock Text="Medicine Cost" 
+                                         FontWeight="SemiBold"/>
+                                <TextBlock Style="{StaticResource BodyTextBlockStyle}"
+                                         Margin="0,4,0,0">
+                                    <Run Text="{x:Bind ViewModel.TotalAmount, Mode=OneWay}"/>
+                                    <Run Text=" VND"/>
+                                </TextBlock>
+                            </StackPanel>
+                            
+                            <CheckBox Grid.Column="1"
+                                     Content="Get Medicine"
+                                     IsChecked="{x:Bind ViewModel.IsGetMedicine, Mode=TwoWay}"
+                                     IsThreeState="False"
+                                     VerticalAlignment="Center"/>
+                        </Grid>
+                    </Border>
+
+                    <!-- Final Total Section -->
+                    <Border Background="{ThemeResource CardBackgroundFillColorSecondaryBrush}"
+                            BorderBrush="{ThemeResource SystemAccentColor}"
+                            BorderThickness="2"
+                            CornerRadius="4"
+                            Padding="16">
+                        <StackPanel>
+                            <TextBlock Text="Final Total" 
+                                     FontWeight="SemiBold"
+                                     Margin="0,0,0,4"/>
+                            <TextBlock Style="{StaticResource SubtitleTextBlockStyle}"
+                                     Foreground="{ThemeResource SystemAccentColor}">
+                                <Run Text="{x:Bind ViewModel.FinalTotal, Mode=OneWay}"/>
+                                <Run Text=" VND"/>
+                            </TextBlock>
+                        </StackPanel>
+                    </Border>
+                </StackPanel>
+
+                <!-- Action Buttons -->
+                <StackPanel Grid.Column="1" 
+                          Orientation="Horizontal" 
+                          VerticalAlignment="Bottom"
+                          Spacing="12"
+                          Margin="24,0,0,0">
+                    <Button Content="Back"
+                            Click="BackButton_Click"
+                            Width="100"/>
+                    <Button Content="Save"
+                            Click="SaveButton_Click"
+                            IsEnabled="{x:Bind ViewModel.CanSave, Mode=OneWay}"
+                            Style="{StaticResource AccentButtonStyle}"
+                            Width="100"/>
+                </StackPanel>
+            </Grid>
+        </Border>
     </Grid>
 </Page> 

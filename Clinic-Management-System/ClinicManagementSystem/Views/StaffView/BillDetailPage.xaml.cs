@@ -1,33 +1,33 @@
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Navigation;
-using ClinicManagementSystem.Model;
 using ClinicManagementSystem.ViewModel;
 
-namespace ClinicManagementSystem.Views.DoctorView
+namespace ClinicManagementSystem.Views.StaffView
 {
     /// <summary>
-    /// ExaminedFormDetailPage là trang chi tiết phiếu khám bệnh
+    /// BillDetailPage là trang chi tiết hóa đơn
     /// </summary>
-    public sealed partial class ExaminedFormDetailPage : Page
+    public sealed partial class BillDetailPage : Page
     {
-        public ExaminedFormDetailViewModel ViewModel { get; }
+        public BillDetailViewModel ViewModel { get; }
 
-        public ExaminedFormDetailPage()
+        public BillDetailPage()
         {
             this.InitializeComponent();
-            ViewModel = new ExaminedFormDetailViewModel();
+            ViewModel = new BillDetailViewModel();
         }
 
         /// <summary>
         /// Xử lí sự kiện khi được chuyển đến trang
         /// </summary>
-        /// <param name="e"></param>
+        /// <param name="e"></param>    
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
-            if (e.Parameter is MedicalExaminationForm form)
+            base.OnNavigatedTo(e);
+            if (e.Parameter is int billId)
             {
-                ViewModel.LoadData(form);
+                ViewModel.LoadData(billId);
             }
         }
 

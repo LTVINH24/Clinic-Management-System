@@ -84,9 +84,21 @@ namespace ClinicManagementSystem.Service.DataAccess
 
 		public int GetPendingFormsCount();
 
+		public (List<MedicalExaminationForm>, int) GetDoctorExaminationForms(
+			int doctorId,
+			int currentPage,
+			int pageSize,
+			string isExaminated,
+			string keyword = "",
+			DateTimeOffset? startDate = null,
+			DateTimeOffset? endDate = null
+		);
+		public MedicalExaminationForm GetMedicalExaminationFormById(int id);
+
 		public int GetTodayFormsByDoctorId(int id);
 
 		public int GetTodayCompletedFormsByDoctorId(int id);
+
 		//========================================================================================
 
 
@@ -97,7 +109,14 @@ namespace ClinicManagementSystem.Service.DataAccess
 		bool DeleteMedicine(Medicine medicine);
 		List<MedicineStatistic> GetTopMedicineStatistic(DateTimeOffset startDate, DateTimeOffset endDate, int n, string sortString);
 		List<MedicineStatistic> GetMedicineStatistic(DateTimeOffset startDate, DateTimeOffset endDate);
-        //========================================================================================
+        public List<MedicineSelection> GetMedicineSelectionsByFormId(int formId);
+		public (List<MedicineSelection>, int) GetMedicinesByPage(
+            int currentPage, 
+            int pageSize, 
+            string keyword = ""
+        );
+		public void UpdateMedicineQuantity(int medicineId, int quantityChange);
+		//========================================================================================
 
         //========================================Specialty=======================================
         public List<Specialty> GetSpecialty();
@@ -125,12 +144,34 @@ namespace ClinicManagementSystem.Service.DataAccess
 		bool UpdatePatient(Patient patient);
 
 		bool DeletePatient(Patient patient);
+
+		public Patient GetPatientById(int patientId);
         //========================================================================================
 
+		//========================================Prescription=========================================
+		public Prescription GetPrescriptionById(int id);
+		public (List<Prescription>, int) GetPrescriptionsByPage(
+			int page,
+			int pageSize,
+			string isBilled,
+			string keyword = ""
+		);
+		//========================================================================================
+
+        //=========================================Bill==========================================
+        public List<BillStatistic> GetBillStatistic(DateTimeOffset startDate, DateTimeOffset endDate);
+		public (List<Bill>, int) GetBillsByPage(
+			int currentPage, 
+			int pageSize, 
+			string keyword = "", 
+			DateTimeOffset? startDate = null, 
+			DateTimeOffset? endDate = null,
+            string status = ""
+		);
+		public Bill GetBillById(int id);
+		public bool SaveBill(Bill bill);
+		public bool UpdatePrescriptionBillStatus(int prescriptionId, string isBilled);
+
 		public int GetMonthlyPrescriptionCountByDoctorId(int id);
-
-
-		//=========================================Bill==========================================
-		public List<BillStatistic> GetBillStatistic(DateTimeOffset startDate, DateTimeOffset endDate);
     }
 }

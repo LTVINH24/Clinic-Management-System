@@ -7,8 +7,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using ClinicManagementSystem.Model;
+
 namespace ClinicManagementSystem.ViewModel.EndUser
 {
+    /// <summary>
+    /// ViewModel cho Information
+    /// </summary>
     public class InformationViewModel
     {
         IDao _dao;

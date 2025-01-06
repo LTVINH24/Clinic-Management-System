@@ -14,6 +14,9 @@ using ClinicManagementSystem.ViewModel.EndUser;
 
 namespace ClinicManagementSystem.ViewModel
 {
+    /// <summary>
+    /// ViewModel cho Main
+    /// </summary>
 	public class MainViewModel
     {
         IDao _dao;

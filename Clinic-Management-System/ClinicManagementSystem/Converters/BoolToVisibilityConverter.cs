@@ -1,38 +1,42 @@
-using Microsoft.UI.Xaml.Data;
 using System;
-
+using Microsoft.UI.Xaml;
+using Microsoft.UI.Xaml.Data;
+ 
 namespace ClinicManagementSystem.Converters
 {
-    public class DateConverter : IValueConverter
+    /// <summary>
+    /// Chuyển đổi giá trị Boolean sang Visibility
+    /// </summary>
+    public class BoolToVisibilityConverter : IValueConverter
     {
         /// <summary>
-        /// Chuyển đổi ngày tháng sang định dạng dd/MM/yyyy
+        /// Chuyển đổi giá trị Boolean sang Visibility
         /// </summary>
-        /// <param name="value">Giá trị ngày tháng</param>
+        /// <param name="value">Giá trị Boolean</param>
         /// <param name="targetType">Kiểu dữ liệu mục tiêu</param>
         /// <param name="parameter">Tham số</param>
         /// <param name="language">Ngôn ngữ</param>
-        /// <returns>Định dạng ngày tháng</returns>
+        /// <returns>Giá trị Visibility</returns>
         public object Convert(object value, Type targetType, object parameter, string language)
         {
-            if (value is DateTimeOffset dateTime)
+            if (value is string isGetMedicine)
             {
-                return dateTime.ToString("dd/MM/yyyy");
+                return isGetMedicine.ToLower() == "true" ? Visibility.Visible : Visibility.Collapsed;
             }
-            return string.Empty;
+            return Visibility.Collapsed;
         }
 
         /// <summary>
-        /// Chuyển đổi ngày tháng từ định dạng dd/MM/yyyy sang DateTimeOffset
+        /// Chuyển đổi giá trị Visibility sang Boolean
         /// </summary>
-        /// <param name="value">Giá trị ngày tháng</param>
+        /// <param name="value">Giá trị Visibility</param>
         /// <param name="targetType">Kiểu dữ liệu mục tiêu</param>
         /// <param name="parameter">Tham số</param>
         /// <param name="language">Ngôn ngữ</param>
-        /// <returns>Giá trị DateTimeOffset</returns>
+        /// <returns>Giá trị Boolean</returns>
         public object ConvertBack(object value, Type targetType, object parameter, string language)
         {
             throw new NotImplementedException();
         }
     }
-} 
+}

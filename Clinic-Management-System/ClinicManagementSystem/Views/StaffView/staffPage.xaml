@@ -34,9 +34,13 @@
                                ToolTipService.ToolTip="Add" 
                                Tag="AddMedicalExaminationForm"/>
             <NavigationViewItem Content="Unbilled Prescriptions" 
-                               Icon="Document" 
+                               Icon="ViewAll" 
                                ToolTipService.ToolTip="Unbilled Prescriptions" 
                                Tag="UnbilledPrescriptionsPage"/>
+            <NavigationViewItem Content="Bill" 
+                               Icon="Folder" 
+                               ToolTipService.ToolTip="Bill" 
+                               Tag="BillListPage"/>
         </NavigationView.MenuItems>
 
         <ScrollViewer VerticalScrollBarVisibility="Auto" 

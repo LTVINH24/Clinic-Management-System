@@ -23,6 +23,9 @@ using Windows.Media.Effects;
 
 namespace ClinicManagementSystem.Views.AdminView
 {
+    /// <summary>
+    /// Medicine là trang quản lý thuốc
+    /// </summary>
 	public sealed partial class Medicine : Page
     {
         public MedicineViewModel ViewModel { get; set; }

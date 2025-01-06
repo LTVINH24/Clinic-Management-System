@@ -26,9 +26,9 @@
                 <NavigationViewItem Content="Home" Icon="Home" ToolTipService.ToolTip="Home" Tag="DoctorPage"/>
 
                 <NavigationViewItem Content="Medical Examinations" Icon="Document" ToolTipService.ToolTip="Medical Examinations" Tag="MedicalExaminationPage"/>
-                <NavigationViewItem Content="Examined Forms" Icon="Camera" ToolTipService.ToolTip="Examined Forms" Tag="ExaminedFormsPage"/>
-                <NavigationViewItem Content="Documents" Icon="Document" ToolTipService.ToolTip="" Tag="DocumentPage"/>
-                
+
+                <NavigationViewItem Content="Examined Forms" Icon="ViewAll" ToolTipService.ToolTip="Examined Forms" Tag="ExaminedFormsPage"/>
+                <NavigationViewItem Content="Documents" Icon="Folder" ToolTipService.ToolTip="" Tag="DocumentPage"/>
             
             </NavigationView.MenuItems>
             <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto">

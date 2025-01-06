@@ -65,6 +65,11 @@ namespace ClinicManagementSystem.Views
 				nvSample.SelectedItem = nvSample.MenuItems.OfType<NavigationViewItem>()
 										.FirstOrDefault(x => x.Tag.ToString() == "ListPatient");
 			}
+			else if (e.SourcePageType == typeof(BillListPage))
+			{
+				nvSample.SelectedItem = nvSample.MenuItems.OfType<NavigationViewItem>()
+										.FirstOrDefault(x => x.Tag.ToString() == "BillListPage");
+			}
 		}
 
 		/// <summary>
@@ -95,6 +100,9 @@ namespace ClinicManagementSystem.Views
 						break;
 					case "UnbilledPrescriptionsPage":
 						contentFrame.Navigate(typeof(UnbilledPrescriptionsPage));
+						break;
+					case "BillListPage":
+						contentFrame.Navigate(typeof(BillListPage));
 						break;
 					default:
 						break;

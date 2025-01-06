@@ -4,6 +4,9 @@ using System.Runtime.CompilerServices;
 
 namespace ClinicManagementSystem.ViewModel
 {
+    /// <summary>
+    /// BaseViewModel cho các ViewModel khác
+    /// </summary>
     public class BaseViewModel : INotifyPropertyChanged
     {
         public event PropertyChangedEventHandler PropertyChanged;

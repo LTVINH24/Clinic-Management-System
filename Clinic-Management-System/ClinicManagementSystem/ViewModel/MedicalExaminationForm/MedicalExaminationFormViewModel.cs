@@ -13,8 +13,12 @@ using System.Net.Mail;
 using ClinicManagementSystem.Helper;
 using static ClinicManagementSystem.Service.DataAccess.IDao;
 using Windows.System;
+
 namespace ClinicManagementSystem.ViewModel
 {
+	/// <summary>
+	/// ViewModel cho MedicalExaminationForm
+	/// </summary>
 	public class MedicalExaminationFormViewModel : INotifyPropertyChanged
 	{
 		public IDao _dao;
