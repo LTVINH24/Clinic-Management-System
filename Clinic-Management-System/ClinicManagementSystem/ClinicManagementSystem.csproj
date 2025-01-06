@@ -22,6 +22,7 @@
     <None Remove="Views\AdminView\reportBillAdmin.xaml" />
     <None Remove="Views\AdminView\reportMedicineAdmin.xaml" />
     <None Remove="Views\AdminView\reportPatientVisitsAdmin.xaml" />
+    <None Remove="Views\DoctorView\DoctorHomePage.xaml" />
     <None Remove="Views\DoctorView\DocumentPage.xaml" />
     <None Remove="Views\StaffView\ListPatient.xaml" />
     <None Remove="Views\AdminView\Medicine.xaml" />
@@ -114,6 +115,9 @@
     <None Update="appsettings.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <Page Update="Views\DoctorView\DoctorHomePage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Update="Views\AdminView\AdminHomePage.xaml">
       <Generator>MSBuild:Compile</Generator>
     </Page>

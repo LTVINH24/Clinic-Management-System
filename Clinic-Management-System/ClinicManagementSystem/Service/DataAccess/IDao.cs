@@ -83,6 +83,10 @@ namespace ClinicManagementSystem.Service.DataAccess
 		public int GetTodayNewPatientsCount();
 
 		public int GetPendingFormsCount();
+
+		public int GetTodayFormsByDoctorId(int id);
+
+		public int GetTodayCompletedFormsByDoctorId(int id);
 		//========================================================================================
 
 
@@ -116,13 +120,17 @@ namespace ClinicManagementSystem.Service.DataAccess
 			Dictionary<string, SortType> sortOptions
 		);
 
+		public int GetMonthlyPatientCountByDoctorId(int id);
+
 		bool UpdatePatient(Patient patient);
 
 		bool DeletePatient(Patient patient);
         //========================================================================================
 
+		public int GetMonthlyPrescriptionCountByDoctorId(int id);
 
-        //=========================================Bill==========================================
-        public List<BillStatistic> GetBillStatistic(DateTimeOffset startDate, DateTimeOffset endDate);
+
+		//=========================================Bill==========================================
+		public List<BillStatistic> GetBillStatistic(DateTimeOffset startDate, DateTimeOffset endDate);
     }
 }

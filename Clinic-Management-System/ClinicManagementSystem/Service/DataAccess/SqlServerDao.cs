@@ -1321,6 +1321,46 @@ namespace ClinicManagementSystem.Service.DataAccess
 
             }
         }
+		/// <summary>
+		/// Lấy số lượng phiếu khám bệnh chưa được khám trong ngày
+		/// </summary>
+		/// <param name="doctorId"></param>
+		/// <returns>Số phiếu khám bệnh chưa được khám</returns>
+		public int GetTodayFormsByDoctorId(int doctorId)
+        {
+            using (var connection = new SqlConnection(_connectionString))
+            {
+                connection.Open();
+                var command = new SqlCommand(@"
+                    SELECT COUNT(*) 
+                    FROM MedicalExaminationForm mef
+                    WHERE CAST(mef.Time AS DATE) = CAST(GETDATE() AS DATE)
+                    AND mef.IsExaminated = 'false'
+                    AND mef.DoctorId = @DoctorId", connection);
+
+                command.Parameters.AddWithValue("@DoctorId", doctorId);
+                
+                return (int)command.ExecuteScalar();
+            }
+        }
+        
+        public int GetTodayCompletedFormsByDoctorId(int doctorId)
+        {
+            using (var connection = new SqlConnection(_connectionString))
+            {
+                connection.Open();
+                var command = new SqlCommand(@"
+                    SELECT COUNT(*) 
+                    FROM MedicalExaminationForm mef
+                    WHERE CAST(mef.Time AS DATE) = CAST(GETDATE() AS DATE)
+                    AND mef.DoctorId = @DoctorId
+                    AND mef.IsExaminated = 'true'", connection);
+
+                command.Parameters.AddWithValue("@DoctorId", doctorId);
+                
+                return (int)command.ExecuteScalar();
+            }
+        }
 		//==============================================================================================
 
 
@@ -1705,6 +1745,29 @@ namespace ClinicManagementSystem.Service.DataAccess
             }
             return prescription;
         }
+		/// <summary>
+		/// Lấy số đơn thuốc được kê trong tháng hiện tại của bác sĩ
+		/// </summary>
+		/// <param name="doctorId"></param>
+		/// <returns>Số đơn thuốc được kê</returns>
+		public int GetMonthlyPrescriptionCountByDoctorId(int doctorId) 
+        {
+            using (var connection = new SqlConnection(_connectionString))
+            {
+                connection.Open();
+                var command = new SqlCommand(@"
+                    SELECT COUNT(DISTINCT p.Id)
+                    FROM Prescription p
+                    JOIN MedicalExaminationForm mef ON p.MedicalExaminationFormId = mef.Id
+                    WHERE MONTH(mef.Time) = MONTH(GETDATE())
+                    AND YEAR(mef.Time) = YEAR(GETDATE())
+                    AND mef.DoctorId = @DoctorId", connection);
+
+                command.Parameters.AddWithValue("@DoctorId", doctorId);
+                
+                return (int)command.ExecuteScalar();
+            }
+        }
 
 		//=========================================================================================================
 
@@ -2009,6 +2072,29 @@ namespace ClinicManagementSystem.Service.DataAccess
             }
 
             return patient;
+        }
+		/// <summary>
+		/// Lấy số lượng bệnh nhân được khám trong tháng hiện tại của bác sĩ
+		/// </summary>
+		/// <param name="doctorId"></param>
+		/// <returns>Số lượng bệnh nhân được khám</returns>
+		public int GetMonthlyPatientCountByDoctorId(int doctorId)
+        {
+            using (var connection = new SqlConnection(_connectionString))
+            {
+                connection.Open();
+                var command = new SqlCommand(@"
+                    SELECT COUNT(DISTINCT mef.PatientId)
+                    FROM MedicalExaminationForm mef
+                    WHERE MONTH(mef.Time) = MONTH(GETDATE())
+                    AND YEAR(mef.Time) = YEAR(GETDATE())
+                    AND mef.DoctorId = @DoctorId
+                    AND mef.IsExaminated = 'true'", connection);
+
+                command.Parameters.AddWithValue("@DoctorId", doctorId);
+                
+                return (int)command.ExecuteScalar();
+            }
         }
 		//=========================================================================================================
 
