@@ -124,7 +124,7 @@
                 <TextBlock TextAlignment="Center" Width="60" FontSize="16">
                 <Run Text="{x:Bind ViewModel.SelectedPageInfoItem.Page, Mode=OneWay}"/> of <Run Text="{x:Bind ViewModel.SelectedPageInfoItem.Total, Mode=OneWay}"/>
                 </TextBlock>
-                <ComboBox ItemsSource="{x:Bind ViewModel.PageInfos, Mode=OneWay}" SelectedItem="{x:Bind ViewModel.SelectedPageInfoItem, Mode=TwoWay}" SelectionChanged="pagesComboBox_SelectionChanged" Margin="5,5,0,20" Name="pagesComboBox" Width="100" Height="30">
+                <ComboBox ItemsSource="{x:Bind ViewModel.PageInfos, Mode=OneWay}" SelectedItem="{x:Bind ViewModel.SelectedPageInfoItem, Mode=TwoWay}" SelectionChanged="pagesComboBox_SelectionChanged" Margin="5,0,5,20" Name="pagesComboBox" Width="100" Height="30">
                     <ComboBox.ItemTemplate>
                         <DataTemplate x:DataType="localmodel:PageInfo">
                             <TextBlock>
