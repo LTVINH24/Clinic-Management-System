@@ -188,7 +188,7 @@
                     <Run Text="{Binding SelectedPageInfo.Page}"/> of 
                     <Run Text="{Binding SelectedPageInfo.Total}"/>
                 </TextBlock>
-                <ComboBox ItemsSource="{Binding PageInfos}"
+                <ComboBox x:Name="pagesComboBox" ItemsSource="{Binding PageInfos}"
                          SelectedItem="{Binding SelectedPageInfo, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                          SelectionChanged="PagesComboBox_SelectionChanged"
                          Width="100"

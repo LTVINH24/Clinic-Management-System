@@ -135,7 +135,12 @@ namespace ClinicManagementSystem.ViewModel
                 LoadPrescriptions();
             }
         }
-
+        
+        public void GoToPage(int page)
+        {
+            CurrentPage = page;
+            LoadPrescriptions();
+        }
         private void UpdatePageInfos()
         {
             try

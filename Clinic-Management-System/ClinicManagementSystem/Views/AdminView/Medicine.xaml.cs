@@ -35,8 +35,6 @@ namespace ClinicManagementSystem.Views.AdminView
             this.DataContext = ViewModel;
             this.InitializeComponent();
         }
-        bool init = false;
-
 		/// <summary>
 		/// Xử lí sự kiện khi chọn trang
 		/// </summary>
@@ -44,11 +42,6 @@ namespace ClinicManagementSystem.Views.AdminView
 		/// <param name="e"></param>
 		private void pagesComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            if (init == false)
-            {
-                init = true;
-                return;
-            }
             if (pagesComboBox.SelectedIndex >= 0)
             {
                 var item = pagesComboBox.SelectedItem as PageInfo;

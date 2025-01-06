@@ -74,9 +74,10 @@ namespace ClinicManagementSystem.Views.StaffView
         /// <param name="e"></param>
         private void PagesComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            if (sender is ComboBox comboBox && comboBox.SelectedItem is PageInfo selectedPage)
+            if (pagesComboBox.SelectedIndex >= 0)
             {
-                ViewModel.SelectedPageInfo = selectedPage;
+                var item = pagesComboBox.SelectedItem as PageInfo;
+                ViewModel.GoToPage(item.Page);
             }
         }
     }
