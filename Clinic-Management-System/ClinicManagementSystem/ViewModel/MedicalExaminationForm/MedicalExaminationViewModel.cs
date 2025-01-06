@@ -17,7 +17,8 @@ namespace ClinicManagementSystem.ViewModel
 	/// </summary>
 	public class MedicalExaminationViewModel : BaseViewModel
 	{
-		private IDao _dao;
+		private readonly SqlServerDao _dataAccess;
+		private Frame _navigationFrame;
 		private ObservableCollection<MedicalExaminationForm> _examinationForms;
 		private string _keyword = "";
 		private int _currentPage = 1;
@@ -44,102 +45,27 @@ namespace ClinicManagementSystem.ViewModel
 			set => _navigationFrame = value;
 		}
 
-		public ObservableCollection<MedicalExaminationForm> ExaminationForms
+		public ICommand PreviousPageCommand { get; }
+		public ICommand NextPageCommand { get; }
+
+		public MedicalExaminationViewModel()
 		{
-			get => _examinationForms ??= new ObservableCollection<MedicalExaminationForm>();
-			set => SetProperty(ref _examinationForms, value);
+			_dataAccess = new SqlServerDao();
+			ExaminationForms = new ObservableCollection<MedicalExaminationForm>();
+			PreviousPageCommand = new RelayCommand(PreviousPage);
+			NextPageCommand = new RelayCommand(NextPage);
+			LoadExaminationForms(); // Gọi phương thức để tải dữ liệu
 		}
 
-		public ObservableCollection<PageInfo> PageInfos
-		{
-			get => _pageInfos ??= new ObservableCollection<PageInfo>();
-			set => SetProperty(ref _pageInfos, value);
-		}
-
-		public PageInfo SelectedPageInfo
-		{
-			get => _selectedPageInfo;
-			set => SetProperty(ref _selectedPageInfo, value);
-		}
-
-		public string Keyword
-		{
-			get => _keyword;
-			set
-			{
-				if (SetProperty(ref _keyword, value))
-				{
-					Search();
-				}
-			}
-		}
-
-		public int CurrentPage
-		{
-			get => _currentPage;
-			set => SetProperty(ref _currentPage, value);
-		}
-
-		public int TotalPages
-		{
-			get => _totalPages;
-			set => SetProperty(ref _totalPages, value);
-		}
-
-		public int TotalItems
-		{
-			get => _totalItems;
-			set => SetProperty(ref _totalItems, value);
-		}
-
-		public int PageSize
-		{
-			get => _pageSize;
-			set => SetProperty(ref _pageSize, value);
-		}
-
-		public DateTimeOffset? StartDate
-		{
-			get => _startDate;
-			set
-			{
-				if (SetProperty(ref _startDate, value))
-				{
-					Search();
-				}
-			}
-		}
-
-		public DateTimeOffset? EndDate
-		{
-			get => _endDate;
-			set
-			{
-				if (SetProperty(ref _endDate, value))
-				{
-					Search();
-				}
-			}
-		}
-
-		public void Search()
-		{
-			CurrentPage = 1;
-			LoadExaminationForms();
-		}
-
+		/// <summary>
+		/// Tải dữ liệu các phiếu khám từ cơ sở dữ liệu
+		/// </summary>
 		private void LoadExaminationForms()
 		{
-			var (forms, totalCount) = _dao.GetDoctorExaminationForms(
-				doctorId, 
-				CurrentPage, 
-				PageSize,
-				"false",  // pending forms
-				Keyword,
-				StartDate,
-				EndDate
-			);
-
+            // Lấy danh sách phiếu khám chưa khám
+            var forms = _dataAccess.GetMedicalExaminationForms()
+                .Where(f => f.IsExaminated == "false")
+                .ToList();
 			ExaminationForms.Clear();
 			foreach (var form in forms)
 			{

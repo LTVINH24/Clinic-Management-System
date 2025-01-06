@@ -166,8 +166,8 @@
                 SmallChange="10"
                 LargeChange="100" />       
                 <TextBox x:Name="NewMedicineManufacturer" Width="300" Margin="5" Header="Manufacturer" Grid.Row="1" Grid.Column="1" Text="{x:Bind ViewModel.MedicineNew.Manufacturer, Mode=TwoWay}"/>
-                <CalendarDatePicker x:Name="NewMedicineExpDate" Margin="5" Width="300" Grid.Row="2" Grid.Column="0" PlaceholderText="Pick a date" Header="EXP Date" Date="{x:Bind ViewModel.MedicineNew.ExpDate, Mode=TwoWay}"/>
-                <CalendarDatePicker x:Name="NewMedicineMfgDate" Margin="5" Width="300" Grid.Row="2" Grid.Column="1" PlaceholderText="Pick a date" Header="MFG Date" Date="{x:Bind ViewModel.MedicineNew.MfgDate, Mode=TwoWay}"/>
+                <CalendarDatePicker x:Name="NewMedicineMfgDate" Margin="5" Width="300" Grid.Row="2" Grid.Column="0" PlaceholderText="Pick a date" Header="MFG Date" Date="{x:Bind ViewModel.MedicineNew.MfgDate, Mode=TwoWay}"/>
+                <CalendarDatePicker x:Name="NewMedicineExpDate" Margin="5" Width="300" Grid.Row="2" Grid.Column="1" PlaceholderText="Pick a date" Header="EXP Date" Date="{x:Bind ViewModel.MedicineNew.ExpDate, Mode=TwoWay}"/>
                 <StackPanel Grid.Row="3" Grid.ColumnSpan="2" Orientation="Horizontal" HorizontalAlignment="Center">
                     <Button Click="addMedicine" x:Name="AddBtn" Margin="20,5,20,5" Width="80" Background="Blue" Foreground="White">Add</Button>
                     <Button Click="cancelMedicine" Margin="20,5,20,5" Width="80">Cancel</Button>

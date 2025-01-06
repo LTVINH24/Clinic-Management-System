@@ -1,4 +1,5 @@
 ﻿using ClinicManagementSystem.Views.DoctorView;
+using ClinicManagementSystem.Views.StaffView;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Controls.Primitives;
@@ -28,10 +29,42 @@ namespace ClinicManagementSystem.Views
 		{
 			this.InitializeComponent();
 
+			// Thiết lập trang mặc định khi khởi động
+			contentFrame.Navigate(typeof(DoctorHomePage), contentFrame);
+
 			nvSample.Loaded += (s, e) =>
 			{
 				nvSample.IsPaneOpen = false;
+				// Chọn item mặc định trong navigation
+				nvSample.SelectedItem = nvSample.MenuItems.OfType<NavigationViewItem>()
+										.FirstOrDefault(x => x.Tag.ToString() == "DoctorPage");
 			};
+
+			contentFrame.Navigated += ContentFrame_Navigated;
+		}
+
+		private void ContentFrame_Navigated(object sender, NavigationEventArgs e)
+		{
+			if (e.SourcePageType == typeof(DoctorHomePage))
+			{
+				nvSample.SelectedItem = nvSample.MenuItems.OfType<NavigationViewItem>()
+										.FirstOrDefault(x => x.Tag.ToString() == "DoctorPage");
+			}
+			else if (e.SourcePageType == typeof(MedicalExaminationPage))
+			{
+				nvSample.SelectedItem = nvSample.MenuItems.OfType<NavigationViewItem>()
+										.FirstOrDefault(x => x.Tag.ToString() == "MedicalExaminationPage");
+			}
+			else if (e.SourcePageType == typeof(ExaminedFormsPage))
+			{
+				nvSample.SelectedItem = nvSample.MenuItems.OfType<NavigationViewItem>()
+										.FirstOrDefault(x => x.Tag.ToString() == "ExaminedFormsPage");
+			}
+			else if (e.SourcePageType == typeof(DocumentPage))
+			{
+				nvSample.SelectedItem = nvSample.MenuItems.OfType<NavigationViewItem>()
+										.FirstOrDefault(x => x.Tag.ToString() == "DocumentPage");
+			}
 		}
 
 		/// <summary>
@@ -47,6 +80,9 @@ namespace ClinicManagementSystem.Views
 
 				switch (selectedTag)
 				{
+					case "DoctorPage":
+						contentFrame.Navigate(typeof(DoctorHomePage), contentFrame);
+						break;
 					case "MedicalExaminationPage":
 						contentFrame.Navigate(typeof(MedicalExaminationPage), contentFrame);
 						break;

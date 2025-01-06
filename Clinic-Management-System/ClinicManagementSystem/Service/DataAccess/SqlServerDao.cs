@@ -845,7 +845,7 @@ namespace ClinicManagementSystem.Service.DataAccess
                 {
                     command.Connection = connection;
                     command.CommandText = @"
-                        SELECT COUNT(*) OVER() as TotalCount,
+                    SELECT COUNT(*) OVER() as TotalCount,
                             m.id, m.name, m.manufacturer, m.price, 
                             m.quantity, m.expDate, m.mfgDate
                         FROM Medicine m
@@ -861,7 +861,63 @@ namespace ClinicManagementSystem.Service.DataAccess
                         ("@PageSize", pageSize),
                         ("@Keyword", keyword ?? ""),
                         ("@KeywordPattern", $"%{keyword}%"));
+                    using (var reader = command.ExecuteReader())
+                    {
+                        while (reader.Read())
+                        {
+                            if (totalCount == 0)
+                            {
+                                totalCount = reader.GetInt32(0);
+                            }
 
+                            var medicine = new Medicine
+                            {
+                                Id = reader.GetInt32(reader.GetOrdinal("id")),
+                                Name = reader.GetString(reader.GetOrdinal("name")),
+                                Manufacturer = reader.GetString(reader.GetOrdinal("manufacturer")),
+                                Price = reader.GetInt32(reader.GetOrdinal("price")),
+                                Quantity = reader.GetInt32(reader.GetOrdinal("quantity")),
+                                ExpDate = reader.GetDateTime(reader.GetOrdinal("expDate")),
+                                MfgDate = reader.GetDateTime(reader.GetOrdinal("mfgDate"))
+                            };
+
+                            var medicineSelection = new MedicineSelection
+                            {
+                                Medicine = medicine,
+                                IsSelected = false,
+                                SelectedQuantity = 0,
+                                SelectedDosage = ""
+                            };
+
+                            medicines.Add(medicineSelection);
+                        }
+                    }
+                }
+            }
+            return (medicines, totalCount);
+        }
+
+		/// <returns>Danh sách phiếu khám bệnh</returns>
+		public List<MedicalExaminationForm> GetMedicalExaminationForms(int id)
+        {
+            var medicines = new List<MedicineSelection>();
+            int totalCount = 0;
+
+            using (var connection = new SqlConnection(_connectionString))
+            {
+                connection.Open();
+                using (var command = new SqlCommand())
+                {
+                    command.Connection = connection;
+                    command.CommandText = @"
+                        SELECT f.id, f.patientId, f.staffId, f.doctorId, f.time, 
+                               f.symptom, f.visitType, f.isExaminated,
+                               p.name, p.email, p.residentId, p.address, p.birthday, p.gender
+                        FROM MedicalExaminationForm f
+                        INNER JOIN Patient p ON f.patientId = p.id
+                        WHERE f.doctorId = @id
+                        ORDER BY f.time DESC";
+                    AddParameters(command, ("@id", id));
                     using (var reader = command.ExecuteReader())
                     {
                         while (reader.Read())
@@ -1490,6 +1546,46 @@ namespace ClinicManagementSystem.Service.DataAccess
 
             }
         }
+		/// <summary>
+		/// Lấy số lượng phiếu khám bệnh chưa được khám trong ngày
+		/// </summary>
+		/// <param name="doctorId"></param>
+		/// <returns>Số phiếu khám bệnh chưa được khám</returns>
+		public int GetTodayFormsByDoctorId(int doctorId)
+        {
+            using (var connection = new SqlConnection(_connectionString))
+            {
+                connection.Open();
+                var command = new SqlCommand(@"
+                    SELECT COUNT(*) 
+                    FROM MedicalExaminationForm mef
+                    WHERE CAST(mef.Time AS DATE) = CAST(GETDATE() AS DATE)
+                    AND mef.IsExaminated = 'false'
+                    AND mef.DoctorId = @DoctorId", connection);
+
+                command.Parameters.AddWithValue("@DoctorId", doctorId);
+                
+                return (int)command.ExecuteScalar();
+            }
+        }
+        
+        public int GetTodayCompletedFormsByDoctorId(int doctorId)
+        {
+            using (var connection = new SqlConnection(_connectionString))
+            {
+                connection.Open();
+                var command = new SqlCommand(@"
+                    SELECT COUNT(*) 
+                    FROM MedicalExaminationForm mef
+                    WHERE CAST(mef.Time AS DATE) = CAST(GETDATE() AS DATE)
+                    AND mef.DoctorId = @DoctorId
+                    AND mef.IsExaminated = 'true'", connection);
+
+                command.Parameters.AddWithValue("@DoctorId", doctorId);
+                
+                return (int)command.ExecuteScalar();
+            }
+        }
 		//==============================================================================================
 
 
@@ -1892,6 +1988,29 @@ namespace ClinicManagementSystem.Service.DataAccess
             }
             return prescription;
         }
+		/// <summary>
+		/// Lấy số đơn thuốc được kê trong tháng hiện tại của bác sĩ
+		/// </summary>
+		/// <param name="doctorId"></param>
+		/// <returns>Số đơn thuốc được kê</returns>
+		public int GetMonthlyPrescriptionCountByDoctorId(int doctorId) 
+        {
+            using (var connection = new SqlConnection(_connectionString))
+            {
+                connection.Open();
+                var command = new SqlCommand(@"
+                    SELECT COUNT(DISTINCT p.Id)
+                    FROM Prescription p
+                    JOIN MedicalExaminationForm mef ON p.MedicalExaminationFormId = mef.Id
+                    WHERE MONTH(mef.Time) = MONTH(GETDATE())
+                    AND YEAR(mef.Time) = YEAR(GETDATE())
+                    AND mef.DoctorId = @DoctorId", connection);
+
+                command.Parameters.AddWithValue("@DoctorId", doctorId);
+                
+                return (int)command.ExecuteScalar();
+            }
+        }
 
 		/// <summary>
 		/// Lấy danh sách đơn thuốc theo trang
@@ -2275,6 +2394,29 @@ namespace ClinicManagementSystem.Service.DataAccess
             }
 
             return patient;
+        }
+		/// <summary>
+		/// Lấy số lượng bệnh nhân được khám trong tháng hiện tại của bác sĩ
+		/// </summary>
+		/// <param name="doctorId"></param>
+		/// <returns>Số lượng bệnh nhân được khám</returns>
+		public int GetMonthlyPatientCountByDoctorId(int doctorId)
+        {
+            using (var connection = new SqlConnection(_connectionString))
+            {
+                connection.Open();
+                var command = new SqlCommand(@"
+                    SELECT COUNT(DISTINCT mef.PatientId)
+                    FROM MedicalExaminationForm mef
+                    WHERE MONTH(mef.Time) = MONTH(GETDATE())
+                    AND YEAR(mef.Time) = YEAR(GETDATE())
+                    AND mef.DoctorId = @DoctorId
+                    AND mef.IsExaminated = 'true'", connection);
+
+                command.Parameters.AddWithValue("@DoctorId", doctorId);
+                
+                return (int)command.ExecuteScalar();
+            }
         }
 		//=========================================================================================================
 

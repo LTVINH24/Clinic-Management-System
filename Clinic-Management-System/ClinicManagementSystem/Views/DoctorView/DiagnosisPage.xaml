@@ -100,14 +100,14 @@
                                    Margin="0,20,0,10"/>
                         
                         <CalendarDatePicker 
-                            PlaceholderText="Select next examination date (if needed)"
+                            PlaceholderText="Choose date follow-up"
                             Date="{x:Bind ViewModel.NextExaminationDate, Mode=TwoWay}"
                             IsEnabled="{x:Bind ViewModel.CanEditDiagnosis, Mode=OneWay}"
                             MinDate="{x:Bind ViewModel.MinNextExaminationDate, Mode=OneWay}"
                             DateFormat="{}{day.integer(2)}/{month.integer(2)}/{year.full}"
                             Margin="0,0,0,10"
                             HorizontalAlignment="Left"
-                            Width="300"/>
+                            Width="auto"/>
                     </StackPanel>
                     <!-- Date="{x:Bind ViewModel.NextExaminationDate, Mode=TwoWay}" -->
 

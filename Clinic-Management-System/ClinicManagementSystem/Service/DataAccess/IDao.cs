@@ -94,6 +94,11 @@ namespace ClinicManagementSystem.Service.DataAccess
 			DateTimeOffset? endDate = null
 		);
 		public MedicalExaminationForm GetMedicalExaminationFormById(int id);
+
+		public int GetTodayFormsByDoctorId(int id);
+
+		public int GetTodayCompletedFormsByDoctorId(int id);
+
 		//========================================================================================
 
 
@@ -134,6 +139,8 @@ namespace ClinicManagementSystem.Service.DataAccess
 			Dictionary<string, SortType> sortOptions
 		);
 
+		public int GetMonthlyPatientCountByDoctorId(int id);
+
 		bool UpdatePatient(Patient patient);
 
 		bool DeletePatient(Patient patient);
@@ -164,5 +171,11 @@ namespace ClinicManagementSystem.Service.DataAccess
 		public Bill GetBillById(int id);
 		public bool SaveBill(Bill bill);
 		public bool UpdatePrescriptionBillStatus(int prescriptionId, string isBilled);
-	}
+
+		public int GetMonthlyPrescriptionCountByDoctorId(int id);
+
+
+		//=========================================Bill==========================================
+		public List<BillStatistic> GetBillStatistic(DateTimeOffset startDate, DateTimeOffset endDate);
+    }
 }

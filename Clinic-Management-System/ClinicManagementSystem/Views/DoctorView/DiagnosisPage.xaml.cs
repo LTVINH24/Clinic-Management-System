@@ -60,7 +60,7 @@ namespace ClinicManagementSystem.Views.DoctorView
             }
             catch (Exception ex)
             {
-                _ = DialogHelper.ShowMessage("Lỗi", ex.Message, this.Content.XamlRoot);
+                DialogHelper.ShowMessage("Lỗi", ex.Message, this.Content.XamlRoot);
             }
         }
 
