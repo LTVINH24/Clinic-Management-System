@@ -34,9 +34,9 @@
             <!-- Content Grid -->
             <Grid Grid.Row="1">
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*"/>     <!-- Left column -->
+                    <ColumnDefinition Width="1*"/>     <!-- Left column -->
                     <ColumnDefinition Width="Auto"/>  <!-- Separator -->
-                    <ColumnDefinition Width="*"/>     <!-- Right column -->
+                    <ColumnDefinition Width="1*"/>     <!-- Right column -->
                 </Grid.ColumnDefinitions>
 
                 <!-- Left Column - Patient & Examination Info -->
@@ -96,7 +96,7 @@
                     </StackPanel>
 
                     <!-- Đường thẳng ngang -->
-                    <Rectangle Height="1" Fill="Gray" HorizontalAlignment="Stretch" Margin="0,10,0,10"/>
+                    <Rectangle Height="1" Fill="Gray" HorizontalAlignment="Center" Margin="0,10,0,10"/>
 
                     <!-- Nhập liệu chẩn đoán -->
                     <TextBlock Text="Diagnosis:" FontSize="18" FontWeight="SemiBold" Margin="0,0,0,10"/>
@@ -155,9 +155,9 @@
                                     <DataTemplate>
                                         <Grid Margin="12,8">
                                             <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="200"/>
                                                 <ColumnDefinition Width="150"/>
-                                                <ColumnDefinition Width="100"/>
-                                                <ColumnDefinition Width="400"/>
+                                                <ColumnDefinition Width="Auto"/>
                                             </Grid.ColumnDefinitions>
                                             
                                             <TextBlock Grid.Column="0" Text="Medicine Name" FontWeight="Bold"/>
@@ -177,9 +177,9 @@
                                                 Padding="12,8">
                                             <Grid>
                                                 <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="190"/>
                                                     <ColumnDefinition Width="150"/>
-                                                    <ColumnDefinition Width="80"/>
-                                                    <ColumnDefinition Width="440"/>
+                                                    <ColumnDefinition Width="Auto"/>
                                                 </Grid.ColumnDefinitions>
                                                 
                                                 <TextBlock Grid.Column="0" 
@@ -199,7 +199,7 @@
                                                          TextTrimming="CharacterEllipsis"
                                                          TextWrapping="NoWrap"
                                                          MaxWidth="300"
-                                                         HorizontalAlignment="Center"
+                                                         HorizontalAlignment="Left"
                                                          VerticalAlignment="Center"
                                                          TextAlignment="Center"
                                                          ToolTipService.ToolTip="{Binding SelectedDosage}"/>
