@@ -42,9 +42,9 @@
                 <Grid>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="285"/>  <!-- Patient Name -->
-                        <ColumnDefinition Width="95"/>  <!-- Gender -->
-                        <ColumnDefinition Width="210"/>  <!-- DoB -->
-                        <ColumnDefinition Width="270"/>  <!-- Prescription ID -->
+                        <ColumnDefinition Width="195"/>  <!-- Gender -->
+                        <ColumnDefinition Width="310"/>  <!-- DoB -->
+                        <ColumnDefinition Width="350"/>  <!-- Resident ID -->
                         <ColumnDefinition Width="*"/>    <!-- Time -->
                     </Grid.ColumnDefinitions>
 
@@ -63,7 +63,7 @@
                               Margin="12,8"
                               VerticalAlignment="Center"
                               HorizontalAlignment="Center"/>
-                    <TextBlock Grid.Column="3" Text="Prescription ID" 
+                    <TextBlock Grid.Column="3" Text="Resident ID" 
                               FontWeight="SemiBold" 
                               Margin="12,8"
                               VerticalAlignment="Center"
@@ -85,9 +85,9 @@
                           Margin="0,4">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="230"/>
-                            <ColumnDefinition Width="150"/>
-                            <ColumnDefinition Width="150"/>
-                            <ColumnDefinition Width="325"/>
+                            <ColumnDefinition Width="250"/>
+                            <ColumnDefinition Width="250"/>
+                            <ColumnDefinition Width="415"/>
                             <ColumnDefinition Width="*"/>
                         </Grid.ColumnDefinitions>
 
@@ -107,7 +107,7 @@
                                  VerticalAlignment="Center"
                                  HorizontalAlignment="Center"/>
                         <TextBlock Grid.Column="3" 
-                                 Text="{x:Bind Id}" 
+                                 Text="{x:Bind Patient.ResidentId}" 
                                  Margin="12,8"
                                  VerticalAlignment="Center"
                                  HorizontalAlignment="Center"/>

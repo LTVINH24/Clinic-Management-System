@@ -95,7 +95,8 @@
                                Margin="12,8"
                                VerticalAlignment="Center"
                                HorizontalAlignment="Center"/>
-                    <TextBlock Grid.Column="4" Text="Symptoms" 
+                    <TextBlock Grid.Column="4" 
+                               Text="Symptoms" 
                                FontWeight="SemiBold" 
                                Margin="12,8"
                                VerticalAlignment="Center"
@@ -145,6 +146,9 @@
                         <TextBlock Grid.Column="4" 
                                  Text="{Binding Symptoms}" 
                                  TextTrimming="CharacterEllipsis"
+                                 TextWrapping="NoWrap"
+                                 MaxWidth="300"
+                                 ToolTipService.ToolTip="{Binding Symptoms}"
                                  Margin="12,8"
                                  VerticalAlignment="Center"
                                  HorizontalAlignment="Center"/>

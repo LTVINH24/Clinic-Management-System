@@ -73,7 +73,15 @@ namespace ClinicManagementSystem.Views.StaffView
         /// <param name="e"></param>
         private void ClearFilter_Click(object sender, RoutedEventArgs e)
         {
+            // Clear filter và tự động load lại data
             ViewModel.ClearFilter();
+
+            // Reset Medicine Status ComboBox
+            var medicineStatusComboBox = this.FindName("MedicineStatusComboBox") as ComboBox;
+            if (medicineStatusComboBox != null)
+            {
+                medicineStatusComboBox.SelectedIndex = 0;  // Set về "All"
+            }
         }
 
         /// <summary>
