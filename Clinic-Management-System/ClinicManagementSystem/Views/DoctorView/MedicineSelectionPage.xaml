@@ -125,7 +125,7 @@
 
         <!-- Footer -->
         <StackPanel Grid.Row="4" Orientation="Horizontal" HorizontalAlignment="Right">
-            <Button Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"   Content="Back" Click="BackButton_Click" />
+            <Button Margin="0,0,10,0" Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"   Content="Back" Click="BackButton_Click" />
             <Button  Style="{StaticResource AccentButtonStyle}"   Content="Confirm" Click="ConfirmButton_Click" />
         </StackPanel>
 
