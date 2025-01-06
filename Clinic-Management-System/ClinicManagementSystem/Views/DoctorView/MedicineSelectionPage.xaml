@@ -131,8 +131,8 @@
 
         <!-- Footer -->
         <StackPanel Grid.Row="4" Orientation="Horizontal" HorizontalAlignment="Right">
-            <Button Content="Back" Click="BackButton_Click" Foreground="{ThemeResource ApplicationForegroundThemeBrush}"/>
-            <Button Content="Confirm" Click="ConfirmButton_Click" Style="{StaticResource AccentButtonStyle}"/>
+            <Button Margin="0,0,10,0" Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"   Content="Back" Click="BackButton_Click" />
+            <Button  Style="{StaticResource AccentButtonStyle}"   Content="Confirm" Click="ConfirmButton_Click" />
         </StackPanel>
 
         <!-- Pagination -->
@@ -140,7 +140,7 @@
                     Orientation="Horizontal" 
                     HorizontalAlignment="Center"
                     Margin="0,10,0,20">
-            <Button Click="PreviousButton_Click" >
+            <Button Click="PreviousButton_Click">
                 <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xE76B;"/>
             </Button>
             
@@ -167,7 +167,7 @@
                 </ComboBox>
             </StackPanel>
 
-            <Button Click="NextButton_Click">
+            <Button   Click="NextButton_Click">
                 <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xE76C;"/>
             </Button>
         </StackPanel>
