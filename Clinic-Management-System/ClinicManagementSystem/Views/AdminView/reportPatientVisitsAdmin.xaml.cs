@@ -19,10 +19,10 @@ using Windows.Foundation.Collections;
 
 namespace ClinicManagementSystem.Views.AdminView
 {
-    /// <summary>
-    /// An empty page that can be used on its own or navigated to within a Frame.
-    /// </summary>
-    public sealed partial class reportPatientVisitsAdmin : Page
+	/// <summary>
+	/// Trang báo cáo thông tin khám bệnh
+	/// </summary>
+	public sealed partial class reportPatientVisitsAdmin : Page
     {
         public StatisticMedicalExaminationViewModel ViewModel { get; set; }  
         public reportPatientVisitsAdmin()

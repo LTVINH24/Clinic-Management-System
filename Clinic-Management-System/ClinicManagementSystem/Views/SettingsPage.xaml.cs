@@ -23,7 +23,10 @@ using Windows.Storage;
 
 namespace ClinicManagementSystem.Views
 {
-    public sealed partial class SettingsPage : Page
+	/// <summary>
+	/// Trang cài đặt
+	/// </summary>
+	public sealed partial class SettingsPage : Page
     {
         public InformationViewModel viewModel { get; private set; }
 

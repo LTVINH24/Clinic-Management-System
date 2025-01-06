@@ -22,7 +22,7 @@ using ClinicManagementSystem.Service;
 namespace ClinicManagementSystem.Views.AdminView
 {
 	/// <summary>
-	/// An empty page that can be used on its own or navigated to within a Frame.
+	/// Trang thêm tài khoản người dùng
 	/// </summary>
 	public sealed partial class addAccount : Page
     {

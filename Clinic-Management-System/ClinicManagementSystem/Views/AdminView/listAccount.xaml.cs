@@ -23,7 +23,7 @@ using Windows.Foundation.Collections;
 namespace ClinicManagementSystem.Views.AdminView
 {
 	/// <summary>
-	/// An empty page that can be used on its own or navigated to within a Frame.
+	/// Trang hiển thị danh sách tài khoản
 	/// </summary>
 	public sealed partial class listAccount : Page
     {

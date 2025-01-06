@@ -24,7 +24,7 @@ using System.Threading.Tasks;
 namespace ClinicManagementSystem.Views.StaffView
 {
 	/// <summary>
-	/// An empty page that can be used on its own or navigated to within a Frame.
+	/// Trang hiển thị danh sách phiếu khám bệnh
 	/// </summary>
 	public sealed partial class ListMedicalExaminationForm : Page
 	{

@@ -9,6 +9,9 @@ using System.Threading.Tasks;
 
 namespace ClinicManagementSystem.ViewModel.EndUser
 {
+	/// <summary>
+	/// ViewModel cho trang chủ của bác sĩ
+	/// </summary>
 	public class DoctorHomePageViewModel : INotifyPropertyChanged
 	{
 		private readonly IDao _dao;

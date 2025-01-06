@@ -20,10 +20,10 @@ using ClinicManagementSystem.Views.StaffView;
 
 namespace ClinicManagementSystem.Views.DoctorView
 {
-    /// <summary>
-    /// An empty page that can be used on its own or navigated to within a Frame.
-    /// </summary>
-    public sealed partial class DoctorHomePage : Page
+	/// <summary>
+	/// Trang chủ của bác sĩ
+	/// </summary>
+	public sealed partial class DoctorHomePage : Page
     {
         public DoctorHomePageViewModel ViewModel { get; set; }
         private Frame _navigationFrame;

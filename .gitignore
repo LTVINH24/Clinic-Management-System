@@ -1,6 +1,8 @@
 .vs
 obj/
 bin/
+docs
+Doxyfile
 
 appsettings.json
 !appsettings.json.example

@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 namespace ClinicManagementSystem.Model
 {
 	/// <summary>
-	/// Thống kê thuốc
+	/// Class chứa thông tin thống kê thuốc
 	/// </summary>
 	public class MedicineStatistic : INotifyPropertyChanged
     {

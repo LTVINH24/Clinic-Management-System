@@ -5,7 +5,10 @@ using System.Collections.Generic;
 
 namespace ClinicManagementSystem.Views.DoctorView
 {
-    public sealed partial class DocumentPage : Page
+	/// <summary>
+	/// Trang chứa tài liệu của bác sĩ
+	/// </summary>
+	public sealed partial class DocumentPage : Page
     {
         private readonly string folderId = "1gRr54Q86nlZxqH60pCX_QYP-QZQ-U-d4";
         private readonly GoogleDriveService driveService;

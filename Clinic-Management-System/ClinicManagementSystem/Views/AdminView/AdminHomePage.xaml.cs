@@ -21,10 +21,10 @@ using Windows.Foundation.Collections;
 
 namespace ClinicManagementSystem.Views.AdminView
 {
-    /// <summary>
-    /// An empty page that can be used on its own or navigated to within a Frame.
-    /// </summary>
-    public sealed partial class AdminHomePage : Page
+	/// <summary>
+	/// Trang chủ của admin
+	/// </summary>
+	public sealed partial class AdminHomePage : Page
     {
        public AdminHomePageViewModel ViewModel { get; set; }
         public AdminHomePage()

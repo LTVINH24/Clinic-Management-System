@@ -3,7 +3,10 @@ using System;
 
 namespace ClinicManagementSystem.Converters
 {
-    public class DateOnlyConverter : IValueConverter
+	/// <summary>
+	/// Class chuyển đổi ngày tháng từ DateTime sang định dạng dd/MM/yyyy
+	/// </summary>
+	public class DateOnlyConverter : IValueConverter
     {
         /// <summary>
         /// Chuyển đổi ngày tháng từ DateTime sang định dạng dd/MM/yyyy

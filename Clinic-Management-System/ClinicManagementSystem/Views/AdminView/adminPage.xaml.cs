@@ -21,7 +21,7 @@ using Windows.Foundation.Collections;
 namespace ClinicManagementSystem.Views
 {
 	/// <summary>
-	/// An empty page that can be used on its own or navigated to within a Frame.
+	/// Trang admin
 	/// </summary>
 	public sealed partial class adminPage : Page
 	{

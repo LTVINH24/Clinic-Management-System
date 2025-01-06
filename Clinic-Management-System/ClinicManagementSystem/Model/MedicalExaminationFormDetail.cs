@@ -16,7 +16,9 @@ namespace ClinicManagementSystem.Model
 		public List<PrescriptionMedicine> Medicines { get; set; }
 		public DateTime? NextExaminationDate { get; set; }
 	}
-
+	/// <summary>
+	/// Class chứa thông tin thuốc gồm tên thuốc, liều lượng, số lượng
+	/// </summary>
 	public class PrescriptionMedicine
 	{
 		public string MedicineName { get; set; }

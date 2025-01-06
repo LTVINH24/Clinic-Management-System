@@ -20,7 +20,7 @@ using Windows.Foundation.Collections;
 namespace ClinicManagementSystem.Views.StaffView
 {
 	/// <summary>
-	/// An empty page that can be used on its own or navigated to within a Frame.
+	/// Trang chủ của nhân viên
 	/// </summary>
 	public sealed partial class StaffHomePage : Page
 	{
