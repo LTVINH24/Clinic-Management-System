@@ -9,6 +9,14 @@ namespace ClinicManagementSystem.Converters
 	/// </summary>
 	public class BooleanToVisibilityConverter : IValueConverter
     {
+        /// <summary>
+        /// Chuyển đổi giá trị Boolean sang Visibility
+        /// </summary>
+        /// <param name="value">Giá trị Boolean</param>
+        /// <param name="targetType">Kiểu dữ liệu mục tiêu</param>
+        /// <param name="parameter">Tham số</param>
+        /// <param name="language">Ngôn ngữ</param>
+        /// <returns>Giá trị Visibility</returns>
         public object Convert(object value, Type targetType, object parameter, string language)
         {
             if (value is bool boolValue)

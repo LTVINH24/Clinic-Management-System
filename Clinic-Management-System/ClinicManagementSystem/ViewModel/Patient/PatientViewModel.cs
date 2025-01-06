@@ -13,6 +13,9 @@ using static ClinicManagementSystem.Service.DataAccess.IDao;
 
 namespace ClinicManagementSystem.ViewModel
 {
+	/// <summary>
+	/// ViewModel cho Patient
+	/// </summary>
 	public class PatientViewModel : INotifyPropertyChanged
 	{
 		IDao _dao;

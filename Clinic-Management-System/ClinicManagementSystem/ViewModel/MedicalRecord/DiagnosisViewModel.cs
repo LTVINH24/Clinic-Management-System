@@ -11,6 +11,9 @@ using ClinicManagementSystem.Helper;
 
 namespace ClinicManagementSystem.ViewModel
 {
+    /// <summary>
+    /// ViewModel cho Diagnosis
+    /// </summary>
     public class DiagnosisViewModel : BaseViewModel
     {
         private readonly SqlServerDao _dataAccess;

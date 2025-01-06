@@ -1,35 +1,39 @@
-using Microsoft.UI.Xaml.Data;
 using System;
+using Microsoft.UI.Xaml;
+using Microsoft.UI.Xaml.Data;
 
 namespace ClinicManagementSystem.Converters
 {
     /// <summary>
-    /// Chuyển đổi giá trị trạng thái thăm khám sang chuỗi
+    /// Chuyển đổi giá trị boolean sang Visibility
     /// </summary>
-    public class ExaminationStatusTextConverter : IValueConverter
+    public class InverseBoolToVisibilityConverter : IValueConverter
     {
         /// <summary>
-        /// Chuyển đổi giá trị trạng thái thăm khám sang chuỗi
+        /// Chuyển đổi giá trị boolean sang Visibility
         /// </summary>
-        /// <param name="value">Giá trị trạng thái thăm khám</param>
+        /// <param name="value">Giá trị boolean</param>
         /// <param name="targetType">Kiểu dữ liệu mục tiêu</param>
         /// <param name="parameter">Tham số</param>
         /// <param name="language">Ngôn ngữ</param>
-        /// <returns>Giá trị chuỗi</returns>
+        /// <returns>Giá trị Visibility</returns>
         public object Convert(object value, Type targetType, object parameter, string language)
         {
-            string status = value as string;
-            return status?.ToLower() == "true" ? "Examined" : "Not examined";
+            if (value is string isGetMedicine)
+            {
+                return isGetMedicine.ToLower() == "true" ? Visibility.Collapsed : Visibility.Visible;
+            }
+            return Visibility.Visible;
         }
 
 		/// <summary>
-		/// Chuyển đổi giá trị chuỗi sang trạng thái thăm khám
+		/// Chuyển đổi giá trị Visibility sang boolean
 		/// </summary>
-		/// <param name="value">Giá trị chuỗi</param>
+		/// <param name="value">Giá trị Visibility</param>
 		/// <param name="targetType">Kiểu dữ liệu mục tiêu</param>
 		/// <param name="parameter">Tham số</param>
 		/// <param name="language">Ngôn ngữ</param>
-		/// <returns>Giá trị trạng thái thăm khám</returns>
+		/// <returns>Giá trị boolean</returns>
         public object ConvertBack(object value, Type targetType, object parameter, string language)
         {
             throw new NotImplementedException();

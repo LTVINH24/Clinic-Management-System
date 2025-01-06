@@ -11,6 +11,9 @@ using System.Collections.ObjectModel;
 using System.ComponentModel;
 namespace ClinicManagementSystem.ViewModel.EndUser
 {
+	/// <summary>
+	/// ViewModel cho Account
+	/// </summary>
 	public class AccountViewModel : INotifyPropertyChanged
 	{
 		IDao _dao;

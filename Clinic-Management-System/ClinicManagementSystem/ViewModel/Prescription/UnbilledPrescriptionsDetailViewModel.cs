@@ -3,12 +3,16 @@ using System.Collections.ObjectModel;
 using System.Threading.Tasks;
 using ClinicManagementSystem.Model;
 using ClinicManagementSystem.Service.DataAccess;
+using ClinicManagementSystem.Service;
 
 namespace ClinicManagementSystem.ViewModel
 {
+    /// <summary>
+    /// ViewModel cho UnbilledPrescriptionsDetail
+    /// </summary>
     public class UnbilledPrescriptionsDetailViewModel : BaseViewModel
     {
-        private readonly SqlServerDao _dataAccess;
+        private readonly IDao _dao;
         private Prescription _prescription;
         private Patient _patient;
         private MedicalExaminationForm _form;
@@ -17,12 +21,16 @@ namespace ClinicManagementSystem.ViewModel
         private bool _isGetMedicine;
         private int _examinationFee;
         private int _finalTotal;
+        private bool _isExaminationFeeLocked;
+        private bool _canSave;
 
         public UnbilledPrescriptionsDetailViewModel()
         {
-            _dataAccess = new SqlServerDao();
+            _dao = ServiceFactory.GetChildOf(typeof(IDao)) as IDao;
             Medicines = new ObservableCollection<MedicineSelection>();
-            IsGetMedicine = true;  // Mặc định là có lấy thuốc
+            IsGetMedicine = false;
+            _isExaminationFeeLocked = false;
+            _canSave = false;
         }
 
         public Prescription Prescription
@@ -60,7 +68,7 @@ namespace ClinicManagementSystem.ViewModel
             get => _examinationFee;
             set
             {
-                if (SetProperty(ref _examinationFee, value))
+                if (!IsExaminationFeeLocked && SetProperty(ref _examinationFee, value))
                 {
                     CalculateFinalTotal();
                 }
@@ -85,23 +93,43 @@ namespace ClinicManagementSystem.ViewModel
             }
         }
 
+        public bool IsExaminationFeeLocked
+        {
+            get => _isExaminationFeeLocked;
+            set
+            {
+                if (SetProperty(ref _isExaminationFeeLocked, value))
+                {
+                    OnPropertyChanged(nameof(IsExaminationFeeEditable));
+                    OnPropertyChanged(nameof(CanSave));
+                }
+            }
+        }
+
+        public bool IsExaminationFeeEditable => !IsExaminationFeeLocked;
+
+        public bool CanSave
+        {
+            get => IsExaminationFeeLocked;
+        }
+
         public void LoadData(int prescriptionId)
         {
             // Load prescription
-            Prescription = _dataAccess.GetPrescriptionById(prescriptionId);
+            Prescription = _dao.GetPrescriptionById(prescriptionId);
 
             if (Prescription != null)
             {
                 // Load form
-                Form = _dataAccess.GetMedicalExaminationFormById(Prescription.MedicalExaminationFormId);
+                Form = _dao.GetMedicalExaminationFormById(Prescription.MedicalExaminationFormId);
 
                 if (Form != null)
                 {
                     // Load patient
-                    Patient = _dataAccess.GetPatientById(Form.PatientId);
+                    Patient = _dao.GetPatientById(Form.PatientId);
 
                     // Load medicines
-                    var formMedicines = _dataAccess.GetMedicineSelectionsByFormId(Form.Id);
+                    var formMedicines = _dao.GetMedicineSelectionsByFormId(Form.Id);
                     Medicines = new ObservableCollection<MedicineSelection>(formMedicines);
 
                     // Calculate total amount
@@ -142,7 +170,7 @@ namespace ClinicManagementSystem.ViewModel
                     IsGetMedicine = IsGetMedicine ? "true" : "false"
                 };
 
-                bool success = _dataAccess.SaveBill(bill);
+                bool success = _dao.SaveBill(bill);
                 if (!success) return false;
 
                 // 2. Cập nhật số lượng thuốc trong kho nếu có lấy thuốc
@@ -152,7 +180,7 @@ namespace ClinicManagementSystem.ViewModel
                     {
                         try
                         {
-                            _dataAccess.UpdateMedicineQuantity(
+                            _dao.UpdateMedicineQuantity(
                                 medicine.Medicine.Id, 
                                 -medicine.SelectedQuantity
                             );
@@ -165,7 +193,7 @@ namespace ClinicManagementSystem.ViewModel
                 }
 
                 // 3. Cập nhật trạng thái đơn thuốc
-                success = _dataAccess.UpdatePrescriptionBillStatus(Prescription.Id, "true");
+                success = _dao.UpdatePrescriptionBillStatus(Prescription.Id, "true");
                 return success;
             }
             catch

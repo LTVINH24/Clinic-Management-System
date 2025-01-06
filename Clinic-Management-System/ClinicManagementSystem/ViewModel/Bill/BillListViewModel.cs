@@ -1,24 +1,20 @@
-﻿using System;
 using System.Collections.ObjectModel;
-using System.Linq;
-using System.Windows.Input;
-using ClinicManagementSystem.Command;
 using ClinicManagementSystem.Model;
-using ClinicManagementSystem.Service;
 using ClinicManagementSystem.Service.DataAccess;
-using ClinicManagementSystem.Views.DoctorView;
-using Microsoft.UI.Xaml.Controls;
-using Windows.Networking.NetworkOperators;
+using ClinicManagementSystem.Service;
+using ClinicManagementSystem.Command;
+using System;
+using System.Linq;
 
 namespace ClinicManagementSystem.ViewModel
 {
     /// <summary>
-    /// ViewModel cho MedicalExamination
+    /// ViewModel cho BillList
     /// </summary>
-    public class MedicalExaminationViewModel : BaseViewModel
+    public class BillListViewModel : BaseViewModel
     {
-        private IDao _dao;
-        private ObservableCollection<MedicalExaminationForm> _examinationForms;
+        private readonly IDao _dao;
+        private ObservableCollection<Bill> _bills;
         private string _keyword = "";
         private int _currentPage = 1;
         private int _totalPages;
@@ -26,28 +22,21 @@ namespace ClinicManagementSystem.ViewModel
         private int _pageSize = 10;
         private ObservableCollection<PageInfo> _pageInfos;
         private PageInfo _selectedPageInfo;
-        private Frame _navigationFrame;
-        private readonly int doctorId;
         private DateTimeOffset? _startDate;
         private DateTimeOffset? _endDate;
+        private string _selectedStatus = "";
 
-        public MedicalExaminationViewModel()
+        public BillListViewModel()
         {
             _dao = ServiceFactory.GetChildOf(typeof(IDao)) as IDao;
-            doctorId = UserSessionService.Instance.GetLoggedInUserId();
-            LoadExaminationForms();
+            SelectedStatus = "";
+            LoadBills();
         }
 
-        public Frame NavigationFrame
+        public ObservableCollection<Bill> Bills
         {
-            get => _navigationFrame;
-            set => _navigationFrame = value;
-        }
-
-        public ObservableCollection<MedicalExaminationForm> ExaminationForms
-        {
-            get => _examinationForms ??= new ObservableCollection<MedicalExaminationForm>();
-            set => SetProperty(ref _examinationForms, value);
+            get => _bills ??= new ObservableCollection<Bill>();
+            set => SetProperty(ref _bills, value);
         }
 
         public ObservableCollection<PageInfo> PageInfos
@@ -92,12 +81,6 @@ namespace ClinicManagementSystem.ViewModel
             set => SetProperty(ref _totalItems, value);
         }
 
-        public int PageSize
-        {
-            get => _pageSize;
-            set => SetProperty(ref _pageSize, value);
-        }
-
         public DateTimeOffset? StartDate
         {
             get => _startDate;
@@ -122,41 +105,52 @@ namespace ClinicManagementSystem.ViewModel
             }
         }
 
+        public string SelectedStatus
+        {
+            get => _selectedStatus;
+            set
+            {
+                if (SetProperty(ref _selectedStatus, value))
+                {
+                    LoadBills();
+                }
+            }
+        }
+
         public void Search()
         {
             CurrentPage = 1;
-            LoadExaminationForms();
+            LoadBills();
         }
 
-        private void LoadExaminationForms()
+        private void LoadBills()
         {
-            var (forms, totalCount) = _dao.GetDoctorExaminationForms(
-                doctorId,
-                CurrentPage,
-                PageSize,
-                "false",  // pending forms
-                Keyword,
-                StartDate,
-                EndDate
+            var (bills, totalCount) = _dao.GetBillsByPage(
+                CurrentPage, 
+                _pageSize, 
+                Keyword, 
+                StartDate, 
+                EndDate,
+                SelectedStatus
             );
 
-            ExaminationForms.Clear();
-            foreach (var form in forms)
+            Bills.Clear();
+            foreach (var bill in bills)
             {
-                ExaminationForms.Add(form);
+                Bills.Add(bill);
             }
 
             if (totalCount != TotalItems)
             {
                 TotalItems = totalCount;
-                TotalPages = TotalItems / PageSize +
-                    (TotalItems % PageSize == 0 ? 0 : 1);
+                TotalPages = TotalItems / _pageSize + 
+                    (TotalItems % _pageSize == 0 ? 0 : 1);
             }
 
             PageInfos.Clear();
             int startPage = Math.Max(1, CurrentPage - 1);
             int endPage = Math.Min(startPage + 2, TotalPages);
-
+            
             if (endPage - startPage < 2 && startPage > 1)
             {
                 startPage = Math.Max(1, endPage - 2);
@@ -170,7 +164,7 @@ namespace ClinicManagementSystem.ViewModel
                     Total = TotalPages
                 });
             }
-
+            
             SelectedPageInfo = new PageInfo { Page = CurrentPage, Total = TotalPages };
         }
 
@@ -179,7 +173,7 @@ namespace ClinicManagementSystem.ViewModel
             if (CurrentPage < TotalPages)
             {
                 CurrentPage++;
-                LoadExaminationForms();
+                LoadBills();
             }
         }
 
@@ -188,7 +182,7 @@ namespace ClinicManagementSystem.ViewModel
             if (CurrentPage > 1)
             {
                 CurrentPage--;
-                LoadExaminationForms();
+                LoadBills();
             }
         }
 
@@ -197,21 +191,17 @@ namespace ClinicManagementSystem.ViewModel
             if (page >= 1 && page <= TotalPages)
             {
                 CurrentPage = page;
-                LoadExaminationForms();
+                LoadBills();
             }
-        }
-
-        public void NavigateToDiagnosisPage(MedicalExaminationForm selectedForm)
-        {
-            NavigationFrame?.Navigate(typeof(DiagnosisPage), selectedForm);
         }
 
         public void ClearFilter()
         {
-            Keyword = "";
             StartDate = null;
             EndDate = null;
-            Search();
+            Keyword = "";
+            SelectedStatus = "";
+            LoadBills();
         }
     }
-}
+} 

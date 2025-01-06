@@ -16,7 +16,9 @@ using OxyPlot;
 
 namespace ClinicManagementSystem.ViewModel.EndUser
 {
-
+	/// <summary>
+	/// ViewModel cho User
+	/// </summary>
 	public class UserViewModel : INotifyPropertyChanged
 	{
 		IDao _dao;

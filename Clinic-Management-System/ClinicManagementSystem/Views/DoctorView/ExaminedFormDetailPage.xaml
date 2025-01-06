@@ -9,6 +9,10 @@
 
     <Page.Resources>
         <converters:NullToVisibilityConverter x:Key="NullToVisibilityConverter"/>
+        <converters:DateOnlyConverter x:Key="DateOnlyConverter"/>
+        <converters:DateTimeFullConverter x:Key="DateTimeFullConverter"/>
+        <converters:EmptyCollectionToVisibilityConverter x:Key="EmptyCollectionToVisibilityConverter"/>
+        <converters:NotEmptyCollectionToVisibilityConverter x:Key="NotEmptyCollectionToVisibilityConverter"/>
     </Page.Resources>
 
     <ScrollViewer>
@@ -34,120 +38,199 @@
                 </Grid.ColumnDefinitions>
 
                 <!-- Left Column - Patient & Form Info -->
-                <StackPanel>
+                <StackPanel Grid.Column="0" Spacing="15">
+                    <!-- Patient Information -->
                     <TextBlock Text="Patient Information" 
-                             FontSize="18" 
-                             FontWeight="SemiBold" 
-                             Margin="0,0,0,10"/>
-                    <!-- Patient Info -->
-                    <StackPanel Orientation="Horizontal" Margin="0,5">
-                        <TextBlock Text="Name: " FontWeight="SemiBold"/>
-                        <TextBlock Text="{x:Bind ViewModel.Patient.Name, Mode=OneWay}"/>
-                    </StackPanel>
-                    <StackPanel Orientation="Horizontal" Margin="0,5">
-                        <TextBlock Text="Date of Birth: " FontWeight="SemiBold"/>
-                        <TextBlock Text="{x:Bind ViewModel.Patient.DoB, Mode=OneWay}"/>
-                    </StackPanel>
-                    <StackPanel Orientation="Horizontal" Margin="0,5">
-                        <TextBlock Text="Gender: " FontWeight="SemiBold"/>
-                        <TextBlock Text="{x:Bind ViewModel.Patient.Gender, Mode=OneWay}"/>
-                    </StackPanel>
+                              FontSize="18" 
+                              FontWeight="SemiBold" 
+                              Margin="0,0,0,10"/>
+                    
+                    <Border Background="{ThemeResource CardBackgroundFillColorSecondaryBrush}"
+                            BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}"
+                            BorderThickness="1"
+                            CornerRadius="4"
+                            Padding="16">
+                        <StackPanel Spacing="8">
+                            <StackPanel Orientation="Horizontal" Spacing="10">
+                                <TextBlock Text="Name:" FontWeight="SemiBold" Foreground="Gray" MinWidth="100"/>
+                                <TextBlock Text="{x:Bind ViewModel.Patient.Name, Mode=OneWay}"/>
+                            </StackPanel>
 
-                    <Rectangle Height="1" 
-                             Fill="Gray" 
-                             Margin="0,10"/>
+                            <StackPanel Orientation="Horizontal" Spacing="10">
+                                <TextBlock Text="Gender:" FontWeight="SemiBold" Foreground="Gray" MinWidth="100"/>
+                                <TextBlock Text="{x:Bind ViewModel.Patient.Gender, Mode=OneWay}"/>
+                            </StackPanel>
 
+                            <StackPanel Orientation="Horizontal" Spacing="10">
+                                <TextBlock Text="Date of Birth:" FontWeight="SemiBold" Foreground="Gray" MinWidth="100"/>
+                                <TextBlock Text="{x:Bind ViewModel.Patient.DoB, Mode=OneWay, Converter={StaticResource DateOnlyConverter}}"/>
+                            </StackPanel>
+                        </StackPanel>
+                    </Border>
+
+                    <!-- Form Information -->
                     <TextBlock Text="Examination Information" 
-                             FontSize="18" 
-                             FontWeight="SemiBold" 
-                             Margin="0,0,0,10"/>
-                    <!-- Form Info -->
-                    <StackPanel Orientation="Horizontal" Margin="0,5">
-                        <TextBlock Text="Time: " FontWeight="SemiBold"/>
-                        <TextBlock Text="{x:Bind ViewModel.Form.Time, Mode=OneWay}"/>
-                    </StackPanel>
-                    <TextBlock Text="Symptoms: " FontWeight="SemiBold" Margin="0,5"/>
-                    <TextBlock Text="{x:Bind ViewModel.Form.Symptoms, Mode=OneWay}" 
-                             TextWrapping="Wrap"
-                             Margin="10,0,0,0"/>
+                              FontSize="18" 
+                              FontWeight="SemiBold" 
+                              Margin="0,20,0,10"/>
+                    
+                    <Border Background="{ThemeResource CardBackgroundFillColorSecondaryBrush}"
+                            BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}"
+                            BorderThickness="1"
+                            CornerRadius="4"
+                            Padding="16">
+                        <StackPanel Spacing="12">
+                            <StackPanel Orientation="Horizontal" Spacing="10">
+                                <TextBlock Text="Time:" FontWeight="SemiBold" Foreground="Gray" MinWidth="100"/>
+                                <TextBlock Text="{x:Bind ViewModel.Form.Time, Mode=OneWay, Converter={StaticResource DateTimeFullConverter}}"/>
+                            </StackPanel>
 
-                    <Rectangle Height="1" 
-                             Fill="Gray" 
-                             Margin="0,10"/>
+                            <StackPanel Orientation="Vertical" Spacing="8">
+                                <TextBlock Text="Symptoms:" FontWeight="SemiBold" Foreground="Gray"/>
+                                <TextBlock Text="{x:Bind ViewModel.Form.Symptoms, Mode=OneWay}"
+                                         TextWrapping="Wrap"
+                                         Margin="20,0,0,0"/>
+                            </StackPanel>
 
-                    <TextBlock Text="Next Examination" 
-                             FontSize="18" 
-                             FontWeight="SemiBold" 
-                             Margin="0,0,0,10"/>
+                            <StackPanel Orientation="Vertical" Spacing="8">
+                                <TextBlock Text="Diagnosis:" FontWeight="SemiBold" Foreground="Gray"/>
+                                <TextBlock Text="{x:Bind ViewModel.Diagnosis, Mode=OneWay}"
+                                         TextWrapping="Wrap"
+                                         Margin="20,0,0,0"/>
+                            </StackPanel>
 
-                    <StackPanel Orientation="Horizontal" Margin="0,5">
-                        <TextBlock Text="Date: " FontWeight="SemiBold"/>
-                        <TextBlock Text="{x:Bind ViewModel.NextExaminationDate, Mode=OneWay}"/>
-                        <TextBlock Text=" (if needed)" 
-                                  FontStyle="Italic" 
-                                  Foreground="Gray"
-                                  Margin="5,0,0,0"
-                                  Visibility="{x:Bind ViewModel.NextExaminationDate, Mode=OneWay, Converter={StaticResource NullToVisibilityConverter}}"/>
-                    </StackPanel>
+                            <StackPanel Orientation="Horizontal" Spacing="10">
+                                <TextBlock Text="Next Examination:" FontWeight="SemiBold" Foreground="Gray" MinWidth="100"/>
+                                <TextBlock Text="{x:Bind ViewModel.NextExaminationDate, Mode=OneWay}"/>
+                                <TextBlock Text=" (no needed)" 
+                                         FontStyle="Italic" 
+                                         Foreground="Gray"
+                                         Margin="5,0,0,0"
+                                         Visibility="{x:Bind ViewModel.NextExaminationDate, Mode=OneWay, Converter={StaticResource NullToVisibilityConverter}}"/>
+                            </StackPanel>
+                        </StackPanel>
+                    </Border>
                 </StackPanel>
 
                 <!-- Separator -->
                 <Rectangle Grid.Column="1" 
                           Width="1" 
-                          Fill="Gray" 
+                          Fill="{ThemeResource CardStrokeColorDefaultBrush}"
                           Margin="20,0"/>
 
-                <!-- Right Column - Diagnosis & Medicines -->
+                <!-- Right Column - Medicines -->
                 <StackPanel Grid.Column="2">
-                    <TextBlock Text="Diagnosis" 
-                             FontSize="18" 
-                             FontWeight="SemiBold" 
-                             Margin="0,0,0,10"/>
-                    <TextBlock Text="{x:Bind ViewModel.Diagnosis, Mode=OneWay}" 
-                             TextWrapping="Wrap"
-                             Margin="10,0,0,0"/>
-
-                    <Rectangle Height="1" 
-                             Fill="Gray" 
-                             Margin="0,10"/>
-
                     <TextBlock Text="Prescribed Medicines" 
                              FontSize="18" 
                              FontWeight="SemiBold" 
-                             Margin="0,0,0,10"/>
-                    <ListView ItemsSource="{x:Bind ViewModel.Medicines, Mode=OneWay}"
-                            IsEnabled="False">
-                        <ListView.ItemTemplate>
-                            <DataTemplate>
-                                <Grid Margin="0,5">
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="2*"/>
-                                        <ColumnDefinition Width="*"/>
-                                        <ColumnDefinition Width="*"/>
-                                    </Grid.ColumnDefinitions>
-                                    
-                                    <TextBlock Text="{Binding Medicine.Name}"/>
-                                    <StackPanel Grid.Column="1" Orientation="Horizontal">
-                                        <TextBlock Text="{Binding SelectedQuantity}"/>
-                                        <TextBlock Text=" pills"/>
-                                    </StackPanel>
-                                    <StackPanel Grid.Column="2" Orientation="Horizontal">
-                                        <TextBlock Text="{Binding SelectedDosage}"/>
-                                        <TextBlock Text=" pills/day"/>
-                                    </StackPanel>
-                                </Grid>
-                            </DataTemplate>
-                        </ListView.ItemTemplate>
-                    </ListView>
+                             Margin="0,0,0,12"/>
+
+                    <!-- Hiển thị khi không có thuốc -->
+                    <TextBlock Text="No medicines prescribed"
+                              Margin="0,8,0,0"
+                              Foreground="Gray" 
+                              FontStyle="Italic"
+                              HorizontalAlignment="Center"
+                              Visibility="{x:Bind ViewModel.Medicines.Count, Mode=OneWay, Converter={StaticResource EmptyCollectionToVisibilityConverter}}"/>
+
+                    <!-- Medicine List Container -->
+                    <Border Background="{ThemeResource CardBackgroundFillColorSecondaryBrush}"
+                            BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}"
+                            BorderThickness="1"
+                            CornerRadius="4"
+                            Padding="16"
+                            Margin="0,8,0,0"
+                            Visibility="{x:Bind ViewModel.Medicines.Count, Mode=OneWay, Converter={StaticResource NotEmptyCollectionToVisibilityConverter}}">
+                        
+                        <!-- Medicine Header -->
+                        <StackPanel>
+                            <Grid Margin="0,0,0,8">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="2*"/>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+
+                                <TextBlock Text="Medicine Name"
+                                         FontWeight="SemiBold"
+                                         VerticalAlignment="Center"/>
+                                <TextBlock Text="Quantity"
+                                         Grid.Column="1"
+                                         FontWeight="SemiBold"
+                                         HorizontalAlignment="Center"
+                                         VerticalAlignment="Center"/>
+                                <TextBlock Text="Dosage"
+                                         Grid.Column="2"
+                                         FontWeight="SemiBold"
+                                         HorizontalAlignment="Center"
+                                         VerticalAlignment="Center"/>
+                            </Grid>
+
+                            <!-- Separator -->
+                            <Rectangle Height="1" 
+                                     Fill="{ThemeResource CardStrokeColorDefaultBrush}"
+                                     Margin="0,0,0,8"/>
+
+                            <!-- Medicine List -->
+                            <ListView ItemsSource="{x:Bind ViewModel.Medicines, Mode=OneWay}"
+                                     IsEnabled="False"
+                                     SelectionMode="None"
+                                     Background="Transparent"
+                                     BorderThickness="0">
+                                <ListView.ItemTemplate>
+                                    <DataTemplate>
+                                        <Border Background="{ThemeResource CardBackgroundFillColorDefaultBrush}"
+                                                BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}"
+                                                BorderThickness="1"
+                                                CornerRadius="4"
+                                                Padding="12,8"
+                                                Margin="0,4">
+                                            <Grid>
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="2*"/>
+                                                    <ColumnDefinition Width="*"/>
+                                                    <ColumnDefinition Width="*"/>
+                                                </Grid.ColumnDefinitions>
+                                                
+                                                <TextBlock Grid.Column="0" 
+                                                         Text="{Binding Medicine.Name}"
+                                                         TextWrapping="Wrap"
+                                                         VerticalAlignment="Center"/>
+                                                
+                                                <TextBlock Grid.Column="1"
+                                                         HorizontalAlignment="Center"
+                                                         VerticalAlignment="Center">
+                                                    <Run Text="{Binding SelectedQuantity}"/>
+                                                    <Run Text=" pills" Foreground="Gray"/>
+                                                </TextBlock>
+                                                
+                                                <TextBlock Grid.Column="2" 
+                                                         Text="{Binding SelectedDosage}"
+                                                         VerticalAlignment="Center"
+                                                         HorizontalAlignment="Center"/>
+                                            </Grid>
+                                        </Border>
+                                    </DataTemplate>
+                                </ListView.ItemTemplate>
+                                <ListView.ItemContainerStyle>
+                                    <Style TargetType="ListViewItem">
+                                        <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+                                        <Setter Property="Padding" Value="0"/>
+                                    </Style>
+                                </ListView.ItemContainerStyle>
+                            </ListView>
+                        </StackPanel>
+                    </Border>
                 </StackPanel>
             </Grid>
 
-            <!-- Back Button -->
+            <!-- Footer -->
             <Button Grid.Row="2"
                     Content="Back"
                     Click="BackButton_Click"
                     Style="{StaticResource DefaultButtonStyle}"
                     HorizontalAlignment="Center"
+                    Width="100"
                     Margin="0,20,0,0"/>
         </Grid>
     </ScrollViewer>

@@ -20,12 +20,11 @@ using Microsoft.UI.Xaml;
 using Windows.Storage;
 using ClinicManagementSystem.Views;
 
-
-
-
-
 namespace ClinicManagementSystem.ViewModel.Statistic
 {
+    /// <summary>
+    /// ViewModel cho StatisticMedicine
+    /// </summary>
     public class StatisticMedicineViewModel : INotifyPropertyChanged
     {
         IDao _dao;

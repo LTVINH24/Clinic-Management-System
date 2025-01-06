@@ -10,8 +10,12 @@ using static ClinicManagementSystem.Service.DataAccess.IDao;
 using ClinicManagementSystem.Service.DataAccess;
 using ClinicManagementSystem.Service;
 using Windows.System;
+
 namespace ClinicManagementSystem.ViewModel
 {
+	/// <summary>
+	/// ViewModel cho Medicine
+	/// </summary>
 	public class MedicineViewModel : INotifyPropertyChanged
 	{
 		IDao _dao;

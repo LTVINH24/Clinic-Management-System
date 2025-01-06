@@ -9,6 +9,9 @@ using ClinicManagementSystem.Helper;
 
 namespace ClinicManagementSystem.Views.DoctorView
 {
+    /// <summary>
+    /// DiagnosisPage là trang chẩn đoán
+    /// </summary>
     public sealed partial class DiagnosisPage : Page
     {
         public DiagnosisViewModel ViewModel { get; }

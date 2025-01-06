@@ -5,6 +5,9 @@ using System.Text;
 using System.Threading.Tasks;
 namespace ClinicManagementSystem.ViewModel
 {
+    /// <summary>
+    /// ViewModel cho Password
+    /// </summary>
     public class Password
     {
 		/// <summary>

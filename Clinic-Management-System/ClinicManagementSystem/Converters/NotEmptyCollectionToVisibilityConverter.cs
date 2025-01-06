@@ -1,35 +1,40 @@
-using Microsoft.UI.Xaml.Data;
 using System;
+using System.Collections;
+using Microsoft.UI.Xaml;
+using Microsoft.UI.Xaml.Data;
 
 namespace ClinicManagementSystem.Converters
 {
     /// <summary>
-    /// Chuyển đổi giá trị trạng thái thăm khám sang chuỗi
+    /// Chuyển đổi giá trị số lượng thành Visibility
     /// </summary>
-    public class ExaminationStatusTextConverter : IValueConverter
+    public class NotEmptyCollectionToVisibilityConverter : IValueConverter
     {
         /// <summary>
-        /// Chuyển đổi giá trị trạng thái thăm khám sang chuỗi
+        /// Chuyển đổi giá trị số lượng thành Visibility
         /// </summary>
-        /// <param name="value">Giá trị trạng thái thăm khám</param>
+        /// <param name="value">Giá trị số lượng</param>
         /// <param name="targetType">Kiểu dữ liệu mục tiêu</param>
         /// <param name="parameter">Tham số</param>
         /// <param name="language">Ngôn ngữ</param>
-        /// <returns>Giá trị chuỗi</returns>
+        /// <returns>Giá trị Visibility</returns>
         public object Convert(object value, Type targetType, object parameter, string language)
         {
-            string status = value as string;
-            return status?.ToLower() == "true" ? "Examined" : "Not examined";
+            if (value is int count)
+            {
+                return count > 0 ? Visibility.Visible : Visibility.Collapsed;
+            }
+            return Visibility.Collapsed;
         }
 
 		/// <summary>
-		/// Chuyển đổi giá trị chuỗi sang trạng thái thăm khám
+		/// Chuyển đổi giá trị Visibility sang số lượng
 		/// </summary>
-		/// <param name="value">Giá trị chuỗi</param>
+		/// <param name="value">Giá trị Visibility</param>
 		/// <param name="targetType">Kiểu dữ liệu mục tiêu</param>
 		/// <param name="parameter">Tham số</param>
 		/// <param name="language">Ngôn ngữ</param>
-		/// <returns>Giá trị trạng thái thăm khám</returns>
+		/// <returns>Giá trị số lượng</returns>
         public object ConvertBack(object value, Type targetType, object parameter, string language)
         {
             throw new NotImplementedException();

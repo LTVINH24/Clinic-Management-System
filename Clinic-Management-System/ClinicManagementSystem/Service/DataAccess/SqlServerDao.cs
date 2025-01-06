@@ -18,6 +18,9 @@ using static ClinicManagementSystem.Service.DataAccess.IDao;
 
 namespace ClinicManagementSystem.Service.DataAccess
 {
+    /// <summary>
+    /// SqlServerDao cho các hàm liên quan đến database
+    /// </summary>
     public class SqlServerDao : IDao
     {
 
@@ -34,7 +37,8 @@ namespace ClinicManagementSystem.Service.DataAccess
 
 
 		//==============================================Helper===========================================
-		/// <summary>
+		
+        /// <summary>
 		/// Xứ lí xác thực người dùng
 		/// </summary>
 		/// <param name="username"></param>
@@ -103,7 +107,8 @@ namespace ClinicManagementSystem.Service.DataAccess
 
 
 		//================================================EndUser========================================
-		/// <summary>
+		
+        /// <summary>
 		/// Lấy danh sách người dùng
 		/// </summary>
 		/// <param name="page"></param>
@@ -310,6 +315,13 @@ namespace ClinicManagementSystem.Service.DataAccess
             connection.Close();
             return result > 0;
         }
+
+		/// <summary>
+		/// Khóa người dùng
+		/// </summary>
+		/// <param name="id"></param>
+		/// <param name="status"></param>
+		/// <returns>Trả về true nếu khóa thành công</returns>
 		public bool LockUser(int id,string status)
         {
             SqlConnection connection = new SqlConnection( _connectionString);
@@ -321,6 +333,11 @@ namespace ClinicManagementSystem.Service.DataAccess
             connection.Close();
             return result > 0;
         }
+
+		/// <summary>
+		/// Lấy tổng số người dùng
+		/// </summary>
+		/// <returns>Trả về tổng số người dùng</returns>
         public int GetTotalUsersCount()
         {
             using (var connection = new SqlConnection(_connectionString))
@@ -335,6 +352,7 @@ namespace ClinicManagementSystem.Service.DataAccess
 
 
         //================================================Specialty========================================
+        
         /// <summary>
         /// Lấy danh sách chuyên khoa
         /// </summary>
@@ -418,6 +436,7 @@ namespace ClinicManagementSystem.Service.DataAccess
 
 
         //================================================Medicine========================================
+        
         /// <summary>
         /// Lấy danh sách thuốc
         /// </summary>
@@ -429,7 +448,8 @@ namespace ClinicManagementSystem.Service.DataAccess
         public Tuple<List<Medicine>, int> GetMedicines(
                 int page, int rowsPerPage,
                 string keyword,
-                Dictionary<string, SortType> sortOptions, int daysRemaining)
+                Dictionary<string, SortType> sortOptions, int daysRemaining
+        )
         {
             string filter = "";
             if(daysRemaining > 0)
@@ -802,18 +822,22 @@ namespace ClinicManagementSystem.Service.DataAccess
             return medicines;
         }
 
-		//=============================================================================================
-
-
-
-		//=============================================MedicalExaminationForm==========================
 		/// <summary>
-		/// Lấy danh sách phiếu khám bệnh
+		/// Lấy danh sách thuốc theo trang
 		/// </summary>
-		/// <returns>Danh sách phiếu khám bệnh</returns>
-		public List<MedicalExaminationForm> GetMedicalExaminationForms(int id)
+		/// <param name="currentPage"></param>
+		/// <param name="pageSize"></param>
+		/// <param name="keyword"></param>
+		/// <returns>Danh sách thuốc và tổng số thuốc</returns>
+        public (List<MedicineSelection>, int) GetMedicinesByPage(
+            int currentPage, 
+            int pageSize, 
+            string keyword = ""
+        )
         {
-            var forms = new List<MedicalExaminationForm>();
+            var medicines = new List<MedicineSelection>();
+            int totalCount = 0;
+
             using (var connection = new SqlConnection(_connectionString))
             {
                 connection.Open();
@@ -821,45 +845,171 @@ namespace ClinicManagementSystem.Service.DataAccess
                 {
                     command.Connection = connection;
                     command.CommandText = @"
-                        SELECT f.id, f.patientId, f.staffId, f.doctorId, f.time, 
-                               f.symptom, f.visitType, f.isExaminated,
-                               p.name, p.email, p.residentId, p.address, p.birthday, p.gender
-                        FROM MedicalExaminationForm f
-                        INNER JOIN Patient p ON f.patientId = p.id
-                        WHERE f.doctorId = @id
-                        ORDER BY f.time DESC";
-                    AddParameters(command, ("@id", id));
+                    SELECT COUNT(*) OVER() as TotalCount,
+                            m.id, m.name, m.manufacturer, m.price, 
+                            m.quantity, m.expDate, m.mfgDate
+                        FROM Medicine m
+                        WHERE (@Keyword = '' OR m.name LIKE @KeywordPattern)
+                            AND m.isDeleted != 'true'
+                            AND CAST(m.expDate AS DATE) > CAST(GETDATE() AS DATE)
+                        ORDER BY m.name
+                        OFFSET @Offset ROWS 
+                        FETCH NEXT @PageSize ROWS ONLY";
+
+                    AddParameters(command,
+                        ("@Offset", (currentPage - 1) * pageSize),
+                        ("@PageSize", pageSize),
+                        ("@Keyword", keyword ?? ""),
+                        ("@KeywordPattern", $"%{keyword}%"));
+
                     using (var reader = command.ExecuteReader())
                     {
                         while (reader.Read())
                         {
+                            if (totalCount == 0)
+                            {
+                                totalCount = reader.GetInt32(0);
+                            }
+
+                            var medicine = new Medicine
+                            {
+                                Id = reader.GetInt32(reader.GetOrdinal("id")),
+                                Name = reader.GetString(reader.GetOrdinal("name")),
+                                Manufacturer = reader.GetString(reader.GetOrdinal("manufacturer")),
+                                Price = reader.GetInt32(reader.GetOrdinal("price")),
+                                Quantity = reader.GetInt32(reader.GetOrdinal("quantity")),
+                                ExpDate = reader.GetDateTime(reader.GetOrdinal("expDate")),
+                                MfgDate = reader.GetDateTime(reader.GetOrdinal("mfgDate"))
+                            };
+
+                            var medicineSelection = new MedicineSelection
+                            {
+                                Medicine = medicine,
+                                IsSelected = false,
+                                SelectedQuantity = 0,
+                                SelectedDosage = ""
+                            };
+
+                            medicines.Add(medicineSelection);
+                        }
+                    }
+                }
+            }
+            return (medicines, totalCount);
+        }
+
+		//=============================================================================================
+
+
+
+		//=============================================MedicalExaminationForm==========================
+		
+        /// <summary>
+		/// Lấy danh sách phiếu khám bệnh
+		/// </summary>
+		/// <returns>Danh sách phiếu khám bệnh</returns>
+		public (List<MedicalExaminationForm>, int) GetDoctorExaminationForms(
+            int doctorId, 
+            int currentPage, 
+            int pageSize,
+            string isExaminated,
+            string keyword = "",
+            DateTimeOffset? startDate = null,
+            DateTimeOffset? endDate = null
+        )
+        {
+            var forms = new List<MedicalExaminationForm>();
+            int totalCount = 0;
+            
+            using (var connection = new SqlConnection(_connectionString))
+            {
+                connection.Open();
+                using (var command = new SqlCommand())
+                {
+                    command.Connection = connection;
+                    command.CommandText = @"
+                        SELECT COUNT(*) OVER() as TotalCount,
+                            f.id, f.patientId, f.staffId, f.doctorId, f.time, 
+                            f.symptom, f.visitType, f.isExaminated,
+                            p.name, p.email, p.residentId, p.address, p.birthday, p.gender
+                        FROM MedicalExaminationForm f
+                        INNER JOIN Patient p ON f.patientId = p.id
+                        WHERE f.doctorId = @DoctorId 
+                            AND f.isExaminated = @IsExaminated
+                            AND (@Keyword = '' OR p.name LIKE @KeywordPattern)
+                            AND (@StartDate IS NULL OR CAST(f.time AS DATE) >= @StartDate)
+                            AND (@EndDate IS NULL OR CAST(f.time AS DATE) <= @EndDate)
+                        ORDER BY 
+                            CASE 
+                                WHEN @IsExaminated = 'false' THEN f.time END ASC,
+                            CASE 
+                                WHEN @IsExaminated = 'true' THEN f.time END DESC
+                        OFFSET @Offset ROWS 
+                        FETCH NEXT @PageSize ROWS ONLY";
+
+                    AddParameters(command, 
+                        ("@DoctorId", doctorId),
+                        ("@Offset", (currentPage - 1) * pageSize),
+                        ("@PageSize", pageSize),
+                        ("@Keyword", keyword ?? ""),
+                        ("@KeywordPattern", $"%{keyword}%"),
+                        ("@IsExaminated", isExaminated));
+
+                    if (startDate.HasValue)
+                    {
+                        command.Parameters.AddWithValue("@StartDate", startDate.Value.Date);
+                    }
+                    else
+                    {
+                        command.Parameters.AddWithValue("@StartDate", DBNull.Value);
+                    }
+
+                    if (endDate.HasValue)
+                    {
+                        command.Parameters.AddWithValue("@EndDate", endDate.Value.Date);
+                    }
+                    else
+                    {
+                        command.Parameters.AddWithValue("@EndDate", DBNull.Value);
+                    }
+
+                    using (var reader = command.ExecuteReader())
+                    {
+                        while (reader.Read())
+                        {
+                            if (totalCount == 0)
+                            {
+                                totalCount = reader.GetInt32(0);
+                            }
+
                             forms.Add(new MedicalExaminationForm
                             {
-                                Id = reader.GetInt32(0),
-                                PatientId = reader.GetInt32(1),
-                                StaffId = reader.GetInt32(2),
-                                DoctorId = reader.GetInt32(3),
-                                Time = reader.GetDateTime(4),
-                                Symptoms = reader.GetString(5),
-                                VisitType = reader.GetString(6),
-                                IsExaminated = reader.GetString(7),
+                                Id = reader.GetInt32(reader.GetOrdinal("id")),
+                                PatientId = reader.GetInt32(reader.GetOrdinal("patientId")),
+                                StaffId = reader.GetInt32(reader.GetOrdinal("staffId")),
+                                DoctorId = reader.GetInt32(reader.GetOrdinal("doctorId")),
+                                Time = reader.GetDateTime(reader.GetOrdinal("time")),
+                                Symptoms = reader.GetString(reader.GetOrdinal("symptom")),
+                                VisitType = reader.GetString(reader.GetOrdinal("visitType")),
+                                IsExaminated = reader.GetString(reader.GetOrdinal("isExaminated")),
                                 Patient = new Patient
                                 {
-                                    Id = reader.GetInt32(1), // PatientId
-                                    Name = reader.GetString(8),
-                                    Email = reader.GetString(9),
-                                    ResidentId = reader.GetString(10),
-                                    Address = reader.GetString(11),
-                                    DoB = reader.GetDateTime(12),
-                                    Gender = reader.GetString(13)
+                                    Id = reader.GetInt32(reader.GetOrdinal("patientId")),
+                                    Name = reader.GetString(reader.GetOrdinal("name")),
+                                    Email = reader.GetString(reader.GetOrdinal("email")),
+                                    ResidentId = reader.GetString(reader.GetOrdinal("residentId")),
+                                    Address = reader.GetString(reader.GetOrdinal("address")),
+                                    DoB = reader.GetDateTime(reader.GetOrdinal("birthday")),
+                                    Gender = reader.GetString(reader.GetOrdinal("gender"))
                                 }
                             });
                         }
                     }
                 }
             }
-            return forms;
+            return (forms, totalCount);
         }
+        
 		/// <summary>
 		/// Lấy danh sách phiếu khám bệnh
 		/// </summary>
@@ -1000,6 +1150,11 @@ namespace ClinicManagementSystem.Service.DataAccess
             return new Tuple<List<MedicalExaminationForm>, int>(result, count);
         }
 
+		/// <summary>
+		/// Lấy thông tin chi tiết phiếu khám bệnh
+		/// </summary>
+		/// <param name="formId"></param>
+		/// <returns>Thông tin chi tiết phiếu khám bệnh</returns>
 		public MedicalExaminationFormDetail GetMedicalExaminationFormDetail(int formId)
         {
             SqlConnection connection = new SqlConnection(_connectionString);
@@ -1054,6 +1209,12 @@ namespace ClinicManagementSystem.Service.DataAccess
 			return result;
 		}
 
+		/// <summary>
+		/// Lấy thống kê khám bệnh theo ngày
+		/// </summary>
+		/// <param name="startDate"></param>
+		/// <param name="endDate"></param>
+		/// <returns>Danh sách thống kê khám bệnh</returns>
         public List<MedicalExaminationStatistic> GetMedicalExaminationStatisticsByDate(DateTimeOffset startDate, DateTimeOffset endDate)
         {
             var result = new List<MedicalExaminationStatistic>();
@@ -1079,6 +1240,10 @@ namespace ClinicManagementSystem.Service.DataAccess
             return result;
         }
 
+		/// <summary>
+		/// Lấy số lượng phiếu khám bệnh ngày hôm nay
+		/// </summary>
+		/// <returns>Số lượng phiếu khám bệnh ngày hôm nay</returns>
 		public int GetTodayMedicalExaminationFormsCount()
 		{
 			using (var connection = new SqlConnection(_connectionString))
@@ -1094,6 +1259,10 @@ namespace ClinicManagementSystem.Service.DataAccess
 			}
 		}
 
+		/// <summary>
+		/// Lấy số lượng phiếu khám bệnh chưa được xác nhận
+		/// </summary>
+		/// <returns>Số lượng phiếu khám bệnh chưa được xác nhận</returns>
 		public int GetPendingFormsCount()
 		{
 			using (var connection = new SqlConnection(_connectionString))
@@ -1366,7 +1535,8 @@ namespace ClinicManagementSystem.Service.DataAccess
 
 
 		//================================================Doctor========================================
-		/// <summary>
+		
+        /// <summary>
 		/// Lấy danh sách bác sĩ
 		/// </summary>
 		/// <returns>Danh sách các bác sĩ</returns>
@@ -1414,7 +1584,8 @@ namespace ClinicManagementSystem.Service.DataAccess
 
 
 		//========================================MedicalRecord==========================================
-		/// <summary>
+		
+        /// <summary>
 		/// Lấy thông tin bệnh án theo id
 		/// </summary>
 		/// <param name="medicalExaminationFormId"></param>
@@ -1446,7 +1617,8 @@ namespace ClinicManagementSystem.Service.DataAccess
         }
 
 		// New method to create a MedicalRecord using data from MedicalExaminationForm
-		/// <summary>
+		
+        /// <summary>
 		/// Tạo bệnh án từ phiếu khám bệnh
 		/// </summary>
 		/// <param name="form"></param>
@@ -1634,6 +1806,12 @@ namespace ClinicManagementSystem.Service.DataAccess
             return null;
         }
 
+		/// <summary>
+		/// Cập nhật trạng thái đã thanh toán đơn thuốc
+		/// </summary>
+		/// <param name="prescriptionId"></param>
+		/// <param name="isBilled"></param>
+		/// <returns>Trả về true nếu cập nhật thành công</returns>
         public bool UpdatePrescriptionBillStatus(int prescriptionId, string isBilled)
         {
             using (var connection = new SqlConnection(_connectionString))
@@ -1659,7 +1837,11 @@ namespace ClinicManagementSystem.Service.DataAccess
             }
         }
 
-        // Thêm phương thức lấy danh sách theo trạng thái in
+		/// <summary>
+		/// Lấy danh sách đơn thuốc theo trạng thái thanh toán
+		/// </summary>
+		/// <param name="isBilled"></param>
+		/// <returns>Danh sách đơn thuốc</returns>
         public List<Prescription> GetPrescriptionsByBillStatus(bool isBilled)
         {
             List<Prescription> prescriptions = new List<Prescription>();
@@ -1708,6 +1890,11 @@ namespace ClinicManagementSystem.Service.DataAccess
             return prescriptions;
         }
 
+		/// <summary>
+		/// Lấy thông tin đơn thuốc theo ID
+		/// </summary>
+		/// <param name="id"></param>
+		/// <returns>Đơn thuốc</returns>
         public Prescription GetPrescriptionById(int id)
         {
             Prescription prescription = null;
@@ -1769,12 +1956,89 @@ namespace ClinicManagementSystem.Service.DataAccess
             }
         }
 
+		/// <summary>
+		/// Lấy danh sách đơn thuốc theo trang
+		/// </summary>
+		/// <param name="currentPage"></param>
+		/// <param name="pageSize"></param>
+		/// <param name="isBilled"></param>
+		/// <param name="keyword"></param>
+		/// <returns>Danh sách đơn thuốc và tổng số đơn thuốc</returns>
+        public (List<Prescription>, int) GetPrescriptionsByPage(
+            int currentPage,
+            int pageSize,
+            string isBilled,
+            string keyword = ""
+        )
+        {
+            var prescriptions = new List<Prescription>();
+            int totalCount = 0;
+
+            using (var connection = new SqlConnection(_connectionString))
+            {
+                connection.Open();
+                using (var command = new SqlCommand())
+                {
+                    command.Connection = connection;
+                    command.CommandText = @"
+                        SELECT COUNT(*) OVER() as TotalCount,
+                            p.id, p.time, p.medicalExaminationFormId, p.nextExaminationDate, p.isBilled,
+                            pt.name as patientName, pt.gender as gender, pt.birthday as birthday
+                        FROM Prescription p
+                        INNER JOIN MedicalExaminationForm m ON p.medicalExaminationFormId = m.id
+                        INNER JOIN Patient pt ON m.patientId = pt.id
+                        WHERE p.isBilled = @IsBilled
+                            AND (@Keyword = '' OR pt.name LIKE @KeywordPattern)
+                        ORDER BY p.time ASC
+                        OFFSET @Offset ROWS 
+                        FETCH NEXT @PageSize ROWS ONLY";
+
+                    AddParameters(command,
+                        ("@Offset", (currentPage - 1) * pageSize),
+                        ("@PageSize", pageSize),
+                        ("@IsBilled", isBilled),
+                        ("@Keyword", keyword ?? ""),
+                        ("@KeywordPattern", $"%{keyword}%"));
+
+                    using (var reader = command.ExecuteReader())
+                    {
+                        while (reader.Read())
+                        {
+                            if (totalCount == 0)
+                            {
+                                totalCount = reader.GetInt32(0);
+                            }
+
+                            prescriptions.Add(new Prescription
+                            {
+                                Id = reader.GetInt32(reader.GetOrdinal("id")),
+                                Time = reader.GetDateTime(reader.GetOrdinal("time")),
+                                MedicalExaminationFormId = reader.GetInt32(reader.GetOrdinal("medicalExaminationFormId")),
+                                NextExaminationDate = reader.IsDBNull(reader.GetOrdinal("nextExaminationDate")) 
+                                    ? null 
+                                    : reader.GetDateTime(reader.GetOrdinal("nextExaminationDate")),
+                                IsBilled = reader.GetString(reader.GetOrdinal("isBilled")),
+                                Patient = new Patient
+                                {
+                                    Name = reader.GetString(reader.GetOrdinal("patientName")),
+                                    Gender = reader.GetString(reader.GetOrdinal("gender")),
+                                    DoB = reader.GetDateTime(reader.GetOrdinal("birthday"))
+                                }
+                            });
+                        }
+                    }
+                }
+            }
+            return (prescriptions, totalCount);
+        }
+
 		//=========================================================================================================
 
 
 
 		//===================================================Patient===============================================
-		/// <summary>
+		
+        /// <summary>
 		/// Lấy danh sách bệnh nhân từ cơ sở dữ liệu
 		/// </summary>
 		/// <param name="page"></param>
@@ -1908,7 +2172,8 @@ namespace ClinicManagementSystem.Service.DataAccess
                 result, count
             );
         }
-		/// <summary>
+		
+        /// <summary>
 		/// Lấy tổng số bệnh nhân
 		/// </summary>
 		/// <returns>Tổng số bệnh nhân</returns>
@@ -1921,7 +2186,8 @@ namespace ClinicManagementSystem.Service.DataAccess
 				return (int)command.ExecuteScalar();
 			}
 		}
-		/// <summary>
+		
+        /// <summary>
 		/// Lấy số lượng bệnh nhân mới trong ngày
 		/// </summary>
 		/// <returns>Số lượng bệnh nhân mới trong ngày</returns>
@@ -2099,7 +2365,8 @@ namespace ClinicManagementSystem.Service.DataAccess
 		//=========================================================================================================
 
 		//=====================================================Bill================================================
-		/// <summary>
+		
+        /// <summary>
 		/// Cập nhật số lượng thuốc
 		/// </summary>
 		/// <param name="selectedMedicines"></param>
@@ -2147,7 +2414,8 @@ namespace ClinicManagementSystem.Service.DataAccess
 
 
 		//==========================================================Bill========================================
-		/// <summary>
+		
+        /// <summary>
 		/// Lấy thông tin hóa đơn theo ngày
 		/// </summary>
 		/// <param name="startDate"></param>
@@ -2178,6 +2446,11 @@ namespace ClinicManagementSystem.Service.DataAccess
             return result;
         }
 
+		/// <summary>
+		/// Lưu hóa đơn
+		/// </summary>
+		/// <param name="bill"></param>
+		/// <returns>True nếu lưu thành công, False nếu lưu thất bại</returns>
         public bool SaveBill(Bill bill)
         {
             try
@@ -2205,6 +2478,249 @@ namespace ClinicManagementSystem.Service.DataAccess
             {
                 System.Diagnostics.Debug.WriteLine($"Error in SaveBill: {ex.Message}");
                 return false;
+            }
+        }
+
+		/// <summary>
+		/// Lấy danh sách hóa đơn theo trang
+		/// </summary>
+		/// <param name="currentPage"></param>
+		/// <param name="pageSize"></param>
+		/// <param name="keyword"></param>
+		/// <param name="startDate"></param>
+		/// <param name="endDate"></param>
+		/// <param name="status"></param>
+		/// <returns>Danh sách hóa đơn và tổng số hóa đơn</returns>
+        public (List<Bill>, int) GetBillsByPage(
+            int currentPage, 
+            int pageSize, 
+            string keyword = "", 
+            DateTimeOffset? startDate = null, 
+            DateTimeOffset? endDate = null,
+            string status = ""
+        )
+        {
+            var bills = new List<Bill>();
+            int totalCount = 0;
+
+            using (var connection = new SqlConnection(_connectionString))
+            {
+                connection.Open();
+                using (var command = new SqlCommand())
+                {
+                    command.Connection = connection;
+                    command.CommandText = @"
+                        SELECT COUNT(*) OVER() as TotalCount,
+                            b.id, b.prescriptionId, b.totalAmount, b.createDate, b.isGetMedicine,
+                            pt.id as patientId, pt.name as patientName, pt.gender as patientGender, 
+                            pt.birthday as patientDoB
+                        FROM Bill b
+                        INNER JOIN Prescription p ON b.prescriptionId = p.id
+                        INNER JOIN MedicalExaminationForm m ON p.medicalExaminationFormId = m.id
+                        INNER JOIN Patient pt ON m.patientId = pt.id
+                        WHERE (@Keyword = '' OR pt.name LIKE @KeywordPattern)
+                            AND (@StartDate IS NULL OR CAST(b.createDate AS DATE) >= @StartDate)
+                            AND (@EndDate IS NULL OR CAST(b.createDate AS DATE) <= @EndDate)
+                            AND (@Status = '' OR b.isGetMedicine = @Status)
+                        ORDER BY b.createDate DESC
+                        OFFSET @Offset ROWS 
+                        FETCH NEXT @PageSize ROWS ONLY";
+
+                    AddParameters(command,
+                        ("@Offset", (currentPage - 1) * pageSize),
+                        ("@PageSize", pageSize),
+                        ("@Keyword", keyword ?? ""),
+                        ("@KeywordPattern", $"%{keyword}%"),
+                        ("@Status", status));
+
+                    // Xử lý riêng cho tham số ngày tháng
+                    if (startDate.HasValue)
+                    {
+                        command.Parameters.AddWithValue("@StartDate", startDate.Value.Date);
+                    }
+                    else
+                    {
+                        command.Parameters.AddWithValue("@StartDate", DBNull.Value);
+                    }
+
+                    if (endDate.HasValue)
+                    {
+                        command.Parameters.AddWithValue("@EndDate", endDate.Value.Date);
+                    }
+                    else
+                    {
+                        command.Parameters.AddWithValue("@EndDate", DBNull.Value);
+                    }
+
+                    using (var reader = command.ExecuteReader())
+                    {
+                        while (reader.Read())
+                        {
+                            if (totalCount == 0)
+                            {
+                                totalCount = reader.GetInt32(0);
+                            }
+
+                            bills.Add(new Bill
+                            {
+                                Id = reader.GetInt32(reader.GetOrdinal("id")),
+                                PrescriptionId = reader.GetInt32(reader.GetOrdinal("prescriptionId")),
+                                TotalAmount = reader.GetInt32(reader.GetOrdinal("totalAmount")),
+                                CreatedDate = reader.GetDateTime(reader.GetOrdinal("createDate")),
+                                IsGetMedicine = reader.GetString(reader.GetOrdinal("isGetMedicine")),
+                                Patient = new Patient
+                                {
+                                    Id = reader.GetInt32(reader.GetOrdinal("patientId")),
+                                    Name = reader.GetString(reader.GetOrdinal("patientName")),
+                                    Gender = reader.GetString(reader.GetOrdinal("patientGender")),
+                                    DoB = reader.GetDateTime(reader.GetOrdinal("patientDoB"))
+                                }
+                            });
+                        }
+                    }
+                }
+            }
+            return (bills, totalCount);
+        }
+
+		/// <summary>
+		/// Lấy thông tin hóa đơn theo ID
+		/// </summary>
+		/// <param name="id"></param>
+		/// <returns>Hóa đơn</returns>
+        public Bill GetBillById(int id)
+        {
+            try
+            {
+                using (SqlConnection connection = new SqlConnection(_connectionString))
+                {
+                    connection.Open();
+                    System.Diagnostics.Debug.WriteLine($"Querying bill with ID: {id}"); // Debug line
+
+                    string query = @"
+                        SELECT b.*, p.*, mef.*, pt.*,
+                            CASE 
+                                WHEN b.isGetMedicine = 'true' THEN m.id 
+                                ELSE NULL 
+                            END as medicineId,
+                            CASE 
+                                WHEN b.isGetMedicine = 'true' THEN m.name 
+                                ELSE NULL 
+                            END as medicineName,
+                            CASE 
+                                WHEN b.isGetMedicine = 'true' THEN m.price 
+                                ELSE NULL 
+                            END as medicinePrice,
+                            CASE 
+                                WHEN b.isGetMedicine = 'true' THEN pd.quantity 
+                                ELSE NULL 
+                            END as prescribedQuantity,
+                            CASE 
+                                WHEN b.isGetMedicine = 'true' THEN (
+                                    SELECT SUM(pd2.quantity * m2.price)
+                                    FROM PrescriptionDetail pd2 
+                                    JOIN Medicine m2 ON pd2.medicineId = m2.id
+                                    WHERE pd2.prescriptionId = p.id
+                                )
+                                ELSE 0
+                            END as totalMedicineCost
+                        FROM Bill b
+                        JOIN Prescription p ON b.prescriptionId = p.id
+                        JOIN MedicalExaminationForm mef ON p.medicalExaminationFormId = mef.id
+                        JOIN Patient pt ON mef.patientId = pt.id
+                        LEFT JOIN PrescriptionDetail pd ON (p.id = pd.prescriptionId AND b.isGetMedicine = 'true')
+                        LEFT JOIN Medicine m ON (pd.medicineId = m.id AND b.isGetMedicine = 'true')
+                        WHERE b.id = @Id";
+
+                    using (SqlCommand command = new SqlCommand(query, connection))
+                    {
+                        command.Parameters.AddWithValue("@Id", id);
+                        try
+                        {
+                            using (SqlDataReader reader = command.ExecuteReader())
+                            {
+                                System.Diagnostics.Debug.WriteLine("Reader executed successfully"); // Debug line
+                                Bill bill = null;
+                                var medicineSelections = new List<MedicineSelection>();
+
+                                while (reader.Read())
+                                {
+                                    System.Diagnostics.Debug.WriteLine("Reading row..."); // Debug line
+                                    try
+                                    {
+                                        if (bill == null)
+                                        {
+                                            int totalAmount = reader.GetInt32(reader.GetOrdinal("totalAmount"));
+                                            int totalMedicineCost = reader.IsDBNull(reader.GetOrdinal("totalMedicineCost")) ? 0 : reader.GetInt32(reader.GetOrdinal("totalMedicineCost"));
+
+                                            bill = new Bill
+                                            {
+                                                Id = reader.GetInt32(reader.GetOrdinal("id")),
+                                                PrescriptionId = reader.GetInt32(reader.GetOrdinal("prescriptionId")),
+                                                TotalAmount = reader.GetInt32(reader.GetOrdinal("totalAmount")),
+                                                CreatedDate = reader.GetDateTime(reader.GetOrdinal("createDate")),
+                                                IsGetMedicine = reader.GetString(reader.GetOrdinal("isGetMedicine")),
+                                                Patient = new Patient
+                                                {
+                                                    Id = reader.GetInt32(reader.GetOrdinal("patientId")),
+                                                    Name = reader.GetString(reader.GetOrdinal("name")),
+                                                    ResidentId = reader.GetString(reader.GetOrdinal("residentId")),
+                                                    Gender = reader.GetString(reader.GetOrdinal("gender")),
+                                                    DoB = reader.GetDateTime(reader.GetOrdinal("birthday")),
+                                                    Address = reader.GetString(reader.GetOrdinal("address"))
+                                                },
+                                                ExaminationFee = totalAmount - totalMedicineCost
+                                            };
+                                            System.Diagnostics.Debug.WriteLine($"Created bill object with ID: {bill.Id}"); // Debug line
+                                        }
+
+                                        if (!reader.IsDBNull(reader.GetOrdinal("medicineId")))
+                                        {
+                                            var medicine = new MedicineSelection
+                                            {
+                                                Medicine = new Medicine
+                                                {
+                                                    Id = reader.GetInt32(reader.GetOrdinal("medicineId")),
+                                                    Name = reader.GetString(reader.GetOrdinal("medicineName")),
+                                                    Price = reader.GetInt32(reader.GetOrdinal("medicinePrice"))
+                                                },
+                                                SelectedQuantity = reader.GetInt32(reader.GetOrdinal("prescribedQuantity"))
+                                            };
+                                            medicineSelections.Add(medicine);
+                                            System.Diagnostics.Debug.WriteLine($"Added medicine: {medicine.Medicine.Name}"); // Debug line
+                                        }
+                                    }
+                                    catch (Exception ex)
+                                    {
+                                        System.Diagnostics.Debug.WriteLine($"Error reading data: {ex.Message}"); // Debug line
+                                    }
+                                }
+
+                                if (bill != null)
+                                {
+                                    bill.Medicines = medicineSelections;
+                                    System.Diagnostics.Debug.WriteLine($"Returning bill with {medicineSelections.Count} medicines"); // Debug line
+                                }
+                                else
+                                {
+                                    System.Diagnostics.Debug.WriteLine("No bill found"); // Debug line
+                                }
+
+                                return bill;
+                            }
+                        }
+                        catch (Exception ex)
+                        {
+                            System.Diagnostics.Debug.WriteLine($"Error executing reader: {ex.Message}"); // Debug line
+                            throw;
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine($"Error in GetBillById: {ex.Message}");
+                throw; // Thêm throw để xem lỗi chi tiết
             }
         }
     }

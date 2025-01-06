@@ -1,5 +1,6 @@
 ﻿using System.Collections.ObjectModel;
 using ClinicManagementSystem.Service.DataAccess;
+using ClinicManagementSystem.Service;
 using ClinicManagementSystem.Model;
 using System.ComponentModel;
 using System.Linq;
@@ -8,14 +9,17 @@ using System;
 
 namespace ClinicManagementSystem.ViewModel
 {
+    /// <summary>
+    /// ViewModel cho MedicineSelection
+    /// </summary>
     public class MedicineSelectionViewModel : BaseViewModel
     {
-        private readonly SqlServerDao _dataAccess;
+        private readonly IDao _dataAccess;
 
         private ObservableCollection<MedicineSelection> _availableMedicines;
         public ObservableCollection<MedicineSelection> AvailableMedicines
         {
-            get { return _availableMedicines; }
+            get => _availableMedicines;
             set
             {
                 if (_availableMedicines != value)
@@ -33,6 +37,32 @@ namespace ClinicManagementSystem.ViewModel
 
         private string _searchText;
         private ObservableCollection<MedicineSelection> _filteredMedicines;
+
+        private int _currentPage = 1;
+        private int _totalPages;
+        private int _totalItems = 0;
+        private int _pageSize = 10;
+
+        private ObservableCollection<PageInfo> _pageInfos;
+        private PageInfo _selectedPageInfo;
+
+        public int CurrentPage
+        {
+            get => _currentPage;
+            set
+            {
+                if (SetProperty(ref _currentPage, value))
+                {
+                    LoadAvailableMedicines();
+                }
+            }
+        }
+
+        public int TotalPages
+        {
+            get => _totalPages;
+            private set => SetProperty(ref _totalPages, value);
+        }
 
         public string SearchText
         {
@@ -52,10 +82,30 @@ namespace ClinicManagementSystem.ViewModel
             private set => SetProperty(ref _filteredMedicines, value);
         }
 
+        public ObservableCollection<PageInfo> PageInfos
+        {
+            get => _pageInfos;
+            set => SetProperty(ref _pageInfos, value);
+        }
+
+        public PageInfo SelectedPageInfo
+        {
+            get => _selectedPageInfo;
+            set
+            {
+                if (SetProperty(ref _selectedPageInfo, value) && value != null)
+                {
+                    CurrentPage = value.Page;
+                    LoadAvailableMedicines();
+                }
+            }
+        }
+
         public MedicineSelectionViewModel()
         {
-            _dataAccess = new SqlServerDao();
+            _dataAccess = ServiceFactory.GetChildOf(typeof(IDao)) as IDao;
             AvailableMedicines = new ObservableCollection<MedicineSelection>();
+            PageInfos = new ObservableCollection<PageInfo>();
             _currentFormId = -1;
             LoadAvailableMedicines();
             FilteredMedicines = new ObservableCollection<MedicineSelection>(AvailableMedicines);
@@ -66,12 +116,32 @@ namespace ClinicManagementSystem.ViewModel
 		/// </summary>
 		private void LoadAvailableMedicines()
         {
-            var medicines = _dataAccess.GetAvailableMedicines();
+            var (medicines, totalCount) = _dataAccess.GetMedicinesByPage(CurrentPage, _pageSize, SearchText);
+            
             AvailableMedicines.Clear();
             foreach (var medicine in medicines)
             {
-                AvailableMedicines.Add(new MedicineSelection { Medicine = medicine });
+                AvailableMedicines.Add(medicine);
             }
+
+            if (totalCount != _totalItems)
+            {
+                _totalItems = totalCount;
+                TotalPages = (_totalItems + _pageSize - 1) / _pageSize;
+                UpdatePageInfos();
+            }
+
+            FilterMedicines();
+        }
+
+        private void UpdatePageInfos()
+        {
+            PageInfos.Clear();
+            for (int i = 1; i <= TotalPages; i++)
+            {
+                PageInfos.Add(new PageInfo { Page = i, Total = TotalPages });
+            }
+            SelectedPageInfo = PageInfos.FirstOrDefault(p => p.Page == CurrentPage);
         }
 
         public void InitializeWithSelectedMedicines(ObservableCollection<MedicineSelection> selectedMedicines)
@@ -164,6 +234,30 @@ namespace ClinicManagementSystem.ViewModel
             }
             
             System.Diagnostics.Debug.WriteLine($"Filtered medicines count: {FilteredMedicines.Count}");
+        }
+
+        public void GoToNextPage()
+        {
+            if (CurrentPage < TotalPages)
+            {
+                CurrentPage++;
+            }
+        }
+
+        public void GoToPreviousPage()
+        {
+            if (CurrentPage > 1)
+            {
+                CurrentPage--;
+            }
+        }
+
+        public void GoToPage(int page)
+        {
+            if (page >= 1 && page <= TotalPages)
+            {
+                CurrentPage = page;
+            }
         }
     }
 }
