@@ -173,9 +173,5 @@ namespace ClinicManagementSystem.Service.DataAccess
 		public bool UpdatePrescriptionBillStatus(int prescriptionId, string isBilled);
 
 		public int GetMonthlyPrescriptionCountByDoctorId(int id);
-
-
-		//=========================================Bill==========================================
-		public List<BillStatistic> GetBillStatistic(DateTimeOffset startDate, DateTimeOffset endDate);
     }
 }

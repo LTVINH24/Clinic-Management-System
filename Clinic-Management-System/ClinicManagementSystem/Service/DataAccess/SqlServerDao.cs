@@ -861,63 +861,7 @@ namespace ClinicManagementSystem.Service.DataAccess
                         ("@PageSize", pageSize),
                         ("@Keyword", keyword ?? ""),
                         ("@KeywordPattern", $"%{keyword}%"));
-                    using (var reader = command.ExecuteReader())
-                    {
-                        while (reader.Read())
-                        {
-                            if (totalCount == 0)
-                            {
-                                totalCount = reader.GetInt32(0);
-                            }
 
-                            var medicine = new Medicine
-                            {
-                                Id = reader.GetInt32(reader.GetOrdinal("id")),
-                                Name = reader.GetString(reader.GetOrdinal("name")),
-                                Manufacturer = reader.GetString(reader.GetOrdinal("manufacturer")),
-                                Price = reader.GetInt32(reader.GetOrdinal("price")),
-                                Quantity = reader.GetInt32(reader.GetOrdinal("quantity")),
-                                ExpDate = reader.GetDateTime(reader.GetOrdinal("expDate")),
-                                MfgDate = reader.GetDateTime(reader.GetOrdinal("mfgDate"))
-                            };
-
-                            var medicineSelection = new MedicineSelection
-                            {
-                                Medicine = medicine,
-                                IsSelected = false,
-                                SelectedQuantity = 0,
-                                SelectedDosage = ""
-                            };
-
-                            medicines.Add(medicineSelection);
-                        }
-                    }
-                }
-            }
-            return (medicines, totalCount);
-        }
-
-		/// <returns>Danh sách phiếu khám bệnh</returns>
-		public List<MedicalExaminationForm> GetMedicalExaminationForms(int id)
-        {
-            var medicines = new List<MedicineSelection>();
-            int totalCount = 0;
-
-            using (var connection = new SqlConnection(_connectionString))
-            {
-                connection.Open();
-                using (var command = new SqlCommand())
-                {
-                    command.Connection = connection;
-                    command.CommandText = @"
-                        SELECT f.id, f.patientId, f.staffId, f.doctorId, f.time, 
-                               f.symptom, f.visitType, f.isExaminated,
-                               p.name, p.email, p.residentId, p.address, p.birthday, p.gender
-                        FROM MedicalExaminationForm f
-                        INNER JOIN Patient p ON f.patientId = p.id
-                        WHERE f.doctorId = @id
-                        ORDER BY f.time DESC";
-                    AddParameters(command, ("@id", id));
                     using (var reader = command.ExecuteReader())
                     {
                         while (reader.Read())
