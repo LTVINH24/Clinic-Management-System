@@ -117,7 +117,8 @@
                                 PlaceholderText="Pick a date" 
                                 Header="Birthday" 
                                 Date="{x:Bind viewModel.user.birthday,Mode=TwoWay}" 
-                                Foreground="{ThemeResource ApplicationForegroundThemeBrush}"/>
+                                Foreground="{ThemeResource ApplicationForegroundThemeBrush}"
+                                DateFormat="{}{day.integer(2)}/{month.integer(2)}/{year.full}"/>
                         </Grid>
 
                         <PasswordBox Grid.Row="4" 

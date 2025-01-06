@@ -22,8 +22,8 @@
             <oxy:PlotView Model="{Binding ChartModel}" />
         </Grid>
         <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Grid.Row="1" Grid.Column="0">
-            <CalendarDatePicker DateFormat="{}{day.integer}/{month.integer}/{year.full}"  x:Name="StartDate" PlaceholderText="Choose Date" Header="StartDate" Date="{x:Bind ViewModel.startDate,Mode=TwoWay}" Foreground="{ThemeResource ApplicationForegroundThemeBrush}"/>
-            <CalendarDatePicker DateFormat="{}{day.integer}/{month.integer}/{year.full}" Margin="20,0,20,0" x:Name="EndDate"   PlaceholderText="Choose Date" Header="EndDate" Date="{x:Bind ViewModel.endDate, Mode=TwoWay}" Foreground="{ThemeResource ApplicationForegroundThemeBrush}"/>
+            <CalendarDatePicker DateFormat="{}{day.integer(2)}/{month.integer(2)}/{year.full}"  x:Name="StartDate" PlaceholderText="Choose Date" Header="StartDate" Date="{x:Bind ViewModel.startDate,Mode=TwoWay}" Foreground="{ThemeResource ApplicationForegroundThemeBrush}"/>
+            <CalendarDatePicker DateFormat="{}{day.integer(2)}/{month.integer(2)}/{year.full}" Margin="20,0,20,0" x:Name="EndDate"   PlaceholderText="Choose Date" Header="EndDate" Date="{x:Bind ViewModel.endDate, Mode=TwoWay}" Foreground="{ThemeResource ApplicationForegroundThemeBrush}"/>
             <Button Margin="0,24,0,0" Click="viewStatistic">View Statistic</Button>
         </StackPanel>
     </Grid>

@@ -25,8 +25,8 @@
             <CalendarDatePicker  
                 x:Name="StartDate" 
                 PlaceholderText="Choose Date" 
+                DateFormat="{}{day.integer(2)}/{month.integer(2)}/{year.full}"
                 Header="StartDate" 
-                DateFormat="{}{day.integer}/{month.full}/{year.full}"
                 Date="{x:Bind ViewModel.startDate,Mode=TwoWay}" 
                 Foreground="{ThemeResource ApplicationForegroundThemeBrush}"/>
             <CalendarDatePicker 
@@ -34,7 +34,7 @@
                 x:Name="EndDate"   
                 PlaceholderText="Choose Date" 
                 Header="EndDate" 
-                DateFormat="{}{day.integer}/{month.full}/{year.full}"
+                DateFormat="{}{day.integer(2)}/{month.integer(2)}/{year.full}"
                 Date="{x:Bind ViewModel.endDate, Mode=TwoWay}" 
                 Foreground="{ThemeResource ApplicationForegroundThemeBrush}"/>
             <Button Margin="0,24,0,0" Click="viewStatistic">View Statistic</Button>

@@ -30,8 +30,8 @@ namespace ClinicManagementSystem.ViewModel.Statistic
         IDao _dao;
         public PlotModel ChartModel { get; private set; }
         public PlotModel ChartModelMoney { get; private set; }
-        public DateTimeOffset startDate { get; set; }
-        public DateTimeOffset endDate { get; set; }
+        public DateTimeOffset? startDate { get; set; } = null;
+        public DateTimeOffset? endDate { get; set; } = null;
         private ObservableCollection<MedicineStatistic> _medicinestatisticcommon;
         public ObservableCollection<MedicineStatistic> MedicinesStatisticCommom
         {
@@ -53,8 +53,8 @@ namespace ClinicManagementSystem.ViewModel.Statistic
         public StatisticMedicineViewModel()
         {
             _dao = ServiceFactory.GetChildOf(typeof(IDao)) as IDao;
-            startDate = DateTimeOffset.Now;
-            endDate = DateTimeOffset.Now;
+            startDate = DateTimeOffset.Now.Date;
+            endDate = DateTimeOffset.Now.Date;
             LoadData();
             UpdateChart();
         }
@@ -62,15 +62,20 @@ namespace ClinicManagementSystem.ViewModel.Statistic
 		/// Load data từ database
 		/// </summary>
 		public void LoadData()
-        { 
-            var items = _dao.GetTopMedicineStatistic(startDate, endDate, 10, "QuantitySold");
+        {
+			if (!startDate.HasValue || !endDate.HasValue)
+			{
+				return;
+			}
+
+			var items = _dao.GetTopMedicineStatistic(startDate.Value, endDate.Value, 10, "QuantitySold");
             MedicinesStatistic.Clear();
             foreach (var item in items)
             {
                 MedicinesStatistic.Add(item);
             }
 
-            var itemsMoney = _dao.GetTopMedicineStatistic(startDate, endDate, 10, "MoneySold");
+            var itemsMoney = _dao.GetTopMedicineStatistic(startDate.Value, endDate.Value, 10, "MoneySold");
             MedicinesStatisticMoney.Clear();
             foreach (var item in itemsMoney)
             {
@@ -84,7 +89,12 @@ namespace ClinicManagementSystem.ViewModel.Statistic
 		/// <param name="ChartModel"></param>
 		private void UpdateChartTheme(PlotModel ChartModel)
         {
-            var currentTheme = ThemeService.Instance.GetCurrentTheme();
+			if (!startDate.HasValue || !endDate.HasValue)
+			{
+				return;
+			}
+
+			var currentTheme = ThemeService.Instance.GetCurrentTheme();
             var backgroundColor = currentTheme == "Dark" ? OxyColor.FromRgb(32, 32, 32) : OxyColor.FromRgb(255, 255, 255);
             var foregroundColor = currentTheme == "Dark" ? OxyColor.FromRgb(255, 255, 255) : OxyColor.FromRgb(0, 0, 0);
 
@@ -107,7 +117,12 @@ namespace ClinicManagementSystem.ViewModel.Statistic
 		/// </summary>
 		public void UpdateChart()
         {
-            var modelMoney = new PlotModel { Title = "Highest drug revenue" };
+			if (!startDate.HasValue || !endDate.HasValue)
+			{
+				return;
+			}
+
+			var modelMoney = new PlotModel { Title = "Highest drug revenue" };
             var categoryMoneyAxis = new CategoryAxis
             {
                 Position = AxisPosition.Left,
@@ -162,7 +177,12 @@ namespace ClinicManagementSystem.ViewModel.Statistic
 		/// </summary>
 		private void LoadDataToExportExcel()
         {
-            var items = _dao.GetMedicineStatistic(startDate, endDate);
+			if (!startDate.HasValue || !endDate.HasValue)
+			{
+				return;
+			}
+
+			var items = _dao.GetMedicineStatistic(startDate.Value, endDate.Value);
             foreach (var item in items)
             {
                 MedicinesStatisticCommom.Add(item);
@@ -173,15 +193,19 @@ namespace ClinicManagementSystem.ViewModel.Statistic
 		/// </summary>
 		public async void MedicineExportToExcel()
         {
-            
-            LoadDataToExportExcel();
+			if (!startDate.HasValue || !endDate.HasValue)
+			{
+				return;
+			}
+
+			LoadDataToExportExcel();
 
             ExcelPackage.LicenseContext = OfficeOpenXml.LicenseContext.NonCommercial;
 
             using (var package = new ExcelPackage())
             {
                 var worksheet = package.Workbook.Worksheets.Add("Medicine Statistic");
-                worksheet.Cells[1, 1].Value = "From " + startDate.ToString("dd/MM/yyyy") + " to " + endDate.ToString("dd/MM/yyyy");
+                worksheet.Cells[1, 1].Value = "From " + startDate.Value.ToString("dd/MM/yyyy") + " to " + endDate.Value.ToString("dd/MM/yyyy");
                 using (var range = worksheet.Cells[1, 1, 1, 4])
                 {
                     range.Merge = true;
@@ -200,7 +224,7 @@ namespace ClinicManagementSystem.ViewModel.Statistic
                     range.Style.Fill.BackgroundColor.SetColor(System.Drawing.Color.LightGray);
                 }
                 int row = 4;
-                for (DateTime date = startDate.Date; date <= endDate.Date; date = date.AddDays(1))
+                for (DateTime date = startDate.Value.Date; date <= endDate.Value.Date; date = date.AddDays(1))
                 {
                     decimal dailyTotal = 0;
                     var dateData = MedicinesStatisticCommom.Where(x => x.Date.Date == date);

@@ -24,9 +24,9 @@ namespace ClinicManagementSystem.ViewModel.Statistic
         IDao _dao;
         public PlotModel ChartModel { get; private set; }
         private ObservableCollection<MedicalExaminationStatistic> _medicalExaminationstatistic;
-        public DateTimeOffset startDate { get; set; }
-        public DateTimeOffset endDate { get; set; }
-        public ObservableCollection<MedicalExaminationStatistic> MedicalExaminationstatistic
+        public DateTimeOffset? startDate { get; set; } = null;
+        public DateTimeOffset? endDate { get; set; } = null;
+		public ObservableCollection<MedicalExaminationStatistic> MedicalExaminationstatistic
         {
             get => _medicalExaminationstatistic ??= new ObservableCollection<MedicalExaminationStatistic>();
             set => _medicalExaminationstatistic = value;
@@ -34,8 +34,8 @@ namespace ClinicManagementSystem.ViewModel.Statistic
         public StatisticMedicalExaminationViewModel()
         {
             _dao= ServiceFactory.GetChildOf(typeof(IDao)) as IDao;
-            startDate = DateTimeOffset.Now;
-            endDate = DateTimeOffset.Now;
+            startDate = DateTimeOffset.Now.Date.AddDays(-1);
+            endDate = DateTimeOffset.Now.Date;
             LoadData();
             UpdateChart();
         }
@@ -44,7 +44,12 @@ namespace ClinicManagementSystem.ViewModel.Statistic
 		/// </summary>
 		public void LoadData()
         {
-            var items = _dao.GetMedicalExaminationStatisticsByDate(startDate, endDate);
+			if (!startDate.HasValue || !endDate.HasValue)
+			{
+				return;
+			}
+
+			var items = _dao.GetMedicalExaminationStatisticsByDate(startDate.Value, endDate.Value);
             MedicalExaminationstatistic.Clear();
             foreach (var item in items)
             {
@@ -56,7 +61,12 @@ namespace ClinicManagementSystem.ViewModel.Statistic
 		/// </summary>
 		private void UpdateChartTheme()
         {
-            var currentTheme = ThemeService.Instance.GetCurrentTheme();
+			if (!startDate.HasValue || !endDate.HasValue)
+			{
+				return;
+			}
+
+			var currentTheme = ThemeService.Instance.GetCurrentTheme();
             var backgroundColor = currentTheme == "Dark" ? OxyColor.FromRgb(32, 32, 32) : OxyColor.FromRgb(255, 255, 255);
             var foregroundColor = currentTheme == "Dark" ? OxyColor.FromRgb(255, 255, 255) : OxyColor.FromRgb(0, 0, 0);
 
@@ -78,14 +88,19 @@ namespace ClinicManagementSystem.ViewModel.Statistic
 		/// </summary>
 		public void UpdateChart()
         {
-            var model = new PlotModel { Title = "Statistic Patient Visits" };
+			if (!startDate.HasValue || !endDate.HasValue)
+			{
+				return;
+			}
+
+			var model = new PlotModel { Title = "Statistic Patient Visits" };
 
             var dateAxis = new DateTimeAxis
             {
                 Position = AxisPosition.Bottom,
                 Title = "Date",
-                Minimum = DateTimeAxis.ToDouble(startDate.DateTime),
-                Maximum = DateTimeAxis.ToDouble(endDate.DateTime),
+                Minimum = DateTimeAxis.ToDouble(startDate.Value.DateTime),
+                Maximum = DateTimeAxis.ToDouble(endDate.Value.DateTime),
                 StringFormat = "dd/MM/yyyy",
                 IntervalType = DateTimeIntervalType.Days,
                 MajorStep = 1,
@@ -98,8 +113,8 @@ namespace ClinicManagementSystem.ViewModel.Statistic
 
 
             var lineSeries = new LineSeries { Title = "Examinations", StrokeThickness = 2, Color = OxyColors.Red };
-            var currentDateTime = startDate.DateTime;
-            var endDateTime  = endDate.DateTime;
+            var currentDateTime = startDate.Value.DateTime;
+            var endDateTime  = endDate.Value.DateTime;
             while (currentDateTime <= endDateTime)
             {
                 var statistic = MedicalExaminationstatistic.FirstOrDefault(s => s.date.Date == currentDateTime.Date);

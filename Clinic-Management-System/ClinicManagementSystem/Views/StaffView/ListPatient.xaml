@@ -207,13 +207,15 @@
                                 Width="250"
                                 PlaceholderText="Choose start date follow-up" 
                                 Date="{x:Bind ViewModel.StartDateFollowUp, Mode=TwoWay}"
-                                Foreground="{ThemeResource ApplicationForegroundThemeBrush}"/>
+                                Foreground="{ThemeResource ApplicationForegroundThemeBrush}"
+                                DateFormat="{}{day.integer(2)}/{month.integer(2)}/{year.full}"/>
 
             <CalendarDatePicker Header="To date"
                                 Width="250"
                                 PlaceholderText="Choose end date follow-up"
                                 Date="{x:Bind ViewModel.EndDateFollowUp, Mode=TwoWay}"
-                                Foreground="{ThemeResource ApplicationForegroundThemeBrush}"/>
+                                Foreground="{ThemeResource ApplicationForegroundThemeBrush}"
+                                DateFormat="{}{day.integer(2)}/{month.integer(2)}/{year.full}"/>
 
             <Button Click="ClearFilter_Click"
                 Content="Clear filter"

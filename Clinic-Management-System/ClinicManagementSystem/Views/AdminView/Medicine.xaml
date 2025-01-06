@@ -81,10 +81,10 @@
                         SmallChange="10"
                         LargeChange="100" />
                     <TextBox x:Name="ManufacturerEditMedicine" Header="Manufacturer" Text="{x:Bind ViewModel.MedicineEdit.Manufacturer, Mode=TwoWay}" Margin="0,0,0,10"/>
-                    <CalendarDatePicker Header="Import Date" DateFormat="{}{day.integer}/{month.integer}/{year.full}" Date="{x:Bind ViewModel.MedicineEdit.DateImport, Mode=OneWay}" Margin="0,0,0,10"/>
+                    <CalendarDatePicker Header="Import Date" DateFormat="{}{day.integer(2)}/{month.integer(2)}/{year.full}" Date="{x:Bind ViewModel.MedicineEdit.DateImport, Mode=OneWay}" Margin="0,0,0,10"/>
 
-                    <CalendarDatePicker x:Name="ExpDateEditMedicine" DateFormat="{}{day.integer}/{month.integer}/{year.full}" Header="EXP Date" Date="{x:Bind ViewModel.MedicineEdit.ExpDate, Mode=TwoWay}" Margin="0,0,0,10"/>
-                    <CalendarDatePicker x:Name="MfgDateEditMedicine" DateFormat="{}{day.integer}/{month.integer}/{year.full}"  Header="MFG Date" Date="{x:Bind ViewModel.MedicineEdit.MfgDate,  Mode=TwoWay}" Margin="0,0,0,10"/>
+                    <CalendarDatePicker x:Name="ExpDateEditMedicine" DateFormat="{}{day.integer(2)}/{month.integer(2)}/{year.full}" Header="EXP Date" Date="{x:Bind ViewModel.MedicineEdit.ExpDate, Mode=TwoWay}" Margin="0,0,0,10"/>
+                    <CalendarDatePicker x:Name="MfgDateEditMedicine" DateFormat="{}{day.integer(2)}/{month.integer(2)}/{year.full}"  Header="MFG Date" Date="{x:Bind ViewModel.MedicineEdit.MfgDate,  Mode=TwoWay}" Margin="0,0,0,10"/>
                     <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
                         <Button Click="UpdateMedicine_Click" Background="Blue" Foreground="White" Content="Update" Margin="5"/>
                         <Button Click="ClosePopup_Click" Content="Cancel" Margin="5"/>
@@ -167,8 +167,8 @@
                 SmallChange="10"
                 LargeChange="100" />       
                 <TextBox x:Name="NewMedicineManufacturer" Width="300" Margin="5" Header="Manufacturer" Grid.Row="1" Grid.Column="1" Text="{x:Bind ViewModel.MedicineNew.Manufacturer, Mode=TwoWay}"/>
-                <CalendarDatePicker DateFormat="{}{day.integer}/{month.integer}/{year.full}" x:Name="NewMedicineMfgDate" Margin="5" Width="300" Grid.Row="2" Grid.Column="0" PlaceholderText="Pick a date" Header="MFG Date" Date="{x:Bind ViewModel.MedicineNew.MfgDate, Mode=TwoWay}"/>
-                <CalendarDatePicker DateFormat="{}{day.integer}/{month.integer}/{year.full}" x:Name="NewMedicineExpDate" Margin="5" Width="300" Grid.Row="2" Grid.Column="1" PlaceholderText="Pick a date" Header="EXP Date" Date="{x:Bind ViewModel.MedicineNew.ExpDate, Mode=TwoWay}"/>
+                <CalendarDatePicker DateFormat="{}{day.integer(2)}/{month.integer(2)}/{year.full}" x:Name="NewMedicineMfgDate" Margin="5" Width="300" Grid.Row="2" Grid.Column="0" PlaceholderText="Pick a date" Header="MFG Date" Date="{x:Bind ViewModel.MedicineNew.MfgDate, Mode=TwoWay}"/>
+                <CalendarDatePicker DateFormat="{}{day.integer(2)}/{month.integer(2)}/{year.full}" x:Name="NewMedicineExpDate" Margin="5" Width="300" Grid.Row="2" Grid.Column="1" PlaceholderText="Pick a date" Header="EXP Date" Date="{x:Bind ViewModel.MedicineNew.ExpDate, Mode=TwoWay}"/>
                 <StackPanel Grid.Row="3" Grid.ColumnSpan="2" Orientation="Horizontal" HorizontalAlignment="Center">
                     <Button Click="addMedicine" x:Name="AddBtn" Margin="20,5,20,5" Width="80" Background="Blue" Foreground="White">Add</Button>
                     <Button Click="cancelMedicine" Margin="20,5,20,5" Width="80">Cancel</Button>

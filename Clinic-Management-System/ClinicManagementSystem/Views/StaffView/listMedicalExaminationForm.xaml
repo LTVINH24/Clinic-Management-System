@@ -203,13 +203,15 @@
                 PlaceholderText="Choose start date create" 
                 Date="{x:Bind ViewModel.StartDate, Mode=TwoWay}"
                 Width="220"
-                Foreground="{ThemeResource ApplicationForegroundThemeBrush}"/>
+                Foreground="{ThemeResource ApplicationForegroundThemeBrush}"
+                DateFormat="{}{day.integer(2)}/{month.integer(2)}/{year.full}"/>
 
             <CalendarDatePicker Header="To date"
                 PlaceholderText="Choose end date create"
                 Date="{x:Bind ViewModel.EndDate, Mode=TwoWay}"
                 Width="220"
-                Foreground="{ThemeResource ApplicationForegroundThemeBrush}"/>
+                Foreground="{ThemeResource ApplicationForegroundThemeBrush}"
+                DateFormat="{}{day.integer(2)}/{month.integer(2)}/{year.full}"/>
                 
             <ComboBox x:Name="StatusFilter"
                     Header="Status"

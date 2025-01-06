@@ -174,6 +174,7 @@ namespace ClinicManagementSystem.ViewModel
 		{
 			bool success = _dao.CreateMedicine(MedicineNew);
 			LoadMedicines();
+			MedicineNew = new Medicine();
 			return success;
 		}
 
