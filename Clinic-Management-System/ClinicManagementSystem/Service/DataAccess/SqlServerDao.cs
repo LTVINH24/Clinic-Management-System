@@ -1049,22 +1049,22 @@ namespace ClinicManagementSystem.Service.DataAccess
             foreach (var item in sortOptions)
             {
                 useDefault = false;
-                if (item.Key == "patientId")
+                if (item.Key == "time")
                 {
                     if (item.Value == SortType.Ascending)
                     {
-                        sortString += "patientId ASC, ";
+                        sortString += "time ASC, ";
                     }
                     else
                     {
-                        sortString += "patientId DESC, ";
+                        sortString += "time DESC, ";
                     }
                 }
             }
 
             if (useDefault)
             {
-                sortString += "ID ";
+                sortString += "time DESC";
             }
 
 			if (!string.IsNullOrEmpty(statusFilter))

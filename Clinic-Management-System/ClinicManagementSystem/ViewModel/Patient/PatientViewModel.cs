@@ -150,7 +150,7 @@ namespace ClinicManagementSystem.ViewModel
 			}
 
 			PageInfos.Clear();
-			for (int i = CurrentPage; i <= Math.Min(CurrentPage + 2, TotalPages); i++)
+			for (int i = Math.Max(1, CurrentPage - 2); i <= Math.Min(CurrentPage + 2, TotalPages); i++)
 			{
 				PageInfos.Add(new PageInfo
 				{

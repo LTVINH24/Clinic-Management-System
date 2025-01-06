@@ -86,7 +86,7 @@
                 <ComboBox ItemsSource="{x:Bind ViewModel.PageInfos, Mode=OneWay}"
                         SelectedItem="{x:Bind ViewModel.SelectedPageInfoItem, Mode=TwoWay}"
                         SelectionChanged="pagesComboBox_SelectionChanged"
-                        Margin="5" Name="pagesComboBox" Width="100" Height="30">
+                        Margin="5,0,5,20" Name="pagesComboBox" Width="100" Height="30">
                     <ComboBox.ItemTemplate>
                         <DataTemplate x:DataType="localmodel:PageInfo">
                             <TextBlock >

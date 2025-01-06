@@ -76,6 +76,9 @@
                         Margin="10"
                         Header="Date of Birth" 
                         Date="{x:Bind viewModel.SelectedDate, Mode=TwoWay}"
+                        DayFormat="{}{day.integer(2)}"
+                        MonthFormat="{}{month.full}" 
+                        YearFormat="{}{year.full}"
                         Foreground="{ThemeResource ApplicationForegroundThemeBrush}"/>
 
             <StackPanel Grid.Row="3" Grid.Column="1">

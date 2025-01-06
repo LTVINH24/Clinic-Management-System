@@ -93,7 +93,10 @@
             <Border Background="{ThemeResource ApplicationPageBackgroundThemeBrush}" 
                     BorderBrush="Gray" 
                     BorderThickness="1"
-                    Translation="0,0,32">
+                    Translation="0,0,32"
+                    PointerPressed="DragArea_PointerPressed"
+                    PointerMoved="DragArea_PointerMoved"
+                    PointerReleased="DragArea_PointerReleased">
                 <Border.Shadow>
                     <ThemeShadow />
                 </Border.Shadow>
@@ -106,10 +109,7 @@
                     
                     <Border x:Name="DragArea" 
                             Background="{ThemeResource SystemAccentColor}" 
-                            Height="32" 
-                            PointerPressed="DragArea_PointerPressed"
-                            PointerMoved="DragArea_PointerMoved"
-                            PointerReleased="DragArea_PointerReleased">
+                            Height="32">
                         <Grid>
                             <TextBlock Text="Edit Medical Examination Form" 
                                      Foreground="{ThemeResource ApplicationPageBackgroundThemeBrush}" 
@@ -269,9 +269,10 @@
                     <Run Text="{x:Bind ViewModel.SelectedPageInfoItem.Page ,Mode=OneWay}"/> of 
                     <Run Text="{x:Bind ViewModel.SelectedPageInfoItem.Total, Mode=OneWay}"/>
                 </TextBlock>
-                <ComboBox ItemsSource="{Binding PageInfos, Mode=OneWay}"
+                <ComboBox ItemsSource="{x:Bind ViewModel.PageInfos, Mode=OneWay}"
                     SelectedItem="{x:Bind ViewModel.SelectedPageInfoItem, Mode=TwoWay}"
                     Name="pagesComboBox"
+                    
                     SelectionChanged="pagesComboBox_SelectionChanged"
                     Margin="5,0,5,20"  
                     Width="100" Height="30">        

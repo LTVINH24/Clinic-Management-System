@@ -165,6 +165,7 @@
                 </TextBlock>
                 <ComboBox ItemsSource="{Binding PageInfos}"
                          SelectedItem="{Binding SelectedPageInfo, Mode=TwoWay}"
+                         Margin="5,0,5,20" 
                          SelectionChanged="PagesComboBox_SelectionChanged"
                          Width="100">
                     <ComboBox.ItemTemplate>

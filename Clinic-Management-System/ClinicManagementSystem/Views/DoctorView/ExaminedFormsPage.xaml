@@ -172,6 +172,7 @@
                 <ComboBox ItemsSource="{Binding PageInfos}"
                          SelectedItem="{Binding SelectedPageInfo, Mode=TwoWay}"
                          SelectionChanged="PagesComboBox_SelectionChanged"
+                         Margin="5,0,5,20" 
                          Width="100">
                     <ComboBox.ItemTemplate>
                         <DataTemplate x:DataType="model:PageInfo">

@@ -96,7 +96,10 @@
                 Background="{ThemeResource ApplicationPageBackgroundThemeBrush}" 
                 BorderBrush="Gray" 
                 BorderThickness="1"
-                Translation="0,0,32">
+                Translation="0,0,32"
+                PointerPressed="DragArea_PointerPressed"
+                PointerMoved="DragArea_PointerMoved"
+                PointerReleased="DragArea_PointerReleased">    
                 <Border.Shadow>
                     <ThemeShadow />
                 </Border.Shadow>
@@ -108,10 +111,7 @@
 
                     <Border x:Name="DragArea" 
                             Background="{ThemeResource SystemAccentColor}" 
-                            Height="32" 
-                            PointerPressed="DragArea_PointerPressed"
-                            PointerMoved="DragArea_PointerMoved"
-                            PointerReleased="DragArea_PointerReleased">
+                            Height="32">
                         <Grid>
                             <TextBlock Text="Edit Patient Information" 
                                     Foreground="{ThemeResource ApplicationPageBackgroundThemeBrush}" 
