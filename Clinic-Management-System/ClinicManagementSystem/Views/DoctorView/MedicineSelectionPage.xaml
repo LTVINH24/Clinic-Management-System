@@ -27,12 +27,6 @@
             <Setter Property="HorizontalAlignment" Value="Left" />
             <Setter Property="Margin" Value="5" />
         </Style>
-        <Style TargetType="Button">
-            <Setter Property="FontSize" Value="16" />
-            <Setter Property="Margin" Value="5" />
-            <Setter Property="Padding" Value="10,5" />
-            <Setter Property="Foreground" Value="White" />
-        </Style>
     </Page.Resources>
 
     <Grid Padding="20">
@@ -131,8 +125,8 @@
 
         <!-- Footer -->
         <StackPanel Grid.Row="4" Orientation="Horizontal" HorizontalAlignment="Right">
-            <Button Content="Back" Click="BackButton_Click" />
-            <Button Content="Confirm" Click="ConfirmButton_Click" />
+            <Button Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"   Content="Back" Click="BackButton_Click" />
+            <Button  Style="{StaticResource AccentButtonStyle}"   Content="Confirm" Click="ConfirmButton_Click" />
         </StackPanel>
 
         <!-- Pagination -->
@@ -140,7 +134,7 @@
                     Orientation="Horizontal" 
                     HorizontalAlignment="Center"
                     Margin="0,10,0,20">
-            <Button Click="PreviousButton_Click">
+            <Button   Click="PreviousButton_Click">
                 <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xE76B;"/>
             </Button>
             
@@ -166,7 +160,7 @@
                 </ComboBox>
             </StackPanel>
 
-            <Button Click="NextButton_Click">
+            <Button   Click="NextButton_Click">
                 <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xE76C;"/>
             </Button>
         </StackPanel>
