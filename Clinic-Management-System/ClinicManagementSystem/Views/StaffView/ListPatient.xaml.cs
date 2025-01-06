@@ -221,6 +221,8 @@ namespace ClinicManagementSystem.Views.StaffView
 		private void ClosePopup_Click(object sender, RoutedEventArgs e)
 		{
 			EditPopup.IsOpen = false;
+			EditPopup.HorizontalOffset = 0;
+    		EditPopup.VerticalOffset = 0;
 		}
 		/// <summary>
 		/// Xử lí sự kiện khi chọn button Edit

@@ -333,6 +333,8 @@ namespace ClinicManagementSystem.Views.AdminView
 		private void ClosePopup_Click(object sender, RoutedEventArgs e)
         {
             EditPopup.IsOpen = false;
+            EditPopup.HorizontalOffset = 0;
+            EditPopup.VerticalOffset = 0;
         }
         private bool isDragging = false;
         private Windows.Foundation.Point initialPosition;
